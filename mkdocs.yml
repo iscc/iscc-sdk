@@ -1,0 +1,100 @@
+site_name: "ISCC - Software Development Kit"
+site_description: 'International Standard Content Code - Software Development Kit.'
+site_author: 'Titusz Pan'
+site_url: 'https://sdk.iscc.codes'
+
+# Repository
+repo_name: 'iscc/iscc-sdk'
+repo_url: 'https://github.com/iscc/iscc-sdk'
+edit_uri: 'edit/main/docs/'
+
+# Copyright
+copyright: 'Copyright © 2016-2022 The Authors
+| <a href="https://iscc.foundation/privacy">Privacy Policy</a>
+| <a href="https://iscc.foundation/cookies">Cookie Policy</a>
+| <a href="https://iscc.foundation/imprint">Imprint</a>
+| <a href="https://iscc.foundation/disclaimer">Disclaimer</a>'
+
+extra_css:
+  - stylesheets/extra.css
+
+extra:
+  analytics:
+    provider: custom
+
+theme:
+  name: material
+  custom_dir: docs/overrides
+  logo: images/iscc-logo-icon-white.svg
+  favicon: images/iscc-logo-icon-black.svg
+  language: en
+  font:
+    text: Readex Pro
+    code: JetBrains Mono
+  palette:
+    - scheme: slate
+      toggle:
+        icon: material/toggle-switch
+        name: Switch to light mode
+    - scheme: default
+      toggle:
+        icon: material/toggle-switch-off-outline
+        name: Switch to dark mode
+  features:
+    - toc.integrate
+    - navigation.indexes
+    - navigation.tracking
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.expand
+
+plugins:
+  - search
+  - autorefs
+  - mkdocstrings:
+      watch:
+        - iscc_sdk
+      handlers:
+        python:
+          selection:
+            docstring_style: restructured-text
+          rendering:
+            show_root_heading: false
+            show_root_toc_entry: false
+            show_root_full_path: true
+            show_object_full_path: false
+            show_root_members_full_path: false
+            show_category_heading: false
+            show_if_no_docstring: false
+            show_signature_annotations: true
+            show_source: false
+            show_bases: false
+            group_by_category: false
+            heading_level: 3
+            members_order: source
+
+
+markdown_extensions:
+  - meta
+  - admonition
+  - pymdownx.details
+  - abbr
+  - attr_list
+  - md_in_html
+  - footnotes
+  - toc:
+      permalink: "#"
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.magiclink
+
+nav:
+  - Overview: index.md
+  - Mediatypes: mime.md

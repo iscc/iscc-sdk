@@ -1,4 +1,6 @@
-# -*- coding: utf-8 -*-
+"""*Detect and map [RFC6838](https://www.rfc-editor.org/rfc/rfc6838.html) Mediatypes to ISCC
+processing modes.*
+"""
 from loguru import logger as log
 from typing import List, Optional, Union
 import mimetypes
@@ -20,14 +22,24 @@ __all__ = [
 
 def mime_guess(data, file_name=None):
     # type: (bytes, Optional[str]) -> str
-    """Heuristic guessing of mediatype from raw data and filename.
-
-    Try matching by file extension. If that fails we match by content sniffing.
-
-    :param bytes data: raw file data (first 4096 bytes recommended)
-    :param str file_name: Filename for guessing based on file extension
     """
+    Guess Media Type from raw data or filename.
 
+    First try to guess by file extension. If that fails we match by content sniffing.
+
+    !!! example
+        ```
+        >>> import iscc_sdk
+        >>> iscc_sdk.mime_guess(b'GIF89a')
+        'image/gif'
+
+        ```
+
+    :param bytes data: Raw file data (first 4096 bytes recommended)
+    :param Optional[str] file_name: Filename for guessing based on file extension
+    :return: Media type sting
+    :rtype: str
+    """
     guess_name, guess_data = None, None
 
     if file_name:
@@ -44,35 +56,77 @@ def mime_guess(data, file_name=None):
     if guess_data and "ogg" in guess_data:
         media_type = guess_data
 
-    log.debug(f"{media_type} media-type detected")
+    log.debug(f"{media_type} mediatype detected")
 
     return media_type
 
 
-def mime_normalize(mime: str) -> str:
-    """Return normalized version of a mediatype."""
+def mime_normalize(mime):
+    # type: (str) -> str
+    """
+    Normalize mediatype string.
+
+    !!! example
+        ```
+        >>> import iscc_sdk
+        >>> iscc_sdk.mime_normalize("audio/x-aiff")
+        '"audio/aiff"'
+
+        ```
+
+    :param str mime: Mediatype sting
+    :return: Normalized mediatype string
+    :rtype: str
+    """
     return MEDIATYPE_NORM.get(mime, mime)
 
 
-def mime_supported(mime: str) -> bool:
-    """Check if mediatype is supported"""
+def mime_supported(mime):
+    # type: (str) -> bool
+    """
+    Check if mediatype is supported.
+
+    :param str mime: Mediatype sting
+    :return: True if mediatype is supported
+    :rtype: bool
+    """
     return mime_normalize(mime) in SUPPORTED_MEDIATYPES
 
 
-def mime_from_name(name: str) -> Optional[str]:
-    """Guess mediatype from filename or url."""
+def mime_from_name(name):
+    # type: (str) -> Optional[str]
+    """
+    Guess mediatype from filename or URL.
+
+    :param str name: Filename or URL
+    :return: Mediatype string
+    :rtype: str
+    """
     return mimetypes.guess_type(name)[0]
 
 
-def mime_from_data(data: bytes) -> Optional[str]:
-    """Guess mediatype by sniffing raw header data."""
+def mime_from_data(data):
+    # type: (bytes) -> Optional[str]
+    """
+    Guess mediatype by sniffing raw header data.
+
+    :param bytes data: Raw fileheader data (first 4096 bytes recommended)
+    :return: Mediatype string
+    :rtype: str
+    """
     return magic.from_buffer(data, mime=True)
 
 
-def mime_clean(mime: Union[str, List]):
+def mime_clean(mime):
+    # type: (Union[str, List]) -> str
     """
-    Clean mimetype/content-type string or first entry of a list of mimetype strings.
+    Clean mediatype/content-type string or first entry of a list of mimetype strings.
+
     Also removes semicolon separated encoding information.
+
+    :param Union[str, List] mime: Mediatype or list of mediatypes
+    :return: Mediatype string
+    :rtype: str
     """
     if mime and isinstance(mime, List):
         mime = mime[0]
@@ -85,7 +139,7 @@ def mime_to_mode(mime_type):
     # type: (str) -> str
     """Get perceptual processing mode from mimetype.
 
-    :param str mime_type: RFC-6838 media type string
+    :param str mime_type: RFC-6838 mediatype string
     :return str: Processing mode ("text", "image", "audio", "video")
     :raise ValueError: if no matching processing mode was found.
     """

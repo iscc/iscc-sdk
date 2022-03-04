@@ -23,6 +23,8 @@ coverage = "^6.3"
 pytest-cov = "^3.0"
 poethepoet = "^0.13"
 bandit = "^1.7"
+mkdocs-material = "^8.2"
+mkdocstrings = "^0.18.1"
 
 [tool.black]
 skip-string-normalization = false
@@ -30,10 +32,11 @@ line-length = 100
 target-version = ['py37']
 
 [tool.poe.tasks]
+docs = { cmd = "poetry run python -m devtools.build_docs", help = "Copy README.md to /docs" }
 black = { cmd = "poetry run black .", help = "Code style formating with black" }
 test = { cmd = "poetry run pytest --cov=iscc_sdk --cov-fail-under=100", help = "Run tests with coverage" }
 sec = { cmd = "poetry run bandit -r iscc_sdk -q", help = "Security check with bandit" }
-all = ["black", "test", "sec"]
+all = ["docs", "black", "test", "sec"]
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
