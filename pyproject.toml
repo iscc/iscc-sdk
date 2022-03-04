@@ -1,0 +1,38 @@
+[tool.poetry]
+name = "iscc-sdk"
+version = "0.1.0"
+description = ""
+authors = ["Titusz <tp@py7.de>"]
+license = "Apache-2.0"
+readme = "README.md"
+homepage = "https://sdk.iscc.codes"
+repository = "https://github.com/iscc/iscc-sdk"
+keywords=["iscc", "identifier", "media", "content", "hash", "blockchain", "similarity"]
+
+[tool.poetry.dependencies]
+python = ">=3.7,<4.0"
+iscc-core = "^0.2"
+iscc-schema = "^0.3"
+
+[tool.poetry.dev-dependencies]
+pytest = "^7.0"
+black = "^22.1"
+coverage = "^6.3"
+pytest-cov = "^3.0"
+poethepoet = "^0.13"
+bandit = "^1.7"
+
+[tool.black]
+skip-string-normalization = false
+line-length = 100
+target-version = ['py37']
+
+[tool.poe.tasks]
+black = { cmd = "poetry run black .", help = "Code style formating with black" }
+test = { cmd = "poetry run pytest --cov=iscc_sdk --cov-fail-under=100", help = "Run tests with coverage" }
+sec = { cmd = "poetry run bandit -r iscc_sdk -q", help = "Security check with bandit" }
+all = ["black", "test", "sec"]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
