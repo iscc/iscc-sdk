@@ -79,4 +79,4 @@ def test_fpcalc_version_info():
 
 
 def test_exiv2_version_info():
-    assert bin.EXIV2_VERSION in bin.exiv2_version_info()
+    assert "exiv2" in bin.exiv2_version_info().lower()
