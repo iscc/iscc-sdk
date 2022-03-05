@@ -15,6 +15,8 @@ iscc-core = "^0.2"
 iscc-schema = "^0.3"
 python-magic-bin = { version = "^0.4", markers = "sys_platform == 'win32' or sys_platform == 'darwin'" }
 python-magic = { version = "^0.4", markers = "sys_platform == 'linux'" }
+install-jdk = "^0.3"
+platformdirs = "^2.5.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "^7.0"
@@ -36,7 +38,7 @@ docs = { cmd = "poetry run python -m devtools.build_docs", help = "Copy README.m
 black = { cmd = "poetry run black .", help = "Code style formating with black" }
 test = { cmd = "poetry run pytest --cov=iscc_sdk --cov-fail-under=100", help = "Run tests with coverage" }
 sec = { cmd = "poetry run bandit -r iscc_sdk -q", help = "Security check with bandit" }
-all = ["docs", "black", "test", "sec"]
+all = ["docs", "black", "test"]
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
