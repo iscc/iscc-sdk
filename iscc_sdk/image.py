@@ -60,7 +60,7 @@ def image_meta_embed(fp, meta):
         outf.write(cmdf.encode("utf-8"))
     cmd = [idk.exiv2_bin(), "-m", metafilepath, fp]
     log.debug(f"Embedding {meta.dict(exclude_unset=True)} in {basename(fp)}")
-    subprocess.run(cmd, capture_output=True, check=True)
+    subprocess.run(cmd, capture_output=True)
     os.remove(metafilepath)
 
 
@@ -68,7 +68,7 @@ def image_meta_extract(fp):
     # type: (str) -> dict
     """Extract metadata from image."""
     cmd = [idk.exiv2json_bin(), "--all", fp]
-    result = subprocess.run(cmd, capture_output=True, check=True)
+    result = subprocess.run(cmd, capture_output=True)
     text = result.stdout.decode(sys.stdout.encoding)
 
     # We may get all sorts of crazy control-chars, delete them.
