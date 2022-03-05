@@ -178,7 +178,7 @@ def exiv2_version_info():  # pragma: no cover
     try:
         r = subprocess.run([exiv2_bin(), "--version"], capture_output=True)
         vi = r.stdout.decode(sys.stdout.encoding)
-        return vi.splitlines()[0]
+        return vi
     except FileNotFoundError:
         return "exiv2 not installed"
 
