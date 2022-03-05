@@ -176,7 +176,9 @@ def exiv2_install():  # pragma: no cover
 def exiv2_version_info():  # pragma: no cover
     """Get exiv2 version info"""
     try:
-        r = subprocess.run([exiv2_bin(), "--version"], capture_output=True)
+        r = subprocess.run(
+            [exiv2_bin(), "--version"], stdout=subprocess.PIPE, stderr=subprocess.STDOUT
+        )
         vi = r.stdout.decode(sys.stdout.encoding)
         return vi
     except FileNotFoundError:
