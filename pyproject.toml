@@ -16,7 +16,8 @@ iscc-schema = "^0.3"
 python-magic-bin = { version = "^0.4", markers = "sys_platform == 'win32' or sys_platform == 'darwin'" }
 python-magic = { version = "^0.4", markers = "sys_platform == 'linux'" }
 install-jdk = "^0.3"
-platformdirs = "^2.5.1"
+platformdirs = "^2.5"
+jmespath = "^0.10"
 
 [tool.poetry.dev-dependencies]
 pytest = "^7.0"
@@ -27,6 +28,7 @@ poethepoet = "^0.13"
 bandit = "^1.7"
 mkdocs-material = "^8.2"
 mkdocstrings = "^0.18.1"
+iscc-samples = "^0.4.0"
 
 [tool.black]
 skip-string-normalization = false

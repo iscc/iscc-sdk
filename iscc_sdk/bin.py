@@ -16,6 +16,12 @@ import jdk
 import iscc_sdk as idk
 from concurrent.futures import ThreadPoolExecutor
 
+
+__all__ = [
+    "exiv2_bin",
+    "exiv2json_bin",
+]
+
 BASE_VERSION = "1.0.0"
 BASE_URL = f"https://github.com/iscc/iscc-binaries/releases/download/v{BASE_VERSION}"
 
