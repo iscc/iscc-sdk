@@ -93,7 +93,7 @@ EXIV2JSON_RELPATH = {
 
 
 def install():
-    """Install binary tools for content extraction"""
+    """Install binary tools for content extraction."""
     with ThreadPoolExecutor(max_workers=5) as p:
         p.submit(exiv2_install)
         p.submit(fpcalc_install)
@@ -110,7 +110,7 @@ def system_tag():
 
 
 def is_installed(fp: str) -> bool:
-    """Check if binary at `fp` exists and is executable"""
+    """Check if binary at `fp` exists and is executable."""
     return os.path.isfile(fp) and os.access(fp, os.X_OK)
 
 
@@ -120,7 +120,7 @@ def is_installed(fp: str) -> bool:
 
 
 def exiv2_download_url() -> str:
-    """Return system and version dependant exiv2 download url"""
+    """Return system and version dependant exiv2 download url."""
     return EXIV2_URLS[system_tag()]
 
 
@@ -134,7 +134,7 @@ def exiv2json_bin() -> str:
 
 
 def exiv2_is_installed():  # pragma: no cover
-    """Check if exiv2 is installed"""
+    """Check if exiv2 is installed."""
     fp = exiv2_bin()
     return os.path.isfile(fp) and os.access(fp, os.X_OK)
 
@@ -180,7 +180,7 @@ def exiv2_install():  # pragma: no cover
 
 
 def exiv2_version_info():  # pragma: no cover
-    """Get exiv2 version info"""
+    """Get exiv2 version info."""
     try:
         r = subprocess.run(
             [exiv2_bin(), "--version"], stdout=subprocess.PIPE, stderr=subprocess.STDOUT
@@ -204,13 +204,13 @@ def fpcalc_bin():  # pragma: no cover
 
 
 def fpcalc_is_installed():  # pragma: no cover
-    """ "Check if fpcalc is installed."""
+    """Check if fpcalc is installed."""
     fp = fpcalc_bin()
     return os.path.isfile(fp) and os.access(fp, os.X_OK)
 
 
 def fpcalc_download_url():
-    """Return system and version dependant download url"""
+    """Return system and version dependant download url."""
     return FPCALC_URLS[system_tag()]
 
 
@@ -255,7 +255,7 @@ def fpcalc_install():  # pragma: no cover
 
 
 def fpcalc_version_info():  # pragma: no cover
-    """Get fpcalc version"""
+    """Get fpcalc version."""
     try:
         r = subprocess.run([fpcalc_bin(), "-v"], stdout=subprocess.PIPE)
         return r.stdout.decode("utf-8").strip().split()[2]
@@ -309,7 +309,7 @@ def ffprobe_install():  # pragma: no cover
 
 
 def ffprobe_version_info():  # pragma: no cover
-    """Get ffprobe version"""
+    """Get ffprobe version."""
     try:
         r = subprocess.run([ffprobe_bin(), "-version"], stdout=subprocess.PIPE)
         return (
@@ -370,7 +370,7 @@ def ffmpeg_install():  # pragma: no cover
 
 
 def ffmpeg_version_info():  # pragma: no cover
-    """Get ffmpeg version"""
+    """Get ffmpeg version."""
     try:
         r = subprocess.run([ffmpeg_bin(), "-version"], stdout=subprocess.PIPE)
         return (
@@ -432,25 +432,25 @@ def java_version_info():  # pragma: no cover
 
 def tika_download_url():
     # type: () -> str
-    """Return tika download url"""
+    """Return tika download url."""
     return TIKA_URL
 
 
 def tika_bin():
     # type: () -> str
-    """Returns path to java tika app call"""
+    """Returns path to java tika app call."""
     return os.path.join(idk.dirs.user_data_dir, f"tika-app-{TIKA_VERSION}.jar")
 
 
 def tika_is_installed():  # pragma: no cover
     # type: () -> bool
-    """Check if tika is installed"""
+    """Check if tika is installed."""
     return os.path.exists(tika_bin())
 
 
 def tika_download():  # pragma: no cover
     # type: () -> str
-    """Download tika-app.jar and return local path"""
+    """Download tika-app.jar and return local path."""
     return download_file(tika_download_url(), checksum=TIKA_CHECKSUM)
 
 
@@ -473,8 +473,7 @@ def tika_install():  # pragma: no cover
 
 def tika_version_info():  # pragma: no cover
     # type: () -> str
-    """
-    Check tika-app version
+    """Check tika-app version.
 
     :return: Tika version info string
     :rtype: str

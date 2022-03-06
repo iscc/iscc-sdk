@@ -1,6 +1,4 @@
-"""*Detect and map [RFC6838](https://www.rfc-editor.org/rfc/rfc6838.html) Mediatypes to ISCC
-processing modes.*
-"""
+"""*Detect and map RFC6838 Mediatypes to ISCC processing modes.*"""
 from loguru import logger as log
 from typing import List, Optional, Union
 import mimetypes
