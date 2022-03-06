@@ -12,45 +12,108 @@ from typing import Sequence
 
 import jmespath
 from loguru import logger as log
-from PIL import Image, ImageEnhance
+from PIL import Image, ImageEnhance, ImageChops, ImageOps
 import iscc_sdk as idk
 from iscc_schema.schema import ISCC
 
 
 __all__ = [
+    "image_normalize",
+    "image_exif_transpose",
+    "image_fill_transparency",
+    "image_trim_border",
     "image_meta_embed",
     "image_meta_extract",
     "image_meta_delete",
-    "image_normalize",
     "image_thumbnail",
     "image_to_data_url",
 ]
 
 
-IMAGE_META_MAP = {
-    "Xmp.iscc.name": "name",
-    "Xmp.iscc.description": "description",
-    "Xmp.iscc.meta": "meta",
-    "Xmp.dc.title": "name",
-    "Xmp.xmp.Nickname": "name",
-    "Xmp.xmpDM.shotName": "name",
-    "Xmp.photoshop.Headline": "name",
-    "Xmp.iptcExt.AOTitle": "name",
-    "Iptc.Application2.Headline": "name",
-    "Iptc.Application2.BylineTitle": "name",
-    "Iptc.Application2.ObjectName": "name",
-    "Exif.Image.XPTitle": "name",
-    "Xmp.dc.description": "description",
-    "Xmp.dc.creator": "creator",
-    "Iptc.Application2.Byline": "creator",
-    "Exif.Image.Artist": "creator",
-    "Xmp.dc.identifier": "identifier",
-    "Xmp.xmp.Identifier": "identifier",
-    "Xmp.dc.language": "language",
-    "Iptc.Application2.Language": "language",
-    "Exif.Image.ImageID": "identifier",
-    "Exif.Photo.ImageUniqueID": "identifier",
-}
+def image_normalize(img):
+    # type: (Image.Image) -> Sequence[int]
+    """
+    Normalize image for hash calculation.
+
+    :param Image.Image img: Pillow Image Object
+    :return: Normalized and flattened image as 1024-pixel array (from 32x32 gray pixels)
+    :rtype: Sequence[int]
+    """
+
+    # Transpose image according to EXIF Orientation tag
+    if idk.sdk_opts.image_exif_transpose:
+        img = image_exif_transpose(img)
+
+    # Add white background to image if it has alpha transparency
+    if idk.sdk_opts.image_fill_transparency:
+        img = image_fill_transparency(img)
+
+    # Trim uniform colored (empty) border if there is one
+    if idk.sdk_opts.image_trim_border:
+        img = image_trim_border(img)
+
+    # Convert to grayscale
+    img = img.convert("L")
+
+    # Resize to 32x32
+    im = img.resize((32, 32), Image.BICUBIC)
+
+    # A flattened sequence of grayscale pixel values (1024 pixels)
+    pixels = im.getdata()
+
+    return pixels
+
+
+def image_exif_transpose(img):
+    # type: (Image.Image) -> Image.Image
+    """
+    Transpose image according to EXIF Orientation tag
+
+    :param Image.Image img: Pillow Image Object
+    :return: EXIF transposed image
+    :rtype: Image.Image
+    """
+    img = ImageOps.exif_transpose(img)
+    log.debug(f"Image exif transpose applied")
+    return img
+
+
+def image_fill_transparency(img):
+    # type: (Image.Image) -> Image.Image
+    """
+    Add white background to image if it has alpha transparency.
+
+    :param Image.Image img: Pillow Image Object
+    :return: Image with transparency replaced by white background
+    :rtype: Image.Image
+    """
+    if img.mode != "RGBA":
+        img = img.convert("RGBA")
+    bg = Image.new("RGBA", img.size, (255, 255, 255))
+    img = Image.alpha_composite(bg, img)
+    log.debug(f"Image transparency filled with white background")
+    return img
+
+
+def image_trim_border(img):
+    # type: (Image.Image) -> Image.Image
+    """Trim uniform colored (empty) border.
+
+    Takes the upper left pixel as reference for border color.
+
+    :param Image.Image img: Pillow Image Object
+    :return: Image with uniform colored (empty) border removed.
+    :rtype: Image.Image
+    """
+
+    bg = Image.new(img.mode, img.size, img.getpixel((0, 0)))
+    diff = ImageChops.difference(img, bg)
+    diff = ImageChops.add(diff, diff)
+    bbox = diff.getbbox()
+    if bbox != (0, 0) + img.size:
+        log.debug(f"Image has been trimmed")
+        return img.crop(bbox)
+    return img
 
 
 def image_meta_extract(fp):
@@ -158,23 +221,27 @@ def image_to_data_url(img):
     return "data:image/webp;base64," + enc
 
 
-def image_normalize(img):
-    # type: (Image.Image) -> Sequence[int]
-    """
-    Normalize image for hash calculation.
-
-    :param Image.Image img: Pillow Image Object
-    :return: Normalized and flattened image as 1024-pixel array (from 32x32 gray pixels)
-    :rtype: Sequence[int]
-    """
-
-    # Convert to grayscale
-    imo = img.convert("L")
-
-    # Resize to 32x32
-    im = imo.resize((32, 32), Image.BICUBIC)
-
-    # A flattened sequence of grayscale pixel values (1024 pixels)
-    pixels = im.getdata()
-
-    return pixels
+IMAGE_META_MAP = {
+    "Xmp.iscc.name": "name",
+    "Xmp.iscc.description": "description",
+    "Xmp.iscc.meta": "meta",
+    "Xmp.dc.title": "name",
+    "Xmp.xmp.Nickname": "name",
+    "Xmp.xmpDM.shotName": "name",
+    "Xmp.photoshop.Headline": "name",
+    "Xmp.iptcExt.AOTitle": "name",
+    "Iptc.Application2.Headline": "name",
+    "Iptc.Application2.BylineTitle": "name",
+    "Iptc.Application2.ObjectName": "name",
+    "Exif.Image.XPTitle": "name",
+    "Xmp.dc.description": "description",
+    "Xmp.dc.creator": "creator",
+    "Iptc.Application2.Byline": "creator",
+    "Exif.Image.Artist": "creator",
+    "Xmp.dc.identifier": "identifier",
+    "Xmp.xmp.Identifier": "identifier",
+    "Xmp.dc.language": "language",
+    "Iptc.Application2.Language": "language",
+    "Exif.Image.ImageID": "identifier",
+    "Exif.Photo.ImageUniqueID": "identifier",
+}
