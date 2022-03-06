@@ -2,12 +2,18 @@
 from PIL import Image
 
 import iscc_sdk as idk
-from iscc_schema.schema import ISCC
+from iscc_schema import IsccMeta
 from iscc_samples import images
 
 
 fp = images("jpg")[0].as_posix()
-meta = ISCC.construct(name="Hello", description="Wörld", meta="somestring")
+meta = IsccMeta.construct(
+    name="Hello",
+    description="Wörld",
+    meta="somestring",
+    license="https://example.com/license",
+    acquire="https://example.com/buy",
+)
 
 
 def test_image_normalize_png(png_obj):
@@ -78,8 +84,10 @@ def test_image_meta_delete_png(png_file):
 def test_image_meta_embed_jpg(jpg_file):
     assert idk.image_meta_embed(jpg_file, meta) is None
     assert idk.image_meta_extract(jpg_file) == {
+        "acquire": "https://example.com/buy",
         "description": "Wörld",
         "height": 133,
+        "license": "https://example.com/license",
         "meta": "somestring",
         "name": "Hello",
         "width": 200,
@@ -89,8 +97,10 @@ def test_image_meta_embed_jpg(jpg_file):
 def test_image_meta_embed_png(png_file):
     assert idk.image_meta_embed(png_file, meta) is None
     assert idk.image_meta_extract(png_file) == {
+        "acquire": "https://example.com/buy",
         "description": "Wörld",
         "height": 133,
+        "license": "https://example.com/license",
         "meta": "somestring",
         "name": "Hello",
         "width": 200,

@@ -9,12 +9,11 @@ import subprocess
 from copy import copy
 from os.path import basename
 from typing import Sequence
-
 import jmespath
+from iscc_schema import IsccMeta
 from loguru import logger as log
 from PIL import Image, ImageEnhance, ImageChops, ImageOps
 import iscc_sdk as idk
-from iscc_schema.schema import ISCC
 
 
 __all__ = [
@@ -123,11 +122,11 @@ def image_meta_extract(fp):
 
     :param str fp: Filepath to image file.
     :return: Metadata mapped to ISCC schema
-    :rtype: ISCC
+    :rtype: dict
     """
     cmd = [idk.exiv2json_bin(), "--all", fp]
     result = subprocess.run(cmd, capture_output=True, check=True)
-    text = result.stdout.decode(sys.stdout.encoding)
+    text = result.stdout.decode(sys.stdout.encoding, errors="ignore")
 
     # We may get all sorts of crazy control-chars, delete them.
     mpa = dict.fromkeys(range(32))
@@ -157,7 +156,7 @@ def image_meta_extract(fp):
 
 
 def image_meta_embed(fp, meta):
-    # type: (str, ISCC) -> None
+    # type: (str, IsccMeta) -> None
     """
     Embed metadata into image.
 
@@ -171,6 +170,11 @@ def image_meta_embed(fp, meta):
         cmdf += f"set Xmp.iscc.description {meta.description}\n"
     if meta.meta:
         cmdf += f"set Xmp.iscc.meta {meta.meta}\n"
+    if meta.license:
+        cmdf += f"set Xmp.xmpRights.WebStatement {meta.license}\n"
+    if meta.acquire:
+        cmdf += f"set Xmp.plus.Licensor XmpText type=Bag\n"
+        cmdf += f"set Xmp.plus.Licensor[1]/plus:LicensorURL XmpText {meta.acquire}\n"
 
     with tempfile.NamedTemporaryFile("w+b", delete=False) as outf:
         metafilepath = copy(outf.name)
@@ -242,6 +246,8 @@ IMAGE_META_MAP = {
     "Xmp.dc.creator": "creator",
     "Iptc.Application2.Byline": "creator",
     "Exif.Image.Artist": "creator",
+    "Xmp.xmpRights.WebStatement": "license",
+    "Xmp.plus.Licensor[0].plus.LicensorURL": "acquire",
     "Xmp.dc.identifier": "identifier",
     "Xmp.xmp.Identifier": "identifier",
     "Xmp.dc.language": "language",
