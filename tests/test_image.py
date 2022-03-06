@@ -50,35 +50,51 @@ def test_image_trim_border(jpg_obj, png_obj_alpha):
 def test_image_meta_extract_jpg(jpg_file):
     assert idk.image_meta_extract(jpg_file) == {
         "creator": "Some Cat Lover",
+        "height": 133,
         "name": "Concentrated Cat",
+        "width": 200,
     }
 
 
 def test_image_meta_extract_png(png_file):
     assert idk.image_meta_extract(png_file) == {
         "creator": "Another Cat Lover",
+        "height": 133,
         "name": "Concentrated Cat PNG",
+        "width": 200,
     }
 
 
 def test_image_meta_delete_jpg(jpg_file):
     idk.image_meta_delete(jpg_file)
-    assert idk.image_meta_extract(jpg_file) == {}
+    assert idk.image_meta_extract(jpg_file) == {"height": 133, "width": 200}
 
 
 def test_image_meta_delete_png(png_file):
     idk.image_meta_delete(png_file)
-    assert idk.image_meta_extract(png_file) == {}
+    assert idk.image_meta_extract(png_file) == {"height": 133, "width": 200}
 
 
 def test_image_meta_embed_jpg(jpg_file):
     assert idk.image_meta_embed(jpg_file, meta) is None
-    assert idk.image_meta_extract(jpg_file) == meta.dict(exclude_unset=True)
+    assert idk.image_meta_extract(jpg_file) == {
+        "description": "Wörld",
+        "height": 133,
+        "meta": "somestring",
+        "name": "Hello",
+        "width": 200,
+    }
 
 
 def test_image_meta_embed_png(png_file):
     assert idk.image_meta_embed(png_file, meta) is None
-    assert idk.image_meta_extract(png_file) == meta.dict(exclude_unset=True)
+    assert idk.image_meta_extract(png_file) == {
+        "description": "Wörld",
+        "height": 133,
+        "meta": "somestring",
+        "name": "Hello",
+        "width": 200,
+    }
 
 
 def test_image_thumbnail():

@@ -119,7 +119,7 @@ def image_trim_border(img):
 def image_meta_extract(fp):
     # type: (str) -> dict
     """
-    Extract embedded metadata from image.
+    Extract metadata from image.
 
     :param str fp: Filepath to image file.
     :return: Metadata mapped to ISCC schema
@@ -149,6 +149,10 @@ def image_meta_extract(fp):
             log.debug(f"Mapping metadata: {tag} -> {mapped_field} -> {value}")
             mapped[mapped_field] = value
             done.add(mapped_field)
+
+    with Image.open(fp) as img:
+        mapped["width"], mapped["height"] = img.size
+
     return dict(mapped)
 
 
