@@ -18,7 +18,7 @@ python-magic = { version = "^0.4", markers = "sys_platform == 'linux'" }
 install-jdk = "^0.3"
 platformdirs = "^2.5"
 jmespath = "^0.10"
-Pillow = "^9.0.1"
+Pillow = "^9.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^7.0"
