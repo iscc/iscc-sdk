@@ -54,7 +54,7 @@ IMAGE_META_MAP = {
 
 
 def image_meta_extract(fp):
-    # type: (str) -> ISCC
+    # type: (str) -> dict
     """
     Extract embedded metadata from image.
 
@@ -86,7 +86,7 @@ def image_meta_extract(fp):
             log.debug(f"Mapping metadata: {tag} -> {mapped_field} -> {value}")
             mapped[mapped_field] = value
             done.add(mapped_field)
-    return ISCC.construct(**mapped)
+    return dict(mapped)
 
 
 def image_meta_embed(fp, meta):
