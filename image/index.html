@@ -12,14 +12,14 @@
         <meta name="author" content="Titusz Pan">
       
       
-        <link rel="canonical" href="https://sdk.iscc.codes/mime/">
+        <link rel="canonical" href="https://sdk.iscc.codes/image/">
       
       <link rel="icon" href="../images/iscc-logo-icon-black.svg">
       <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.2.5">
     
     
       
-        <title>Mediatypes - ISCC - Software Development Kit</title>
+        <title>Images - ISCC - Software Development Kit</title>
       
     
     
@@ -77,7 +77,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#iscc-mediatypes" class="md-skip">
+        <a href="#iscc-image-processing" class="md-skip">
           Skip to content
         </a>
       
@@ -111,7 +111,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Mediatypes
+              Images
             
           </span>
         </div>
@@ -211,12 +211,10 @@
         
   
   
-    
-  
 
 
   <li class="md-tabs__item">
-    <a href="./" class="md-tabs__link md-tabs__link--active">
+    <a href="../mime/" class="md-tabs__link">
       Mediatypes
     </a>
   </li>
@@ -225,10 +223,12 @@
         
   
   
+    
+  
 
 
   <li class="md-tabs__item">
-    <a href="../image/" class="md-tabs__link">
+    <a href="./" class="md-tabs__link md-tabs__link--active">
       Images
     </a>
   </li>
@@ -306,6 +306,21 @@
 
   
   
+  
+    <li class="md-nav__item">
+      <a href="../mime/" class="md-nav__link">
+        Mediatypes
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
     
   
   
@@ -318,12 +333,12 @@
       
       
         <label class="md-nav__link md-nav__link--active" for="__toc">
-          Mediatypes
+          Images
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <a href="./" class="md-nav__link md-nav__link--active">
-        Mediatypes
+        Images
       </a>
       
         
@@ -342,50 +357,64 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#iscc_sdk.mime.mime_guess" class="md-nav__link">
-    mime_guess()
+  <a href="#iscc_sdk.image.image_normalize" class="md-nav__link">
+    image_normalize()
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#iscc_sdk.mime.mime_normalize" class="md-nav__link">
-    mime_normalize()
+  <a href="#iscc_sdk.image.image_exif_transpose" class="md-nav__link">
+    image_exif_transpose()
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#iscc_sdk.mime.mime_supported" class="md-nav__link">
-    mime_supported()
+  <a href="#iscc_sdk.image.image_fill_transparency" class="md-nav__link">
+    image_fill_transparency()
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#iscc_sdk.mime.mime_from_name" class="md-nav__link">
-    mime_from_name()
+  <a href="#iscc_sdk.image.image_trim_border" class="md-nav__link">
+    image_trim_border()
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#iscc_sdk.mime.mime_from_data" class="md-nav__link">
-    mime_from_data()
+  <a href="#iscc_sdk.image.image_meta_extract" class="md-nav__link">
+    image_meta_extract()
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#iscc_sdk.mime.mime_clean" class="md-nav__link">
-    mime_clean()
+  <a href="#iscc_sdk.image.image_meta_embed" class="md-nav__link">
+    image_meta_embed()
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#iscc_sdk.mime.mime_to_mode" class="md-nav__link">
-    mime_to_mode()
+  <a href="#iscc_sdk.image.image_meta_delete" class="md-nav__link">
+    image_meta_delete()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#iscc_sdk.image.image_thumbnail" class="md-nav__link">
+    image_thumbnail()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#iscc_sdk.image.image_to_data_url" class="md-nav__link">
+    image_to_data_url()
   </a>
   
 </li>
@@ -394,21 +423,6 @@
   
 </nav>
       
-    </li>
-  
-
-    
-      
-      
-      
-
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../image/" class="md-nav__link">
-        Images
-      </a>
     </li>
   
 
@@ -425,13 +439,13 @@
             <article class="md-content__inner md-typeset">
               
                 
-<a href="https://github.com/iscc/iscc-sdk/edit/main/docs/mime.md" title="Edit this page" class="md-content__button md-icon">
+<a href="https://github.com/iscc/iscc-sdk/edit/main/docs/image.md" title="Edit this page" class="md-content__button md-icon">
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
 </a>
 
 
 
-<h1 id="iscc-mediatypes"><strong>ISCC</strong> - Mediatypes<a class="headerlink" href="#iscc-mediatypes" title="Permanent link">#</a></h1>
+<h1 id="iscc-image-processing"><strong>ISCC</strong> - Image Processing<a class="headerlink" href="#iscc-image-processing" title="Permanent link">#</a></h1>
 
 
   <div class="doc doc-object doc-module">
@@ -439,8 +453,7 @@
 
     <div class="doc doc-contents first">
 
-      <p><em>Detect and map <a href="https://www.rfc-editor.org/rfc/rfc6838.html">RFC6838</a> Mediatypes to ISCC
-processing modes.</em></p>
+      <p>Image handling module</p>
 
 
 
@@ -455,33 +468,19 @@ processing modes.</em></p>
 
 
 
-
-
-
-
-
-
   <div class="doc doc-object doc-function">
 
 
 
-<h3 id="iscc_sdk.mime.mime_guess" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">mime_guess</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">file_name</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span></code>
+<h3 id="iscc_sdk.image.image_normalize" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">image_normalize</span><span class="p">(</span><span class="n">img</span><span class="p">)</span></code>
 
 
-<a href="#iscc_sdk.mime.mime_guess" class="headerlink" title="Permanent link">#</a></h3>
+<a href="#iscc_sdk.image.image_normalize" class="headerlink" title="Permanent link">#</a></h3>
 
     <div class="doc doc-contents ">
 
-      <p>Guess Media Type from raw data or filename.</p>
-<p>First try to guess by file extension. If that fails we match by content sniffing.</p>
-<div class="admonition example">
-<p class="admonition-title">Example</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>&gt;&gt;&gt; import iscc_sdk
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>&gt;&gt;&gt; iscc_sdk.mime_guess(b&#39;GIF89a&#39;)
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>&#39;image/gif&#39;
-</code></pre></div>
-</div>
+      <p>Normalize image for hash calculation.</p>
 
 <p><strong>Parameters:</strong></p>
 <table>
@@ -495,16 +494,10 @@ processing modes.</em></p>
   </thead>
   <tbody>
       <tr>
-        <td><code>data</code></td>
-        <td><code>bytes</code></td>
-        <td><p>Raw file data (first 4096 bytes recommended)</p></td>
+        <td><code>img</code></td>
+        <td><code>Image.Image</code></td>
+        <td><p>Pillow Image Object</p></td>
         <td><em>required</em></td>
-      </tr>
-      <tr>
-        <td><code>file_name</code></td>
-        <td><code>Optional[str]</code></td>
-        <td><p>Filename for guessing based on file extension</p></td>
-        <td><code>None</code></td>
       </tr>
   </tbody>
 </table>
@@ -518,8 +511,8 @@ processing modes.</em></p>
   </thead>
   <tbody>
     <tr>
-      <td><code>str</code></td>
-      <td><p>Media type sting</p></td>
+      <td><code>Sequence[int]</code></td>
+      <td><p>Normalized and flattened image as 1024-pixel array (from 32x32 gray pixels)</p></td>
     </tr>
   </tbody>
 </table>
@@ -535,22 +528,15 @@ processing modes.</em></p>
 
 
 
-<h3 id="iscc_sdk.mime.mime_normalize" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">mime_normalize</span><span class="p">(</span><span class="n">mime</span><span class="p">)</span></code>
+<h3 id="iscc_sdk.image.image_exif_transpose" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">image_exif_transpose</span><span class="p">(</span><span class="n">img</span><span class="p">)</span></code>
 
 
-<a href="#iscc_sdk.mime.mime_normalize" class="headerlink" title="Permanent link">#</a></h3>
+<a href="#iscc_sdk.image.image_exif_transpose" class="headerlink" title="Permanent link">#</a></h3>
 
     <div class="doc doc-contents ">
 
-      <p>Normalize mediatype string.</p>
-<div class="admonition example">
-<p class="admonition-title">Example</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>&gt;&gt;&gt; import iscc_sdk
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>&gt;&gt;&gt; iscc_sdk.mime_normalize(&quot;audio/x-aiff&quot;)
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>&#39;&quot;audio/aiff&quot;&#39;
-</code></pre></div>
-</div>
+      <p>Transpose image according to EXIF Orientation tag</p>
 
 <p><strong>Parameters:</strong></p>
 <table>
@@ -564,9 +550,178 @@ processing modes.</em></p>
   </thead>
   <tbody>
       <tr>
-        <td><code>mime</code></td>
+        <td><code>img</code></td>
+        <td><code>Image.Image</code></td>
+        <td><p>Pillow Image Object</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>Image.Image</code></td>
+      <td><p>EXIF transposed image</p></td>
+    </tr>
+  </tbody>
+</table>
+    </div>
+
+  </div>
+
+
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h3 id="iscc_sdk.image.image_fill_transparency" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">image_fill_transparency</span><span class="p">(</span><span class="n">img</span><span class="p">)</span></code>
+
+
+<a href="#iscc_sdk.image.image_fill_transparency" class="headerlink" title="Permanent link">#</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Add white background to image if it has alpha transparency.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>img</code></td>
+        <td><code>Image.Image</code></td>
+        <td><p>Pillow Image Object</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>Image.Image</code></td>
+      <td><p>Image with transparency replaced by white background</p></td>
+    </tr>
+  </tbody>
+</table>
+    </div>
+
+  </div>
+
+
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h3 id="iscc_sdk.image.image_trim_border" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">image_trim_border</span><span class="p">(</span><span class="n">img</span><span class="p">)</span></code>
+
+
+<a href="#iscc_sdk.image.image_trim_border" class="headerlink" title="Permanent link">#</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Trim uniform colored (empty) border.</p>
+<p>Takes the upper left pixel as reference for border color.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>img</code></td>
+        <td><code>Image.Image</code></td>
+        <td><p>Pillow Image Object</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>Image.Image</code></td>
+      <td><p>Image with uniform colored (empty) border removed.</p></td>
+    </tr>
+  </tbody>
+</table>
+    </div>
+
+  </div>
+
+
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h3 id="iscc_sdk.image.image_meta_extract" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">image_meta_extract</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span></code>
+
+
+<a href="#iscc_sdk.image.image_meta_extract" class="headerlink" title="Permanent link">#</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Extract metadata from image.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>fp</code></td>
         <td><code>str</code></td>
-        <td><p>Mediatype sting</p></td>
+        <td><p>Filepath to image file.</p></td>
         <td><em>required</em></td>
       </tr>
   </tbody>
@@ -581,8 +736,8 @@ processing modes.</em></p>
   </thead>
   <tbody>
     <tr>
-      <td><code>str</code></td>
-      <td><p>Normalized mediatype string</p></td>
+      <td><code>dict</code></td>
+      <td><p>Metadata mapped to IsccMeta schema</p></td>
     </tr>
   </tbody>
 </table>
@@ -598,15 +753,15 @@ processing modes.</em></p>
 
 
 
-<h3 id="iscc_sdk.mime.mime_supported" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">mime_supported</span><span class="p">(</span><span class="n">mime</span><span class="p">)</span></code>
+<h3 id="iscc_sdk.image.image_meta_embed" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">image_meta_embed</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="n">meta</span><span class="p">)</span></code>
 
 
-<a href="#iscc_sdk.mime.mime_supported" class="headerlink" title="Permanent link">#</a></h3>
+<a href="#iscc_sdk.image.image_meta_embed" class="headerlink" title="Permanent link">#</a></h3>
 
     <div class="doc doc-contents ">
 
-      <p>Check if mediatype is supported.</p>
+      <p>Embed metadata into image.</p>
 
 <p><strong>Parameters:</strong></p>
 <table>
@@ -620,215 +775,15 @@ processing modes.</em></p>
   </thead>
   <tbody>
       <tr>
-        <td><code>mime</code></td>
+        <td><code>fp</code></td>
         <td><code>str</code></td>
-        <td><p>Mediatype sting</p></td>
+        <td><p>Filepath to image file</p></td>
         <td><em>required</em></td>
       </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>bool</code></td>
-      <td><p>True if mediatype is supported</p></td>
-    </tr>
-  </tbody>
-</table>
-    </div>
-
-  </div>
-
-
-
-
-
-  <div class="doc doc-object doc-function">
-
-
-
-<h3 id="iscc_sdk.mime.mime_from_name" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">mime_from_name</span><span class="p">(</span><span class="n">name</span><span class="p">)</span></code>
-
-
-<a href="#iscc_sdk.mime.mime_from_name" class="headerlink" title="Permanent link">#</a></h3>
-
-    <div class="doc doc-contents ">
-
-      <p>Guess mediatype from filename or URL.</p>
-
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
       <tr>
-        <td><code>name</code></td>
-        <td><code>str</code></td>
-        <td><p>Filename or URL</p></td>
-        <td><em>required</em></td>
-      </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>str</code></td>
-      <td><p>Mediatype string</p></td>
-    </tr>
-  </tbody>
-</table>
-    </div>
-
-  </div>
-
-
-
-
-
-  <div class="doc doc-object doc-function">
-
-
-
-<h3 id="iscc_sdk.mime.mime_from_data" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">mime_from_data</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></code>
-
-
-<a href="#iscc_sdk.mime.mime_from_data" class="headerlink" title="Permanent link">#</a></h3>
-
-    <div class="doc doc-contents ">
-
-      <p>Guess mediatype by sniffing raw header data.</p>
-
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
-      <tr>
-        <td><code>data</code></td>
-        <td><code>bytes</code></td>
-        <td><p>Raw fileheader data (first 4096 bytes recommended)</p></td>
-        <td><em>required</em></td>
-      </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>str</code></td>
-      <td><p>Mediatype string</p></td>
-    </tr>
-  </tbody>
-</table>
-    </div>
-
-  </div>
-
-
-
-
-
-  <div class="doc doc-object doc-function">
-
-
-
-<h3 id="iscc_sdk.mime.mime_clean" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">mime_clean</span><span class="p">(</span><span class="n">mime</span><span class="p">)</span></code>
-
-
-<a href="#iscc_sdk.mime.mime_clean" class="headerlink" title="Permanent link">#</a></h3>
-
-    <div class="doc doc-contents ">
-
-      <p>Clean mediatype/content-type string or first entry of a list of mimetype strings.</p>
-<p>Also removes semicolon separated encoding information.</p>
-
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>str</code></td>
-      <td><p>Mediatype string</p></td>
-    </tr>
-  </tbody>
-</table>
-    </div>
-
-  </div>
-
-
-
-
-
-  <div class="doc doc-object doc-function">
-
-
-
-<h3 id="iscc_sdk.mime.mime_to_mode" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">mime_to_mode</span><span class="p">(</span><span class="n">mime_type</span><span class="p">)</span></code>
-
-
-<a href="#iscc_sdk.mime.mime_to_mode" class="headerlink" title="Permanent link">#</a></h3>
-
-    <div class="doc doc-contents ">
-
-      <p>Get perceptual processing mode from mimetype.</p>
-
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
-      <tr>
-        <td><code>mime_type</code></td>
-        <td><code>str</code></td>
-        <td><p>RFC-6838 mediatype string</p></td>
+        <td><code>meta</code></td>
+        <td><code>IsccMeta</code></td>
+        <td><p>Metadata to embed into image</p></td>
         <td><em>required</em></td>
       </tr>
   </tbody>
@@ -844,11 +799,93 @@ processing modes.</em></p>
   <tbody>
     <tr>
       <td></td>
-      <td><p>Processing mode ("text", "image", "audio", "video")</p></td>
+      <td><p>None</p></td>
     </tr>
   </tbody>
 </table>
-<p><strong>Exceptions:</strong></p>
+    </div>
+
+  </div>
+
+
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h3 id="iscc_sdk.image.image_meta_delete" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">image_meta_delete</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span></code>
+
+
+<a href="#iscc_sdk.image.image_meta_delete" class="headerlink" title="Permanent link">#</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Delete all metadata from image.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>fp</code></td>
+        <td><code>str</code></td>
+        <td><p>Filepath to image file.</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+    </div>
+
+  </div>
+
+
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h3 id="iscc_sdk.image.image_thumbnail" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">image_thumbnail</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span></code>
+
+
+<a href="#iscc_sdk.image.image_thumbnail" class="headerlink" title="Permanent link">#</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Create a thumbnail for an image.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>fp</code></td>
+        <td><code>str</code></td>
+        <td><p>Filepath to image file.</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
 <table>
   <thead>
     <tr>
@@ -857,10 +894,66 @@ processing modes.</em></p>
     </tr>
   </thead>
   <tbody>
+    <tr>
+      <td><code>Image.Image</code></td>
+      <td><p>Thumbnail image as PIL Image object</p></td>
+    </tr>
+  </tbody>
+</table>
+    </div>
+
+  </div>
+
+
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h3 id="iscc_sdk.image.image_to_data_url" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">image_to_data_url</span><span class="p">(</span><span class="n">img</span><span class="p">)</span></code>
+
+
+<a href="#iscc_sdk.image.image_to_data_url" class="headerlink" title="Permanent link">#</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Convert PIL Image object to WebP Data-URL.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
       <tr>
-        <td><code>ValueError</code></td>
-        <td><p>if no matching processing mode was found.</p></td>
+        <td><code>img</code></td>
+        <td><code>Image.Image</code></td>
+        <td><p>PIL Image object to encode as WebP Data-URL.</p></td>
+        <td><em>required</em></td>
       </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>str</code></td>
+      <td><p>Data-URL string</p></td>
+    </tr>
   </tbody>
 </table>
     </div>
@@ -889,7 +982,7 @@ processing modes.</em></p>
     <nav class="md-footer__inner md-grid" aria-label="Footer">
       
         
-        <a href=".." class="md-footer__link md-footer__link--prev" aria-label="Previous: Overview" rel="prev">
+        <a href="../mime/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Mediatypes" rel="prev">
           <div class="md-footer__button md-icon">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
           </div>
@@ -898,26 +991,11 @@ processing modes.</em></p>
               <span class="md-footer__direction">
                 Previous
               </span>
-              Overview
+              Mediatypes
             </div>
           </div>
         </a>
       
-      
-        
-        <a href="../image/" class="md-footer__link md-footer__link--next" aria-label="Next: Images" rel="next">
-          <div class="md-footer__title">
-            <div class="md-ellipsis">
-              <span class="md-footer__direction">
-                Next
-              </span>
-              Images
-            </div>
-          </div>
-          <div class="md-footer__button md-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
-          </div>
-        </a>
       
     </nav>
   

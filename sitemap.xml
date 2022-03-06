@@ -2,12 +2,17 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://sdk.iscc.codes/</loc>
-         <lastmod>2022-03-04</lastmod>
+         <lastmod>2022-03-06</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://sdk.iscc.codes/image/</loc>
+         <lastmod>2022-03-06</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://sdk.iscc.codes/mime/</loc>
-         <lastmod>2022-03-04</lastmod>
+         <lastmod>2022-03-06</lastmod>
          <changefreq>daily</changefreq>
     </url>
 </urlset>
