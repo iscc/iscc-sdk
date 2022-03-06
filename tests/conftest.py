@@ -8,14 +8,14 @@ from PIL import Image, ImageDraw
 def jpg_file(tmp_path_factory):
     dst = tmp_path_factory.mktemp("data") / "img.jpg"
     shutil.copy(images("jpg")[0], dst)
-    return dst
+    return dst.as_posix()
 
 
 @pytest.fixture(scope="module")
 def png_file(tmp_path_factory):
     dst = tmp_path_factory.mktemp("data") / "img.png"
     shutil.copy(images("png")[0], dst)
-    return dst
+    return dst.as_posix()
 
 
 @pytest.fixture(scope="module")
