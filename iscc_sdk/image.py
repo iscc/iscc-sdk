@@ -121,7 +121,7 @@ def image_meta_extract(fp):
     Extract metadata from image.
 
     :param str fp: Filepath to image file.
-    :return: Metadata mapped to ISCC schema
+    :return: Metadata mapped to IsccMeta schema
     :rtype: dict
     """
     cmd = [idk.exiv2json_bin(), "--all", fp]
@@ -161,7 +161,7 @@ def image_meta_embed(fp, meta):
     Embed metadata into image.
 
     :param str fp: Filepath to image file
-    :param ISCC meta: Metadata to embed into image
+    :param IsccMeta meta: Metadata to embed into image
     :return: None
     """
     cmdf = "reg iscc http://purl.org/iscc/schema\n"
