@@ -2,7 +2,7 @@ import iscc_sdk as idk
 
 
 def test_code_image(jpg_file):
-    assert idk.code_image(jpg_file).dict(exclude_unset=True) == {
+    assert idk.code_image(jpg_file) == {
         "creator": "Some Cat Lover",
         "height": 133,
         "iscc": "ISCC:EEA4GQZQTY6J5DTH",
@@ -44,4 +44,16 @@ def test_code_image(jpg_file):
         "AsaHymnqwDPPlX46x3Xy5rHuPadXFaAxJNAf7NeM5WWcM9MCs3BOpXUVIqfr+x9Igy/FehT0vBRAh"
         "NP+u6v9LEZRqfbxADwwWRSEk6Io4VSGX5LpRVqMLCG+eYAAA",
         "width": 200,
+    }
+
+
+def test_code_data(png_file):
+    assert idk.code_data(png_file) == {"iscc": "ISCC:GAAXUI3LCN7D7VDE"}
+
+
+def test_code_instance(png_file):
+    assert idk.code_instance(png_file) == {
+        "iscc": "ISCC:IAA75OC7C4E7KHV7",
+        "filesize": 54595,
+        "datahash": "bdyqp5oc7c4e7khv7ghbp5kzasktbqjw2g3ght3o4jsyeqafupwyunjq",
     }

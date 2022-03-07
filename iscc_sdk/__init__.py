@@ -15,3 +15,4 @@ from iscc_sdk.tools import *
 from iscc_sdk.mime import *
 from iscc_sdk.image import *
 from iscc_sdk.main import *
+from iscc_sdk.models import *
