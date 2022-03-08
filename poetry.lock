@@ -269,7 +269,7 @@ python-versions = ">=3.6,<4.0"
 
 [[package]]
 name = "iscc-schema"
-version = "0.3.3"
+version = "0.3.4"
 description = "OpenAPI representation of the ISCC data model"
 category = "main"
 optional = false
@@ -1054,7 +1054,7 @@ iscc-samples = [
     {file = "iscc-samples-0.4.0.tar.gz", hash = "sha256:98925bec8adcc8c843ddd42b32d0c7972ed1c2ff635cb44144fd7c08929d2a2f"},
 ]
 iscc-schema = [
-    {file = "iscc-schema-0.3.3.tar.gz", hash = "sha256:be70156b97f3b1a8119037db4ad87e72e32b715cf0982521e2ece3488863f777"},
+    {file = "iscc-schema-0.3.4.tar.gz", hash = "sha256:b8c97939533749434bea381b1c80145ab10a39e8078588518690fa206a7a2431"},
 ]
 jcs = [
     {file = "jcs-0.2.0-py3-none-any.whl", hash = "sha256:e5720fdc96ed811d9824faddd0d8a56e8676c8e1a43d150be43d36b0f805fdbf"},

@@ -24,7 +24,7 @@ def code_image(fp):
     thumnnail_durl = idk.image_to_data_url(thumbnail_img)
     pixels = idk.image_normalize(Image.open(fp))
     code_obj = ic.gen_image_code_v0(pixels)
-    meta_obj = idk.IsccMeta.construct(iscc=code_obj["iscc"], thumbnail=thumnnail_durl, **meta)
+    meta_obj = idk.IsccMeta(iscc=code_obj["iscc"], thumbnail=thumnnail_durl, **meta.dict())
     return meta_obj
 
 
