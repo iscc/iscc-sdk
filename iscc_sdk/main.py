@@ -36,7 +36,7 @@ def code_data(fp):
 
     :param str fp: Filepath used for Data-Code creation.
     :return: IsccMeta object with Data-Code
-    :rtype: idk.IsccMeta
+    :rtype: IsccMeta
     """
 
     with open(fp, "rb") as stream:

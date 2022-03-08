@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 import pytest
 from pydantic import ValidationError
-
 from iscc_sdk.models import IsccMeta
+import iscc_core as ic
 
 
 def test_IsccMeta_extra_forbid():
@@ -25,6 +25,15 @@ def test_IsccMeta_dict_defaults_exclude_none_unset():
     assert im == {"iscc": "ISCC:MEAJU5AXCPOIOYFL"}
 
 
+def test_IsccMeta_json():
+    im = IsccMeta(iscc="ISCC:MEAJU5AXCPOIOYFL")
+    assert im.json() == (
+        '{"@context": "http://purl.org/iscc/context/0.3.3.jsonld", "@type": '
+        '"CreativeWork", "$schema": "http://purl.org/iscc/schema/0.3.3.json", "iscc": '
+        '"ISCC:MEAJU5AXCPOIOYFL"}'
+    )
+
+
 def test_IsccMeta_json_ld():
     im = IsccMeta(iscc="ISCC:MEAJU5AXCPOIOYFL")
     assert im.json_ld() == (
@@ -32,3 +41,8 @@ def test_IsccMeta_json_ld():
         b'org/iscc/context/0.3.3.jsonld","@type":"CreativeWork","iscc":"ISCC:MEAJU5AXC'
         b'POIOYFL"}'
     )
+
+
+def test_IsccMeta_iscc_obj():
+    im = IsccMeta(iscc="ISCC:MEAJU5AXCPOIOYFL")
+    assert isinstance(im.iscc_obj, ic.Code)

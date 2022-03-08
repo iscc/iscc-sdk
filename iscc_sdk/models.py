@@ -27,7 +27,30 @@ class IsccMeta(BaseIsccMeta):
             **kwargs,
         )
 
+    def json(self, *args, exclude_none=True, by_alias=True, **kwargs):
+        """
+        Overide defaults to exclude empty fields and use aliases.
+
+        The by_alias=True allows us to generate valid JSON-LD by default. It translates
+        our python "_context" property to @context
+
+        !!! note
+            This overides the default BaseModel.json()
+        """
+        return super().json(
+            *args,
+            exclude_none=exclude_none,
+            by_alias=by_alias,
+            **kwargs,
+        )
+
     def json_ld(self):
         # type: () -> bytes
         """Include default context, schema, type and create coanonical json data."""
         return ic.json_canonical(self.dict(exclude_unset=False))
+
+    @property
+    def iscc_obj(self):
+        # type: () -> ic.Code
+        """ISCC Code object"""
+        return ic.Code(self.iscc)
