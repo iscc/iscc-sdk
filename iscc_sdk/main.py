@@ -17,18 +17,25 @@ __all__ = [
 
 def code_iscc(fp):
     # type (str) -> idk.IsccMeta
-    """Generate ISCC-CODE
+    """Generate ISCC-CODE.
 
-    :param str fp: Filepath
-    :return: ISCC Metadata
+    The ISCC-CODE is a composite of Meta, Content, Data and Instance Codes.
+
+    :param str fp: Filepath used for ISCC-CODE creation.
+    :return: ISCC metadata including ISCC-CODE and merged metadata from ISCC-UNITs.
     :rtype: IsccMeta
     """
+
+    # Generate ISCC-UNITs
     instance = code_instance(fp)
     data = code_data(fp)
     content = code_image(fp)
     meta = code_meta(fp)
+
+    # Compose ISCC-CODE
     iscc_code = ic.gen_iscc_code_v0([meta.iscc, content.iscc, data.iscc, instance.iscc])
 
+    # Merge ISCC Metadata
     iscc_meta = dict()
     iscc_meta.update(instance.dict())
     iscc_meta.update(data.dict())
@@ -41,7 +48,12 @@ def code_iscc(fp):
 
 def code_meta(fp):
     # type (str) -> idk.IsccMeta
-    """Generate Meta-Code from digital asset."""
+    """Generate Meta-Code from digital asset.
+
+    :param str fp: Filepath used for Meta-Code creation.
+    :return: ISCC metadata including Meta-Code and extracted metadata fields.
+    :rtype: IsccMeta
+    """
 
     with open(fp, "rb") as infile:
         data = infile.read(4096)
@@ -71,8 +83,8 @@ def code_image(fp):
     # type: (str) -> idk.IsccMeta
     """Generate Content-Code Image.
 
-    :param str fp: Filepath to image file
-    :return: ISCC Metadata
+    :param str fp: Filepath used for Image-Code creation.
+    :return: ISCC metadata including Image-Code.
     :rtype: IsccMeta
     """
     meta = idk.image_meta_extract(fp)
@@ -91,7 +103,7 @@ def code_data(fp):
     The Data-Code is a similarity preserving hash of the input data.
 
     :param str fp: Filepath used for Data-Code creation.
-    :return: IsccMeta object with Data-Code
+    :return: ISCC metadata including Data-Code.
     :rtype: IsccMeta
     """
 
@@ -110,8 +122,8 @@ def code_instance(fp):
     to the data of the referenced media asset. For cryptographicaly secure integrity
     checking a full 256-bit multihash is provided with the `datahash` field.
 
-    :param str fp: Filepath to file used for Instance-Code creation.
-    :return: IsccMeta object with Instance-Code, datahash and filesize
+    :param str fp: Filepath used for Instance-Code creation.
+    :return: ISCC metadata including Instance-Code, datahash and filesize.
     :rtype: IsccMeta
     """
     with open(fp, "rb") as stream:
