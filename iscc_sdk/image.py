@@ -116,13 +116,13 @@ def image_trim_border(img):
 
 
 def image_meta_extract(fp):
-    # type: (str) -> idk.IsccMeta
+    # type: (str) -> dict
     """
     Extract metadata from image.
 
     :param str fp: Filepath to image file.
     :return: Metadata mapped to IsccMeta schema
-    :rtype: idk.IsccMeta
+    :rtype: dict
     """
     cmd = [idk.exiv2json_bin(), "--all", fp]
     result = subprocess.run(cmd, capture_output=True, check=True)
@@ -152,7 +152,7 @@ def image_meta_extract(fp):
     with Image.open(fp) as img:
         mapped["width"], mapped["height"] = img.size
 
-    return idk.IsccMeta(**mapped)
+    return mapped
 
 
 def image_meta_embed(fp, meta):

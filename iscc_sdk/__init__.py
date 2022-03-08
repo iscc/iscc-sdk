@@ -16,3 +16,4 @@ from iscc_sdk.mime import *
 from iscc_sdk.image import *
 from iscc_sdk.main import *
 from iscc_sdk.models import *
+from iscc_sdk.text import *

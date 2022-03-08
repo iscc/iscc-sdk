@@ -19,6 +19,13 @@ def png_file(tmp_path_factory):
 
 
 @pytest.fixture(scope="module")
+def bmp_file(tmp_path_factory):
+    dst = tmp_path_factory.mktemp("data") / "img.bmp"
+    shutil.copy(images("bmp")[0], dst)
+    return dst.as_posix()
+
+
+@pytest.fixture(scope="module")
 def jpg_obj(jpg_file):
     return Image.open(jpg_file)
 

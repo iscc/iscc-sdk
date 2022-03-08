@@ -1,4 +1,34 @@
+import pytest
+
 import iscc_sdk as idk
+from iscc_samples import texts
+
+
+def test_code_meta_image(jpg_file):
+    assert idk.code_meta(jpg_file) == {
+        "iscc": "ISCC:AAAWRY3VY6R5SNV4",
+        "name": "Concentrated Cat",
+        "creator": "Some Cat Lover",
+        "width": 200,
+        "height": 133,
+        "metahash": "f01551220ec44e0b273993dc8abdde46f69d21c1169a52959ecbdf1becf2880b53b06361f",
+    }
+
+
+def test_code_meta_image_no_meta(bmp_file):
+    assert idk.code_meta(bmp_file) == {
+        "iscc": "ISCC:AAA374FA7VF3FWZQ",
+        "name": "img",
+        "width": 200,
+        "height": 133,
+        "metahash": "f01551220b29814cf5792e684cd75d6a7fce7a67a11887e312f87ca2ac2496d81f365ff72",
+    }
+
+
+def test_code_meta_raises():
+    fp = texts()[0].as_posix()
+    with pytest.raises(ValueError):
+        idk.code_meta(fp)
 
 
 def test_code_image(jpg_file):
