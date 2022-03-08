@@ -43,7 +43,7 @@ def code_iscc(fp):
     iscc_meta.update(meta.dict())
     iscc_meta.update(iscc_code)
 
-    return idk.IsccMeta(**iscc_meta)
+    return idk.IsccMeta.parse_obj(iscc_meta)
 
 
 def code_meta(fp):
@@ -76,7 +76,7 @@ def code_meta(fp):
 
     meta.update(metacode)
 
-    return idk.IsccMeta(**meta)
+    return idk.IsccMeta.parse_obj(meta)
 
 
 def code_image(fp):
@@ -88,12 +88,16 @@ def code_image(fp):
     :rtype: IsccMeta
     """
     meta = idk.image_meta_extract(fp)
+
     thumbnail_img = idk.image_thumbnail(fp)
     thumnnail_durl = idk.image_to_data_url(thumbnail_img)
+    meta["thumbnail"] = thumnnail_durl
+
     pixels = idk.image_normalize(Image.open(fp))
     code_obj = ic.gen_image_code_v0(pixels, bits=idk.sdk_opts.image_bits)
-    meta_obj = idk.IsccMeta(iscc=code_obj["iscc"], thumbnail=thumnnail_durl, **meta)
-    return meta_obj
+    meta.update(code_obj)
+
+    return idk.IsccMeta.parse_obj(meta)
 
 
 def code_data(fp):
@@ -108,9 +112,9 @@ def code_data(fp):
     """
 
     with open(fp, "rb") as stream:
-        result = ic.gen_data_code_v0(stream, bits=idk.sdk_opts.data_bits)
+        meta = ic.gen_data_code_v0(stream, bits=idk.sdk_opts.data_bits)
 
-    return idk.IsccMeta(**result)
+    return idk.IsccMeta.parse_obj(meta)
 
 
 def code_instance(fp):
@@ -127,5 +131,6 @@ def code_instance(fp):
     :rtype: IsccMeta
     """
     with open(fp, "rb") as stream:
-        result = ic.gen_instance_code_v0(stream, bits=idk.sdk_opts.instance_bits)
-    return idk.IsccMeta(**result)
+        meta = ic.gen_instance_code_v0(stream, bits=idk.sdk_opts.instance_bits)
+
+    return idk.IsccMeta.parse_obj(meta)
