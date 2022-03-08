@@ -7,11 +7,36 @@ import iscc_sdk as idk
 
 
 __all__ = [
+    "code_iscc",
     "code_meta",
     "code_image",
     "code_data",
     "code_instance",
 ]
+
+
+def code_iscc(fp):
+    # type (str) -> idk.IsccMeta
+    """Generate ISCC-CODE
+
+    :param str fp: Filepath
+    :return: ISCC Metadata
+    :rtype: IsccMeta
+    """
+    instance = code_instance(fp)
+    data = code_data(fp)
+    content = code_image(fp)
+    meta = code_meta(fp)
+    iscc_code = ic.gen_iscc_code_v0([meta.iscc, content.iscc, data.iscc, instance.iscc])
+
+    iscc_meta = dict()
+    iscc_meta.update(instance.dict())
+    iscc_meta.update(data.dict())
+    iscc_meta.update(content.dict())
+    iscc_meta.update(meta.dict())
+    iscc_meta.update(iscc_code)
+
+    return idk.IsccMeta(**iscc_meta)
 
 
 def code_meta(fp):
