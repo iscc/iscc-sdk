@@ -56,5 +56,6 @@ You may also want join our developer chat on Telegram at <https://t.me/iscc_dev>
 
 ## Changelog
 
-### 0.1.0 - Unreleased
+### 0.1.0 - 22-03-09
+
 - Initial release with support for ISCC Content-Code Image
