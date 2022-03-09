@@ -13,6 +13,7 @@ class IsccMeta(BaseIsccMeta):
     class Config:
         extra = "forbid"
         validate_assignment = True
+        use_enum_values = True
 
     thumbnail: Optional[str] = Field(
         None,
