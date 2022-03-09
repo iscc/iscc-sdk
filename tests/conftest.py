@@ -1,5 +1,5 @@
 import pytest
-from iscc_samples import images
+from iscc_samples import images, texts
 import shutil
 from PIL import Image, ImageDraw
 
@@ -22,6 +22,13 @@ def png_file(tmp_path_factory):
 def bmp_file(tmp_path_factory):
     dst = tmp_path_factory.mktemp("data") / "img.bmp"
     shutil.copy(images("bmp")[0], dst)
+    return dst.as_posix()
+
+
+@pytest.fixture(scope="module")
+def doc_file(tmp_path_factory):
+    dst = tmp_path_factory.mktemp("data") / "text.doc"
+    shutil.copy(texts("doc")[0], dst)
     return dst.as_posix()
 
 

@@ -9,6 +9,7 @@ import iscc_sdk as idk
 __all__ = [
     "code_iscc",
     "code_meta",
+    "code_content",
     "code_image",
     "code_data",
     "code_instance",
@@ -29,7 +30,7 @@ def code_iscc(fp):
     # Generate ISCC-UNITs
     instance = code_instance(fp)
     data = code_data(fp)
-    content = code_image(fp)
+    content = code_content(fp)
     meta = code_meta(fp)
 
     # Compose ISCC-CODE
@@ -55,11 +56,7 @@ def code_meta(fp):
     :rtype: IsccMeta
     """
 
-    with open(fp, "rb") as infile:
-        data = infile.read(4096)
-
-    mediatype = idk.mime_guess(data, file_name=basename(fp))
-    mode = idk.mime_to_mode(mediatype)
+    mediatype, mode = idk.mime_and_mode(fp)
 
     if mode != "image":
         raise ValueError("Unsupported mediatype: {}".format(mediatype))
@@ -77,6 +74,27 @@ def code_meta(fp):
     meta.update(metacode)
 
     return idk.IsccMeta.parse_obj(meta)
+
+
+def code_content(fp):
+    # type: (str) -> idk.IsccMeta
+    """Detect mediatype and create corresponding Content-Code.
+
+    :param str fp: Filepath
+    :return: Content-Code wrapped in ISCC metadata.
+    :rtype: IsccMeta
+    """
+    mediatype, mode = idk.mime_and_mode(fp)
+
+    if mode == "image":
+        cc = code_image(fp)
+    else:
+        raise ValueError(f"Unsupported mediatype: {mediatype}")
+
+    cc.mediatype = mediatype
+    cc.mode = mode
+
+    return cc
 
 
 def code_image(fp):
