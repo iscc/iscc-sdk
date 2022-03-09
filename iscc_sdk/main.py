@@ -17,7 +17,7 @@ __all__ = [
 
 
 def code_iscc(fp):
-    # type (str) -> idk.IsccMeta
+    # type: (str) -> idk.IsccMeta
     """
     Generate ISCC-CODE.
 
@@ -49,7 +49,7 @@ def code_iscc(fp):
 
 
 def code_meta(fp):
-    # type (str) -> idk.IsccMeta
+    # type: (str) -> idk.IsccMeta
     """
     Generate Meta-Code from digital asset.
 
