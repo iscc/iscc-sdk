@@ -30,6 +30,12 @@ jobs:
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v2
 
+      - name: Build Extension modules
+        run: poetry install --extras turbo
+
+      - name: Run Tests (With Extension Modules)
+        run: poetry run pytest -q tests
+
   analyze:
     name: Analyze
     runs-on: ubuntu-latest
