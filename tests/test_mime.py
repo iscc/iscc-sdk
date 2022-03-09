@@ -11,59 +11,59 @@ OGG_HEADER = bytes.fromhex(
 
 
 def test_mime_and_mode(jpg_file):
-    assert idk.mime_and_mode(jpg_file) == ("image/jpeg", "image")
+    assert idk.mediatype_and_mode(jpg_file) == ("image/jpeg", "image")
 
 
 def test_mime_guess_data():
-    assert idk.mime_guess(GIF_HEADER) == "image/gif"
+    assert idk.mediatype_guess(GIF_HEADER) == "image/gif"
 
 
 def test_mime_guess_data_filename():
-    assert idk.mime_guess(GIF_HEADER, file_name="sample.gif") == "image/gif"
+    assert idk.mediatype_guess(GIF_HEADER, file_name="sample.gif") == "image/gif"
 
 
 def test_mime_guess_extension_overrides_data():
-    assert idk.mime_guess(GIF_HEADER, file_name="sample.bmp") == "image/bmp"
+    assert idk.mediatype_guess(GIF_HEADER, file_name="sample.bmp") == "image/bmp"
 
 
 def test_mime_guess_ogg_missdetection_fix():
-    assert idk.mime_guess(OGG_HEADER) == "video/ogg"
+    assert idk.mediatype_guess(OGG_HEADER) == "video/ogg"
 
 
 def test_mime_normalize():
-    assert idk.mime_normalize("audio/x-aiff") == "audio/aiff"
+    assert idk.mediatype_normalize("audio/x-aiff") == "audio/aiff"
 
 
 def test_mime_normalize_unmapped():
-    assert idk.mime_normalize("dont/touch/me") == "dont/touch/me"
+    assert idk.mediatype_normalize("dont/touch/me") == "dont/touch/me"
 
 
 def test_mime_to_mode():
-    assert idk.mime_to_mode("image/bmp") == "image"
-    assert idk.mime_to_mode("application/pdf") == "text"
+    assert idk.mediatype_to_mode("image/bmp") == "image"
+    assert idk.mediatype_to_mode("application/pdf") == "text"
 
 
 def test_mime_to_mode_fallback():
-    assert idk.mime_to_mode("image/avif") == "image"
+    assert idk.mediatype_to_mode("image/avif") == "image"
 
 
 def test_mime_to_mode_raises():
     with pytest.raises(ValueError):
-        idk.mime_to_mode("application/fits")
+        idk.mediatype_to_mode("application/fits")
 
 
 def test_mime_clean():
-    assert idk.mime_clean("") == ""
-    assert idk.mime_clean("text/html ") == "text/html"
-    assert idk.mime_clean(["text/html", "audio/mp3"]) == "text/html"
-    assert idk.mime_clean([" text/html", "audio/mp3"]) == "text/html"
-    assert idk.mime_clean(" text/plain; charset=windows-1252 ") == "text/plain"
-    assert idk.mime_clean([" text/plain; charset=windows-1252 ", "audio/mp3"]) == "text/plain"
+    assert idk.mediatype_clean("") == ""
+    assert idk.mediatype_clean("text/html ") == "text/html"
+    assert idk.mediatype_clean(["text/html", "audio/mp3"]) == "text/html"
+    assert idk.mediatype_clean([" text/html", "audio/mp3"]) == "text/html"
+    assert idk.mediatype_clean(" text/plain; charset=windows-1252 ") == "text/plain"
+    assert idk.mediatype_clean([" text/plain; charset=windows-1252 ", "audio/mp3"]) == "text/plain"
 
 
 def test_mime_supported():
-    assert idk.mime_supported("audio/x-aiff") is True
-    assert idk.mime_supported("audio/aiff") is True
-    assert idk.mime_supported("something/unknown") is False
+    assert idk.mediatype_supported("audio/x-aiff") is True
+    assert idk.mediatype_supported("audio/aiff") is True
+    assert idk.mediatype_supported("something/unknown") is False
     for mt in idk.SUPPORTED_MEDIATYPES.keys():
-        assert idk.mime_supported(mt) is True
+        assert idk.mediatype_supported(mt) is True

@@ -56,7 +56,7 @@ def code_meta(fp):
     :rtype: IsccMeta
     """
 
-    mediatype, mode = idk.mime_and_mode(fp)
+    mediatype, mode = idk.mediatype_and_mode(fp)
 
     if mode != "image":
         raise ValueError("Unsupported mediatype: {}".format(mediatype))
@@ -84,7 +84,7 @@ def code_content(fp):
     :return: Content-Code wrapped in ISCC metadata.
     :rtype: IsccMeta
     """
-    mediatype, mode = idk.mime_and_mode(fp)
+    mediatype, mode = idk.mediatype_and_mode(fp)
 
     if mode == "image":
         cc = code_image(fp)

@@ -8,20 +8,20 @@ import magic
 
 
 __all__ = [
-    "mime_and_mode",
-    "mime_guess",
-    "mime_normalize",
-    "mime_supported",
-    "mime_clean",
-    "mime_to_mode",
-    "mime_from_name",
-    "mime_from_data",
+    "mediatype_and_mode",
+    "mediatype_guess",
+    "mediatype_normalize",
+    "mediatype_supported",
+    "mediatype_clean",
+    "mediatype_to_mode",
+    "mediatype_from_name",
+    "mediatype_from_data",
     "SUPPORTED_MEDIATYPES",
     "SUPPORTED_EXTENSIONS",
 ]
 
 
-def mime_and_mode(fp):
+def mediatype_and_mode(fp):
     # type: (str) -> tuple
     """
     Get mediatype and default processing mode for a file.
@@ -32,12 +32,12 @@ def mime_and_mode(fp):
     with open(fp, "rb") as infile:
         data = infile.read(4096)
 
-    mediatype = mime_guess(data, file_name=basename(fp))
-    mode = mime_to_mode(mediatype)
+    mediatype = mediatype_guess(data, file_name=basename(fp))
+    mode = mediatype_to_mode(mediatype)
     return mediatype, mode
 
 
-def mime_guess(data, file_name=None):
+def mediatype_guess(data, file_name=None):
     # type: (bytes, Optional[str]) -> str
     """
     Guess Media Type from raw data or filename.
@@ -47,7 +47,7 @@ def mime_guess(data, file_name=None):
     !!! example
         ```
         >>> import iscc_sdk
-        >>> iscc_sdk.mime_guess(b'GIF89a')
+        >>> iscc_sdk.mediatype_guess(b'GIF89a')
         'image/gif'
 
         ```
@@ -60,13 +60,13 @@ def mime_guess(data, file_name=None):
     guess_name, guess_data = None, None
 
     if file_name:
-        guess_name = mime_from_name(file_name)
+        guess_name = mediatype_from_name(file_name)
 
-    guess_data = mime_from_data(data)
+    guess_data = mediatype_from_data(data)
 
     # Normalize
-    guess_data = mime_normalize(guess_data)
-    guess_name = mime_normalize(guess_name)
+    guess_data = mediatype_normalize(guess_data)
+    guess_name = mediatype_normalize(guess_name)
     media_type = guess_name or guess_data
 
     # Special cases of missdetection
@@ -78,7 +78,7 @@ def mime_guess(data, file_name=None):
     return media_type
 
 
-def mime_normalize(mime):
+def mediatype_normalize(mime):
     # type: (str) -> str
     """
     Normalize mediatype string.
@@ -86,7 +86,7 @@ def mime_normalize(mime):
     !!! example
         ```
         >>> import iscc_sdk
-        >>> iscc_sdk.mime_normalize("audio/x-aiff")
+        >>> iscc_sdk.mediatype_normalize("audio/x-aiff")
         '"audio/aiff"'
 
         ```
@@ -98,7 +98,7 @@ def mime_normalize(mime):
     return MEDIATYPE_NORM.get(mime, mime)
 
 
-def mime_supported(mime):
+def mediatype_supported(mime):
     # type: (str) -> bool
     """
     Check if mediatype is supported.
@@ -107,10 +107,10 @@ def mime_supported(mime):
     :return: True if mediatype is supported
     :rtype: bool
     """
-    return mime_normalize(mime) in SUPPORTED_MEDIATYPES
+    return mediatype_normalize(mime) in SUPPORTED_MEDIATYPES
 
 
-def mime_from_name(name):
+def mediatype_from_name(name):
     # type: (str) -> Optional[str]
     """
     Guess mediatype from filename or URL.
@@ -122,7 +122,7 @@ def mime_from_name(name):
     return mimetypes.guess_type(name)[0]
 
 
-def mime_from_data(data):
+def mediatype_from_data(data):
     # type: (bytes) -> Optional[str]
     """
     Guess mediatype by sniffing raw header data.
@@ -134,7 +134,7 @@ def mime_from_data(data):
     return magic.from_buffer(data, mime=True)
 
 
-def mime_clean(mime):
+def mediatype_clean(mime):
     # type: (Union[str, List]) -> str
     """
     Clean mediatype/content-type string or first entry of a list of mimetype strings.
@@ -152,7 +152,7 @@ def mime_clean(mime):
     return mime.strip()
 
 
-def mime_to_mode(mime_type):
+def mediatype_to_mode(mime_type):
     # type: (str) -> str
     """Get perceptual processing mode from mimetype.
 
@@ -161,7 +161,7 @@ def mime_to_mode(mime_type):
     :raise ValueError: if no matching processing mode was found.
     """
 
-    mime_type = mime_clean(mime_type)
+    mime_type = mediatype_clean(mime_type)
     entry = SUPPORTED_MEDIATYPES.get(mime_type)
     if entry:
         return entry["mode"]
