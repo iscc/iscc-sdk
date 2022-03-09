@@ -1,4 +1,6 @@
 """*Detect and map RFC6838 Mediatypes to ISCC processing modes.*"""
+from os.path import basename
+
 from loguru import logger as log
 from typing import List, Optional, Union
 import mimetypes
@@ -6,6 +8,7 @@ import magic
 
 
 __all__ = [
+    "mime_and_mode",
     "mime_guess",
     "mime_normalize",
     "mime_supported",
@@ -16,6 +19,22 @@ __all__ = [
     "SUPPORTED_MEDIATYPES",
     "SUPPORTED_EXTENSIONS",
 ]
+
+
+def mime_and_mode(fp):
+    # type: (str) -> tuple
+    """
+    Get mediatype and default processing mode for a file.
+
+    :param fp: Filepath
+    :return: A tuple of `mediatype` and `mode`
+    """
+    with open(fp, "rb") as infile:
+        data = infile.read(4096)
+
+    mediatype = mime_guess(data, file_name=basename(fp))
+    mode = mime_to_mode(mediatype)
+    return mediatype, mode
 
 
 def mime_guess(data, file_name=None):

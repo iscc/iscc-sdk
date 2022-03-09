@@ -10,6 +10,10 @@ OGG_HEADER = bytes.fromhex(
 )
 
 
+def test_mime_and_mode(jpg_file):
+    assert idk.mime_and_mode(jpg_file) == ("image/jpeg", "image")
+
+
 def test_mime_guess_data():
     assert idk.mime_guess(GIF_HEADER) == "image/gif"
 
