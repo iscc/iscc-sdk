@@ -1,4 +1,4 @@
-"""*Detect and map RFC6838 Mediatypes to ISCC processing modes.*"""
+"""*Detect and map RFC6838 mediatypes to ISCC processing modes.*"""
 from os.path import basename
 
 from loguru import logger as log
@@ -24,10 +24,19 @@ __all__ = [
 def mediatype_and_mode(fp):
     # type: (str) -> tuple
     """
-    Get mediatype and default processing mode for a file.
+    Detect mediatype and processing mode for a file.
 
-    :param fp: Filepath
+    !!! example
+        ```
+        >>> import iscc_sdk
+        >>> iscc_sdk.mediatype_and_mode('some.pdf')
+        ('application/pdf', 'text')
+
+        ```
+
+    :param str fp: Filepath
     :return: A tuple of `mediatype` and `mode`
+    :rtype: tuple[str, str]
     """
     with open(fp, "rb") as infile:
         data = infile.read(4096)
@@ -40,7 +49,7 @@ def mediatype_and_mode(fp):
 def mediatype_guess(data, file_name=None):
     # type: (bytes, Optional[str]) -> str
     """
-    Guess Media Type from raw data or filename.
+    Guess mediatype from raw data or filename.
 
     First try to guess by file extension. If that fails we match by content sniffing.
 

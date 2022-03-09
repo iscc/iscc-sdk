@@ -97,5 +97,6 @@ markdown_extensions:
 
 nav:
   - Overview: index.md
-  - Mediatypes: mime.md
-  - Images: image.md
+  - Main: main.md
+  - Mediatype: mediatype.md
+  - Image: image.md
