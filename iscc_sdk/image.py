@@ -1,4 +1,4 @@
-"""Image handling module"""
+"""*Image handling module*."""
 import base64
 import io
 import os

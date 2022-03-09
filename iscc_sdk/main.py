@@ -1,4 +1,4 @@
-"""SDK main top-level functions."""
+"""*SDK main top-level functions*."""
 from os.path import basename
 
 import iscc_core as ic
@@ -18,7 +18,8 @@ __all__ = [
 
 def code_iscc(fp):
     # type (str) -> idk.IsccMeta
-    """Generate ISCC-CODE.
+    """
+    Generate ISCC-CODE.
 
     The ISCC-CODE is a composite of Meta, Content, Data and Instance Codes.
 
@@ -49,7 +50,8 @@ def code_iscc(fp):
 
 def code_meta(fp):
     # type (str) -> idk.IsccMeta
-    """Generate Meta-Code from digital asset.
+    """
+    Generate Meta-Code from digital asset.
 
     :param str fp: Filepath used for Meta-Code creation.
     :return: ISCC metadata including Meta-Code and extracted metadata fields.
@@ -78,7 +80,8 @@ def code_meta(fp):
 
 def code_content(fp):
     # type: (str) -> idk.IsccMeta
-    """Detect mediatype and create corresponding Content-Code.
+    """
+    Detect mediatype and create corresponding Content-Code.
 
     :param str fp: Filepath
     :return: Content-Code wrapped in ISCC metadata.
@@ -99,7 +102,8 @@ def code_content(fp):
 
 def code_image(fp):
     # type: (str) -> idk.IsccMeta
-    """Generate Content-Code Image.
+    """
+    Generate Content-Code Image.
 
     :param str fp: Filepath used for Image-Code creation.
     :return: ISCC metadata including Image-Code.
@@ -120,7 +124,8 @@ def code_image(fp):
 
 def code_data(fp):
     # type: (str) -> idk.IsccMeta
-    """Create ISCC Data-Code.
+    """
+    Create ISCC Data-Code.
 
     The Data-Code is a similarity preserving hash of the input data.
 
@@ -137,7 +142,8 @@ def code_data(fp):
 
 def code_instance(fp):
     # type: (str) -> idk.IsccMeta
-    """Create ISCC Instance-Code.
+    """
+    Create ISCC Instance-Code.
 
     The Instance-Code is prefix of a cryptographic hash (blake3) of the input data.
     It´s purpose is to serve as a checksum that detects even minimal changes

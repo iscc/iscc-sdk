@@ -35,7 +35,6 @@ pip install iscc-sdk
 
 <https://sdk.iscc.codes>
 
-
 ## Project Status
 
 The ISCC has been accepted by ISO as full work item ISO/AWI 24138 - International Standard Content
@@ -43,9 +42,8 @@ Code and is currently being standardized at TC 46/SC 9/WG 18. https://www.iso.or
 
 !!! attention
 
-    The iscc-sdk library and the accompanying documentation is under development. API changes and
+    The `iscc-sdk` library and the accompanying documentation is under development. API changes and
     other backward incompatible changes are to be expected until the upcoming v1.5 stable release.
-
 
 ## Maintainers
 [@titusz](https://github.com/titusz)
@@ -56,9 +54,7 @@ Pull requests are welcome. For significant changes, please open an issue first t
 
 You may also want join our developer chat on Telegram at <https://t.me/iscc_dev>.
 
-
 ## Changelog
 
 ### 0.1.0 - Unreleased
-
 - Initial release with support for ISCC Content-Code Image

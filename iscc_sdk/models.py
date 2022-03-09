@@ -1,3 +1,4 @@
+"""*Extendes IsccMeta schema model*."""
 from typing import Optional
 from pydantic import Field
 from iscc_schema import IsccMeta as BaseIsccMeta
@@ -65,5 +66,5 @@ class IsccMeta(BaseIsccMeta):
     @property
     def iscc_obj(self):
         # type: () -> ic.Code
-        """ISCC Code object"""
+        """ISCC Code object."""
         return ic.Code(self.iscc)

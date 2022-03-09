@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+"""*SDK binary media file handling tools*."""
 import os
 import shutil
 import subprocess
@@ -473,7 +473,8 @@ def tika_install():  # pragma: no cover
 
 def tika_version_info():  # pragma: no cover
     # type: () -> str
-    """Check tika-app version.
+    """
+    Check tika-app version.
 
     :return: Tika version info string
     :rtype: str

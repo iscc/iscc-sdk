@@ -1,4 +1,4 @@
-"""*Detect and map RFC6838 mediatypes to ISCC processing modes.*"""
+"""*Detect and map RFC6838 mediatypes to ISCC processing modes*."""
 from os.path import basename
 
 from loguru import logger as log

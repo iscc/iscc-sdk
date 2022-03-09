@@ -1,3 +1,4 @@
+"""*SDK configuration and options*."""
 from iscc_core.options import CoreOptions
 from pydantic import Field
 
