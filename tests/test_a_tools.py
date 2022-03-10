@@ -80,3 +80,15 @@ def test_fpcalc_version_info():
 
 def test_exiv2_version_info():
     assert "exiv2" in tools.exiv2_version_info().lower()
+
+
+def test_ipfs_download_url():
+    assert "ipfs" in tools.ipfs_download_url()
+
+
+def test_ipfs_bin():
+    assert os.path.exists(tools.ipfs_bin())
+
+
+def test_ipfs_version_info():
+    assert "ipfs version" in tools.ipfs_version_info()

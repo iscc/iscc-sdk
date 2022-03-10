@@ -2,7 +2,7 @@
 import os
 from platformdirs import PlatformDirs
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"
 APP_NAME = "iscc-sdk"
 APP_AUTHOR = "iscc"
 dirs = PlatformDirs(appname=APP_NAME, appauthor=APP_AUTHOR)
@@ -17,3 +17,4 @@ from iscc_sdk.image import *
 from iscc_sdk.main import *
 from iscc_sdk.models import *
 from iscc_sdk.text import *
+from iscc_sdk.ipfs import *

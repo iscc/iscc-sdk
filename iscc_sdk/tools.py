@@ -18,12 +18,26 @@ from concurrent.futures import ThreadPoolExecutor
 
 
 __all__ = [
+    "install",
     "exiv2_bin",
     "exiv2json_bin",
+    "ipfs_bin",
 ]
 
 BASE_VERSION = "1.0.0"
 BASE_URL = f"https://github.com/iscc/iscc-binaries/releases/download/v{BASE_VERSION}"
+
+IPFS_VERSION = "0.12.0"
+IPFS_URLS = {
+    "windows-64": f"{BASE_URL}/go-ipfs_v{IPFS_VERSION}_windows-amd64.zip",
+    "linux-64": f"{BASE_URL}/go-ipfs_v{IPFS_VERSION}_linux-amd64.tar.gz",
+    "darwin-64": f"{BASE_URL}/go-ipfs_v{IPFS_VERSION}_darwin-amd64.tar.gz",
+}
+IPFS_CHECKSUMS = {
+    "windows-64": "a2af645936a090c296b5d54755af0e9d6b1021f652195bb8fc596cf2073001c7",
+    "linux-64": "7312b34bc7179c94c96e09a067b61d405672653bbaf70abee30396433a18ef81",
+    "darwin-64": "3797fd0e6d5f922c095a12d860baccb49d90cef74accf49d219d4cea1b0d2bd7",
+}
 
 FFPROBE_VERSION = "4.4.1"
 FFPROBE_URLS = {
@@ -94,12 +108,13 @@ EXIV2JSON_RELPATH = {
 
 def install():
     """Install binary tools for content extraction."""
-    with ThreadPoolExecutor(max_workers=5) as p:
+    with ThreadPoolExecutor(max_workers=6) as p:
         p.submit(exiv2_install)
         p.submit(fpcalc_install)
         p.submit(ffprobe_install)
         p.submit(ffmpeg_install)
         p.submit(tika_install)
+        p.submit(ipfs_install)
     return True
 
 
@@ -112,6 +127,64 @@ def system_tag():
 def is_installed(fp: str) -> bool:
     """Check if binary at `fp` exists and is executable."""
     return os.path.isfile(fp) and os.access(fp, os.X_OK)
+
+
+def extract(archive):  # pragma: no cover
+    """Extract downloded archive."""
+
+    if archive.endswith(".zip"):
+        with zipfile.ZipFile(archive, "r") as zip_file:
+            zip_file.extractall(Path(archive).parent.absolute())
+
+    elif archive.endswith("tar.gz"):
+        with tarfile.open(archive, "r:gz") as tar_file:
+            tar_file.extractall(Path(archive).parent.absolute())
+
+
+########################################################################################
+# IPFS                                                                                 #
+########################################################################################
+
+
+def ipfs_download_url() -> str:
+    """Return system and version dependant IPFS download url."""
+    return IPFS_URLS[system_tag()]
+
+
+def ipfs_bin() -> str:
+    """Returns local path to IPFS executable."""
+    path = os.path.join(idk.dirs.user_data_dir, "go-ipfs", "ipfs")
+    if system() == "Windows":
+        path += ".exe"
+    return path
+
+
+def ipfs_download():  # pragma: no cover
+    """Download IPFS and return path to archive file."""
+    b3 = IPFS_CHECKSUMS.get(system_tag())
+    return download_file(ipfs_download_url(), checksum=b3)
+
+
+def ipfs_install():  # pragma: no cover
+    """Install IPFS cli tool and return path to executble"""
+    if is_installed(ipfs_bin()):
+        log.debug("ipfs is already installed")
+        return ipfs_bin()
+    log.critical("installing ipfs")
+    archive_path = ipfs_download()
+    extract(archive_path)
+    st = os.stat(ffprobe_bin())
+    os.chmod(ffprobe_bin(), st.st_mode | stat.S_IEXEC)
+    return ipfs_bin()
+
+
+def ipfs_version_info():  # pragma: no cover
+    """Get IPFS version"""
+    try:
+        r = subprocess.run([ipfs_bin(), "--version"], stdout=subprocess.PIPE)
+        return r.stdout.decode("utf-8").splitlines()[0].strip()
+    except FileNotFoundError:
+        return "IPFS not installed"
 
 
 ########################################################################################

@@ -56,6 +56,10 @@ You may also want join our developer chat on Telegram at <https://t.me/iscc_dev>
 
 ## Changelog
 
+### 0.2.0 - unreleased
+
+- Added IPFS support
+
 ### 0.1.0 - 22-03-09
 
 - Initial release with support for ISCC Content-Code Image
