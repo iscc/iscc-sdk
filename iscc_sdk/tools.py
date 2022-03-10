@@ -175,6 +175,8 @@ def ipfs_install():  # pragma: no cover
     extract(archive_path)
     st = os.stat(ffprobe_bin())
     os.chmod(ffprobe_bin(), st.st_mode | stat.S_IEXEC)
+    # Initialize ipfs repo
+    subprocess.run([ipfs_bin(), "init"])
     return ipfs_bin()
 
 
