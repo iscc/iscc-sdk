@@ -22,6 +22,7 @@ __all__ = [
     "exiv2_bin",
     "exiv2json_bin",
     "ipfs_bin",
+    "ipfs_install",
 ]
 
 BASE_VERSION = "1.0.0"
