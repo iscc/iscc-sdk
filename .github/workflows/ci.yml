@@ -16,6 +16,14 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
+      - name: Install taglib Linux
+        if: matrix.os == 'Ubuntu'
+        run: sudo apt install libtag1-dev
+
+      - name: Install taglib MacOS
+        if: matrix.os == 'MacOS'
+        run: brew install taglib
+
       - name: Install Poetry
         uses: abatilo/actions-poetry@v2.0.0
         with:
