@@ -69,7 +69,7 @@ You may also want join our developer chat on Telegram at <https://t.me/iscc_dev>
 
 ## Changelog
 
-### 0.3.0 - Unreleased
+### 0.3.0 - 2022-03-12
 - Added support for Audio-Code with metadata embedding/extraction
 
 ### 0.2.0 - 2022-03-10
