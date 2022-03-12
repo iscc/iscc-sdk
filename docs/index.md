@@ -25,7 +25,20 @@ The component-based structure of the ISCC identifies content at multiple levels 
 
 ## Installation
 
-Use the package manager [pip](https://pip.pypa.io/en/stable/) to install `iscc-core`.
+On Linux and MacOS taglib needs to be installed as a prerequisite.
+On Ubuntu, Mint and other Debian-Based distributions do:
+
+```shell
+sudo apt install libtag1-dev
+```
+
+On a Mac, use HomeBrew:
+
+```shell
+brew install taglib
+```
+
+Then use the package manager [pip](https://pip.pypa.io/en/stable/) to install `iscc-sdk`.
 
 ```bash
 pip install iscc-sdk
@@ -56,14 +69,11 @@ You may also want join our developer chat on Telegram at <https://t.me/iscc_dev>
 
 ## Changelog
 
-### 0.3.0 - Unreleased
+### 0.3.0 - 2022-03-12
+- Added support for Audio-Code with metadata embedding/extraction
 
-- Added support for code_audio with metadata embedding/extraction
-
-### 0.2.0 - 20-03-10
-
+### 0.2.0 - 2022-03-10
 - Added IPFS support
 
-### 0.1.0 - 22-03-09
-
+### 0.1.0 - 22022-03-09
 - Initial release with support for ISCC Content-Code Image
