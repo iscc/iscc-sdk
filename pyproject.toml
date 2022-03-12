@@ -51,4 +51,4 @@ all = ["docs", "black", "test"]
 
 [build-system]
 requires = ["poetry-core>=1.0.0", "setuptools", "wheel", "cython"]
-build-backend = "poetry.core.masonry.api"
+build-backend = "setuptools.build_meta"
