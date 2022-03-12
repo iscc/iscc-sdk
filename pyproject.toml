@@ -37,6 +37,10 @@ mkdocs-material = "^8.2"
 mkdocstrings = "^0.18"
 iscc-samples = "^0.4"
 
+[[tool.poetry.source]]
+name = "iscc"
+url = "http://134.209.251.223:8080/simple/"
+
 [tool.black]
 skip-string-normalization = false
 line-length = 100
@@ -50,5 +54,5 @@ sec = { cmd = "poetry run bandit -r iscc_sdk -q", help = "Security check with ba
 all = ["docs", "black", "test"]
 
 [build-system]
-requires = ["poetry-core>=1.0.0", "setuptools", "wheel", "cython"]
-build-backend = "setuptools.build_meta"
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
