@@ -12,14 +12,14 @@
         <meta name="author" content="Titusz Pan">
       
       
-        <link rel="canonical" href="https://sdk.iscc.codes/ipfs/">
+        <link rel="canonical" href="https://sdk.iscc.codes/audio/">
       
       <link rel="icon" href="../images/iscc-logo-icon-black.svg">
       <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.2.5">
     
     
       
-        <title>IPFS - ISCC - Software Development Kit</title>
+        <title>Audio - ISCC - Software Development Kit</title>
       
     
     
@@ -77,7 +77,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#iscc-ipfs-tools" class="md-skip">
+        <a href="#iscc-audio-processing" class="md-skip">
           Skip to content
         </a>
       
@@ -111,7 +111,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              IPFS
+              Audio
             
           </span>
         </div>
@@ -247,10 +247,12 @@
         
   
   
+    
+  
 
 
   <li class="md-tabs__item">
-    <a href="../audio/" class="md-tabs__link">
+    <a href="./" class="md-tabs__link md-tabs__link--active">
       Audio
     </a>
   </li>
@@ -259,12 +261,10 @@
         
   
   
-    
-  
 
 
   <li class="md-tabs__item">
-    <a href="./" class="md-tabs__link md-tabs__link--active">
+    <a href="../ipfs/" class="md-tabs__link">
       IPFS
     </a>
   </li>
@@ -387,21 +387,6 @@
 
   
   
-  
-    <li class="md-nav__item">
-      <a href="../audio/" class="md-nav__link">
-        Audio
-      </a>
-    </li>
-  
-
-    
-      
-      
-      
-
-  
-  
     
   
   
@@ -414,12 +399,12 @@
       
       
         <label class="md-nav__link md-nav__link--active" for="__toc">
-          IPFS
+          Audio
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <a href="./" class="md-nav__link md-nav__link--active">
-        IPFS
+        Audio
       </a>
       
         
@@ -438,15 +423,22 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#iscc_sdk.ipfs.ipfs_cidv1" class="md-nav__link">
-    ipfs_cidv1()
+  <a href="#iscc_sdk.audio.audio_meta_extract" class="md-nav__link">
+    audio_meta_extract()
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#iscc_sdk.ipfs.ipfs_cidv1_base16" class="md-nav__link">
-    ipfs_cidv1_base16()
+  <a href="#iscc_sdk.audio.audio_meta_embed" class="md-nav__link">
+    audio_meta_embed()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#iscc_sdk.audio.audio_features_extract" class="md-nav__link">
+    audio_features_extract()
   </a>
   
 </li>
@@ -455,6 +447,21 @@
   
 </nav>
       
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ipfs/" class="md-nav__link">
+        IPFS
+      </a>
     </li>
   
 
@@ -471,13 +478,13 @@
             <article class="md-content__inner md-typeset">
               
                 
-<a href="https://github.com/iscc/iscc-sdk/edit/main/docs/ipfs.md" title="Edit this page" class="md-content__button md-icon">
+<a href="https://github.com/iscc/iscc-sdk/edit/main/docs/audio.md" title="Edit this page" class="md-content__button md-icon">
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
 </a>
 
 
 
-<h1 id="iscc-ipfs-tools"><strong>ISCC</strong> - IPFS Tools<a class="headerlink" href="#iscc-ipfs-tools" title="Permanent link">#</a></h1>
+<h1 id="iscc-audio-processing"><strong>ISCC</strong> - Audio Processing<a class="headerlink" href="#iscc-audio-processing" title="Permanent link">#</a></h1>
 
 
   <div class="doc doc-object doc-module">
@@ -485,7 +492,7 @@
 
     <div class="doc doc-contents first">
 
-      <p>IPFS wrapper</p>
+      <p><em>Audio handdling module</em>.</p>
 
 
 
@@ -497,19 +504,22 @@
 
 
 
+
+
+
   <div class="doc doc-object doc-function">
 
 
 
-<h3 id="iscc_sdk.ipfs.ipfs_cidv1" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">ipfs_cidv1</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span></code>
+<h3 id="iscc_sdk.audio.audio_meta_extract" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">audio_meta_extract</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span></code>
 
 
-<a href="#iscc_sdk.ipfs.ipfs_cidv1" class="headerlink" title="Permanent link">#</a></h3>
+<a href="#iscc_sdk.audio.audio_meta_extract" class="headerlink" title="Permanent link">#</a></h3>
 
     <div class="doc doc-contents ">
 
-      <p>Create default IPFS CIDv1.</p>
+      <p>Extract metadata from audio file.</p>
 
 <p><strong>Parameters:</strong></p>
 <table>
@@ -525,7 +535,7 @@
       <tr>
         <td><code>fp</code></td>
         <td><code>str</code></td>
-        <td><p>Filepath</p></td>
+        <td><p>Filepath to audio file.</p></td>
         <td><em>required</em></td>
       </tr>
   </tbody>
@@ -540,8 +550,8 @@
   </thead>
   <tbody>
     <tr>
-      <td><code>str</code></td>
-      <td><p>IPFS CIDv1 of the file</p></td>
+      <td><code>dict</code></td>
+      <td><p>Metadata mapped to IsccMeta schema</p></td>
     </tr>
   </tbody>
 </table>
@@ -557,15 +567,77 @@
 
 
 
-<h3 id="iscc_sdk.ipfs.ipfs_cidv1_base16" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">ipfs_cidv1_base16</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span></code>
+<h3 id="iscc_sdk.audio.audio_meta_embed" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">audio_meta_embed</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="n">meta</span><span class="p">)</span></code>
 
 
-<a href="#iscc_sdk.ipfs.ipfs_cidv1_base16" class="headerlink" title="Permanent link">#</a></h3>
+<a href="#iscc_sdk.audio.audio_meta_embed" class="headerlink" title="Permanent link">#</a></h3>
 
     <div class="doc doc-contents ">
 
-      <p>Create IPFS CIDv1 with base16 encoding.</p>
+      <p>Embed metadata into audio.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>fp</code></td>
+        <td><code>str</code></td>
+        <td><p>Filepath to audio file</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>meta</code></td>
+        <td><code>IsccMeta</code></td>
+        <td><p>Metadata to embed into audio file</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td></td>
+      <td><p>None</p></td>
+    </tr>
+  </tbody>
+</table>
+    </div>
+
+  </div>
+
+
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h3 id="iscc_sdk.audio.audio_features_extract" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">audio_features_extract</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span></code>
+
+
+<a href="#iscc_sdk.audio.audio_features_extract" class="headerlink" title="Permanent link">#</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Exctracts chromprint fingerprint.</p>
 
 <p><strong>Parameters:</strong></p>
 <table>
@@ -596,8 +668,8 @@
   </thead>
   <tbody>
     <tr>
-      <td><code>str</code></td>
-      <td><p>IPFS CIDv1 of the file in base16 (hex)</p></td>
+      <td><code>dict</code></td>
+      <td><p>A dict with <code>duration</code> in seconds and <code>fingerprint</code> 32-bit integers</p></td>
     </tr>
   </tbody>
 </table>
@@ -627,7 +699,7 @@
     <nav class="md-footer__inner md-grid" aria-label="Footer">
       
         
-        <a href="../audio/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Audio" rel="prev">
+        <a href="../image/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Image" rel="prev">
           <div class="md-footer__button md-icon">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
           </div>
@@ -636,11 +708,26 @@
               <span class="md-footer__direction">
                 Previous
               </span>
-              Audio
+              Image
             </div>
           </div>
         </a>
       
+      
+        
+        <a href="../ipfs/" class="md-footer__link md-footer__link--next" aria-label="Next: IPFS" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              IPFS
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
       
     </nav>
   

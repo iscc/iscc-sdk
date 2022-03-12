@@ -252,6 +252,18 @@
 
 
   <li class="md-tabs__item">
+    <a href="../audio/" class="md-tabs__link">
+      Audio
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
     <a href="../ipfs/" class="md-tabs__link">
       IPFS
     </a>
@@ -394,6 +406,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#iscc_sdk.main.code_audio" class="md-nav__link">
+    code_audio()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#iscc_sdk.main.code_data" class="md-nav__link">
     code_data()
   </a>
@@ -440,6 +459,21 @@
     <li class="md-nav__item">
       <a href="../image/" class="md-nav__link">
         Image
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../audio/" class="md-nav__link">
+        Audio
       </a>
     </li>
   
@@ -696,6 +730,62 @@
         <td><code>fp</code></td>
         <td><code>str</code></td>
         <td><p>Filepath used for Image-Code creation.</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>IsccMeta</code></td>
+      <td><p>ISCC metadata including Image-Code.</p></td>
+    </tr>
+  </tbody>
+</table>
+    </div>
+
+  </div>
+
+
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h3 id="iscc_sdk.main.code_audio" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">code_audio</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span></code>
+
+
+<a href="#iscc_sdk.main.code_audio" class="headerlink" title="Permanent link">#</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Generate Content-Code Audio.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>fp</code></td>
+        <td><code>str</code></td>
+        <td><p>Filepath used for Audio-Code creation.</p></td>
         <td><em>required</em></td>
       </tr>
   </tbody>

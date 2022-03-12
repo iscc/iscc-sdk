@@ -252,6 +252,18 @@
 
 
   <li class="md-tabs__item">
+    <a href="audio/" class="md-tabs__link">
+      Audio
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
     <a href="ipfs/" class="md-tabs__link">
       IPFS
     </a>
@@ -408,15 +420,22 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#020-20-03-10" class="md-nav__link">
-    0.2.0 - 20-03-10
+  <a href="#030-2022-03-12" class="md-nav__link">
+    0.3.0 - 2022-03-12
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#010-22-03-09" class="md-nav__link">
-    0.1.0 - 22-03-09
+  <a href="#020-2022-03-10" class="md-nav__link">
+    0.2.0 - 2022-03-10
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#010-22022-03-09" class="md-nav__link">
+    0.1.0 - 22022-03-09
   </a>
   
 </li>
@@ -487,6 +506,21 @@
   
   
     <li class="md-nav__item">
+      <a href="audio/" class="md-nav__link">
+        Audio
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
       <a href="ipfs/" class="md-nav__link">
         IPFS
       </a>
@@ -516,7 +550,7 @@
 <p><a href="https://github.com/iscc/iscc-sdk/actions/workflows/ci.yml"><img alt="Build" src="https://github.com/iscc/iscc-sdk/actions/workflows/ci.yml/badge.svg" /></a>
 <a href="https://codecov.io/gh/iscc/iscc-sdk"><img alt="Coverage" src="https://codecov.io/gh/iscc/iscc-sdk/branch/main/graph/badge.svg?token=7BJ7HJU815" /></a>
 <a href="https://www.codacy.com/gh/iscc/iscc-sdk/dashboard"><img alt="Quality" src="https://app.codacy.com/project/badge/Grade/aa791abf9d824f6aa65a8f86b9222c90" /></a></p>
-<p><code>iscc-sdk</code> is a Python development kit that implements for creating and managing <a href="https://core.iscc.codes">ISCC</a> (<em>International Standard Content Code</em>)</p>
+<p><code>iscc-sdk</code> is a Python development kit for creating and managing <a href="https://core.iscc.codes">ISCC</a> (<em>International Standard Content Code</em>)</p>
 <h2 id="what-is-an-iscc">What is an ISCC<a class="headerlink" href="#what-is-an-iscc" title="Permanent link">#</a></h2>
 <p>The ISCC is a similarity preserving identifier for digital media assets.</p>
 <p>ISCCs are generated algorithmically from digital content, just like cryptographic hashes. However, instead of using a single cryptographic hash function to identify data only, the ISCC uses various algorithms to create a composite identifier that exhibits similarity-preserving properties (soft hash).</p>
@@ -530,8 +564,15 @@
 <li>iscc indexing and search</li>
 </ul>
 <h2 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">#</a></h2>
-<p>Use the package manager <a href="https://pip.pypa.io/en/stable/">pip</a> to install <code>iscc-core</code>.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>pip install iscc-sdk
+<p>On Linux and MacOS taglib needs to be installed as a prerequisite.
+On Ubuntu, Mint and other Debian-Based distributions do:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>sudo apt install libtag1-dev
+</code></pre></div>
+<p>On a Mac, use HomeBrew:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>brew install taglib
+</code></pre></div>
+<p>Then use the package manager <a href="https://pip.pypa.io/en/stable/">pip</a> to install <code>iscc-sdk</code>.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>pip install iscc-sdk
 </code></pre></div>
 <h2 id="documentation">Documentation<a class="headerlink" href="#documentation" title="Permanent link">#</a></h2>
 <p><a href="https://sdk.iscc.codes">https://sdk.iscc.codes</a></p>
@@ -549,11 +590,15 @@ other backward incompatible changes are to be expected until the upcoming v1.5 s
 <p>Pull requests are welcome. For significant changes, please open an issue first to discuss your plans. Please make sure to update tests as appropriate.</p>
 <p>You may also want join our developer chat on Telegram at <a href="https://t.me/iscc_dev">https://t.me/iscc_dev</a>.</p>
 <h2 id="changelog">Changelog<a class="headerlink" href="#changelog" title="Permanent link">#</a></h2>
-<h3 id="020-20-03-10">0.2.0 - 20-03-10<a class="headerlink" href="#020-20-03-10" title="Permanent link">#</a></h3>
+<h3 id="030-2022-03-12">0.3.0 - 2022-03-12<a class="headerlink" href="#030-2022-03-12" title="Permanent link">#</a></h3>
+<ul>
+<li>Added support for Audio-Code with metadata embedding/extraction</li>
+</ul>
+<h3 id="020-2022-03-10">0.2.0 - 2022-03-10<a class="headerlink" href="#020-2022-03-10" title="Permanent link">#</a></h3>
 <ul>
 <li>Added IPFS support</li>
 </ul>
-<h3 id="010-22-03-09">0.1.0 - 22-03-09<a class="headerlink" href="#010-22-03-09" title="Permanent link">#</a></h3>
+<h3 id="010-22022-03-09">0.1.0 - 22022-03-09<a class="headerlink" href="#010-22022-03-09" title="Permanent link">#</a></h3>
 <ul>
 <li>Initial release with support for ISCC Content-Code Image</li>
 </ul>
