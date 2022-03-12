@@ -11,6 +11,7 @@ __all__ = [
     "code_meta",
     "code_content",
     "code_image",
+    "code_audio",
     "code_data",
     "code_instance",
 ]
@@ -117,6 +118,23 @@ def code_image(fp):
 
     pixels = idk.image_normalize(Image.open(fp))
     code_obj = ic.gen_image_code_v0(pixels, bits=idk.sdk_opts.image_bits)
+    meta.update(code_obj)
+
+    return idk.IsccMeta.parse_obj(meta)
+
+
+def code_audio(fp):
+    # type: (str) -> idk.IsccMeta
+    """
+    Generate Content-Code Audio.
+
+    :param str fp: Filepath used for Audio-Code creation.
+    :return: ISCC metadata including Image-Code.
+    :rtype: IsccMeta
+    """
+    meta = idk.audio_meta_extract(fp)
+    chroma = idk.audio_features_extract(fp)
+    code_obj = ic.gen_audio_code_v0(chroma["fingerprint"], bits=idk.sdk_opts.audio_bits)
     meta.update(code_obj)
 
     return idk.IsccMeta.parse_obj(meta)

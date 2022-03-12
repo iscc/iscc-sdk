@@ -100,4 +100,5 @@ nav:
   - Main: main.md
   - Mediatype: mediatype.md
   - Image: image.md
+  - Audio: audio.md
   - IPFS: ipfs.md

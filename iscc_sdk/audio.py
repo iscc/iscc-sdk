@@ -56,9 +56,10 @@ def audio_meta_extract(fp):
             mapped[mapped_field] = value[0]
             done.add(mapped_field)
     mapped["duration"] = obj.length
-    mapped["bitrate"] = obj.bitrate
-    mapped["channels"] = obj.channels
-    mapped["samplerate"] = obj.sampleRate
+    # Todo - add bitrate, channels, samplerate to iscc-schema
+    # mapped["bitrate"] = obj.bitrate
+    # mapped["channels"] = obj.channels
+    # mapped["samplerate"] = obj.sampleRate
     obj.close()
     return mapped
 

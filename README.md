@@ -56,6 +56,10 @@ You may also want join our developer chat on Telegram at <https://t.me/iscc_dev>
 
 ## Changelog
 
+### 0.3.0 - Unreleased
+
+- Added support for code_audio with metadata embedding/extraction
+
 ### 0.2.0 - 20-03-10
 
 - Added IPFS support
