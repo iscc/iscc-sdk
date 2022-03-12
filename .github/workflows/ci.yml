@@ -9,17 +9,28 @@ jobs:
         python-version: [3.7, 3.8, 3.9, '3.10']
         os: [ubuntu-latest, macos-latest, windows-latest]
     runs-on: ${{ matrix.os }}
-
+    env:
+      TAGLIB_HOME: taglib-install
+      PYTAGLIB_CYTHONIZE: 1
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
 
+      - name: Install TagLib (Linux/MacOS)
+        if: ${{ runner.os != 'Windows' }}
+        run: if [ "$RUNNER_OS" = "Linux" ]; then sudo apt-get install -y libtag1-dev ; else brew install taglib ; fi
+
       - name: Install Poetry
         uses: abatilo/actions-poetry@v2.0.0
         with:
           poetry-version: 1.1.13
+
+      - name: install pip dependencies
+        run: |
+          poetry run python -m pip install --upgrade pip
+          poetry run pip install pytest Cython wheel
 
       - name: Install Dependencies
         run: poetry install
@@ -30,11 +41,11 @@ jobs:
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v2
 
-      - name: Build Extension modules
-        run: poetry install --extras turbo
-
-      - name: Run Tests (With Extension Modules)
-        run: poetry run pytest -q tests
+#      - name: Build Extension modules
+#        run: poetry install --extras turbo
+#
+#      - name: Run Tests (With Extension Modules)
+#        run: poetry run pytest -q tests
 
   analyze:
     name: Analyze
