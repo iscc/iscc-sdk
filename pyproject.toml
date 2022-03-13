@@ -33,6 +33,10 @@ mkdocs-material = "^8.2"
 mkdocstrings = "^0.18"
 iscc-samples = "^0.4"
 
+[[tool.poetry.source]]
+name = "iscc"
+url = "http://104.248.29.248:8080/simple/"
+
 [tool.black]
 skip-string-normalization = false
 line-length = 100

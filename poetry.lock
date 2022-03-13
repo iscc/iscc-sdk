@@ -9,6 +9,11 @@ python-versions = "*"
 [package.dependencies]
 six = ">=1.6.1,<2.0"
 
+[package.source]
+type = "legacy"
+url = "http://104.248.29.248:8080/simple"
+reference = "iscc"
+
 [[package]]
 name = "atomicwrites"
 version = "1.4.0"
@@ -16,6 +21,11 @@ description = "Atomic file writes."
 category = "dev"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
+
+[package.source]
+type = "legacy"
+url = "http://104.248.29.248:8080/simple"
+reference = "iscc"
 
 [[package]]
 name = "attrs"
@@ -30,6 +40,11 @@ dev = ["coverage[toml] (>=5.0.2)", "hypothesis", "pympler", "pytest (>=4.3.0)", 
 docs = ["furo", "sphinx", "zope.interface", "sphinx-notfound-page"]
 tests = ["coverage[toml] (>=5.0.2)", "hypothesis", "pympler", "pytest (>=4.3.0)", "six", "mypy", "pytest-mypy-plugins", "zope.interface", "cloudpickle"]
 tests_no_zope = ["coverage[toml] (>=5.0.2)", "hypothesis", "pympler", "pytest (>=4.3.0)", "six", "mypy", "pytest-mypy-plugins", "cloudpickle"]
+
+[package.source]
+type = "legacy"
+url = "http://104.248.29.248:8080/simple"
+reference = "iscc"
 
 [[package]]
 name = "bandit"
@@ -50,6 +65,11 @@ test = ["coverage (>=4.5.4)", "fixtures (>=3.0.0)", "flake8 (>=4.0.0)", "stestr 
 toml = ["toml"]
 yaml = ["pyyaml"]
 
+[package.source]
+type = "legacy"
+url = "http://104.248.29.248:8080/simple"
+reference = "iscc"
+
 [[package]]
 name = "base58"
 version = "2.1.1"
@@ -60,6 +80,11 @@ python-versions = ">=3.5"
 
 [package.extras]
 tests = ["mypy", "PyHamcrest (>=2.0.2)", "pytest (>=4.6)", "pytest-benchmark", "pytest-cov", "pytest-flake8"]
+
+[package.source]
+type = "legacy"
+url = "http://104.248.29.248:8080/simple"
+reference = "iscc"
 
 [[package]]
 name = "bases"
@@ -76,6 +101,11 @@ typing-validation = "*"
 [package.extras]
 dev = ["mypy", "pylint", "pytest", "pytest-cov", "base58"]
 
+[package.source]
+type = "legacy"
+url = "http://104.248.29.248:8080/simple"
+reference = "iscc"
+
 [[package]]
 name = "bitarray-hardbyte"
 version = "2.3.8"
@@ -83,6 +113,11 @@ description = "efficient arrays of booleans -- C extension"
 category = "main"
 optional = false
 python-versions = "*"
+
+[package.source]
+type = "legacy"
+url = "http://104.248.29.248:8080/simple"
+reference = "iscc"
 
 [[package]]
 name = "black"
@@ -107,6 +142,11 @@ d = ["aiohttp (>=3.7.4)"]
 jupyter = ["ipython (>=7.8.0)", "tokenize-rt (>=3.2.0)"]
 uvloop = ["uvloop (>=0.15.2)"]
 
+[package.source]
+type = "legacy"
+url = "http://104.248.29.248:8080/simple"
+reference = "iscc"
+
 [[package]]
 name = "blake3"
 version = "0.3.1"
@@ -115,6 +155,11 @@ category = "main"
 optional = false
 python-versions = "*"
 
+[package.source]
+type = "legacy"
+url = "http://104.248.29.248:8080/simple"
+reference = "iscc"
+
 [[package]]
 name = "cached-property"
 version = "1.5.2"
@@ -122,6 +167,11 @@ description = "A decorator for caching properties in classes."
 category = "dev"
 optional = false
 python-versions = "*"
+
+[package.source]
+type = "legacy"
+url = "http://104.248.29.248:8080/simple"
+reference = "iscc"
 
 [[package]]
 name = "click"
@@ -135,6 +185,11 @@ python-versions = ">=3.6"
 colorama = {version = "*", markers = "platform_system == \"Windows\""}
 importlib-metadata = {version = "*", markers = "python_version < \"3.8\""}
 
+[package.source]
+type = "legacy"
+url = "http://104.248.29.248:8080/simple"
+reference = "iscc"
+
 [[package]]
 name = "colorama"
 version = "0.4.4"
@@ -142,6 +197,11 @@ description = "Cross-platform colored terminal text."
 category = "main"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
+
+[package.source]
+type = "legacy"
+url = "http://104.248.29.248:8080/simple"
+reference = "iscc"
 
 [[package]]
 name = "coverage"
@@ -157,6 +217,11 @@ tomli = {version = "*", optional = true, markers = "extra == \"toml\""}
 [package.extras]
 toml = ["tomli"]
 
+[package.source]
+type = "legacy"
+url = "http://104.248.29.248:8080/simple"
+reference = "iscc"
+
 [[package]]
 name = "cython"
 version = "0.29.28"
@@ -165,6 +230,11 @@ category = "main"
 optional = false
 python-versions = ">=2.6, !=3.0.*, !=3.1.*, !=3.2.*"
 
+[package.source]
+type = "legacy"
+url = "http://104.248.29.248:8080/simple"
+reference = "iscc"
+
 [[package]]
 name = "data-url"
 version = "1.0.3"
@@ -172,6 +242,11 @@ description = ""
 category = "main"
 optional = false
 python-versions = ">=3.5"
+
+[package.source]
+type = "legacy"
+url = "http://104.248.29.248:8080/simple"
+reference = "iscc"
 
 [[package]]
 name = "ghp-import"
@@ -187,6 +262,11 @@ python-dateutil = ">=2.8.1"
 [package.extras]
 dev = ["twine", "markdown", "flake8", "wheel"]
 
+[package.source]
+type = "legacy"
+url = "http://104.248.29.248:8080/simple"
+reference = "iscc"
+
 [[package]]
 name = "gitdb"
 version = "4.0.9"
@@ -197,6 +277,11 @@ python-versions = ">=3.6"
 
 [package.dependencies]
 smmap = ">=3.0.1,<6"
+
+[package.source]
+type = "legacy"
+url = "http://104.248.29.248:8080/simple"
+reference = "iscc"
 
 [[package]]
 name = "gitpython"
@@ -209,6 +294,11 @@ python-versions = ">=3.7"
 [package.dependencies]
 gitdb = ">=4.0.1,<5"
 typing-extensions = {version = ">=3.7.4.3", markers = "python_version < \"3.8\""}
+
+[package.source]
+type = "legacy"
+url = "http://104.248.29.248:8080/simple"
+reference = "iscc"
 
 [[package]]
 name = "importlib-metadata"
@@ -227,6 +317,11 @@ docs = ["sphinx", "jaraco.packaging (>=9)", "rst.linker (>=1.9)"]
 perf = ["ipython"]
 testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-cov", "pytest-enabler (>=1.0.1)", "packaging", "pyfakefs", "flufl.flake8", "pytest-perf (>=0.9.2)", "pytest-black (>=0.3.7)", "pytest-mypy (>=0.9.1)", "importlib-resources (>=1.3)"]
 
+[package.source]
+type = "legacy"
+url = "http://104.248.29.248:8080/simple"
+reference = "iscc"
+
 [[package]]
 name = "iniconfig"
 version = "1.1.1"
@@ -235,6 +330,11 @@ category = "dev"
 optional = false
 python-versions = "*"
 
+[package.source]
+type = "legacy"
+url = "http://104.248.29.248:8080/simple"
+reference = "iscc"
+
 [[package]]
 name = "install-jdk"
 version = "0.3.0"
@@ -242,6 +342,11 @@ description = "Installs AdoptOpenJDK Java"
 category = "main"
 optional = false
 python-versions = ">=3.6"
+
+[package.source]
+type = "legacy"
+url = "http://104.248.29.248:8080/simple"
+reference = "iscc"
 
 [[package]]
 name = "iscc-core"
@@ -267,13 +372,23 @@ xxhash = "*"
 [package.extras]
 turbo = ["cython"]
 
+[package.source]
+type = "legacy"
+url = "http://104.248.29.248:8080/simple"
+reference = "iscc"
+
 [[package]]
 name = "iscc-samples"
 version = "0.4.0"
 description = "A collection of media files as sample data for ISCC testing."
 category = "dev"
 optional = false
-python-versions = ">=3.6,<4.0"
+python-versions = "^3.6"
+
+[package.source]
+type = "legacy"
+url = "http://104.248.29.248:8080/simple"
+reference = "iscc"
 
 [[package]]
 name = "iscc-schema"
@@ -287,6 +402,11 @@ python-versions = ">=3.7,<4.0.0"
 jcs = ">=0.2,<0.3"
 pydantic = ">=1.9,<2.0"
 
+[package.source]
+type = "legacy"
+url = "http://104.248.29.248:8080/simple"
+reference = "iscc"
+
 [[package]]
 name = "jcs"
 version = "0.2.0"
@@ -294,6 +414,11 @@ description = "JSC - JSON Canonicalization"
 category = "main"
 optional = false
 python-versions = ">=3.6"
+
+[package.source]
+type = "legacy"
+url = "http://104.248.29.248:8080/simple"
+reference = "iscc"
 
 [[package]]
 name = "jinja2"
@@ -309,6 +434,11 @@ MarkupSafe = ">=2.0"
 [package.extras]
 i18n = ["Babel (>=2.7)"]
 
+[package.source]
+type = "legacy"
+url = "http://104.248.29.248:8080/simple"
+reference = "iscc"
+
 [[package]]
 name = "jmespath"
 version = "0.10.0"
@@ -316,6 +446,11 @@ description = "JSON Matching Expressions"
 category = "main"
 optional = false
 python-versions = ">=2.6, !=3.0.*, !=3.1.*, !=3.2.*"
+
+[package.source]
+type = "legacy"
+url = "http://104.248.29.248:8080/simple"
+reference = "iscc"
 
 [[package]]
 name = "loguru"
@@ -332,6 +467,11 @@ win32-setctime = {version = ">=1.0.0", markers = "sys_platform == \"win32\""}
 [package.extras]
 dev = ["colorama (>=0.3.4)", "docutils (==0.16)", "flake8 (>=3.7.7)", "tox (>=3.9.0)", "pytest (>=4.6.2)", "pytest-cov (>=2.7.1)", "black (>=19.10b0)", "isort (>=5.1.1)", "Sphinx (>=4.1.1)", "sphinx-autobuild (>=0.7.1)", "sphinx-rtd-theme (>=0.4.3)"]
 
+[package.source]
+type = "legacy"
+url = "http://104.248.29.248:8080/simple"
+reference = "iscc"
+
 [[package]]
 name = "markdown"
 version = "3.3.6"
@@ -346,6 +486,11 @@ importlib-metadata = {version = ">=4.4", markers = "python_version < \"3.10\""}
 [package.extras]
 testing = ["coverage", "pyyaml"]
 
+[package.source]
+type = "legacy"
+url = "http://104.248.29.248:8080/simple"
+reference = "iscc"
+
 [[package]]
 name = "markupsafe"
 version = "2.1.0"
@@ -354,6 +499,11 @@ category = "dev"
 optional = false
 python-versions = ">=3.7"
 
+[package.source]
+type = "legacy"
+url = "http://104.248.29.248:8080/simple"
+reference = "iscc"
+
 [[package]]
 name = "mergedeep"
 version = "1.3.4"
@@ -361,6 +511,11 @@ description = "A deep merge function for 🐍."
 category = "dev"
 optional = false
 python-versions = ">=3.6"
+
+[package.source]
+type = "legacy"
+url = "http://104.248.29.248:8080/simple"
+reference = "iscc"
 
 [[package]]
 name = "mkdocs"
@@ -385,6 +540,11 @@ watchdog = ">=2.0"
 [package.extras]
 i18n = ["babel (>=2.9.0)"]
 
+[package.source]
+type = "legacy"
+url = "http://104.248.29.248:8080/simple"
+reference = "iscc"
+
 [[package]]
 name = "mkdocs-autorefs"
 version = "0.4.1"
@@ -396,6 +556,11 @@ python-versions = ">=3.7"
 [package.dependencies]
 Markdown = ">=3.3"
 mkdocs = ">=1.1"
+
+[package.source]
+type = "legacy"
+url = "http://104.248.29.248:8080/simple"
+reference = "iscc"
 
 [[package]]
 name = "mkdocs-material"
@@ -413,6 +578,11 @@ mkdocs-material-extensions = ">=1.0"
 pygments = ">=2.10"
 pymdown-extensions = ">=9.0"
 
+[package.source]
+type = "legacy"
+url = "http://104.248.29.248:8080/simple"
+reference = "iscc"
+
 [[package]]
 name = "mkdocs-material-extensions"
 version = "1.0.3"
@@ -420,6 +590,11 @@ description = "Extension pack for Python Markdown."
 category = "dev"
 optional = false
 python-versions = ">=3.6"
+
+[package.source]
+type = "legacy"
+url = "http://104.248.29.248:8080/simple"
+reference = "iscc"
 
 [[package]]
 name = "mkdocstrings"
@@ -443,6 +618,11 @@ crystal = ["mkdocstrings-crystal (>=0.3.4)"]
 python = ["mkdocstrings-python (>=0.5.2)"]
 python-legacy = ["mkdocstrings-python-legacy (>=0.2.1)"]
 
+[package.source]
+type = "legacy"
+url = "http://104.248.29.248:8080/simple"
+reference = "iscc"
+
 [[package]]
 name = "mkdocstrings-python-legacy"
 version = "0.2.2"
@@ -455,6 +635,11 @@ python-versions = ">=3.7"
 mkdocstrings = ">=0.18"
 pytkdocs = ">=0.14"
 
+[package.source]
+type = "legacy"
+url = "http://104.248.29.248:8080/simple"
+reference = "iscc"
+
 [[package]]
 name = "more-itertools"
 version = "8.12.0"
@@ -463,6 +648,11 @@ category = "main"
 optional = false
 python-versions = ">=3.5"
 
+[package.source]
+type = "legacy"
+url = "http://104.248.29.248:8080/simple"
+reference = "iscc"
+
 [[package]]
 name = "mypy-extensions"
 version = "0.4.3"
@@ -470,6 +660,11 @@ description = "Experimental type system extensions for programs checked with the
 category = "dev"
 optional = false
 python-versions = "*"
+
+[package.source]
+type = "legacy"
+url = "http://104.248.29.248:8080/simple"
+reference = "iscc"
 
 [[package]]
 name = "packaging"
@@ -482,6 +677,11 @@ python-versions = ">=3.6"
 [package.dependencies]
 pyparsing = ">=2.0.2,<3.0.5 || >3.0.5"
 
+[package.source]
+type = "legacy"
+url = "http://104.248.29.248:8080/simple"
+reference = "iscc"
+
 [[package]]
 name = "pastel"
 version = "0.2.1"
@@ -489,6 +689,11 @@ description = "Bring colors to your terminal."
 category = "dev"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
+
+[package.source]
+type = "legacy"
+url = "http://104.248.29.248:8080/simple"
+reference = "iscc"
 
 [[package]]
 name = "pathspec"
@@ -498,6 +703,11 @@ category = "dev"
 optional = false
 python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,>=2.7"
 
+[package.source]
+type = "legacy"
+url = "http://104.248.29.248:8080/simple"
+reference = "iscc"
+
 [[package]]
 name = "pbr"
 version = "5.8.1"
@@ -506,6 +716,11 @@ category = "dev"
 optional = false
 python-versions = ">=2.6"
 
+[package.source]
+type = "legacy"
+url = "http://104.248.29.248:8080/simple"
+reference = "iscc"
+
 [[package]]
 name = "pillow"
 version = "9.0.1"
@@ -513,6 +728,11 @@ description = "Python Imaging Library (Fork)"
 category = "main"
 optional = false
 python-versions = ">=3.7"
+
+[package.source]
+type = "legacy"
+url = "http://104.248.29.248:8080/simple"
+reference = "iscc"
 
 [[package]]
 name = "platformdirs"
@@ -525,6 +745,11 @@ python-versions = ">=3.7"
 [package.extras]
 docs = ["Sphinx (>=4)", "furo (>=2021.7.5b38)", "proselint (>=0.10.2)", "sphinx-autodoc-typehints (>=1.12)"]
 test = ["appdirs (==1.4.4)", "pytest (>=6)", "pytest-cov (>=2.7)", "pytest-mock (>=3.6)"]
+
+[package.source]
+type = "legacy"
+url = "http://104.248.29.248:8080/simple"
+reference = "iscc"
 
 [[package]]
 name = "pluggy"
@@ -541,6 +766,11 @@ importlib-metadata = {version = ">=0.12", markers = "python_version < \"3.8\""}
 dev = ["pre-commit", "tox"]
 testing = ["pytest", "pytest-benchmark"]
 
+[package.source]
+type = "legacy"
+url = "http://104.248.29.248:8080/simple"
+reference = "iscc"
+
 [[package]]
 name = "poethepoet"
 version = "0.13.1"
@@ -556,6 +786,11 @@ tomli = ">=1.2.2"
 [package.extras]
 poetry_plugin = ["poetry (>=1.0,<2.0)"]
 
+[package.source]
+type = "legacy"
+url = "http://104.248.29.248:8080/simple"
+reference = "iscc"
+
 [[package]]
 name = "py"
 version = "1.11.0"
@@ -563,6 +798,11 @@ description = "library with cross-python path, ini-parsing, io, code, log facili
 category = "dev"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
+
+[package.source]
+type = "legacy"
+url = "http://104.248.29.248:8080/simple"
+reference = "iscc"
 
 [[package]]
 name = "pybase64"
@@ -574,6 +814,11 @@ python-versions = ">=3.6"
 
 [package.extras]
 test = ["pytest (>=5.0.0)"]
+
+[package.source]
+type = "legacy"
+url = "http://104.248.29.248:8080/simple"
+reference = "iscc"
 
 [[package]]
 name = "pydantic"
@@ -591,6 +836,11 @@ typing-extensions = ">=3.7.4.3"
 dotenv = ["python-dotenv (>=0.10.4)"]
 email = ["email-validator (>=1.0.3)"]
 
+[package.source]
+type = "legacy"
+url = "http://104.248.29.248:8080/simple"
+reference = "iscc"
+
 [[package]]
 name = "pygments"
 version = "2.11.2"
@@ -598,6 +848,11 @@ description = "Pygments is a syntax highlighting package written in Python."
 category = "dev"
 optional = false
 python-versions = ">=3.5"
+
+[package.source]
+type = "legacy"
+url = "http://104.248.29.248:8080/simple"
+reference = "iscc"
 
 [[package]]
 name = "pymdown-extensions"
@@ -610,6 +865,11 @@ python-versions = ">=3.7"
 [package.dependencies]
 Markdown = ">=3.2"
 
+[package.source]
+type = "legacy"
+url = "http://104.248.29.248:8080/simple"
+reference = "iscc"
+
 [[package]]
 name = "pyparsing"
 version = "3.0.7"
@@ -621,6 +881,11 @@ python-versions = ">=3.6"
 [package.extras]
 diagrams = ["jinja2", "railroad-diagrams"]
 
+[package.source]
+type = "legacy"
+url = "http://104.248.29.248:8080/simple"
+reference = "iscc"
+
 [[package]]
 name = "pytaglib"
 version = "1.5.0"
@@ -628,6 +893,14 @@ description = "cross-platform, Python audio metadata (\"tagging\") library based
 category = "main"
 optional = false
 python-versions = ">=3.6"
+
+[package.extras]
+tests = ["pytest"]
+
+[package.source]
+type = "legacy"
+url = "http://104.248.29.248:8080/simple"
+reference = "iscc"
 
 [[package]]
 name = "pytest"
@@ -651,6 +924,11 @@ tomli = ">=1.0.0"
 [package.extras]
 testing = ["argcomplete", "hypothesis (>=3.56)", "mock", "nose", "pygments (>=2.7.2)", "requests", "xmlschema"]
 
+[package.source]
+type = "legacy"
+url = "http://104.248.29.248:8080/simple"
+reference = "iscc"
+
 [[package]]
 name = "pytest-cov"
 version = "3.0.0"
@@ -666,6 +944,11 @@ pytest = ">=4.6"
 [package.extras]
 testing = ["fields", "hunter", "process-tests", "six", "pytest-xdist", "virtualenv"]
 
+[package.source]
+type = "legacy"
+url = "http://104.248.29.248:8080/simple"
+reference = "iscc"
+
 [[package]]
 name = "python-dateutil"
 version = "2.8.2"
@@ -676,6 +959,11 @@ python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,>=2.7"
 
 [package.dependencies]
 six = ">=1.5"
+
+[package.source]
+type = "legacy"
+url = "http://104.248.29.248:8080/simple"
+reference = "iscc"
 
 [[package]]
 name = "python-dotenv"
@@ -688,6 +976,11 @@ python-versions = ">=3.5"
 [package.extras]
 cli = ["click (>=5.0)"]
 
+[package.source]
+type = "legacy"
+url = "http://104.248.29.248:8080/simple"
+reference = "iscc"
+
 [[package]]
 name = "python-magic"
 version = "0.4.25"
@@ -696,6 +989,11 @@ category = "main"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 
+[package.source]
+type = "legacy"
+url = "http://104.248.29.248:8080/simple"
+reference = "iscc"
+
 [[package]]
 name = "python-magic-bin"
 version = "0.4.14"
@@ -703,6 +1001,11 @@ description = "File type identification using libmagic binary package"
 category = "main"
 optional = false
 python-versions = "*"
+
+[package.source]
+type = "legacy"
+url = "http://104.248.29.248:8080/simple"
+reference = "iscc"
 
 [[package]]
 name = "pytkdocs"
@@ -720,6 +1023,11 @@ typing-extensions = {version = ">=3.7", markers = "python_version < \"3.8\""}
 [package.extras]
 numpy-style = ["docstring_parser (>=0.7)"]
 
+[package.source]
+type = "legacy"
+url = "http://104.248.29.248:8080/simple"
+reference = "iscc"
+
 [[package]]
 name = "pyyaml"
 version = "6.0"
@@ -728,16 +1036,26 @@ category = "dev"
 optional = false
 python-versions = ">=3.6"
 
+[package.source]
+type = "legacy"
+url = "http://104.248.29.248:8080/simple"
+reference = "iscc"
+
 [[package]]
 name = "pyyaml-env-tag"
 version = "0.1"
-description = "A custom YAML tag for referencing environment variables in YAML files. "
+description = "A custom YAML tag for referencing environment variables in YAML files."
 category = "dev"
 optional = false
 python-versions = ">=3.6"
 
 [package.dependencies]
 pyyaml = "*"
+
+[package.source]
+type = "legacy"
+url = "http://104.248.29.248:8080/simple"
+reference = "iscc"
 
 [[package]]
 name = "six"
@@ -747,6 +1065,11 @@ category = "dev"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*"
 
+[package.source]
+type = "legacy"
+url = "http://104.248.29.248:8080/simple"
+reference = "iscc"
+
 [[package]]
 name = "smmap"
 version = "5.0.0"
@@ -754,6 +1077,11 @@ description = "A pure Python implementation of a sliding window memory map manag
 category = "dev"
 optional = false
 python-versions = ">=3.6"
+
+[package.source]
+type = "legacy"
+url = "http://104.248.29.248:8080/simple"
+reference = "iscc"
 
 [[package]]
 name = "stevedore"
@@ -767,6 +1095,11 @@ python-versions = ">=3.6"
 importlib-metadata = {version = ">=1.7.0", markers = "python_version < \"3.8\""}
 pbr = ">=2.0.0,<2.1.0 || >2.1.0"
 
+[package.source]
+type = "legacy"
+url = "http://104.248.29.248:8080/simple"
+reference = "iscc"
+
 [[package]]
 name = "tomli"
 version = "2.0.1"
@@ -774,6 +1107,11 @@ description = "A lil' TOML parser"
 category = "dev"
 optional = false
 python-versions = ">=3.7"
+
+[package.source]
+type = "legacy"
+url = "http://104.248.29.248:8080/simple"
+reference = "iscc"
 
 [[package]]
 name = "typed-ast"
@@ -783,6 +1121,11 @@ category = "dev"
 optional = false
 python-versions = ">=3.6"
 
+[package.source]
+type = "legacy"
+url = "http://104.248.29.248:8080/simple"
+reference = "iscc"
+
 [[package]]
 name = "typing-extensions"
 version = "4.1.1"
@@ -790,6 +1133,11 @@ description = "Backported and Experimental Type Hints for Python 3.6+"
 category = "main"
 optional = false
 python-versions = ">=3.6"
+
+[package.source]
+type = "legacy"
+url = "http://104.248.29.248:8080/simple"
+reference = "iscc"
 
 [[package]]
 name = "typing-validation"
@@ -805,6 +1153,11 @@ typing-extensions = {version = "*", markers = "python_version < \"3.8\""}
 [package.extras]
 dev = ["mypy", "pylint", "pytest", "pytest-cov"]
 
+[package.source]
+type = "legacy"
+url = "http://104.248.29.248:8080/simple"
+reference = "iscc"
+
 [[package]]
 name = "uvarint"
 version = "1.2.0"
@@ -812,6 +1165,11 @@ description = "Unsigned variable-length integers"
 category = "main"
 optional = false
 python-versions = ">=3.6"
+
+[package.source]
+type = "legacy"
+url = "http://104.248.29.248:8080/simple"
+reference = "iscc"
 
 [[package]]
 name = "watchdog"
@@ -824,6 +1182,11 @@ python-versions = ">=3.6"
 [package.extras]
 watchmedo = ["PyYAML (>=3.10)"]
 
+[package.source]
+type = "legacy"
+url = "http://104.248.29.248:8080/simple"
+reference = "iscc"
+
 [[package]]
 name = "win32-setctime"
 version = "1.1.0"
@@ -835,6 +1198,11 @@ python-versions = ">=3.5"
 [package.extras]
 dev = ["pytest (>=4.6.2)", "black (>=19.3b0)"]
 
+[package.source]
+type = "legacy"
+url = "http://104.248.29.248:8080/simple"
+reference = "iscc"
+
 [[package]]
 name = "xxhash"
 version = "3.0.0"
@@ -842,6 +1210,11 @@ description = "Python binding for xxHash"
 category = "main"
 optional = false
 python-versions = ">=3.6"
+
+[package.source]
+type = "legacy"
+url = "http://104.248.29.248:8080/simple"
+reference = "iscc"
 
 [[package]]
 name = "zipp"
@@ -855,10 +1228,15 @@ python-versions = ">=3.7"
 docs = ["sphinx", "jaraco.packaging (>=8.2)", "rst.linker (>=1.9)"]
 testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-cov", "pytest-enabler (>=1.0.1)", "jaraco.itertools", "func-timeout", "pytest-black (>=0.3.7)", "pytest-mypy"]
 
+[package.source]
+type = "legacy"
+url = "http://104.248.29.248:8080/simple"
+reference = "iscc"
+
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.7,<4.0"
-content-hash = "ab9a6b18c21ef3928e1f5ef3eadc698566b7d8fe49e666834fb20f0e62cd6a84"
+content-hash = "626ad2a2c5c644d03f959b2b4a20829659dcdf66830d4fbef7f1539119f5c1ef"
 
 [metadata.files]
 astunparse = [
@@ -1383,16 +1761,18 @@ pyparsing = [
     {file = "pyparsing-3.0.7.tar.gz", hash = "sha256:18ee9022775d270c55187733956460083db60b37d0d0fb357445f3094eed3eea"},
 ]
 pytaglib = [
-    {file = "pytaglib-1.5.0-cp310-cp310-win_amd64.whl", hash = "sha256:4bc09366c02e864e533956a04d95574ec7d2c0cf3c1ad8041e327f679769b5a7"},
-    {file = "pytaglib-1.5.0-cp38-cp38-win_amd64.whl", hash = "sha256:e13d8cf999fb6407fa56db6ef6a0a317484e49324706fcb813de7c82a637d9d5"},
-    {file = "pytaglib-1.5.0-cp39-cp39-win_amd64.whl", hash = "sha256:49487f390aa605cf5ebc72d5a74e53a843fb74a60946ffa7b1c970e2fa6b46d3"},
-    {file = "pytaglib-1.5.0-py3.10-linux-x86_64.egg", hash = "sha256:1b05826b7793d85adfbe1b5f6c6a97920a24f83b66b3d8bdc1b040b788d9d1ae"},
-    {file = "pytaglib-1.5.0-py3.10-win-amd64.egg", hash = "sha256:37fa1cd3f58c2814c5b7acad29a40f202ec6e20763c1c875c0512b1f27ec0b58"},
-    {file = "pytaglib-1.5.0-py3.8-linux-x86_64.egg", hash = "sha256:5d60f2777c6b1950db91b9ed750e4663593358abf016fbd8f99e222c1008082d"},
-    {file = "pytaglib-1.5.0-py3.8-win-amd64.egg", hash = "sha256:2357d14b6b5f6c3867bc169673587016ec9314287a943f1ad209d0fbe09db795"},
-    {file = "pytaglib-1.5.0-py3.9-linux-x86_64.egg", hash = "sha256:446fad443cc8a3515394aec5c623857ea7939a97016f9a567482f66832f8bd81"},
-    {file = "pytaglib-1.5.0-py3.9-win-amd64.egg", hash = "sha256:006a65af9a82fa143f8e2679335efed5f643c20b338245140dbb44094934f23c"},
-    {file = "pytaglib-1.5.0.tar.gz", hash = "sha256:8f7603dffdb1930428b305e79b8ca127e9cffc4ce4d2f7440a5f5226a82e6e5f"},
+    {file = "pytaglib-1.5.0-cp310-cp310-linux_x86_64.whl", hash = "md5:c065a56f20c7cf308253179ccd620860"},
+    {file = "pytaglib-1.5.0-cp310-cp310-macosx_10_15_x86_64.whl", hash = "md5:b817ae16e022ec51224198c73f716ce5"},
+    {file = "pytaglib-1.5.0-cp310-cp310-win_amd64.whl", hash = "md5:ad93226a21d11b7bd987b607a014c716"},
+    {file = "pytaglib-1.5.0-cp37-cp37m-linux_x86_64.whl", hash = "md5:b9f0b123f2fe0bbe9899ffcd29bf4423"},
+    {file = "pytaglib-1.5.0-cp37-cp37m-macosx_10_14_x86_64.whl", hash = "md5:fd868d6dd1539c0b534ce5d05be03a6e"},
+    {file = "pytaglib-1.5.0-cp37-cp37m-win_amd64.whl", hash = "md5:332111dc72bc1faf389ae308b96e97b4"},
+    {file = "pytaglib-1.5.0-cp38-cp38-linux_x86_64.whl", hash = "md5:ccf1ff45bc27a88bce8a27b81af83b53"},
+    {file = "pytaglib-1.5.0-cp38-cp38-macosx_10_14_x86_64.whl", hash = "md5:4f5339a3fca1830b8205ee98cd4288d5"},
+    {file = "pytaglib-1.5.0-cp38-cp38-win_amd64.whl", hash = "md5:213583acf094fb3b9cd036701b87a7d6"},
+    {file = "pytaglib-1.5.0-cp39-cp39-linux_x86_64.whl", hash = "md5:4fd2152a1b30ef4753aefa830276fad8"},
+    {file = "pytaglib-1.5.0-cp39-cp39-macosx_10_15_x86_64.whl", hash = "md5:daf0696f4b94d10c93830276c0f14f05"},
+    {file = "pytaglib-1.5.0-cp39-cp39-win_amd64.whl", hash = "md5:75afa596b549502e4d3dffed6a58d4de"},
 ]
 pytest = [
     {file = "pytest-7.0.1-py3-none-any.whl", hash = "sha256:9ce3ff477af913ecf6321fe337b93a2c0dcf2a0a1439c43f5452112c1e4280db"},
