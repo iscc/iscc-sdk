@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 import iscc_sdk as idk
+import iscc_schema as iss
 
 
-meta = idk.IsccMeta.construct(
+meta = iss.IsccMeta.construct(
     name="Hello",
     description="Wörld",
     meta="somestring",

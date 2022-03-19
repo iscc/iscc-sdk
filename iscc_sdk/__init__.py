@@ -16,7 +16,6 @@ from iscc_sdk.tools import *
 from iscc_sdk.mediatype import *
 from iscc_sdk.image import *
 from iscc_sdk.main import *
-from iscc_sdk.models import *
 from iscc_sdk.text import *
 from iscc_sdk.ipfs import *
 from iscc_sdk.audio import *

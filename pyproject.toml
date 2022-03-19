@@ -11,9 +11,9 @@ keywords=["iscc", "identifier", "media", "content", "hash", "blockchain", "simil
 
 [tool.poetry.dependencies]
 python = ">=3.7,<4.0"
-cython = "^0.29.28"
-iscc-core = "^0.2.3"
-iscc-schema = "^0.3.5"
+cython = "^0.29"
+iscc-core = "^0.2"
+iscc-schema = "^0.3"
 python-magic-bin = { version = "^0.4", markers = "sys_platform == 'win32' or sys_platform == 'darwin'" }
 python-magic = { version = "^0.4", markers = "sys_platform == 'linux'" }
 install-jdk = "^0.3"
@@ -32,10 +32,6 @@ bandit = "^1.7"
 mkdocs-material = "^8.2"
 mkdocstrings = "^0.18"
 iscc-samples = "^0.4"
-
-[[tool.poetry.source]]
-name = "iscc"
-url = "http://104.248.29.248:8080/simple/"
 
 [tool.black]
 skip-string-normalization = false

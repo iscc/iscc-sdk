@@ -4,6 +4,7 @@ from os.path import basename
 import iscc_core as ic
 from PIL import Image
 import iscc_sdk as idk
+import iscc_schema as iss
 
 
 __all__ = [
@@ -46,11 +47,11 @@ def code_iscc(fp):
     iscc_meta.update(meta.dict())
     iscc_meta.update(iscc_code)
 
-    return idk.IsccMeta.parse_obj(iscc_meta)
+    return iss.IsccMeta.parse_obj(iscc_meta)
 
 
 def code_meta(fp):
-    # type: (str) -> idk.IsccMeta
+    # type: (str) -> iss.IsccMeta
     """
     Generate Meta-Code from digital asset.
 
@@ -76,11 +77,11 @@ def code_meta(fp):
 
     meta.update(metacode)
 
-    return idk.IsccMeta.parse_obj(meta)
+    return iss.IsccMeta.parse_obj(meta)
 
 
 def code_content(fp):
-    # type: (str) -> idk.IsccMeta
+    # type: (str) -> iss.IsccMeta
     """
     Detect mediatype and create corresponding Content-Code.
 
@@ -102,7 +103,7 @@ def code_content(fp):
 
 
 def code_image(fp):
-    # type: (str) -> idk.IsccMeta
+    # type: (str) -> iss.IsccMeta
     """
     Generate Content-Code Image.
 
@@ -120,7 +121,7 @@ def code_image(fp):
     code_obj = ic.gen_image_code_v0(pixels, bits=idk.sdk_opts.image_bits)
     meta.update(code_obj)
 
-    return idk.IsccMeta.parse_obj(meta)
+    return iss.IsccMeta.parse_obj(meta)
 
 
 def code_audio(fp):
@@ -137,11 +138,11 @@ def code_audio(fp):
     code_obj = ic.gen_audio_code_v0(chroma["fingerprint"], bits=idk.sdk_opts.audio_bits)
     meta.update(code_obj)
 
-    return idk.IsccMeta.parse_obj(meta)
+    return iss.IsccMeta.parse_obj(meta)
 
 
 def code_data(fp):
-    # type: (str) -> idk.IsccMeta
+    # type: (str) -> iss.IsccMeta
     """
     Create ISCC Data-Code.
 
@@ -155,11 +156,11 @@ def code_data(fp):
     with open(fp, "rb") as stream:
         meta = ic.gen_data_code_v0(stream, bits=idk.sdk_opts.data_bits)
 
-    return idk.IsccMeta.parse_obj(meta)
+    return iss.IsccMeta.parse_obj(meta)
 
 
 def code_instance(fp):
-    # type: (str) -> idk.IsccMeta
+    # type: (str) -> iss.IsccMeta
     """
     Create ISCC Instance-Code.
 
@@ -175,4 +176,4 @@ def code_instance(fp):
     with open(fp, "rb") as stream:
         meta = ic.gen_instance_code_v0(stream, bits=idk.sdk_opts.instance_bits)
 
-    return idk.IsccMeta.parse_obj(meta)
+    return iss.IsccMeta.parse_obj(meta)
