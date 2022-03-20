@@ -1,10 +1,8 @@
 """*SDK main top-level functions*."""
-from os.path import basename
-
-import iscc_core as ic
 from PIL import Image
-import iscc_sdk as idk
+import iscc_core as ic
 import iscc_schema as iss
+import iscc_sdk as idk
 
 
 __all__ = [
@@ -136,7 +134,7 @@ def code_image(fp):
 
 
 def code_audio(fp):
-    # type: (str) -> idk.IsccMeta
+    # type: (str) -> iss.IsccMeta
     """
     Generate Content-Code Audio.
 
