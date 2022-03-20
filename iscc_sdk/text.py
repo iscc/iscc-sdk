@@ -9,8 +9,8 @@ __all__ = ["text_name_from_uri"]
 def text_name_from_uri(uri):
     # type: (str) -> str
     """
-    Extract "filename" part of an uri without file extension to be uses as fallback title for an
-    asset if no title information can be aquired.
+    Extract "filename" part of an uri without file extension to be used as fallback title for an
+    asset if no title information can be acquired.
 
     :param str uri: Url or file path
     :return: derived name (might be an empty string)

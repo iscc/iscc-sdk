@@ -13,13 +13,14 @@ __all__ = [
     "code_content",
     "code_image",
     "code_audio",
+    "code_video",
     "code_data",
     "code_instance",
 ]
 
 
 def code_iscc(fp):
-    # type: (str) -> idk.IsccMeta
+    # type: (str) -> iss.IsccMeta
     """
     Generate ISCC-CODE.
 
@@ -62,9 +63,15 @@ def code_meta(fp):
 
     mediatype, mode = idk.mediatype_and_mode(fp)
 
-    if mode != "image":
+    if mode == "image":
+        meta = idk.image_meta_extract(fp)
+    elif mode == "audio":
+        meta = idk.audio_meta_extract(fp)
+    elif mode == "video":
+        meta = idk.video_meta_extract(fp)
+    else:
         raise ValueError("Unsupported mediatype: {}".format(mediatype))
-    meta = idk.image_meta_extract(fp)
+
     if not meta.get("name"):
         meta["name"] = idk.text_name_from_uri(fp)
 
@@ -93,6 +100,10 @@ def code_content(fp):
 
     if mode == "image":
         cc = code_image(fp)
+    elif mode == "audio":
+        cc = code_audio(fp)
+    elif mode == "video":
+        cc = code_video(fp)
     else:
         raise ValueError(f"Unsupported mediatype: {mediatype}")
 
@@ -130,14 +141,30 @@ def code_audio(fp):
     Generate Content-Code Audio.
 
     :param str fp: Filepath used for Audio-Code creation.
-    :return: ISCC metadata including Image-Code.
+    :return: ISCC metadata including Audio-Code.
     :rtype: IsccMeta
     """
     meta = idk.audio_meta_extract(fp)
-    chroma = idk.audio_features_extract(fp)
-    code_obj = ic.gen_audio_code_v0(chroma["fingerprint"], bits=idk.sdk_opts.audio_bits)
+    features = idk.audio_features_extract(fp)
+    code_obj = ic.gen_audio_code_v0(features["fingerprint"], bits=idk.sdk_opts.audio_bits)
     meta.update(code_obj)
 
+    return iss.IsccMeta.parse_obj(meta)
+
+
+def code_video(fp):
+    # type: (str) -> iss.IsccMeta
+    """
+    Generate Content-Code Video.
+
+    :param str fp: Filepath used for Video-Code creation.
+    :return: ISCC metadata including Image-Code.
+    :rtype: IsccMeta
+    """
+    meta = idk.video_meta_extract(fp)
+    features = idk.video_features_extract(fp)
+    code_obj = ic.gen_video_code_v0(features, bits=idk.sdk_opts.video_bits)
+    meta.update(code_obj)
     return iss.IsccMeta.parse_obj(meta)
 
 

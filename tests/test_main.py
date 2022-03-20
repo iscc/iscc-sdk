@@ -20,6 +20,31 @@ def test_code_iscc_image(jpg_file):
     }
 
 
+def test_code_iscc_audio(mp3_file):
+    assert idk.code_iscc(mp3_file).dict() == {
+        "iscc": "ISCC:KIC2JKSX7OH5PBIENISKEJTS4TRKHYJBCZDNLQXYILWJHQAP3N3KPTQ",
+        "name": "Belly Button",
+        "datahash": "1e20ec93c00fdb76a7cec587e4a2bddfa8d0a0bac8110d0c7130c351ea07c366d626",
+        "duration": 15,
+        "filesize": 225707,
+        "mediatype": "audio/mpeg",
+        "metahash": "1e20c4933dc8c03ea58568159a1cbfb04132c7db93b6b4cd025ffd4db37f52a4756f",
+        "mode": "audio",
+    }
+
+
+def test_code_iscc_video(mp4_file):
+    assert idk.code_iscc(mp4_file).dict() == {
+        "iscc": "ISCC:KMCV6UK6BSXJ3I4GLYHIH5A5DNZPYBWQO33FNHPQFOOUCLLW3HKRNUA",
+        "name": "Kali by Anokato - Spiral Sessions 2019",
+        "datahash": "1e209d412d76d9d516d07bb60f1ab3c1a5c1b176ed4f1cec94c96222a5d013ec3e38",
+        "filesize": 2161914,
+        "mediatype": "video/mp4",
+        "metahash": "1e2096c0a53475a186ce37622aba7ba70651fc62cc8150f59eee6d17dc16d9bfbf25",
+        "mode": "video",
+    }
+
+
 def test_code_meta_image(jpg_file):
     assert idk.code_meta(jpg_file).dict() == {
         "iscc": "ISCC:AAAWRY3VY6R5SNV4",
@@ -28,6 +53,23 @@ def test_code_meta_image(jpg_file):
         "width": 200,
         "height": 133,
         "metahash": "1e209ce5052a03004657d8657167f53812718e9426d85b4cdd5106ef3d87412e6f64",
+    }
+
+
+def test_code_meta_audio(mp3_file):
+    assert idk.code_meta(mp3_file).dict() == {
+        "iscc": "ISCC:AAA2JKSX7OH5PBIE",
+        "name": "Belly Button",
+        "duration": 15,
+        "metahash": "1e20c4933dc8c03ea58568159a1cbfb04132c7db93b6b4cd025ffd4db37f52a4756f",
+    }
+
+
+def test_code_meta_video(mp4_file):
+    assert idk.code_meta(mp4_file).dict() == {
+        "iscc": "ISCC:AAAV6UK6BSXJ3I4G",
+        "name": "Kali by Anokato - Spiral Sessions 2019",
+        "metahash": "1e2096c0a53475a186ce37622aba7ba70651fc62cc8150f59eee6d17dc16d9bfbf25",
     }
 
 
@@ -108,6 +150,13 @@ def test_code_image(jpg_file):
         "AsaHymnqwDPPlX46x3Xy5rHuPadXFaAxJNAf7NeM5WWcM9MCs3BOpXUVIqfr+x9Igy/FehT0vBRAh"
         "NP+u6v9LEZRqfbxADwwWRSEk6Io4VSGX5LpRVqMLCG+eYAAA",
         "width": 200,
+    }
+
+
+def test_code_video(mp4_file):
+    assert idk.code_video(mp4_file).dict() == {
+        "iscc": "ISCC:EMAV4DUD6QORW4X4",
+        "name": "Kali by Anokato - Spiral Sessions 2019",
     }
 
 
