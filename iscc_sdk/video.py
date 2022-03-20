@@ -47,20 +47,28 @@ def video_meta_extract(fp):
 
     result = subprocess.run(cmd, capture_output=True, check=True)
     text = result.stdout.decode(sys.stdout.encoding, errors="ignore")
+
     mapped = dict()
     for line in text.splitlines(keepends=False):
         if not line.startswith(";FFMETA"):
             key, value = line.split("=", 1)
             mapped_field = VIDEO_META_MAP.get(key.lower())
             if mapped_field:
-                mapped[mapped_field] = value
+                mapped[mapped_field] = (
+                    value.replace(r"\=", "=")
+                    .replace(r"\;", ";")
+                    .replace(r"\#", "#")
+                    .replace(r"\;", ";")
+                    .replace(r"\\n", "\n")
+                    .replace(r"\\", "\\")
+                )
     return mapped
 
 
 def video_meta_embed(fp, meta):
     # type: (str, iss.IsccMeta) -> str
     """
-    Embed metadata into video.
+    Embed metadata into a copy of the video file.
 
     Supported fields: name, description, meta, creator, license, aquire
 
@@ -80,15 +88,24 @@ def video_meta_embed(fp, meta):
         "acquire": "acquire",
     }
 
-    # TODO Escape metadata:
     # Metadata keys or values containing special characters (‘=’, ‘;’, ‘#’, ‘\’ and a newline)
     # must be escaped with a backslash ‘\’.
+    escape = str.maketrans(
+        {
+            "=": r"\=",
+            ";": r"\;",
+            "#": r"\#",
+            "\\": r"\\",
+            "\n": r"\\n",
+        }
+    )
 
     # Prepare metadata file
     cmdf = ";FFMETADATA1\n"
     for field in write_map.keys():
         value = getattr(meta, field)
         if value:
+            value = value.translate(escape)
             cmdf += f"{write_map[field]}={value}\n"
 
     # Create temp filepaths

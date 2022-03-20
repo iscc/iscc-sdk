@@ -45,3 +45,15 @@ def test_video_metadata_embed_mov(mov_file):
         "acquire": "https://example.com/buy",
         "rights": "Copyright Notice",
     }
+
+
+def test_video_metadata_escaping(mp4_file):
+    meta = iss.IsccMeta(
+        name="Some # Name",
+        description="Multi\nLine\n\nDescription with ; and other = crazy characters\n",
+    )
+    fp = idk.video_meta_embed(mp4_file, meta)
+    assert idk.video_meta_extract(fp) == dict(
+        name="Some # Name",
+        description="Multi\nLine\n\nDescription with ; and other = crazy characters\n",
+    )
