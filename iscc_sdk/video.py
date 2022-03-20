@@ -1,8 +1,10 @@
 """*Video handling module*"""
+import io
 import subprocess
 import sys
 import tempfile
 from os.path import join, basename
+from PIL import Image, ImageEnhance
 import iscc_sdk as idk
 import iscc_schema as iss
 
@@ -10,6 +12,7 @@ import iscc_schema as iss
 __all__ = [
     "video_meta_extract",
     "video_meta_embed",
+    "video_thumbnail",
 ]
 
 VIDEO_META_MAP = {
@@ -135,3 +138,34 @@ def video_meta_embed(fp, meta):
     ]
     subprocess.run(cmd, capture_output=True, check=True)
     return videofile
+
+
+def video_thumbnail(fp):
+    # type: (str) -> Image.Image
+    """
+    Create a thumbnail for a video.
+
+    :param str fp: Filepath to video file.
+    :return: Raw PNG byte data
+    :rtype: bytes
+    """
+    size = idk.sdk_opts.image_thumbnail_size
+
+    cmd = [
+        idk.ffmpeg_bin(),
+        "-i",
+        fp,
+        "-vf",
+        f"thumbnail,scale={size}:-1",
+        "-frames:v",
+        "1",
+        "-c:v",
+        "png",
+        "-f",
+        "image2pipe",
+        "-",
+    ]
+
+    result = subprocess.run(cmd, capture_output=True)
+    img_obj = Image.open(io.BytesIO(result.stdout))
+    return ImageEnhance.Sharpness(img_obj.convert("RGB")).enhance(1.4)

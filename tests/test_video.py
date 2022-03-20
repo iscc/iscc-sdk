@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 import os
 
+from PIL import Image
+
 import iscc_sdk as idk
 import iscc_schema as iss
 
@@ -62,3 +64,8 @@ def test_video_metadata_escaping(mp4_file):
         description="Multi\nLine\n\nDescription with ; and other = crazy characters\n",
     )
     os.remove(new_file)
+
+
+def test_video_thumbnail(mp4_file):
+    thumb = idk.video_thumbnail(mp4_file)
+    assert isinstance(thumb, Image.Image)
