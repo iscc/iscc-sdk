@@ -10,7 +10,7 @@ repository = "https://github.com/iscc/iscc-sdk"
 keywords=["iscc", "identifier", "media", "content", "hash", "blockchain", "similarity"]
 
 [tool.poetry.dependencies]
-python = ">=3.7,<4.0"
+python = ">=3.8,<4.0"
 cython = "^0.29"
 iscc-core = "^0.2"
 iscc-schema = "^0.3"
@@ -21,6 +21,7 @@ platformdirs = "^2.5"
 jmespath = "^1.0"
 Pillow = "^9.0"
 pytaglib = "^1.5"
+numpy = "^1.22.3"
 
 [tool.poetry.dev-dependencies]
 pytest = "^7.0"

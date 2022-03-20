@@ -1,9 +1,15 @@
 """*Video handling module*"""
+import os
+from typing import Sequence, Tuple, List
+
+from loguru import logger as log
 import io
 import subprocess
 import sys
 import tempfile
 from os.path import join, basename
+from pathlib import Path
+from secrets import token_hex
 from PIL import Image, ImageEnhance
 import iscc_sdk as idk
 import iscc_schema as iss
@@ -13,6 +19,8 @@ __all__ = [
     "video_meta_extract",
     "video_meta_embed",
     "video_thumbnail",
+    "video_mp7sig_extract",
+    "video_features_extract",
 ]
 
 VIDEO_META_MAP = {
@@ -169,3 +177,42 @@ def video_thumbnail(fp):
     result = subprocess.run(cmd, capture_output=True)
     img_obj = Image.open(io.BytesIO(result.stdout))
     return ImageEnhance.Sharpness(img_obj.convert("RGB")).enhance(1.4)
+
+
+def video_features_extract(fp):
+    # type: (str) -> List[Tuple[int, ...]]
+    """
+    Extract video features.
+
+    :param str fp: Filepath to video file.
+    :return: A sequence of frame signatures.
+    :rtype: Sequence[Tuple[int, ...]]
+    """
+    sig = video_mp7sig_extract(fp)
+    frames = idk.read_mp7_signature(sig)
+    return [tuple(frame.vector.tolist()) for frame in frames]
+
+
+def video_mp7sig_extract(fp):
+    # type: (str) -> bytes
+    """Extract MPEG-7 Video Signature.
+
+    :param str fp: Filepath to video file.
+    :return: raw signature data
+    :rtype: bytes
+    """
+
+    sigfile_path = Path(tempfile.mkdtemp(), token_hex(16) + ".bin")
+    sigfile_path_escaped = sigfile_path.as_posix().replace(":", "\\\\:")
+
+    # Extract MP7 Signature
+    vf = f"signature=format=binary:filename={sigfile_path_escaped}"
+    vf = f"fps=fps={idk.sdk_opts.video_fps}," + vf
+    cmd = [idk.ffmpeg_bin()]
+    cmd.extend(["-i", fp, "-vf", vf, "-f", "null", "-"])
+    subprocess.run(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=True)
+
+    with open(sigfile_path, "rb") as sig:
+        sigdata = sig.read()
+    os.remove(sigfile_path)
+    return sigdata

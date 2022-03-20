@@ -1,4 +1,6 @@
 """*SDK configuration and options*."""
+from typing import Optional
+
 from iscc_core.options import CoreOptions
 from pydantic import Field
 
@@ -28,6 +30,11 @@ class SdkOptions(CoreOptions):
 
     image_thumbnail_quality: int = Field(
         60, description="Thumbnail image compression setting (0-100)"
+    )
+
+    video_fps: int = Field(
+        5,
+        description="Frames per second to process for video hash (ignored when 0).",
     )
 
 

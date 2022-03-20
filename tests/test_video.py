@@ -69,3 +69,13 @@ def test_video_metadata_escaping(mp4_file):
 def test_video_thumbnail(mp4_file):
     thumb = idk.video_thumbnail(mp4_file)
     assert isinstance(thumb, Image.Image)
+
+
+def test_video_mp7sig_extract(mp4_file):
+    sig = idk.video_mp7sig_extract(mp4_file)
+    assert sig[-32:].hex() == "9ef43526febb8d3e674975584ad6812ccc144cba28b3e134cd173888449cf51e"
+
+
+def test_video_features_extract(mp4_file):
+    features = idk.video_features_extract(mp4_file)
+    assert features[0][:20] == (0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0)
