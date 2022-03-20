@@ -188,6 +188,7 @@ def video_features_extract(fp):
     :return: A sequence of frame signatures.
     :rtype: Sequence[Tuple[int, ...]]
     """
+    # TODO use confidence value to improve simililarity hash.
     sig = video_mp7sig_extract(fp)
     frames = idk.read_mp7_signature(sig)
     return [tuple(frame.vector.tolist()) for frame in frames]
