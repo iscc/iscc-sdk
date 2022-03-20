@@ -1,9 +1,13 @@
 """*Audio handdling module*."""
+import shutil
+import tempfile
+
 from loguru import logger as log
 import json
-import iscc_sdk as idk
 import subprocess
 import taglib
+import iscc_schema as iss
+import iscc_sdk as idk
 
 
 __all__ = [
@@ -65,15 +69,18 @@ def audio_meta_extract(fp):
 
 
 def audio_meta_embed(fp, meta):
-    # type: (str, idk.IsccMeta) -> None
+    # type: (str, iss.IsccMeta) -> str
     """
-    Embed metadata into audio.
+    Embed metadata into a copy of the audio file.
 
-    :param str fp: Filepath to audio file
+    :param str fp: Filepath to source audio file
     :param IsccMeta meta: Metadata to embed into audio file
-    :return: None
+    :return: Filepath to new video file with updated metadata
+    :rtype: str
     """
-    obj = taglib.File(fp)
+    tdir = tempfile.mkdtemp()
+    tfile = shutil.copy(fp, tdir)
+    obj = taglib.File(tfile)
     if meta.name:
         obj.tags["ISCC:TITLE"] = [meta.name]
     if meta.description:
@@ -86,6 +93,7 @@ def audio_meta_embed(fp, meta):
         obj.tags["ISCC:ACQUIRE"] = [meta.acquire]
     obj.save()
     obj.close()
+    return tfile
 
 
 def audio_features_extract(fp):

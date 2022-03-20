@@ -1,13 +1,12 @@
 """*Image handling module*."""
 import base64
 import io
-import os
+import shutil
 import sys
 import json
 import tempfile
 import subprocess
-from copy import copy
-from os.path import basename
+from os.path import basename, join
 from typing import Sequence
 import jmespath
 from iscc_schema import IsccMeta
@@ -156,13 +155,14 @@ def image_meta_extract(fp):
 
 
 def image_meta_embed(fp, meta):
-    # type: (str, idk.IsccMeta) -> None
+    # type: (str, idk.IsccMeta) -> str
     """
-    Embed metadata into image.
+    Embed metadata into a copy of the image file.
 
-    :param str fp: Filepath to image file
+    :param str fp: Filepath to source image file
     :param IsccMeta meta: Metadata to embed into image
-    :return: None
+    :return: Filepath to the new image file with updated metadata
+    :type: str
     """
     cmdf = "reg iscc http://purl.org/iscc/schema\n"
     cmdf += f"set Xmp.iscc.name {meta.name}\n"
@@ -176,13 +176,20 @@ def image_meta_embed(fp, meta):
         cmdf += f"set Xmp.plus.Licensor XmpText type=Bag\n"
         cmdf += f"set Xmp.plus.Licensor[1]/plus:LicensorURL XmpText {meta.acquire}\n"
 
-    with tempfile.NamedTemporaryFile("w+b", delete=False) as outf:
-        metafilepath = copy(outf.name)
-        outf.write(cmdf.encode("utf-8"))
-    cmd = [idk.exiv2_bin(), "-m", metafilepath, fp]
-    log.debug(f"Embedding {meta.dict(exclude_unset=True)} in {basename(fp)}")
+    # Create temp filepaths
+    tempdir = tempfile.mkdtemp()
+    metafile = join(tempdir, "meta.txt")
+    imagefile = shutil.copy(fp, tempdir)
+
+    # Store metadata
+    with open(metafile, "wt", encoding="utf-8") as outf:
+        outf.write(cmdf)
+
+    # Embed metaadata
+    cmd = [idk.exiv2_bin(), "-m", metafile, imagefile]
+    log.debug(f"Embedding {meta.dict(exclude_unset=True)} in {basename(imagefile)}")
     subprocess.run(cmd, capture_output=True, check=True)
-    os.remove(metafilepath)
+    return imagefile
 
 
 def image_meta_delete(fp):

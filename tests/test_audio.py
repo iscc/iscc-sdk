@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+import os.path
+
 import iscc_sdk as idk
 import iscc_schema as iss
 
@@ -20,8 +22,9 @@ def test_audio_meta_extract(mp3_file):
 
 
 def test_audio_meta_embed_mp3(mp3_file):
-    assert idk.audio_meta_embed(mp3_file, meta) is None
-    assert idk.audio_meta_extract(mp3_file) == {
+    new_file = idk.audio_meta_embed(mp3_file, meta)
+    assert os.path.exists(new_file)
+    assert idk.audio_meta_extract(new_file) == {
         "acquire": "https://example.com/buy",
         "description": "Wörld",
         "duration": 15,
@@ -29,11 +32,13 @@ def test_audio_meta_embed_mp3(mp3_file):
         "meta": "somestring",
         "name": "Belly Button",
     }
+    os.remove(new_file)
 
 
 def test_audio_meta_embed_wav(wav_file):
-    assert idk.audio_meta_embed(wav_file, meta) is None
-    assert idk.audio_meta_extract(wav_file) == {
+    new_file = idk.audio_meta_embed(wav_file, meta)
+    assert os.path.exists(new_file)
+    assert idk.audio_meta_extract(new_file) == {
         "acquire": "https://example.com/buy",
         "description": "Wörld",
         "duration": 15,
@@ -41,6 +46,7 @@ def test_audio_meta_embed_wav(wav_file):
         "meta": "somestring",
         "name": "Belly Button!",
     }
+    os.remove(new_file)
 
 
 def test_audio_extract_features(mp3_file):
@@ -156,24 +162,16 @@ def test_audio_extract_features(mp3_file):
 
 
 def test_code_audio_mp3(mp3_file):
-    assert idk.code_audio(mp3_file) == {
-        "iscc": "ISCC:EIAWUJFCEZZOJYVD",
-        "acquire": "https://example.com/buy",
-        "description": "Wörld",
+    assert idk.code_audio(mp3_file).dict() == {
         "duration": 15,
-        "license": "https://example.com/license",
-        "meta": "somestring",
+        "iscc": "ISCC:EIAWUJFCEZZOJYVD",
         "name": "Belly Button",
     }
 
 
 def test_code_audio_wav(wav_file):
     assert idk.code_audio(wav_file).dict() == {
-        "acquire": "https://example.com/buy",
-        "description": "Wörld",
         "duration": 15,
         "iscc": "ISCC:EIAWUJFCEZZOJYVD",
-        "license": "https://example.com/license",
-        "meta": "somestring",
         "name": "Belly Button!",
     }

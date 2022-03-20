@@ -72,9 +72,9 @@ def video_meta_embed(fp, meta):
 
     Supported fields: name, description, meta, creator, license, aquire
 
-    :param str fp: Filepath to video file
-    :param IsccMeta meta: Metadata to embed into image
-    :return: Filepath to video file with updated metadata
+    :param str fp: Filepath to source video file
+    :param IsccMeta meta: Metadata to embed into video
+    :return: Filepath to new video file with updated metadata
     :rtype: str
     """
 

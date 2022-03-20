@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+import os.path
+
 from PIL import Image
 
 import iscc_sdk as idk
@@ -82,8 +84,9 @@ def test_image_meta_delete_png(png_file):
 
 
 def test_image_meta_embed_jpg(jpg_file):
-    assert idk.image_meta_embed(jpg_file, meta) is None
-    assert idk.image_meta_extract(jpg_file) == {
+    new_file = idk.image_meta_embed(jpg_file, meta)
+    assert os.path.exists(new_file)
+    assert idk.image_meta_extract(new_file) == {
         "acquire": "https://example.com/buy",
         "description": "Wörld",
         "height": 133,
@@ -92,11 +95,13 @@ def test_image_meta_embed_jpg(jpg_file):
         "name": "Hello",
         "width": 200,
     }
+    os.remove(new_file)
 
 
 def test_image_meta_embed_png(png_file):
-    assert idk.image_meta_embed(png_file, meta) is None
-    assert idk.image_meta_extract(png_file) == {
+    new_file = idk.image_meta_embed(png_file, meta)
+    assert os.path.exists(new_file)
+    assert idk.image_meta_extract(new_file) == {
         "acquire": "https://example.com/buy",
         "description": "Wörld",
         "height": 133,
@@ -105,6 +110,7 @@ def test_image_meta_embed_png(png_file):
         "name": "Hello",
         "width": 200,
     }
+    os.remove(new_file)
 
 
 def test_image_thumbnail():

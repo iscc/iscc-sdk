@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+import os
+
 import iscc_sdk as idk
 import iscc_schema as iss
 
@@ -28,6 +30,7 @@ def test_video_metadata_embed_mp4(mp4_file):
         "acquire": "https://example.com/buy",
         "rights": "Copyright Notice",
     }
+    os.remove(new_file)
 
 
 def test_video_metadata_extract_mov(mov_file):
@@ -45,6 +48,7 @@ def test_video_metadata_embed_mov(mov_file):
         "acquire": "https://example.com/buy",
         "rights": "Copyright Notice",
     }
+    os.remove(new_file)
 
 
 def test_video_metadata_escaping(mp4_file):
@@ -52,8 +56,9 @@ def test_video_metadata_escaping(mp4_file):
         name="Some # Name",
         description="Multi\nLine\n\nDescription with ; and other = crazy characters\n",
     )
-    fp = idk.video_meta_embed(mp4_file, meta)
-    assert idk.video_meta_extract(fp) == dict(
+    new_file = idk.video_meta_embed(mp4_file, meta)
+    assert idk.video_meta_extract(new_file) == dict(
         name="Some # Name",
         description="Multi\nLine\n\nDescription with ; and other = crazy characters\n",
     )
+    os.remove(new_file)
