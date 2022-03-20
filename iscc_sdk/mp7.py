@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from dataclasses import dataclass
 from fractions import Fraction
-from functools import cache
+from functools import lru_cache
 from typing import Tuple, List
 from bitarray import bitarray
 import bitarray
@@ -26,7 +26,7 @@ class Frame:
     confidence: int  # signature confidence, range: 0..255
 
 
-@cache
+@lru_cache(maxsize=None)
 def calc_byte_to_bit3():
     # type: () -> np.ndarray
     """
