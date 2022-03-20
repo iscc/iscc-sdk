@@ -26,7 +26,7 @@ class Frame:
     confidence: int  # signature confidence, range: 0..255
 
 
-@lru_cache(maxsize=None)
+@lru_cache
 def calc_byte_to_bit3():
     # type: () -> np.ndarray
     """
