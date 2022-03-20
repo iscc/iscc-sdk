@@ -1,5 +1,5 @@
 import pytest
-from iscc_samples import images, texts, audios
+from iscc_samples import images, texts, audios, videos
 import shutil
 from PIL import Image, ImageDraw
 
@@ -62,3 +62,17 @@ def png_obj_alpha(tmp_path_factory):
     draw = ImageDraw.Draw(img)
     draw.ellipse((25, 25, 75, 75), fill=(126, 126, 126))
     return img
+
+
+@pytest.fixture(scope="module")
+def mp4_file(tmp_path_factory):
+    dst = tmp_path_factory.mktemp("data") / "video.mp4"
+    shutil.copy(videos("mp4")[0], dst)
+    return dst.as_posix()
+
+
+@pytest.fixture(scope="module")
+def mov_file(tmp_path_factory):
+    dst = tmp_path_factory.mktemp("data") / "video.mov"
+    shutil.copy(videos("mov")[0], dst)
+    return dst.as_posix()

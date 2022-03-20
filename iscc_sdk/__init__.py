@@ -19,3 +19,4 @@ from iscc_sdk.main import *
 from iscc_sdk.text import *
 from iscc_sdk.ipfs import *
 from iscc_sdk.audio import *
+from iscc_sdk.video import *

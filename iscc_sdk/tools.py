@@ -20,6 +20,8 @@ from concurrent.futures import ThreadPoolExecutor
 __all__ = [
     "install",
     "fpcalc_bin",
+    "ffprobe_bin",
+    "ffmpeg_bin",
     "fpcalc_install",
     "exiv2_bin",
     "exiv2json_bin",
