@@ -162,7 +162,7 @@ def image_meta_embed(fp, meta):
     :param str fp: Filepath to source image file
     :param IsccMeta meta: Metadata to embed into image
     :return: Filepath to the new image file with updated metadata
-    :type: str
+    :rtype: str
     """
     cmdf = "reg iscc http://purl.org/iscc/schema\n"
     cmdf += f"set Xmp.iscc.name {meta.name}\n"

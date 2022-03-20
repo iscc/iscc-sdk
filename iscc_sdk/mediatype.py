@@ -150,7 +150,7 @@ def mediatype_clean(mime):
 
     Also removes semicolon separated encoding information.
 
-    :param Union[str, List] mime: Mediatype or list of mediatypes
+    :param str|List mime: Mediatype or list of mediatypes
     :return: Mediatype string
     :rtype: str
     """
