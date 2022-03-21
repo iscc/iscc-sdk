@@ -76,6 +76,8 @@ You may also want join our developer chat on Telegram at <https://t.me/iscc_dev>
 - Added video metadata embedding and extraction
 - Added custom exeptions
 - Changed embedding to create a new mediafile
+- Set filename on IsccMeta
+- Set @type on IsccMeta
 
 ### 0.3.0 - 2022-03-12
 - Added support for Audio-Code with metadata embedding/extraction
