@@ -69,6 +69,14 @@ You may also want join our developer chat on Telegram at <https://t.me/iscc_dev>
 
 ## Changelog
 
+### 0.4.0 - 2022-03-21
+- Added Text-Code generation
+- Added Video-Code generation
+- Added text document metadata extraction
+- Added video metadata embedding and extraction
+- Added custom exeptions
+- Changed embedding to create a new mediafile
+
 ### 0.3.0 - 2022-03-12
 - Added support for Audio-Code with metadata embedding/extraction
 

@@ -99,6 +99,7 @@ nav:
   - Overview: index.md
   - Main: main.md
   - Mediatype: mediatype.md
+  - Metadata: metadata.md
   - Image: image.md
   - Audio: audio.md
   - Video: video.md
