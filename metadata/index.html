@@ -12,14 +12,14 @@
         <meta name="author" content="Titusz Pan">
       
       
-        <link rel="canonical" href="https://sdk.iscc.codes/main/">
+        <link rel="canonical" href="https://sdk.iscc.codes/metadata/">
       
       <link rel="icon" href="../images/iscc-logo-icon-black.svg">
       <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.2.5">
     
     
       
-        <title>Main - ISCC - Software Development Kit</title>
+        <title>Metadata - ISCC - Software Development Kit</title>
       
     
     
@@ -77,7 +77,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#iscc-main-high-level-functions" class="md-skip">
+        <a href="#iscc-metadata-handling" class="md-skip">
           Skip to content
         </a>
       
@@ -111,7 +111,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Main
+              Metadata
             
           </span>
         </div>
@@ -211,12 +211,10 @@
         
   
   
-    
-  
 
 
   <li class="md-tabs__item">
-    <a href="./" class="md-tabs__link md-tabs__link--active">
+    <a href="../main/" class="md-tabs__link">
       Main
     </a>
   </li>
@@ -237,10 +235,12 @@
         
   
   
+    
+  
 
 
   <li class="md-tabs__item">
-    <a href="../metadata/" class="md-tabs__link">
+    <a href="./" class="md-tabs__link md-tabs__link--active">
       Metadata
     </a>
   </li>
@@ -366,108 +366,11 @@
 
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          Main
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../main/" class="md-nav__link">
         Main
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#iscc_sdk.main.code_iscc" class="md-nav__link">
-    code_iscc()
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#iscc_sdk.main.code_meta" class="md-nav__link">
-    code_meta()
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#iscc_sdk.main.code_content" class="md-nav__link">
-    code_content()
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#iscc_sdk.main.code_text" class="md-nav__link">
-    code_text()
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#iscc_sdk.main.code_image" class="md-nav__link">
-    code_image()
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#iscc_sdk.main.code_audio" class="md-nav__link">
-    code_audio()
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#iscc_sdk.main.code_video" class="md-nav__link">
-    code_video()
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#iscc_sdk.main.code_data" class="md-nav__link">
-    code_data()
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#iscc_sdk.main.code_instance" class="md-nav__link">
-    code_instance()
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -493,11 +396,59 @@
 
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="../metadata/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Metadata
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         Metadata
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#iscc_sdk.metadata.extract_metadata" class="md-nav__link">
+    extract_metadata()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#iscc_sdk.metadata.embed_metadata" class="md-nav__link">
+    embed_metadata()
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -574,13 +525,13 @@
             <article class="md-content__inner md-typeset">
               
                 
-<a href="https://github.com/iscc/iscc-sdk/edit/main/docs/main.md" title="Edit this page" class="md-content__button md-icon">
+<a href="https://github.com/iscc/iscc-sdk/edit/main/docs/metadata.md" title="Edit this page" class="md-content__button md-icon">
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
 </a>
 
 
 
-<h1 id="iscc-main-high-level-functions"><strong>ISCC</strong> - Main High-Level Functions<a class="headerlink" href="#iscc-main-high-level-functions" title="Permanent link">#</a></h1>
+<h1 id="iscc-metadata-handling"><strong>ISCC</strong> - Metadata Handling<a class="headerlink" href="#iscc-metadata-handling" title="Permanent link">#</a></h1>
 
 
   <div class="doc doc-object doc-module">
@@ -588,7 +539,7 @@
 
     <div class="doc doc-contents first">
 
-      <p><em>SDK main top-level functions</em>.</p>
+      <p><em>Metadata handling functions</em></p>
 
 
 
@@ -600,20 +551,25 @@
 
 
 
+
+
+
+
+
+
   <div class="doc doc-object doc-function">
 
 
 
-<h3 id="iscc_sdk.main.code_iscc" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">code_iscc</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span></code>
+<h3 id="iscc_sdk.metadata.extract_metadata" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">extract_metadata</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span></code>
 
 
-<a href="#iscc_sdk.main.code_iscc" class="headerlink" title="Permanent link">#</a></h3>
+<a href="#iscc_sdk.metadata.extract_metadata" class="headerlink" title="Permanent link">#</a></h3>
 
     <div class="doc doc-contents ">
 
-      <p>Generate ISCC-CODE.</p>
-<p>The ISCC-CODE is a composite of Meta, Content, Data and Instance Codes.</p>
+      <p>Extract metadata from file.</p>
 
 <p><strong>Parameters:</strong></p>
 <table>
@@ -629,7 +585,7 @@
       <tr>
         <td><code>fp</code></td>
         <td><code>str</code></td>
-        <td><p>Filepath used for ISCC-CODE creation.</p></td>
+        <td><p>Filepath to media file.</p></td>
         <td><em>required</em></td>
       </tr>
   </tbody>
@@ -645,7 +601,7 @@
   <tbody>
     <tr>
       <td><code>IsccMeta</code></td>
-      <td><p>ISCC metadata including ISCC-CODE and merged metadata from ISCC-UNITs.</p></td>
+      <td><p>Metadata mapped to IsccMeta schema</p></td>
     </tr>
   </tbody>
 </table>
@@ -661,15 +617,15 @@
 
 
 
-<h3 id="iscc_sdk.main.code_meta" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">code_meta</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span></code>
+<h3 id="iscc_sdk.metadata.embed_metadata" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">embed_metadata</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="n">meta</span><span class="p">)</span></code>
 
 
-<a href="#iscc_sdk.main.code_meta" class="headerlink" title="Permanent link">#</a></h3>
+<a href="#iscc_sdk.metadata.embed_metadata" class="headerlink" title="Permanent link">#</a></h3>
 
     <div class="doc doc-contents ">
 
-      <p>Generate Meta-Code from digital asset.</p>
+      <p>Embed metadata into a copy of the media file and return path to updated file.</p>
 
 <p><strong>Parameters:</strong></p>
 <table>
@@ -685,63 +641,13 @@
       <tr>
         <td><code>fp</code></td>
         <td><code>str</code></td>
-        <td><p>Filepath used for Meta-Code creation.</p></td>
+        <td><p>Filepath to source media file</p></td>
         <td><em>required</em></td>
       </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>IsccMeta</code></td>
-      <td><p>ISCC metadata including Meta-Code and extracted metadata fields.</p></td>
-    </tr>
-  </tbody>
-</table>
-    </div>
-
-  </div>
-
-
-
-
-
-  <div class="doc doc-object doc-function">
-
-
-
-<h3 id="iscc_sdk.main.code_content" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">code_content</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span></code>
-
-
-<a href="#iscc_sdk.main.code_content" class="headerlink" title="Permanent link">#</a></h3>
-
-    <div class="doc doc-contents ">
-
-      <p>Detect mediatype and create corresponding Content-Code.</p>
-
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
       <tr>
-        <td><code>fp</code></td>
-        <td><code>str</code></td>
-        <td><p>Filepath</p></td>
+        <td><code>meta</code></td>
+        <td><code>IsccMeta</code></td>
+        <td><p>Metadata to embed into media file</p></td>
         <td><em>required</em></td>
       </tr>
   </tbody>
@@ -756,349 +662,8 @@
   </thead>
   <tbody>
     <tr>
-      <td><code>IsccMeta</code></td>
-      <td><p>Content-Code wrapped in ISCC metadata.</p></td>
-    </tr>
-  </tbody>
-</table>
-    </div>
-
-  </div>
-
-
-
-
-
-  <div class="doc doc-object doc-function">
-
-
-
-<h3 id="iscc_sdk.main.code_text" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">code_text</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span></code>
-
-
-<a href="#iscc_sdk.main.code_text" class="headerlink" title="Permanent link">#</a></h3>
-
-    <div class="doc doc-contents ">
-
-      <p>Generate Content-Code Text.</p>
-
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
-      <tr>
-        <td><code>fp</code></td>
-        <td><code>str</code></td>
-        <td><p>Filepath used for Text-Code creation.</p></td>
-        <td><em>required</em></td>
-      </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>IsccMeta</code></td>
-      <td><p>ISCC metadata including Text-Code.</p></td>
-    </tr>
-  </tbody>
-</table>
-    </div>
-
-  </div>
-
-
-
-
-
-  <div class="doc doc-object doc-function">
-
-
-
-<h3 id="iscc_sdk.main.code_image" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">code_image</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span></code>
-
-
-<a href="#iscc_sdk.main.code_image" class="headerlink" title="Permanent link">#</a></h3>
-
-    <div class="doc doc-contents ">
-
-      <p>Generate Content-Code Image.</p>
-
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
-      <tr>
-        <td><code>fp</code></td>
-        <td><code>str</code></td>
-        <td><p>Filepath used for Image-Code creation.</p></td>
-        <td><em>required</em></td>
-      </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>IsccMeta</code></td>
-      <td><p>ISCC metadata including Image-Code.</p></td>
-    </tr>
-  </tbody>
-</table>
-    </div>
-
-  </div>
-
-
-
-
-
-  <div class="doc doc-object doc-function">
-
-
-
-<h3 id="iscc_sdk.main.code_audio" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">code_audio</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span></code>
-
-
-<a href="#iscc_sdk.main.code_audio" class="headerlink" title="Permanent link">#</a></h3>
-
-    <div class="doc doc-contents ">
-
-      <p>Generate Content-Code Audio.</p>
-
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
-      <tr>
-        <td><code>fp</code></td>
-        <td><code>str</code></td>
-        <td><p>Filepath used for Audio-Code creation.</p></td>
-        <td><em>required</em></td>
-      </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>IsccMeta</code></td>
-      <td><p>ISCC metadata including Audio-Code.</p></td>
-    </tr>
-  </tbody>
-</table>
-    </div>
-
-  </div>
-
-
-
-
-
-  <div class="doc doc-object doc-function">
-
-
-
-<h3 id="iscc_sdk.main.code_video" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">code_video</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span></code>
-
-
-<a href="#iscc_sdk.main.code_video" class="headerlink" title="Permanent link">#</a></h3>
-
-    <div class="doc doc-contents ">
-
-      <p>Generate Content-Code Video.</p>
-
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
-      <tr>
-        <td><code>fp</code></td>
-        <td><code>str</code></td>
-        <td><p>Filepath used for Video-Code creation.</p></td>
-        <td><em>required</em></td>
-      </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>IsccMeta</code></td>
-      <td><p>ISCC metadata including Image-Code.</p></td>
-    </tr>
-  </tbody>
-</table>
-    </div>
-
-  </div>
-
-
-
-
-
-  <div class="doc doc-object doc-function">
-
-
-
-<h3 id="iscc_sdk.main.code_data" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">code_data</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span></code>
-
-
-<a href="#iscc_sdk.main.code_data" class="headerlink" title="Permanent link">#</a></h3>
-
-    <div class="doc doc-contents ">
-
-      <p>Create ISCC Data-Code.</p>
-<p>The Data-Code is a similarity preserving hash of the input data.</p>
-
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
-      <tr>
-        <td><code>fp</code></td>
-        <td><code>str</code></td>
-        <td><p>Filepath used for Data-Code creation.</p></td>
-        <td><em>required</em></td>
-      </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>IsccMeta</code></td>
-      <td><p>ISCC metadata including Data-Code.</p></td>
-    </tr>
-  </tbody>
-</table>
-    </div>
-
-  </div>
-
-
-
-
-
-  <div class="doc doc-object doc-function">
-
-
-
-<h3 id="iscc_sdk.main.code_instance" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">code_instance</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span></code>
-
-
-<a href="#iscc_sdk.main.code_instance" class="headerlink" title="Permanent link">#</a></h3>
-
-    <div class="doc doc-contents ">
-
-      <p>Create ISCC Instance-Code.</p>
-<p>The Instance-Code is prefix of a cryptographic hash (blake3) of the input data.
-It´s purpose is to serve as a checksum that detects even minimal changes
-to the data of the referenced media asset. For cryptographicaly secure integrity
-checking a full 256-bit multihash is provided with the <code>datahash</code> field.</p>
-
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
-      <tr>
-        <td><code>fp</code></td>
-        <td><code>str</code></td>
-        <td><p>Filepath used for Instance-Code creation.</p></td>
-        <td><em>required</em></td>
-      </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>IsccMeta</code></td>
-      <td><p>ISCC metadata including Instance-Code, datahash and filesize.</p></td>
+      <td><code>str|None</code></td>
+      <td><p>Filepath to the new media file with embedded metadata (None if no embedding supported)</p></td>
     </tr>
   </tbody>
 </table>
@@ -1128,7 +693,7 @@ checking a full 256-bit multihash is provided with the <code>datahash</code> fie
     <nav class="md-footer__inner md-grid" aria-label="Footer">
       
         
-        <a href=".." class="md-footer__link md-footer__link--prev" aria-label="Previous: Overview" rel="prev">
+        <a href="../mediatype/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Mediatype" rel="prev">
           <div class="md-footer__button md-icon">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
           </div>
@@ -1137,20 +702,20 @@ checking a full 256-bit multihash is provided with the <code>datahash</code> fie
               <span class="md-footer__direction">
                 Previous
               </span>
-              Overview
+              Mediatype
             </div>
           </div>
         </a>
       
       
         
-        <a href="../mediatype/" class="md-footer__link md-footer__link--next" aria-label="Next: Mediatype" rel="next">
+        <a href="../image/" class="md-footer__link md-footer__link--next" aria-label="Next: Image" rel="next">
           <div class="md-footer__title">
             <div class="md-ellipsis">
               <span class="md-footer__direction">
                 Next
               </span>
-              Mediatype
+              Image
             </div>
           </div>
           <div class="md-footer__button md-icon">

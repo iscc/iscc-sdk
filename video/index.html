@@ -238,6 +238,18 @@
 
 
   <li class="md-tabs__item">
+    <a href="../metadata/" class="md-tabs__link">
+      Metadata
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
     <a href="../image/" class="md-tabs__link">
       Image
     </a>
@@ -386,6 +398,21 @@
   
   
     <li class="md-nav__item">
+      <a href="../metadata/" class="md-nav__link">
+        Metadata
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../image/" class="md-nav__link">
         Image
       </a>
@@ -459,6 +486,27 @@
         <li class="md-nav__item">
   <a href="#iscc_sdk.video.video_meta_embed" class="md-nav__link">
     video_meta_embed()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#iscc_sdk.video.video_thumbnail" class="md-nav__link">
+    video_thumbnail()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#iscc_sdk.video.video_features_extract" class="md-nav__link">
+    video_features_extract()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#iscc_sdk.video.video_mp7sig_extract" class="md-nav__link">
+    video_mp7sig_extract()
   </a>
   
 </li>
@@ -635,6 +683,174 @@
     <tr>
       <td><code>str</code></td>
       <td><p>Filepath to new video file with updated metadata</p></td>
+    </tr>
+  </tbody>
+</table>
+    </div>
+
+  </div>
+
+
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h3 id="iscc_sdk.video.video_thumbnail" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">video_thumbnail</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span></code>
+
+
+<a href="#iscc_sdk.video.video_thumbnail" class="headerlink" title="Permanent link">#</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Create a thumbnail for a video.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>fp</code></td>
+        <td><code>str</code></td>
+        <td><p>Filepath to video file.</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>bytes</code></td>
+      <td><p>Raw PNG byte data</p></td>
+    </tr>
+  </tbody>
+</table>
+    </div>
+
+  </div>
+
+
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h3 id="iscc_sdk.video.video_features_extract" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">video_features_extract</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span></code>
+
+
+<a href="#iscc_sdk.video.video_features_extract" class="headerlink" title="Permanent link">#</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Extract video features.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>fp</code></td>
+        <td><code>str</code></td>
+        <td><p>Filepath to video file.</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>Sequence[Tuple[int, ...]]</code></td>
+      <td><p>A sequence of frame signatures.</p></td>
+    </tr>
+  </tbody>
+</table>
+    </div>
+
+  </div>
+
+
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h3 id="iscc_sdk.video.video_mp7sig_extract" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">video_mp7sig_extract</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span></code>
+
+
+<a href="#iscc_sdk.video.video_mp7sig_extract" class="headerlink" title="Permanent link">#</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Extract MPEG-7 Video Signature.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>fp</code></td>
+        <td><code>str</code></td>
+        <td><p>Filepath to video file.</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>bytes</code></td>
+      <td><p>raw signature data</p></td>
     </tr>
   </tbody>
 </table>

@@ -240,6 +240,18 @@
 
 
   <li class="md-tabs__item">
+    <a href="metadata/" class="md-tabs__link">
+      Metadata
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
     <a href="image/" class="md-tabs__link">
       Image
     </a>
@@ -432,6 +444,13 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#040-2022-03-21" class="md-nav__link">
+    0.4.0 - 2022-03-21
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#030-2022-03-12" class="md-nav__link">
     0.3.0 - 2022-03-12
   </a>
@@ -490,6 +509,21 @@
     <li class="md-nav__item">
       <a href="mediatype/" class="md-nav__link">
         Mediatype
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="metadata/" class="md-nav__link">
+        Metadata
       </a>
     </li>
   
@@ -575,8 +609,10 @@
 
 <h1 id="iscc-software-development-kit">ISCC - Software Development Kit<a class="headerlink" href="#iscc-software-development-kit" title="Permanent link">#</a></h1>
 <p><a href="https://github.com/iscc/iscc-sdk/actions/workflows/ci.yml"><img alt="Build" src="https://github.com/iscc/iscc-sdk/actions/workflows/ci.yml/badge.svg" /></a>
+<a href="https://pypi.python.org/pypi/iscc-sdk/"><img alt="Version" src="https://img.shields.io/pypi/v/iscc-sdk.svg" /></a>
 <a href="https://codecov.io/gh/iscc/iscc-sdk"><img alt="Coverage" src="https://codecov.io/gh/iscc/iscc-sdk/branch/main/graph/badge.svg?token=7BJ7HJU815" /></a>
-<a href="https://www.codacy.com/gh/iscc/iscc-sdk/dashboard"><img alt="Quality" src="https://app.codacy.com/project/badge/Grade/aa791abf9d824f6aa65a8f86b9222c90" /></a></p>
+<a href="https://www.codacy.com/gh/iscc/iscc-sdk/dashboard"><img alt="Quality" src="https://app.codacy.com/project/badge/Grade/aa791abf9d824f6aa65a8f86b9222c90" /></a>
+<a href="https://pepy.tech/project/iscc-sdk"><img alt="Downloads" src="https://pepy.tech/badge/iscc-sdk" /></a></p>
 <p><code>iscc-sdk</code> is a Python development kit for creating and managing <a href="https://core.iscc.codes">ISCC</a> (<em>International Standard Content Code</em>)</p>
 <h2 id="what-is-an-iscc">What is an ISCC<a class="headerlink" href="#what-is-an-iscc" title="Permanent link">#</a></h2>
 <p>The ISCC is a similarity preserving identifier for digital media assets.</p>
@@ -617,6 +653,17 @@ other backward incompatible changes are to be expected until the upcoming v1.5 s
 <p>Pull requests are welcome. For significant changes, please open an issue first to discuss your plans. Please make sure to update tests as appropriate.</p>
 <p>You may also want join our developer chat on Telegram at <a href="https://t.me/iscc_dev">https://t.me/iscc_dev</a>.</p>
 <h2 id="changelog">Changelog<a class="headerlink" href="#changelog" title="Permanent link">#</a></h2>
+<h3 id="040-2022-03-21">0.4.0 - 2022-03-21<a class="headerlink" href="#040-2022-03-21" title="Permanent link">#</a></h3>
+<ul>
+<li>Added Text-Code generation</li>
+<li>Added Video-Code generation</li>
+<li>Added text document metadata extraction</li>
+<li>Added video metadata embedding and extraction</li>
+<li>Added custom exeptions</li>
+<li>Changed embedding to create a new mediafile</li>
+<li>Set filename on IsccMeta</li>
+<li>Set @type on IsccMeta</li>
+</ul>
 <h3 id="030-2022-03-12">0.3.0 - 2022-03-12<a class="headerlink" href="#030-2022-03-12" title="Permanent link">#</a></h3>
 <ul>
 <li>Added support for Audio-Code with metadata embedding/extraction</li>
