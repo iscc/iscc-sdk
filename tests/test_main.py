@@ -1,7 +1,17 @@
-import pytest
-
 import iscc_sdk as idk
-from iscc_samples import texts
+
+
+def test_code_iscc_text(pdf_file):
+    assert idk.code_iscc(pdf_file).dict() == {
+        "name": "title from metadata",
+        "iscc": "ISCC:KACV5NAQXBCHCWFWMNALVJHBLB7X7IFU4H2JIVUSWF5NLR6362TFHDY",
+        "characters": 16995,
+        "datahash": "1e207ad5c7dbf6a6538f15fd0439e0dc5ba03a043ea23f072aa4e2ba830811bdb5f0",
+        "filesize": 188280,
+        "mediatype": "application/pdf",
+        "metahash": "1e201da548c5285ed35f293c3e22c2f050e037643aae8cf9244b532a162ff5031f52",
+        "mode": "text",
+    }
 
 
 def test_code_iscc_image(jpg_file):
@@ -83,12 +93,6 @@ def test_code_meta_image_no_meta(bmp_file):
     }
 
 
-def test_code_meta_raises():
-    fp = texts()[0].as_posix()
-    with pytest.raises(ValueError):
-        idk.code_meta(fp)
-
-
 def test_code_content(jpg_file):
     assert idk.code_content(jpg_file).dict() == {
         "creator": "Some Cat Lover",
@@ -102,9 +106,13 @@ def test_code_content(jpg_file):
     }
 
 
-def test_code_content_raises(doc_file):
-    with pytest.raises(ValueError):
-        idk.code_content(doc_file)
+def test_code_text(docx_file):
+    assert idk.code_text(docx_file).dict() == {
+        "iscc": "ISCC:EAAQMBEYQF6457DP",
+        "name": "title from metadata",
+        "creator": "titusz",
+        "characters": 4951,
+    }
 
 
 def test_code_image(jpg_file):

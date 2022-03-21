@@ -59,13 +59,13 @@ def video_meta_extract(fp):
     result = subprocess.run(cmd, capture_output=True, check=True)
     text = result.stdout.decode(sys.stdout.encoding, errors="ignore")
 
-    mapped = dict()
+    # parse metadata
+    meta = dict()
     for line in text.splitlines(keepends=False):
         if not line.startswith(";FFMETA"):
             key, value = line.split("=", 1)
-            mapped_field = VIDEO_META_MAP.get(key.lower())
-            if mapped_field:
-                mapped[mapped_field] = (
+            if value:
+                meta[key.lower()] = (
                     value.replace(r"\=", "=")
                     .replace(r"\;", ";")
                     .replace(r"\#", "#")
@@ -73,6 +73,18 @@ def video_meta_extract(fp):
                     .replace(r"\\n", "\n")
                     .replace(r"\\", "\\")
                 )
+
+    # map metadata
+    mapped = dict()
+    done = set()
+    for tag, mapped_field in VIDEO_META_MAP.items():
+        if mapped_field in done:
+            continue
+        value = meta.get(tag)
+        if value:
+            log.debug(f"Mapping video metadata: {tag} -> {mapped_field} -> {value}")
+            mapped[mapped_field] = value
+            done.add(mapped_field)
     return mapped
 
 

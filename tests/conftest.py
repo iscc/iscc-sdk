@@ -76,3 +76,17 @@ def mov_file(tmp_path_factory):
     dst = tmp_path_factory.mktemp("data") / "video.mov"
     shutil.copy(videos("mov")[0], dst)
     return dst.as_posix()
+
+
+@pytest.fixture(scope="module")
+def docx_file(tmp_path_factory):
+    dst = tmp_path_factory.mktemp("data") / "text.docx"
+    shutil.copy(texts("docx")[0], dst)
+    return dst.as_posix()
+
+
+@pytest.fixture(scope="module")
+def pdf_file(tmp_path_factory):
+    dst = tmp_path_factory.mktemp("data") / "text.pdf"
+    shutil.copy(texts("pdf")[0], dst)
+    return dst.as_posix()

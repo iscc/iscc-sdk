@@ -56,7 +56,7 @@ def audio_meta_extract(fp):
             continue
         value = meta.get(tag)
         if value:
-            log.debug(f"Mapping metadata: {tag} -> {mapped_field} -> {value[0]}")
+            log.debug(f"Mapping audio metadata: {tag} -> {mapped_field} -> {value[0]}")
             mapped[mapped_field] = value[0]
             done.add(mapped_field)
     mapped["duration"] = obj.length

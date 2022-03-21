@@ -9,6 +9,7 @@ __all__ = [
     "code_iscc",
     "code_meta",
     "code_content",
+    "code_text",
     "code_image",
     "code_audio",
     "code_video",
@@ -67,8 +68,10 @@ def code_meta(fp):
         meta = idk.audio_meta_extract(fp)
     elif mode == "video":
         meta = idk.video_meta_extract(fp)
-    else:
-        raise ValueError("Unsupported mediatype: {}".format(mediatype))
+    elif mode == "text":
+        meta = idk.text_meta_extract(fp)
+    else:  # pragma nocover
+        raise ValueError(f"Unsupported mediatype {mediatype}")
 
     if not meta.get("name"):
         meta["name"] = idk.text_name_from_uri(fp)
@@ -102,13 +105,30 @@ def code_content(fp):
         cc = code_audio(fp)
     elif mode == "video":
         cc = code_video(fp)
-    else:
+    elif mode == "text":
+        cc = code_text(fp)
+    else:  # pragma nocover
         raise ValueError(f"Unsupported mediatype: {mediatype}")
 
     cc.mediatype = mediatype
     cc.mode = mode
 
     return cc
+
+
+def code_text(fp):
+    """
+    Generate Content-Code Text.
+
+    :param str fp: Filepath used for Text-Code creation.
+    :return: ISCC metadata including Text-Code.
+    :rtype: IsccMeta
+    """
+    meta = idk.text_meta_extract(fp)
+    text = idk.text_extract(fp)
+    code = ic.gen_text_code_v0(text, bits=idk.sdk_opts.text_bits)
+    meta.update(code)
+    return iss.IsccMeta.parse_obj(meta)
 
 
 def code_image(fp):

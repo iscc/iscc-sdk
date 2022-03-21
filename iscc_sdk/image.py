@@ -144,7 +144,7 @@ def image_meta_extract(fp):
                 if not value:  # pragma: no cover
                     log.critical(f"Structured image metdata skipped: {value}")
                     continue
-            log.debug(f"Mapping metadata: {tag} -> {mapped_field} -> {value}")
+            log.debug(f"Mapping image metadata: {tag} -> {mapped_field} -> {value}")
             mapped[mapped_field] = value
             done.add(mapped_field)
 
