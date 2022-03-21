@@ -61,18 +61,7 @@ def code_meta(fp):
     :rtype: IsccMeta
     """
 
-    mediatype, mode = idk.mediatype_and_mode(fp)
-
-    if mode == "image":
-        meta = idk.image_meta_extract(fp)
-    elif mode == "audio":
-        meta = idk.audio_meta_extract(fp)
-    elif mode == "video":
-        meta = idk.video_meta_extract(fp)
-    elif mode == "text":
-        meta = idk.text_meta_extract(fp)
-    else:  # pragma nocover
-        raise ValueError(f"Unsupported mediatype {mediatype}")
+    meta = idk.extract_metadata(fp).dict()
 
     if not meta.get("name"):
         meta["name"] = idk.text_name_from_uri(fp)
@@ -85,7 +74,6 @@ def code_meta(fp):
     )
 
     meta.update(metacode)
-
     return iss.IsccMeta.parse_obj(meta)
 
 
