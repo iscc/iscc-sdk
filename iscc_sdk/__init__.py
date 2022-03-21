@@ -22,3 +22,4 @@ from iscc_sdk.audio import *
 from iscc_sdk.video import *
 from iscc_sdk.mp7 import *
 from iscc_sdk.exceptions import *
+from iscc_sdk.metadata import *
