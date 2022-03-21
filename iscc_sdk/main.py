@@ -1,4 +1,6 @@
 """*SDK main top-level functions*."""
+from os.path import basename
+
 from PIL import Image
 import iscc_core as ic
 import iscc_schema as iss
@@ -40,13 +42,12 @@ def code_iscc(fp):
     iscc_code = ic.gen_iscc_code_v0([meta.iscc, content.iscc, data.iscc, instance.iscc])
 
     # Merge ISCC Metadata
-    iscc_meta = dict()
+    iscc_meta = dict(filename=basename(fp))
     iscc_meta.update(instance.dict())
     iscc_meta.update(data.dict())
     iscc_meta.update(content.dict())
     iscc_meta.update(meta.dict())
     iscc_meta.update(iscc_code)
-
     return iss.IsccMeta.parse_obj(iscc_meta)
 
 

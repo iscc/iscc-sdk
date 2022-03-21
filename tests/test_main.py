@@ -5,6 +5,7 @@ def test_code_iscc_text(pdf_file):
     assert idk.code_iscc(pdf_file).dict() == {
         "name": "title from metadata",
         "iscc": "ISCC:KACV5NAQXBCHCWFWMNALVJHBLB7X7IFU4H2JIVUSWF5NLR6362TFHDY",
+        "filename": "text.pdf",
         "characters": 16995,
         "datahash": "1e207ad5c7dbf6a6538f15fd0439e0dc5ba03a043ea23f072aa4e2ba830811bdb5f0",
         "filesize": 188280,
@@ -19,6 +20,7 @@ def test_code_iscc_image(jpg_file):
         "creator": "Some Cat Lover",
         "datahash": "1e2055529bfae5bdb3d530c52f44d13ccd6a7c710f63620dc2db1c43c5592ae2dc97",
         "filesize": 35393,
+        "filename": "img.jpg",
         "height": 133,
         "iscc": "ISCC:KECWRY3VY6R5SNV4YNBTBHR4T2HGP3HKVFO7TYUP2BKVFG724W63HVI",
         "mediatype": "image/jpeg",
@@ -37,6 +39,7 @@ def test_code_iscc_audio(mp3_file):
         "datahash": "1e20ec93c00fdb76a7cec587e4a2bddfa8d0a0bac8110d0c7130c351ea07c366d626",
         "duration": 15,
         "filesize": 225707,
+        "filename": "audio.mp3",
         "mediatype": "audio/mpeg",
         "metahash": "1e20c4933dc8c03ea58568159a1cbfb04132c7db93b6b4cd025ffd4db37f52a4756f",
         "mode": "audio",
@@ -47,6 +50,7 @@ def test_code_iscc_video(mp4_file):
     assert idk.code_iscc(mp4_file).dict() == {
         "iscc": "ISCC:KMCV6UK6BSXJ3I4GLYHIH5A5DNZPYBWQO33FNHPQFOOUCLLW3HKRNUA",
         "name": "Kali by Anokato - Spiral Sessions 2019",
+        "filename": "video.mp4",
         "datahash": "1e209d412d76d9d516d07bb60f1ab3c1a5c1b176ed4f1cec94c96222a5d013ec3e38",
         "filesize": 2161914,
         "mediatype": "video/mp4",
