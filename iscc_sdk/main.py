@@ -108,7 +108,7 @@ def code_content(fp):
     elif mode == "text":
         cc = code_text(fp)
     else:  # pragma nocover
-        raise ValueError(f"Unsupported mediatype: {mediatype}")
+        raise idk.IsccUnsupportedMediatype(mediatype)
 
     cc.mediatype = mediatype
     cc.mode = mode

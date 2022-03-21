@@ -21,3 +21,4 @@ from iscc_sdk.ipfs import *
 from iscc_sdk.audio import *
 from iscc_sdk.video import *
 from iscc_sdk.mp7 import *
+from iscc_sdk.exceptions import *

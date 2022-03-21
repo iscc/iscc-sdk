@@ -1,10 +1,10 @@
 """*Detect and map RFC6838 mediatypes to ISCC processing modes*."""
 from os.path import basename
-
 from loguru import logger as log
 from typing import List, Optional, Union
 import mimetypes
 import magic
+import iscc_sdk as idk
 
 
 __all__ = [
@@ -181,7 +181,7 @@ def mediatype_to_mode(mime_type):
         log.warning(f"Guessing perceptual mode from {mime_type}")
         return mode
 
-    raise ValueError(f"No known processing mode for {mime_type}")
+    raise idk.IsccUnsupportedMediatype(f"No known processing mode for {mime_type}")
 
 
 mimetypes.add_type("text/markdown", ".md")
@@ -220,10 +220,10 @@ SUPPORTED_MEDIATYPES = {
         "ext": "pptx",
     },
     "application/vnd.ms-excel": {"mode": "text", "ext": "xls"},
-    "application/x-mobipocket-ebook": {
-        "mode": "text",
-        "ext": ["mobi", "prc", "azw", "azw3", "azw4"],
-    },
+    # "application/x-mobipocket-ebook": {
+    #     "mode": "text",
+    #     "ext": ["mobi", "prc", "azw", "azw3", "azw4"],
+    # },
     # Image Formats
     "image/bmp": {"mode": "image", "ext": "bmp"},
     "image/gif": {"mode": "image", "ext": "gif"},

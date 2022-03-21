@@ -48,7 +48,7 @@ def test_mime_to_mode_fallback():
 
 
 def test_mime_to_mode_raises():
-    with pytest.raises(ValueError):
+    with pytest.raises(idk.IsccUnsupportedMediatype):
         idk.mediatype_to_mode("application/fits")
 
 

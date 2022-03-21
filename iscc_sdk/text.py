@@ -74,6 +74,10 @@ def text_extract(fp):
     ]
 
     result = subprocess.run(cmd, capture_output=True, check=True)
+    text = result.stdout.decode(encoding="UTF-8").strip()
+    if not text:
+        raise idk.IsccExtractionError(f"No text extracted from {basename(fp)}")
+
     return result.stdout.decode(encoding="UTF-8")
 
 

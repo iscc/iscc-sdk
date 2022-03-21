@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-import iscc_sdk
+import pytest
+
 import iscc_sdk as idk
 
 
@@ -20,12 +21,19 @@ def test_text_meta_extract_epub(epub_file):
 
 
 def test_text_extract_pdf(pdf_file):
-    text = iscc_sdk.text_extract(pdf_file)
+    text = idk.text_extract(pdf_file)
     assert text.strip().startswith("Bitcoin: A Peer-to-Peer Electronic Cash System")
 
 
+def test_text_extract_empty(tmp_path):
+    fp = tmp_path / "empty.txt"
+    fp.write_text(" \n")
+    with pytest.raises(idk.IsccExtractionError):
+        idk.text_extract(fp)
+
+
 def test_text_extract_docx(docx_file):
-    text = iscc_sdk.text_extract(docx_file)
+    text = idk.text_extract(docx_file)
     assert text.strip().startswith("ISCC Test Document")
 
 
