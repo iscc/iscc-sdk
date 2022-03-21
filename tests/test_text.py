@@ -11,6 +11,14 @@ def test_text_meta_extract_docx(docx_file):
     assert idk.text_meta_extract(docx_file) == {"creator": "titusz", "name": "title from metadata"}
 
 
+def test_text_meta_extract_epub(epub_file):
+    assert idk.text_meta_extract(epub_file) == {
+        "name": "Children's Literature",
+        "creator": "Charles Madison Curry, Erle Elsworth Clippinger",
+        "rights": "Public domain in the USA.",
+    }
+
+
 def test_text_extract_pdf(pdf_file):
     text = iscc_sdk.text_extract(pdf_file)
     assert text.strip().startswith("Bitcoin: A Peer-to-Peer Electronic Cash System")

@@ -90,3 +90,10 @@ def pdf_file(tmp_path_factory):
     dst = tmp_path_factory.mktemp("data") / "text.pdf"
     shutil.copy(texts("pdf")[0], dst)
     return dst.as_posix()
+
+
+@pytest.fixture(scope="module")
+def epub_file(tmp_path_factory):
+    dst = tmp_path_factory.mktemp("data") / "text.epub"
+    shutil.copy(texts("epub")[0], dst)
+    return dst.as_posix()
