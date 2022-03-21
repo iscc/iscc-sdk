@@ -3,6 +3,7 @@ import iscc_sdk as idk
 
 def test_code_iscc_text(pdf_file):
     assert idk.code_iscc(pdf_file).dict() == {
+        "@type": "TextDigitalDocument",
         "name": "title from metadata",
         "iscc": "ISCC:KACV5NAQXBCHCWFWMNALVJHBLB7X7IFU4H2JIVUSWF5NLR6362TFHDY",
         "filename": "text.pdf",
@@ -17,12 +18,13 @@ def test_code_iscc_text(pdf_file):
 
 def test_code_iscc_image(jpg_file):
     assert idk.code_iscc(jpg_file).dict() == {
+        "@type": "ImageObject",
+        "iscc": "ISCC:KECWRY3VY6R5SNV4YNBTBHR4T2HGP3HKVFO7TYUP2BKVFG724W63HVI",
         "creator": "Some Cat Lover",
         "datahash": "1e2055529bfae5bdb3d530c52f44d13ccd6a7c710f63620dc2db1c43c5592ae2dc97",
         "filesize": 35393,
         "filename": "img.jpg",
         "height": 133,
-        "iscc": "ISCC:KECWRY3VY6R5SNV4YNBTBHR4T2HGP3HKVFO7TYUP2BKVFG724W63HVI",
         "mediatype": "image/jpeg",
         "metahash": "1e209ce5052a03004657d8657167f53812718e9426d85b4cdd5106ef3d87412e6f64",
         "mode": "image",
@@ -34,6 +36,7 @@ def test_code_iscc_image(jpg_file):
 
 def test_code_iscc_audio(mp3_file):
     assert idk.code_iscc(mp3_file).dict() == {
+        "@type": "AudioObject",
         "iscc": "ISCC:KIC2JKSX7OH5PBIENISKEJTS4TRKHYJBCZDNLQXYILWJHQAP3N3KPTQ",
         "name": "Belly Button",
         "datahash": "1e20ec93c00fdb76a7cec587e4a2bddfa8d0a0bac8110d0c7130c351ea07c366d626",
@@ -48,6 +51,7 @@ def test_code_iscc_audio(mp3_file):
 
 def test_code_iscc_video(mp4_file):
     assert idk.code_iscc(mp4_file).dict() == {
+        "@type": "VideoObject",
         "iscc": "ISCC:KMCV6UK6BSXJ3I4GLYHIH5A5DNZPYBWQO33FNHPQFOOUCLLW3HKRNUA",
         "name": "Kali by Anokato - Spiral Sessions 2019",
         "filename": "video.mp4",
@@ -99,6 +103,7 @@ def test_code_meta_image_no_meta(bmp_file):
 
 def test_code_content(jpg_file):
     assert idk.code_content(jpg_file).dict() == {
+        "@type": "ImageObject",
         "creator": "Some Cat Lover",
         "height": 133,
         "iscc": "ISCC:EEA4GQZQTY6J5DTH",

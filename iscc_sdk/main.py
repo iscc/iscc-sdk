@@ -86,6 +86,14 @@ def code_content(fp):
     :return: Content-Code wrapped in ISCC metadata.
     :rtype: IsccMeta
     """
+
+    schema_org_map = {
+        "text": "TextDigitalDocument",
+        "image": "ImageObject",
+        "audio": "AudioObject",
+        "video": "VideoObject",
+    }
+
     mediatype, mode = idk.mediatype_and_mode(fp)
 
     if mode == "image":
@@ -101,6 +109,7 @@ def code_content(fp):
 
     cc.mediatype = mediatype
     cc.mode = mode
+    cc.type_ = schema_org_map.get(mode)
 
     return cc
 
