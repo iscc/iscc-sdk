@@ -71,6 +71,9 @@ You may also want join our developer chat on Telegram at <https://t.me/iscc_dev>
 
 ## Changelog
 
+### 0.x.x - Unreleased
+- Added video thumbnail support
+
 ### 0.4.0 - 2022-03-21
 - Added Text-Code generation
 - Added Video-Code generation
