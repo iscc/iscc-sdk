@@ -73,6 +73,7 @@ You may also want join our developer chat on Telegram at <https://t.me/iscc_dev>
 
 ### 0.x.x - Unreleased
 - Added video thumbnail support
+- Added support for IPFS wrap-with-directory
 
 ### 0.4.0 - 2022-03-21
 - Added Text-Code generation

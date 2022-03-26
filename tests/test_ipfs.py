@@ -1,9 +1,17 @@
 import iscc_sdk as idk
 
 
-def test_ipfs_cidv(jpg_file):
+def test_ipfs_cidv1(jpg_file):
     idk.ipfs_install()
     assert idk.ipfs_cidv1(jpg_file) == "bafkreibpvnkawhupqto4zouc3nve5rjyahddf33agrksajkdos3q2ud4iq"
+
+
+def test_ipfs_cidv1_wrap(jpg_file):
+    idk.ipfs_install()
+    assert (
+        idk.ipfs_cidv1(jpg_file, wrap=True)
+        == "bafybeicg5clgwhge6eyzzvuvtsch6eenqjhc2osm42qmuza6xbrgui3kpy/img.jpg"
+    )
 
 
 def test_ipfs_cidv1_base16(jpg_file):
