@@ -71,7 +71,7 @@ You may also want join our developer chat on Telegram at <https://t.me/iscc_dev>
 
 ## Changelog
 
-### 0.x.x - Unreleased
+### 0.4.1 - 2022-03-26
 - Added video thumbnail support
 - Added support for IPFS wrap-with-directory
 
