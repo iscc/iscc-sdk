@@ -25,7 +25,9 @@ The component-based structure of the ISCC identifies content at multiple levels 
 - mediatype specific content extraction and pre-processing
 - iscc indexing and search
 
-## Installation
+## Requirements
+
+Python 3.8 to 3.10
 
 On Linux and MacOS taglib needs to be installed as a prerequisite.
 On Ubuntu, Mint and other Debian-Based distributions do:
@@ -40,7 +42,9 @@ On a Mac, use HomeBrew:
 brew install taglib
 ```
 
-Then use the package manager [pip](https://pip.pypa.io/en/stable/) to install `iscc-sdk`.
+## Installation
+
+Use the Python package manager [pip](https://pip.pypa.io/en/stable/) to install `iscc-sdk`.
 
 ```bash
 pip install iscc-sdk
@@ -70,6 +74,9 @@ Pull requests are welcome. For significant changes, please open an issue first t
 You may also want join our developer chat on Telegram at <https://t.me/iscc_dev>.
 
 ## Changelog
+
+### 0.4.2 - Unreleased
+- Updated dependencies
 
 ### 0.4.1 - 2022-03-26
 - Added video thumbnail support
