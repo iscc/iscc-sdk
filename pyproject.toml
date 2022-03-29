@@ -25,7 +25,7 @@ numpy = "^1.22.3"
 
 [tool.poetry.dev-dependencies]
 pytest = "^7.0"
-black = "^22.1"
+black = "^22.3"
 coverage = "^6.3"
 pytest-cov = "^3.0"
 poethepoet = "^0.13"
