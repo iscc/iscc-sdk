@@ -233,7 +233,7 @@ python-versions = ">=3.6"
 
 [[package]]
 name = "iscc-core"
-version = "0.2.4"
+version = "0.2.5"
 description = "ISCC - Core Algorithms"
 category = "main"
 optional = false
@@ -245,6 +245,7 @@ bases = ">=0.2,<0.3"
 bitarray-hardbyte = "*"
 blake3 = "*"
 data-url = ">=1.0,<2.0"
+jcs = ">=0.2.0,<0.3.0"
 loguru = ">=0.6,<0.7"
 more-itertools = "*"
 pybase64 = "*"
@@ -1076,7 +1077,7 @@ install-jdk = [
     {file = "install-jdk-0.3.0.tar.gz", hash = "sha256:889965b0af68bb4669166804f33d5dce9cd6cf57f02a045e427e508998d569a1"},
 ]
 iscc-core = [
-    {file = "iscc-core-0.2.4.tar.gz", hash = "sha256:797f0db01414e055e62a7df0efa2a171534b209cb4380cc53e6bc2815b64c016"},
+    {file = "iscc-core-0.2.5.tar.gz", hash = "sha256:e6ee9ea3725d71701ff38f6f0c365f95ac9277df63d7054e3bf4382806487408"},
 ]
 iscc-samples = [
     {file = "iscc-samples-0.4.0.tar.gz", hash = "sha256:98925bec8adcc8c843ddd42b32d0c7972ed1c2ff635cb44144fd7c08929d2a2f"},
