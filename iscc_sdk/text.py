@@ -3,6 +3,7 @@ import json
 import subprocess
 import sys
 from os.path import basename, splitext
+from pathlib import Path
 from urllib.parse import urlparse
 from loguru import logger as log
 import iscc_sdk as idk
@@ -82,7 +83,7 @@ def text_extract(fp):
 
 
 def text_name_from_uri(uri):
-    # type: (str) -> str
+    # type: (str, Path) -> str
     """
     Extract "filename" part of an uri without file extension to be used as fallback title for an
     asset if no title information can be acquired.
@@ -91,7 +92,10 @@ def text_name_from_uri(uri):
     :return: derived name (might be an empty string)
     :rtype: str
     """
-    result = urlparse(uri)
+    if isinstance(uri, Path):
+        result = urlparse(uri.as_uri())
+    else:
+        result = urlparse(uri)
 
     base = basename(result.path) if result.path else basename(result.netloc)
     name = splitext(base)[0]

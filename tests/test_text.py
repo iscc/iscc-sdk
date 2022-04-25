@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from pathlib import Path
+
 import pytest
 
 import iscc_sdk as idk
@@ -37,8 +39,12 @@ def test_text_extract_docx(docx_file):
     assert text.strip().startswith("ISCC Test Document")
 
 
-def test_text_name_from_uri(jpg_file):
+def test_text_name_from_uri_str(jpg_file):
     assert idk.text_name_from_uri("http://example.com") == "example"
     assert idk.text_name_from_uri("http://example.com/some-file.txt") == "some file"
     assert idk.text_name_from_uri("http://example.com/some_file.txt?q=x") == "some file"
     assert idk.text_name_from_uri(jpg_file) == "img"
+
+
+def test_text_name_from_uri_path(jpg_file):
+    assert idk.text_name_from_uri(Path(jpg_file)) == "img"
