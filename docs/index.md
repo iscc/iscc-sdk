@@ -75,8 +75,10 @@ You may also want join our developer chat on Telegram at <https://t.me/iscc_dev>
 
 ## Changelog
 
-### 0.4.2 - Unreleased
-- Updated dependencies
+### 0.4.2 - 2022-04-27
+- Fix metadata extraction failure with long texts
+- Embed Dublin Core metadata in images
+- Support path object inputs for text_name_from_uri
 
 ### 0.4.1 - 2022-03-26
 - Added video thumbnail support
