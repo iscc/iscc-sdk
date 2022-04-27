@@ -2,42 +2,42 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://sdk.iscc.codes/</loc>
-         <lastmod>2022-03-29</lastmod>
+         <lastmod>2022-04-27</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://sdk.iscc.codes/audio/</loc>
-         <lastmod>2022-03-29</lastmod>
+         <lastmod>2022-04-27</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://sdk.iscc.codes/image/</loc>
-         <lastmod>2022-03-29</lastmod>
+         <lastmod>2022-04-27</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://sdk.iscc.codes/ipfs/</loc>
-         <lastmod>2022-03-29</lastmod>
+         <lastmod>2022-04-27</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://sdk.iscc.codes/main/</loc>
-         <lastmod>2022-03-29</lastmod>
+         <lastmod>2022-04-27</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://sdk.iscc.codes/mediatype/</loc>
-         <lastmod>2022-03-29</lastmod>
+         <lastmod>2022-04-27</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://sdk.iscc.codes/metadata/</loc>
-         <lastmod>2022-03-29</lastmod>
+         <lastmod>2022-04-27</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://sdk.iscc.codes/video/</loc>
-         <lastmod>2022-03-29</lastmod>
+         <lastmod>2022-04-27</lastmod>
          <changefreq>daily</changefreq>
     </url>
 </urlset>
