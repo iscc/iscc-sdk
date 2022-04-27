@@ -155,7 +155,7 @@ def image_meta_extract(fp):
 
 
 def image_meta_embed(fp, meta):
-    # type: (str, idk.IsccMeta) -> str
+    # type: (str, IsccMeta) -> str
     """
     Embed metadata into a copy of the image file.
 
@@ -165,9 +165,13 @@ def image_meta_embed(fp, meta):
     :rtype: str
     """
     cmdf = "reg iscc http://purl.org/iscc/schema\n"
+    cmdf += "reg dc http://purl.org/dc/elements/1.1/\n"
+
     cmdf += f"set Xmp.iscc.name {meta.name}\n"
+    cmdf += f"set Xmp.dc.title {meta.name}\n"
     if meta.description:
         cmdf += f"set Xmp.iscc.description {meta.description}\n"
+        cmdf += f"set Xmp.dc.description {meta.description}\n"
     if meta.meta:
         cmdf += f"set Xmp.iscc.meta {meta.meta}\n"
     if meta.license:
@@ -175,6 +179,10 @@ def image_meta_embed(fp, meta):
     if meta.acquire:
         cmdf += f"set Xmp.plus.Licensor XmpText type=Bag\n"
         cmdf += f"set Xmp.plus.Licensor[1]/plus:LicensorURL XmpText {meta.acquire}\n"
+    if meta.creator:
+        cmdf += f"set Xmp.dc.creator {meta.creator}\n"
+    if meta.rights:
+        cmdf += f"set Xmp.dc.rights {meta.rights}\n"
 
     # Create temp filepaths
     tempdir = tempfile.mkdtemp()
@@ -255,6 +263,7 @@ IMAGE_META_MAP = {
     "Exif.Image.Artist": "creator",
     "Xmp.xmpRights.WebStatement": "license",
     "Xmp.plus.Licensor[0].plus.LicensorURL": "acquire",
+    "Xmp.dc.rights": "rights",
     "Xmp.dc.identifier": "identifier",
     "Xmp.xmp.Identifier": "identifier",
     "Xmp.dc.language": "language",

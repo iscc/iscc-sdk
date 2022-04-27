@@ -123,3 +123,18 @@ def test_image_to_data_url():
     durl = idk.image_to_data_url(img)
     assert durl.startswith("data:image/webp;base64,UklGRvAHAABXRUJQVlA4IOQHAABQJQCdASqAAFUAPrVMnku")
     assert durl.endswith("XUVIqfr+x9Igy/FehT0vBRAhNP+u6v9LEZRqfbxADwwWRSEk6Io4VSGX5LpRVqMLCG+eYAAA")
+
+
+def test_embed_rights_and_creator(jpg_file):
+    meta = IsccMeta.construct(
+        creator="Some Creatör Name",
+        rights="Some Cäpyright notice",
+    )
+    new_file = idk.image_meta_embed(jpg_file, meta)
+    assert idk.image_meta_extract(new_file) == {
+        "creator": "Some Creatör Name",
+        "height": 133,
+        "name": "None",
+        "rights": "Some Cäpyright notice",
+        "width": 200,
+    }
