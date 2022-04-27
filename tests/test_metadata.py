@@ -1,5 +1,4 @@
 import iscc_sdk as idk
-import iscc_schema as iss
 
 
 def test_extract_metadata(jpg_file):
@@ -12,7 +11,7 @@ def test_extract_metadata(jpg_file):
 
 
 def test_embed_metadata(jpg_file):
-    meta = iss.IsccMeta(name="Some Title", description="Some Description")
+    meta = idk.IsccMeta(name="Some Title", description="Some Description")
     new_file = idk.embed_metadata(jpg_file, meta)
     assert idk.extract_metadata(new_file).dict() == {
         "name": "Some Title",
@@ -24,6 +23,6 @@ def test_embed_metadata(jpg_file):
 
 
 def test_embed_metadata_unsupported(docx_file):
-    meta = iss.IsccMeta(name="Some Title", description="Some Description")
+    meta = idk.IsccMeta(name="Some Title", description="Some Description")
     new_file = idk.embed_metadata(docx_file, meta)
     assert new_file is None

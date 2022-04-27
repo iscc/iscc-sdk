@@ -1,6 +1,6 @@
 """*Video handling module*"""
 import os
-from typing import Sequence, Tuple, List
+from typing import Tuple, List
 
 from loguru import logger as log
 import io
@@ -12,7 +12,6 @@ from pathlib import Path
 from secrets import token_hex
 from PIL import Image, ImageEnhance
 import iscc_sdk as idk
-import iscc_schema as iss
 
 
 __all__ = [
@@ -89,7 +88,7 @@ def video_meta_extract(fp):
 
 
 def video_meta_embed(fp, meta):
-    # type: (str, iss.IsccMeta) -> str
+    # type: (str, idk.IsccMeta) -> str
     """
     Embed metadata into a copy of the video file.
 

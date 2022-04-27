@@ -3,7 +3,6 @@ from os.path import basename
 
 from PIL import Image
 import iscc_core as ic
-import iscc_schema as iss
 import iscc_sdk as idk
 
 
@@ -21,7 +20,7 @@ __all__ = [
 
 
 def code_iscc(fp):
-    # type: (str) -> iss.IsccMeta
+    # type: (str) -> idk.IsccMeta
     """
     Generate ISCC-CODE.
 
@@ -48,11 +47,11 @@ def code_iscc(fp):
     iscc_meta.update(content.dict())
     iscc_meta.update(meta.dict())
     iscc_meta.update(iscc_code)
-    return iss.IsccMeta.parse_obj(iscc_meta)
+    return idk.IsccMeta.parse_obj(iscc_meta)
 
 
 def code_meta(fp):
-    # type: (str) -> iss.IsccMeta
+    # type: (str) -> idk.IsccMeta
     """
     Generate Meta-Code from digital asset.
 
@@ -74,11 +73,11 @@ def code_meta(fp):
     )
 
     meta.update(metacode)
-    return iss.IsccMeta.parse_obj(meta)
+    return idk.IsccMeta.parse_obj(meta)
 
 
 def code_content(fp):
-    # type: (str) -> iss.IsccMeta
+    # type: (str) -> idk.IsccMeta
     """
     Detect mediatype and create corresponding Content-Code.
 
@@ -126,11 +125,11 @@ def code_text(fp):
     text = idk.text_extract(fp)
     code = ic.gen_text_code_v0(text, bits=idk.sdk_opts.text_bits)
     meta.update(code)
-    return iss.IsccMeta.parse_obj(meta)
+    return idk.IsccMeta.parse_obj(meta)
 
 
 def code_image(fp):
-    # type: (str) -> iss.IsccMeta
+    # type: (str) -> idk.IsccMeta
     """
     Generate Content-Code Image.
 
@@ -148,11 +147,11 @@ def code_image(fp):
     code_obj = ic.gen_image_code_v0(pixels, bits=idk.sdk_opts.image_bits)
     meta.update(code_obj)
 
-    return iss.IsccMeta.parse_obj(meta)
+    return idk.IsccMeta.parse_obj(meta)
 
 
 def code_audio(fp):
-    # type: (str) -> iss.IsccMeta
+    # type: (str) -> idk.IsccMeta
     """
     Generate Content-Code Audio.
 
@@ -165,11 +164,11 @@ def code_audio(fp):
     code_obj = ic.gen_audio_code_v0(features["fingerprint"], bits=idk.sdk_opts.audio_bits)
     meta.update(code_obj)
 
-    return iss.IsccMeta.parse_obj(meta)
+    return idk.IsccMeta.parse_obj(meta)
 
 
 def code_video(fp):
-    # type: (str) -> iss.IsccMeta
+    # type: (str) -> idk.IsccMeta
     """
     Generate Content-Code Video.
 
@@ -184,11 +183,11 @@ def code_video(fp):
     thumbnail_image = idk.video_thumbnail(fp)
     thumbnail_durl = idk.image_to_data_url(thumbnail_image)
     meta["thumbnail"] = thumbnail_durl
-    return iss.IsccMeta.parse_obj(meta)
+    return idk.IsccMeta.parse_obj(meta)
 
 
 def code_data(fp):
-    # type: (str) -> iss.IsccMeta
+    # type: (str) -> idk.IsccMeta
     """
     Create ISCC Data-Code.
 
@@ -202,11 +201,11 @@ def code_data(fp):
     with open(fp, "rb") as stream:
         meta = ic.gen_data_code_v0(stream, bits=idk.sdk_opts.data_bits)
 
-    return iss.IsccMeta.parse_obj(meta)
+    return idk.IsccMeta.parse_obj(meta)
 
 
 def code_instance(fp):
-    # type: (str) -> iss.IsccMeta
+    # type: (str) -> idk.IsccMeta
     """
     Create ISCC Instance-Code.
 
@@ -222,4 +221,4 @@ def code_instance(fp):
     with open(fp, "rb") as stream:
         meta = ic.gen_instance_code_v0(stream, bits=idk.sdk_opts.instance_bits)
 
-    return iss.IsccMeta.parse_obj(meta)
+    return idk.IsccMeta.parse_obj(meta)

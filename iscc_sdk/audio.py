@@ -6,7 +6,6 @@ from loguru import logger as log
 import json
 import subprocess
 import taglib
-import iscc_schema as iss
 import iscc_sdk as idk
 
 
@@ -69,7 +68,7 @@ def audio_meta_extract(fp):
 
 
 def audio_meta_embed(fp, meta):
-    # type: (str, iss.IsccMeta) -> str
+    # type: (str, idk.IsccMeta) -> str
     """
     Embed metadata into a copy of the audio file.
 

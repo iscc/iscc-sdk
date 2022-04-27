@@ -2,11 +2,10 @@
 import os
 
 from PIL import Image
-
 import iscc_sdk as idk
-import iscc_schema as iss
 
-meta = iss.IsccMeta(
+
+meta = idk.IsccMeta(
     name="Hello",
     description="Wörld",
     meta="somestring",
@@ -54,14 +53,14 @@ def test_video_metadata_embed_mov(mov_file):
 
 
 def test_video_metadata_escaping(mp4_file):
-    meta = iss.IsccMeta(
+    meta = idk.IsccMeta(
         name="Some # Name",
         description="Multi\nLine\n\nDescription with ; and other = crazy characters\n",
     )
     new_file = idk.video_meta_embed(mp4_file, meta)
     assert idk.video_meta_extract(new_file) == dict(
         name="Some # Name",
-        description="Multi\nLine\n\nDescription with ; and other = crazy characters\n",
+        description="Multi\nLine\n\nDescription with ; and other = crazy characters",
     )
     os.remove(new_file)
 

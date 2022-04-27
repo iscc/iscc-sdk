@@ -1,12 +1,16 @@
 """*Metadata handling functions*"""
 from typing import Optional
 
+from pydantic import validator
+
 import iscc_sdk as idk
+import iscc_core as ic
 import iscc_schema as iss
 
 __all__ = [
     "extract_metadata",
     "embed_metadata",
+    "IsccMeta",
 ]
 
 EXTRACTORS = {
@@ -24,7 +28,7 @@ EMBEDDERS = {
 
 
 def extract_metadata(fp):
-    # type: (str) -> iss.IsccMeta
+    # type: (str) -> idk.IsccMeta
     """
     Extract metadata from file.
 
@@ -36,7 +40,7 @@ def extract_metadata(fp):
     extractor = EXTRACTORS.get(mode)
     if extractor:
         metadata = extractor(fp)
-        return iss.IsccMeta.parse_obj(metadata)
+        return idk.IsccMeta.parse_obj(metadata)
 
 
 def embed_metadata(fp, meta):
@@ -54,3 +58,15 @@ def embed_metadata(fp, meta):
     if embedder:
         new_file_path = embedder(fp, meta)
         return new_file_path
+
+
+class IsccMeta(iss.IsccMeta):
+    """Custom IsccMeta with text trimming support"""
+
+    @validator("name", pre=True)
+    def trim_name(cls, v):
+        return ic.text_trim(v, idk.sdk_opts.meta_trim_name)
+
+    @validator("description", pre=True)
+    def trim_description(cls, v):
+        return ic.text_trim(v, idk.sdk_opts.meta_trim_description)

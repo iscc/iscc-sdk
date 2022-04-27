@@ -2,10 +2,9 @@
 import os.path
 
 import iscc_sdk as idk
-import iscc_schema as iss
 
 
-meta = iss.IsccMeta.construct(
+meta = idk.IsccMeta.construct(
     name="Hello",
     description="Wörld",
     meta="somestring",
