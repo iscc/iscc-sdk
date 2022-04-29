@@ -2,6 +2,7 @@
 
 ### 0.4.3 - Unreleased
 - Moved changelog to seperate file
+- Fixed pillow resampling deprecation warningpoe
 
 ### 0.4.2 - 2022-04-27
 - Fix metadata extraction failure with long texts
