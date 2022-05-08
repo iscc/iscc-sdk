@@ -60,6 +60,9 @@ skip-string-normalization = false
 line-length = 100
 target-version = ['py37']
 
+[tool.coverage.run]
+omit = ["iscc_sdk/install.py"]
+
 [tool.poe.tasks]
 docs = { cmd = "poetry run python -m devtools.build_docs", help = "Copy README.md to /docs" }
 black = { cmd = "poetry run black .", help = "Code style formating with black" }
