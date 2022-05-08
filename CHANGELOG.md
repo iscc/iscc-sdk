@@ -1,8 +1,13 @@
 ## Changelog
 
-### 0.4.3 - Unreleased
+### 0.4.3 - 2022-05-08
 - Moved changelog to seperate file
-- Fixed pillow resampling deprecation warningpoe
+- Fixed pillow resampling deprecation warning
+- Fixed exiv2 error on older linux versions
+- Added support for lazy installation of cli-tools
+- Added cleanup of cli-tool archives after installation
+- Removed obsolete ffprobe tool
+- Updated dependencies
 
 ### 0.4.2 - 2022-04-27
 - Fix metadata extraction failure with long texts
