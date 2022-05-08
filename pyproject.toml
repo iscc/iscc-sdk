@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "iscc-sdk"
-version = "0.4.2"
+version = "0.4.3"
 description = "Software developer kit for creating ISCCs (International Standard Content Codes)"
 authors = ["Titusz <tp@py7.de>"]
 license = "Apache-2.0"
@@ -29,6 +29,12 @@ classifiers=[
     "Topic :: Text Processing :: Indexing",
 ]
 
+[tool.poetry.urls]
+"Changelog" = "https://sdk.iscc.codes/changelog"
+"Coverage" = "https://app.codecov.io/gh/iscc/iscc-sdk"
+"Bug Tracker" = "https://github.com/iscc/iscc-sdk/issues"
+"Twitter" = "https://twitter.com/iscc_foundation"
+"Donate" = "https://iscc.foundation/support"
 
 [tool.poetry.dependencies]
 python = ">=3.8,<4.0"
