@@ -224,17 +224,6 @@ def exiv2_download():  # pragma: no cover
     return download_file(exiv2_download_url(), checksum=b3)
 
 
-def exiv2_extract(archive):  # pragma: no cover
-
-    if archive.endswith(".zip"):
-        with zipfile.ZipFile(archive, "r") as zip_file:
-            zip_file.extractall(Path(archive).parent.absolute())
-
-    elif archive.endswith("tar.gz"):
-        with tarfile.open(archive, "r:gz") as tar_file:
-            tar_file.extractall(Path(archive).parent.absolute())
-
-
 def exiv2_install():  # pragma: no cover
     """Install exiv2 command line tool and return path to executable."""
     if exiv2_is_installed():
@@ -242,7 +231,7 @@ def exiv2_install():  # pragma: no cover
         return exiv2_bin()
     log.critical("installing exiv2")
     archive_path = exiv2_download()
-    exiv2_extract(archive_path)
+    extract(archive_path)
     st = os.stat(exiv2_bin())
     os.chmod(exiv2_bin(), st.st_mode | stat.S_IEXEC)
     st = os.stat(exiv2json_bin())
