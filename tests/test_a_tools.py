@@ -32,14 +32,6 @@ def test_fpcalc_downlod_url():
     assert "fpcalc" in tools.fpcalc_download_url()
 
 
-def test_ffprobe_download_url():
-    assert "ffprobe" in tools.ffprobe_download_url()
-
-
-def test_ffprobe_bin():
-    assert "ffprobe" in tools.ffprobe_bin()
-
-
 def test_ffmpeg_download_url():
     assert "ffmpeg" in tools.ffmpeg_download_url()
 
@@ -64,10 +56,6 @@ def test_java_version_info():
 
 def test_tika_version_info():
     assert tools.TIKA_VERSION in tools.tika_version_info()
-
-
-def test_ffprobe_version_info():
-    assert tools.FFPROBE_VERSION in tools.ffprobe_version_info()
 
 
 def test_ffmpeg_version_info():

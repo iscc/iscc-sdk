@@ -10,7 +10,6 @@ def main():
     log.info(f"IPFS Version: {tools.ipfs_version_info()}")
     log.info(f"Exiv2 Version: {tools.exiv2_version_info()}")
     log.info(f"FPCALC Version: {tools.fpcalc_version_info()}")
-    log.info(f"FFPROBE Version: {tools.ffprobe_version_info()}")
     log.info(f"FFMPEG Version: {tools.ffmpeg_version_info()}")
     log.info(f"JAVA Version: {tools.java_version_info()}")
     log.info(f"TIKA Version: {tools.tika_version_info()}")

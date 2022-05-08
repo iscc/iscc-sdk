@@ -21,7 +21,6 @@ from concurrent.futures import ThreadPoolExecutor
 __all__ = [
     "install",
     "fpcalc_bin",
-    "ffprobe_bin",
     "ffmpeg_bin",
     "run_ffmpeg",
     "run_fpcalc",
@@ -47,19 +46,6 @@ IPFS_CHECKSUMS = {
     "linux-64": "7312b34bc7179c94c96e09a067b61d405672653bbaf70abee30396433a18ef81",
     "darwin-64": "3797fd0e6d5f922c095a12d860baccb49d90cef74accf49d219d4cea1b0d2bd7",
 }
-
-FFPROBE_VERSION = "4.4.1"
-FFPROBE_URLS = {
-    "windows-64": f"{BASE_URL}/ffprobe-{FFPROBE_VERSION}-win-64.zip",
-    "linux-64": f"{BASE_URL}/ffprobe-{FFPROBE_VERSION}-linux-64.zip",
-    "darwin-64": f"{BASE_URL}/ffprobe-{FFPROBE_VERSION}-osx-64.zip",
-}
-FFPROBE_CHECKSUMS = {
-    "windows-64": "6c6c7d49465f70f3a4c60dc2d5aeddb4049527c82ee6e2b4c6ad0a2a9fc9188e",
-    "linux-64": "bfa86d00341cacbbcaad6c38c706ad1df9f268b1d1e5a1f19206ab47a95aad8f",
-    "darwin-64": "1904fdf6d0250e3c44aa5f44b0bf31033b40329f1c3e51d3d06438273174506d",
-}
-
 
 FFMPEG_VERSION = "4.4.1"
 FFMPEG_URLS = {
@@ -120,7 +106,6 @@ def install():
     with ThreadPoolExecutor(max_workers=6) as p:
         p.submit(exiv2_install)
         p.submit(fpcalc_install)
-        p.submit(ffprobe_install)
         p.submit(ffmpeg_install)
         p.submit(tika_install)
         p.submit(ipfs_install)
@@ -392,67 +377,6 @@ def run_fpcalc(args: List[str]):
 
 
 ########################################################################################
-# ffprobe                                                                              #
-########################################################################################
-
-
-def ffprobe_download_url():
-    """Return system dependant download url."""
-    return FFPROBE_URLS[system_tag()]
-
-
-def ffprobe_bin() -> str:
-    """Returns local path to ffprobe executable."""
-    path = os.path.join(idk.dirs.user_data_dir, "ffprobe-{}".format(FFPROBE_VERSION))
-    if system() == "Windows":
-        path += ".exe"
-    return path
-
-
-def ffprobe_download():  # pragma: no cover
-    """Download ffprobe and return path to archive file."""
-    b3 = FFPROBE_CHECKSUMS.get(system_tag())
-    return download_file(ffprobe_download_url(), checksum=b3)
-
-
-def ffprobe_extract(archive: str):  # pragma: no cover
-    """Extract ffprobe from archive."""
-    fname = "ffprobe.exe" if system() == "Windows" else "ffprobe"
-    with zipfile.ZipFile(archive) as zip_file:
-        with zip_file.open(fname) as zf, open(ffprobe_bin(), "wb") as lf:
-            shutil.copyfileobj(zf, lf)
-
-
-def ffprobe_install():  # pragma: no cover
-    """Install ffprobe command line tool and return path to executable."""
-    if is_installed(ffprobe_bin()):
-        log.debug("ffprobe is already installed")
-        return ffprobe_bin()
-    log.critical("installing ffprobe")
-    archive_path = ffprobe_download()
-    ffprobe_extract(archive_path)
-    st = os.stat(ffprobe_bin())
-    os.chmod(ffprobe_bin(), st.st_mode | stat.S_IEXEC)
-    return ffprobe_bin()
-
-
-def ffprobe_version_info():  # pragma: no cover
-    """Get ffprobe version."""
-    try:
-        r = subprocess.run([ffprobe_bin(), "-version"], stdout=subprocess.PIPE)
-        return (
-            r.stdout.decode("utf-8")
-            .strip()
-            .splitlines()[0]
-            .split()[2]
-            .rstrip("-static")
-            .rstrip("-tessu")
-        )
-    except FileNotFoundError:
-        return "ffprobe not installed"
-
-
-########################################################################################
 # ffmpeg                                                                               #
 ########################################################################################
 
@@ -477,7 +401,7 @@ def ffmpeg_download():  # pragma: no cover
 
 
 def ffmpeg_extract(archive: str):  # pragma: no cover
-    """Extract ffprobe from archive."""
+    """Extract ffmpeg from archive."""
     fname = "ffmpeg.exe" if system() == "Windows" else "ffmpeg"
     with zipfile.ZipFile(archive) as zip_file:
         with zip_file.open(fname) as zf, open(ffmpeg_bin(), "wb") as lf:
@@ -514,6 +438,7 @@ def ffmpeg_version_info():  # pragma: no cover
 
 
 def run_ffmpeg(args: List[str]):
+    """Run ffmpeg command with `args`"""
     cmd = [ffmpeg_bin()] + args
     try:
         result = subprocess.run(cmd, capture_output=True, check=True)
