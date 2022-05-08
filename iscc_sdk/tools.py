@@ -20,16 +20,12 @@ from concurrent.futures import ThreadPoolExecutor
 
 __all__ = [
     "install",
-    "fpcalc_bin",
-    "ffmpeg_bin",
     "run_ffmpeg",
     "run_fpcalc",
     "run_exiv2",
     "run_exiv2json",
     "run_ipfs",
     "run_tika",
-    "java_bin",
-    "tika_bin",
 ]
 
 BASE_VERSION = "1.0.0"
