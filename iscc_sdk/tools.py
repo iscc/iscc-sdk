@@ -87,27 +87,27 @@ TIKA_VERSION = "2.3.0"
 TIKA_URL = f"{BASE_URL}/tika-app-{TIKA_VERSION}.jar"
 TIKA_CHECKSUM = "e3f6ff0841b9014333fc6de4b849704384abf362100edfa573a6e4104b654491"
 
-EXIV2_VERSION = "0.27.5"
+EXIV2_VERSION = "0.27.2"
 EXIV2_URLS = {
-    "windows-64": f"{BASE_URL}/exiv2-{EXIV2_VERSION}-2019msvc64.zip",
+    "windows-64": f"{BASE_URL}/exiv2-{EXIV2_VERSION}-2017msvc64.zip",
     "linux-64": f"{BASE_URL}/exiv2-{EXIV2_VERSION}-Linux64.tar.gz",
     "darwin-64": f"{BASE_URL}/exiv2-{EXIV2_VERSION}-Darwin.tar.gz",
 }
 
 EXIV2_CHECKSUMS = {
-    "windows-64": "3e00112648ed98a60a381fc3c6dd10ec263b1d56dec4f07dce86a7736517ebcd",
-    "linux-64": "6c6339f7f575ed794c4669e7eab4ef400a6cf7981f78ea26fc985d24d9620d58",
-    "darwin-64": "aaf574fa910721fdc653519a2ca8ecf3d4e9b06213167ad630fcb9e18d329af4",
+    "windows-64": "63eef38590c7d777d75d2f8384fdfb03d47b1226c5f0bff066d97dcaacff8998",
+    "linux-64": "77cc0200c13a4c7d42363cddc76befdf8b8a19225bf48f8bcce8914d12cb1eae",
+    "darwin-64": "f81a99689507de4c177aeb0a93c1442962619747184b91b9498cbd78242695d1",
 }
 
 EXIV2_RELPATH = {
-    "windows-64": f"exiv2-{EXIV2_VERSION}-2019msvc64/bin/exiv2.exe",
+    "windows-64": f"exiv2-{EXIV2_VERSION}-2017msvc64/bin/exiv2.exe",
     "linux-64": f"exiv2-{EXIV2_VERSION}-Linux64/bin/exiv2",
     "darwin-64": f"exiv2-{EXIV2_VERSION}-Darwin/bin/exiv2",
 }
 
 EXIV2JSON_RELPATH = {
-    "windows-64": f"exiv2-{EXIV2_VERSION}-2019msvc64/bin/exiv2json.exe",
+    "windows-64": f"exiv2-{EXIV2_VERSION}-2017msvc64/bin/exiv2json.exe",
     "linux-64": f"exiv2-{EXIV2_VERSION}-Linux64/bin/exiv2json",
     "darwin-64": f"exiv2-{EXIV2_VERSION}-Darwin/bin/exiv2json",
 }
