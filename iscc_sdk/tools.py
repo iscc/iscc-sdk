@@ -7,6 +7,7 @@ import tarfile
 import zipfile
 from pathlib import Path
 from platform import system, architecture
+from typing import List
 from urllib.parse import urlparse
 from urllib.request import urlretrieve
 from blake3 import blake3
@@ -25,8 +26,7 @@ __all__ = [
     "fpcalc_install",
     "exiv2_bin",
     "exiv2json_bin",
-    "ipfs_bin",
-    "ipfs_install",
+    "ipfs_run",
     "java_bin",
     "tika_bin",
 ]
@@ -194,6 +194,17 @@ def ipfs_version_info():  # pragma: no cover
         return r.stdout.decode("utf-8").splitlines()[0].strip()
     except FileNotFoundError:
         return "IPFS not installed"
+
+
+def ipfs_run(args: List[str]):
+    cmd = [ipfs_bin()] + args
+    try:
+        result = subprocess.run(cmd, capture_output=True, check=True)
+    except FileNotFoundError:  # pragma: no cover
+        print("IPFS not found - installing ...")
+        ipfs_install()
+        result = subprocess.run(cmd, capture_output=True, check=True)
+    return result
 
 
 ########################################################################################
