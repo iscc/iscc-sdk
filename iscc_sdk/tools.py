@@ -133,6 +133,7 @@ def extract(archive):  # pragma: no cover
     elif archive.endswith("tar.gz"):
         with tarfile.open(archive, "r:gz") as tar_file:
             tar_file.extractall(Path(archive).parent.absolute())
+    os.unlink(archive)
 
 
 ########################################################################################
@@ -330,6 +331,7 @@ def fpcalc_extract(archive):  # pragma: no cover
                     target = open(fpcalc_bin(), "wb")
                     with source, target:
                         shutil.copyfileobj(source, target)
+    os.unlink(archive)
 
 
 def fpcalc_install():  # pragma: no cover
@@ -395,6 +397,7 @@ def ffmpeg_extract(archive: str):  # pragma: no cover
     with zipfile.ZipFile(archive) as zip_file:
         with zip_file.open(fname) as zf, open(ffmpeg_bin(), "wb") as lf:
             shutil.copyfileobj(zf, lf)
+    os.unlink(archive)
 
 
 def ffmpeg_install():  # pragma: no cover
