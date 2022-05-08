@@ -36,9 +36,9 @@ def text_meta_extract(fp):
     :return: Metadata mapped to IsccMeta schema
     :rtype: dict
     """
-    cmd = [idk.java_bin(), "-jar", idk.tika_bin(), "--metadata", "-j", "--encoding=UTF-8", fp]
+    args = ["--metadata", "-j", "--encoding=UTF-8", fp]
 
-    result = subprocess.run(cmd, capture_output=True, check=True)
+    result = idk.run_tika(args)
     meta = json.loads(result.stdout.decode(sys.stdout.encoding, errors="ignore"))
     mapped = dict()
     done = set()
@@ -65,20 +65,11 @@ def text_extract(fp):
     :rtype: str
     """
 
-    cmd = [
-        idk.java_bin(),
-        "-jar",
-        idk.tika_bin(),
-        "--text",
-        "--encoding=UTF-8",
-        fp,
-    ]
-
-    result = subprocess.run(cmd, capture_output=True, check=True)
+    args = ["--text", "--encoding=UTF-8", fp]
+    result = idk.run_tika(args)
     text = result.stdout.decode(encoding="UTF-8").strip()
     if not text:
         raise idk.IsccExtractionError(f"No text extracted from {basename(fp)}")
-
     return result.stdout.decode(encoding="UTF-8")
 
 

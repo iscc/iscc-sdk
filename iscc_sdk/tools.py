@@ -23,10 +23,12 @@ __all__ = [
     "fpcalc_bin",
     "ffprobe_bin",
     "ffmpeg_bin",
-    "fpcalc_install",
-    "exiv2_bin",
-    "exiv2json_bin",
-    "ipfs_run",
+    "run_ffmpeg",
+    "run_fpcalc",
+    "run_exiv2",
+    "run_exiv2json",
+    "run_ipfs",
+    "run_tika",
     "java_bin",
     "tika_bin",
 ]
@@ -196,7 +198,7 @@ def ipfs_version_info():  # pragma: no cover
         return "IPFS not installed"
 
 
-def ipfs_run(args: List[str]):
+def run_ipfs(args: List[str]):
     cmd = [ipfs_bin()] + args
     try:
         result = subprocess.run(cmd, capture_output=True, check=True)
@@ -284,6 +286,28 @@ def exiv2_version_info():  # pragma: no cover
         return "exiv2 not installed"
 
 
+def run_exiv2(args: List[str]):
+    cmd = [exiv2_bin()] + args
+    try:
+        result = subprocess.run(cmd, capture_output=True, check=True)
+    except FileNotFoundError:  # pragma: no cover
+        print("EXIV2 not found - installing ...")
+        exiv2_install()
+        result = subprocess.run(cmd, capture_output=True, check=True)
+    return result
+
+
+def run_exiv2json(args: List[str]):
+    cmd = [exiv2json_bin()] + args
+    try:
+        result = subprocess.run(cmd, capture_output=True, check=True)
+    except FileNotFoundError:  # pragma: no cover
+        print("EXIV2 not found - installing ...")
+        exiv2_install()
+        result = subprocess.run(cmd, capture_output=True, check=True)
+    return result
+
+
 ########################################################################################
 # Fpcalc                                                                               #
 ########################################################################################
@@ -354,6 +378,17 @@ def fpcalc_version_info():  # pragma: no cover
         return r.stdout.decode("utf-8").strip().split()[2]
     except FileNotFoundError:
         return "FPCALC not installed"
+
+
+def run_fpcalc(args: List[str]):
+    cmd = [fpcalc_bin()] + args
+    try:
+        result = subprocess.run(cmd, capture_output=True, check=True)
+    except FileNotFoundError:  # pragma: no cover
+        print("FPCALC not found - installing ...")
+        fpcalc_install()
+        result = subprocess.run(cmd, capture_output=True, check=True)
+    return result
 
 
 ########################################################################################
@@ -478,6 +513,17 @@ def ffmpeg_version_info():  # pragma: no cover
         return "ffmpeg not installed"
 
 
+def run_ffmpeg(args: List[str]):
+    cmd = [ffmpeg_bin()] + args
+    try:
+        result = subprocess.run(cmd, capture_output=True, check=True)
+    except FileNotFoundError:  # pragma: no cover
+        print("FFMPEG not found - installing ...")
+        ffmpeg_install()
+        result = subprocess.run(cmd, capture_output=True, check=True)
+    return result
+
+
 ########################################################################################
 # Java                                                                                 #
 ########################################################################################
@@ -577,6 +623,18 @@ def tika_version_info():  # pragma: no cover
         return r.stdout.decode(sys.stdout.encoding).strip()
     except subprocess.CalledProcessError:
         return "Tika not installed"
+
+
+def run_tika(args: List[str]):
+    cmd = [java_bin(), "-jar", tika_bin()] + args
+    try:
+        result = subprocess.run(cmd, capture_output=True, check=True)
+    except Exception as e:  # pragma: no cover
+        print(f"TIKA error - {e}")
+        print(f"Re-Installing TIKA ...")
+        tika_install()
+        result = subprocess.run(cmd, capture_output=True, check=True)
+    return result
 
 
 def download_file(url, checksum):  # pragma: no cover

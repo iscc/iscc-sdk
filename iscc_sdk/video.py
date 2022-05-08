@@ -53,9 +53,9 @@ def video_meta_extract(fp):
     :rtype: dict
     """
 
-    cmd = [idk.ffmpeg_bin(), "-i", fp, "-movflags", "use_metadata_tags", "-f", "ffmetadata", "-"]
+    args = ["-i", fp, "-movflags", "use_metadata_tags", "-f", "ffmetadata", "-"]
 
-    result = subprocess.run(cmd, capture_output=True, check=True)
+    result = idk.run_ffmpeg(args)
     text = result.stdout.decode(sys.stdout.encoding, errors="ignore")
 
     # parse metadata
@@ -141,8 +141,7 @@ def video_meta_embed(fp, meta):
 
     # Embed metadata
     # See: http://ffmpeg.org/ffmpeg-formats.html#Metadata-1
-    cmd = [
-        idk.ffmpeg_bin(),
+    args = [
         "-i",
         fp,
         "-i",
@@ -155,7 +154,7 @@ def video_meta_embed(fp, meta):
         "copy",
         videofile,
     ]
-    subprocess.run(cmd, capture_output=True, check=True)
+    idk.run_ffmpeg(args)
     return videofile
 
 
@@ -170,8 +169,7 @@ def video_thumbnail(fp):
     """
     size = idk.sdk_opts.image_thumbnail_size
 
-    cmd = [
-        idk.ffmpeg_bin(),
+    args = [
         "-i",
         fp,
         "-vf",
@@ -185,7 +183,7 @@ def video_thumbnail(fp):
         "-",
     ]
 
-    result = subprocess.run(cmd, capture_output=True)
+    result = idk.run_ffmpeg(args)
     img_obj = Image.open(io.BytesIO(result.stdout))
     return ImageEnhance.Sharpness(img_obj.convert("RGB")).enhance(1.4)
 
@@ -220,9 +218,8 @@ def video_mp7sig_extract(fp):
     # Extract MP7 Signature
     vf = f"signature=format=binary:filename={sigfile_path_escaped}"
     vf = f"fps=fps={idk.sdk_opts.video_fps}," + vf
-    cmd = [idk.ffmpeg_bin()]
-    cmd.extend(["-i", fp, "-vf", vf, "-f", "null", "-"])
-    subprocess.run(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=True)
+    args = ["-i", fp, "-vf", vf, "-f", "null", "-"]
+    idk.run_ffmpeg(args)
 
     with open(sigfile_path, "rb") as sig:
         sigdata = sig.read()

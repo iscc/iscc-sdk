@@ -104,7 +104,7 @@ def audio_features_extract(fp):
     :return: A dict with `duration` in seconds and `fingerprint` 32-bit integers
     :rtype: dict
     """
-    cmd = [idk.fpcalc_bin(), "-raw", "-json", "-signed", "-length", "0", fp]
-    proc = subprocess.run(cmd, capture_output=True, check=True)
+    args = ["-raw", "-json", "-signed", "-length", "0", fp]
+    proc = idk.run_fpcalc(args)
     result = json.loads(proc.stdout)
     return result

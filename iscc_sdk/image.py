@@ -123,8 +123,8 @@ def image_meta_extract(fp):
     :return: Metadata mapped to IsccMeta schema
     :rtype: dict
     """
-    cmd = [idk.exiv2json_bin(), "--all", fp]
-    result = subprocess.run(cmd, capture_output=True, check=True)
+    args = ["--all", fp]
+    result = idk.run_exiv2json(args)
     text = result.stdout.decode(sys.stdout.encoding, errors="ignore")
 
     # We may get all sorts of crazy control-chars, delete them.
@@ -194,9 +194,9 @@ def image_meta_embed(fp, meta):
         outf.write(cmdf)
 
     # Embed metaadata
-    cmd = [idk.exiv2_bin(), "-m", metafile, imagefile]
+    args = ["-m", metafile, imagefile]
     log.debug(f"Embedding {meta.dict(exclude_unset=True)} in {basename(imagefile)}")
-    subprocess.run(cmd, capture_output=True, check=True)
+    idk.run_exiv2(args)
     return imagefile
 
 
@@ -208,8 +208,8 @@ def image_meta_delete(fp):
     :param str fp: Filepath to image file.
     :rtype: None
     """
-    cmd = [idk.exiv2_bin(), "rm", fp]
-    subprocess.run(cmd, capture_output=True)
+    args = ["rm", fp]
+    return idk.run_exiv2(args)
 
 
 def image_thumbnail(fp):

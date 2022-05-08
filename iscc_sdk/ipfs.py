@@ -26,7 +26,7 @@ def ipfs_cidv1(fp, wrap=False):
     if wrap:
         args.append("--wrap-with-directory")
     args.append(fp)
-    result = idk.ipfs_run(args)
+    result = idk.run_ipfs(args)
     cid = result.stdout.decode(sys.stdout.encoding).strip()
     if wrap:
         cid += f"/{basename(fp)}"
@@ -51,5 +51,5 @@ def ipfs_cidv1_base16(fp):
         "--cid-base=base16",
         fp,
     ]
-    result = idk.ipfs_run(args)
+    result = idk.run_ipfs(args)
     return result.stdout.decode(sys.stdout.encoding).strip()
