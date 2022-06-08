@@ -1,5 +1,9 @@
 ## Changelog
 
+### 0.4.4 - 2022-06-08
+- Update to iscc-schema v0.3.8
+- Updated dependencies
+
 ### 0.4.3 - 2022-05-08
 - Moved changelog to seperate file
 - Fixed pillow resampling deprecation warning
