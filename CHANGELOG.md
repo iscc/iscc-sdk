@@ -1,5 +1,8 @@
 ## Changelog
 
+### 0.4.4 - Unreleased
+- Updated dependencies
+
 ### 0.4.3 - 2022-05-08
 - Moved changelog to seperate file
 - Fixed pillow resampling deprecation warning
