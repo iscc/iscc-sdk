@@ -400,7 +400,7 @@ mkdocs = ">=1.1"
 
 [[package]]
 name = "mkdocs-material"
-version = "8.3.3"
+version = "8.3.4"
 description = "Documentation that simply works"
 category = "dev"
 optional = false
@@ -853,7 +853,7 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.8,<4.0"
-content-hash = "93bec0656feaee73d83a838fbbc1f01cfa8e2e4c8eb6d52f8b2876a19d101563"
+content-hash = "082ff5ec19220c6225d8e90c2d2dac1ce5fd81aae8fc79a0516f6c67c576df6b"
 
 [metadata.files]
 astunparse = [
@@ -1185,8 +1185,8 @@ mkdocs-autorefs = [
     {file = "mkdocs_autorefs-0.4.1-py3-none-any.whl", hash = "sha256:a2248a9501b29dc0cc8ba4c09f4f47ff121945f6ce33d760f145d6f89d313f5b"},
 ]
 mkdocs-material = [
-    {file = "mkdocs-material-8.3.3.tar.gz", hash = "sha256:3dd30af894f6d5da3d8a2f8ffc04c90c4d0f1be013e654ec45f608373c131542"},
-    {file = "mkdocs_material-8.3.3-py2.py3-none-any.whl", hash = "sha256:4f9564af58f9c96f25c263cb705a40a82c833cb10c2626d6db6ddadedaa5b6c3"},
+    {file = "mkdocs-material-8.3.4.tar.gz", hash = "sha256:467040e9c93fada45f78398336595158ed5f398e49291186e2cfc2f3e8b1973e"},
+    {file = "mkdocs_material-8.3.4-py2.py3-none-any.whl", hash = "sha256:04db519908cd2bee450b0d2bdad3ac365d788e774528dd37f11e2ce3586d8e13"},
 ]
 mkdocs-material-extensions = [
     {file = "mkdocs-material-extensions-1.0.3.tar.gz", hash = "sha256:bfd24dfdef7b41c312ede42648f9eb83476ea168ec163b613f9abd12bbfddba2"},
