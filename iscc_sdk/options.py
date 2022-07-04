@@ -13,6 +13,11 @@ __all__ = [
 
 class SdkOptions(CoreOptions):
 
+    granular: bool = Field(
+        False,
+        description="Generate additional granular fingerprints for ISCC-CODES",
+    )
+
     image_exif_transpose: bool = Field(
         True,
         description="Transpose image according to EXIF Orientation tag",
@@ -30,6 +35,11 @@ class SdkOptions(CoreOptions):
 
     image_thumbnail_quality: int = Field(
         60, description="Thumbnail image compression setting (0-100)"
+    )
+
+    text_avg_chunk_size: int = Field(
+        1024,
+        description="Avg number of characters per text chunk for granular fingerprints",
     )
 
     video_fps: int = Field(

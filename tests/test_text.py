@@ -48,3 +48,22 @@ def test_text_name_from_uri_str(jpg_file):
 
 def test_text_name_from_uri_path(jpg_file):
     assert idk.text_name_from_uri(Path(jpg_file)) == "img"
+
+
+def test_text_chunks(docx_file):
+    txt = idk.text_extract(docx_file)
+    chunks = list(idk.text_chunks(txt, avg_size=128))
+    assert len(chunks) == 56
+    assert "".join(chunks) == txt
+    assert chunks[0] == (
+        "ISCC Test Document\n"
+        "\n"
+        "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy "
+        "eirmod tempor invid"
+    )
+
+
+def test_text_features(docx_file):
+    txt = idk.text_extract(docx_file)
+    features = idk.text_features(txt)
+    assert features == {"kind": "text", "version": 0, "features": ["eGluK69boGk"], "sizes": [6069]}

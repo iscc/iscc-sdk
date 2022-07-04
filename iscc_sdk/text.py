@@ -1,17 +1,21 @@
 """*Text handling functions*."""
 import json
-import subprocess
 import sys
 from os.path import basename, splitext
 from pathlib import Path
+from typing import Generator
 from urllib.parse import urlparse
+
+import xxhash
 from loguru import logger as log
 import iscc_sdk as idk
-
+import iscc_core as ic
 
 __all__ = [
     "text_meta_extract",
     "text_extract",
+    "text_features",
+    "text_chunks",
     "text_name_from_uri",
 ]
 
@@ -71,6 +75,43 @@ def text_extract(fp):
     if not text:
         raise idk.IsccExtractionError(f"No text extracted from {basename(fp)}")
     return result.stdout.decode(encoding="UTF-8")
+
+
+def text_features(text):
+    # type: (str) -> dict
+    """
+    Create granular fingerprint for text (minhashes over ngrams from cdc-chunks).
+    Text should be normalized before extracting text features.
+
+    :param str text: Normalized plaintext.
+    :returns dict: Dictionary with 'sizes' and 'features'.
+    """
+    clean_text = ic.text_clean(text)
+    chunks = text_chunks(clean_text, avg_size=idk.sdk_opts.text_avg_chunk_size)
+    sizes = []
+    feats = []
+    for chunk in chunks:
+        ngrams = (
+            "".join(chars) for chars in ic.sliding_window(chunk, idk.sdk_opts.text_ngram_size)
+        )
+        features = [xxhash.xxh32_intdigest(s.encode("utf-8")) for s in ngrams]
+        minimum_hash_digest = ic.alg_minhash_64(features)
+        sizes.append(len(chunk))
+        feats.append(ic.encode_base64(minimum_hash_digest))
+    return dict(kind="text", version=0, features=feats, sizes=sizes)
+
+
+def text_chunks(text, avg_size=idk.sdk_opts.text_avg_chunk_size):
+    # type: (str, int) -> Generator[str]
+    """
+    Generates variable sized text chunks (without leading BOM)
+    :param text: normalized plaintext
+    :parm: avg_size: Targeted average size of text chunks in bytes.
+    """
+    data = text.encode("utf-32-be")
+    avg_size *= 4  # 4 bytes per character
+    for chunk in ic.alg_cdc_chunks(data, utf32=True, avg_chunk_size=avg_size):
+        yield chunk.decode("utf-32-be")
 
 
 def text_name_from_uri(uri):

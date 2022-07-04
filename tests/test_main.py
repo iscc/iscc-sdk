@@ -125,6 +125,25 @@ def test_code_text(docx_file):
     }
 
 
+def test_code_text_granular(docx_file):
+    idk.sdk_opts.granular = True
+    assert idk.code_text(docx_file).dict() == {
+        "iscc": "ISCC:EAAQMBEYQF6457DP",
+        "name": "title from metadata",
+        "creator": "titusz",
+        "characters": 4951,
+        "features": [
+            {
+                "kind": "text",
+                "version": 0,
+                "features": ["eGluK69boGk"],
+                "sizes": [6069],
+            }
+        ],
+    }
+    idk.sdk_opts.granular = False
+
+
 def test_code_image(jpg_file):
     assert idk.code_image(jpg_file).dict() == {
         "creator": "Some Cat Lover",

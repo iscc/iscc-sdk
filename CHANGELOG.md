@@ -1,5 +1,10 @@
 ## Changelog
 
+### 0.4.5 - Unreleased
+- Update to iscc-schema v0.3.9
+- Update to iscc-core v0.2.11
+- Add support for granular text features
+
 ### 0.4.4 - 2022-06-08
 - Update to iscc-schema v0.3.8
 - Updated dependencies

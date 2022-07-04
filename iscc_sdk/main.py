@@ -125,6 +125,9 @@ def code_text(fp):
     text = idk.text_extract(fp)
     code = ic.gen_text_code_v0(text, bits=idk.sdk_opts.text_bits)
     meta.update(code)
+    if idk.sdk_opts.granular:
+        features = idk.text_features(text)
+        meta["features"] = [features]
     return idk.IsccMeta.parse_obj(meta)
 
 
