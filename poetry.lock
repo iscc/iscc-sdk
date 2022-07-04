@@ -245,7 +245,7 @@ python-versions = ">=3.6"
 
 [[package]]
 name = "iscc-core"
-version = "0.2.11"
+version = "0.2.8"
 description = "ISCC - Core Algorithms"
 category = "main"
 optional = false
@@ -257,7 +257,7 @@ bases = ">=0.2,<0.3"
 bitarray-hardbyte = "*"
 blake3 = "*"
 data-url = ">=1.0,<2.0"
-jcs = ">=0.2,<0.3"
+jcs = ">=0.2.0,<0.3.0"
 loguru = ">=0.6,<0.7"
 more-itertools = "*"
 pybase64 = "*"
@@ -853,7 +853,7 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.8,<4.0"
-content-hash = "93bec0656feaee73d83a838fbbc1f01cfa8e2e4c8eb6d52f8b2876a19d101563"
+content-hash = "0ad97555d4b1de9e6889bdc14449a7e990f0c690d2af8f89145caa861f6d1ef0"
 
 [metadata.files]
 astunparse = [
@@ -1101,7 +1101,7 @@ install-jdk = [
     {file = "install-jdk-0.3.0.tar.gz", hash = "sha256:889965b0af68bb4669166804f33d5dce9cd6cf57f02a045e427e508998d569a1"},
 ]
 iscc-core = [
-    {file = "iscc-core-0.2.11.tar.gz", hash = "sha256:7a8850fcd8cb39a77ffc05677e8917c0c3098f7122c98250825a8b34ec7b7fd2"},
+    {file = "iscc-core-0.2.8.tar.gz", hash = "sha256:f1ffa02f2869f39042379374b64127947f06f2f35f7fb04cb755dfdccfcf1df0"},
 ]
 iscc-samples = [
     {file = "iscc-samples-0.4.0.tar.gz", hash = "sha256:98925bec8adcc8c843ddd42b32d0c7972ed1c2ff635cb44144fd7c08929d2a2f"},
