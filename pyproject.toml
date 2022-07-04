@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "iscc-sdk"
-version = "0.4.4"
+version = "0.4.5"
 description = "Software developer kit for creating ISCCs (International Standard Content Codes)"
 authors = ["Titusz <tp@py7.de>"]
 license = "Apache-2.0"
@@ -55,12 +55,12 @@ pytest = "^7.0"
 black = "^22.1"
 coverage = "^6.3"
 pytest-cov = "^3.0"
-poethepoet = "^0.13"
+poethepoet = "^0.15"
 bandit = "^1.7"
 mkdocs-material = "^8.2"
 mkdocstrings = "^0.18"
 iscc-samples = "^0.4"
-codetiming = "^1.3.0"
+codetiming = "^1.3"
 
 [tool.black]
 skip-string-normalization = false
