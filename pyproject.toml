@@ -39,7 +39,7 @@ classifiers=[
 [tool.poetry.dependencies]
 python = ">=3.8,<4.0"
 cython = "^0.29"
-iscc-core = "0.2.8"
+iscc-core = "^0.2"
 iscc-schema = "^0.3"
 python-magic-bin = { version = "^0.4", markers = "sys_platform == 'win32' or sys_platform == 'darwin'" }
 python-magic = { version = "^0.4", markers = "sys_platform == 'linux'" }
@@ -60,7 +60,7 @@ bandit = "^1.7"
 mkdocs-material = "^8.2"
 mkdocstrings = "^0.18"
 iscc-samples = "^0.4"
-codetiming = "^1.3.0"
+codetiming = "^1.3"
 
 [tool.black]
 skip-string-normalization = false
