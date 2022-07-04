@@ -1,8 +1,9 @@
 ## Changelog
 
-### 0.4.5 - Unreleased
+### 0.4.5 - 2022-07-04
 - Update to iscc-schema v0.3.9
 - Update to iscc-core v0.2.11
+- Fix issue with embedded identifiers
 - Add support for granular text features
 
 ### 0.4.4 - 2022-06-08
