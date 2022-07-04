@@ -28,8 +28,8 @@ def test_IsccMeta_dict_defaults_exclude_none_unset():
 def test_IsccMeta_json():
     im = idk.IsccMeta(iscc="ISCC:MEAJU5AXCPOIOYFL")
     assert im.json() == (
-        '{"@context": "http://purl.org/iscc/context/0.3.8.jsonld", "@type": '
-        '"CreativeWork", "$schema": "http://purl.org/iscc/schema/0.3.8.json", "iscc": '
+        '{"@context": "http://purl.org/iscc/context/0.3.9.jsonld", "@type": '
+        '"CreativeWork", "$schema": "http://purl.org/iscc/schema/0.3.9.json", "iscc": '
         '"ISCC:MEAJU5AXCPOIOYFL"}'
     )
 
@@ -37,8 +37,8 @@ def test_IsccMeta_json():
 def test_IsccMeta_jcs():
     im = idk.IsccMeta(iscc="ISCC:MEAJU5AXCPOIOYFL")
     assert im.jcs() == (
-        b'{"$schema":"http://purl.org/iscc/schema/0.3.8.json","@context":"http://purl.'
-        b'org/iscc/context/0.3.8.jsonld","@type":"CreativeWork","iscc":"ISCC:MEAJU5AXC'
+        b'{"$schema":"http://purl.org/iscc/schema/0.3.9.json","@context":"http://purl.'
+        b'org/iscc/context/0.3.9.jsonld","@type":"CreativeWork","iscc":"ISCC:MEAJU5AXC'
         b'POIOYFL"}'
     )
 
