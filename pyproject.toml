@@ -58,7 +58,7 @@ pytest-cov = "^3.0"
 poethepoet = "^0.13"
 bandit = "^1.7"
 mkdocs-material = "^8.2"
-mkdocstrings = "^0.18"
+mkdocstrings = "^0.19"
 iscc-samples = "^0.4"
 codetiming = "^1.3"
 
