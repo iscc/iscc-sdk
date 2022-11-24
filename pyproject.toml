@@ -55,10 +55,10 @@ pytest = "^7.0"
 black = "^22.1"
 coverage = "^6.3"
 pytest-cov = "^4.0"
-poethepoet = "^0.13"
+poethepoet = "^0.16"
 bandit = "^1.7"
 mkdocs-material = "^8.2"
-mkdocstrings = "^0.18"
+mkdocstrings = {extras = ["python"], version = "^0.19"}
 iscc-samples = "^0.4"
 codetiming = "^1.3"
 
