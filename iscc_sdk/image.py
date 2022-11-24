@@ -5,7 +5,6 @@ import shutil
 import sys
 import json
 import tempfile
-import subprocess
 from os.path import basename, join
 from typing import Sequence
 import jmespath
@@ -26,6 +25,9 @@ __all__ = [
     "image_thumbnail",
     "image_to_data_url",
 ]
+
+
+Image.MAX_IMAGE_PIXELS = idk.sdk_opts.image_max_pixels
 
 
 def image_normalize(img):

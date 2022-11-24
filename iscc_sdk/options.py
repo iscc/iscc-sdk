@@ -2,7 +2,8 @@
 from typing import Optional
 
 from iscc_core.options import CoreOptions
-from pydantic import Field
+from pydantic import Field, validator
+from PIL import Image
 
 
 __all__ = [
@@ -12,6 +13,8 @@ __all__ = [
 
 
 class SdkOptions(CoreOptions):
+    class Config:
+        validate_assignment = True
 
     granular: bool = Field(
         False,
@@ -37,6 +40,11 @@ class SdkOptions(CoreOptions):
         60, description="Thumbnail image compression setting (0-100)"
     )
 
+    image_max_pixels: Optional[int] = Field(
+        128000000,
+        description="Maximum number of pixels allowed for processing (default 128Mpx / 0.5GB RGB)",
+    )
+
     text_avg_chunk_size: int = Field(
         1024,
         description="Avg number of characters per text chunk for granular fingerprints",
@@ -46,6 +54,11 @@ class SdkOptions(CoreOptions):
         5,
         description="Frames per second to process for video hash (ignored when 0).",
     )
+
+    @validator("image_max_pixels")
+    def set_pillow(cls, v):
+        Image.MAX_IMAGE_PIXELS = v
+        return v
 
 
 sdk_opts = SdkOptions()

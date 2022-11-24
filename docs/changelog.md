@@ -2,6 +2,8 @@
 
 ### 0.4.6 - Unreleased
 - Add support for earlier Pillow versions
+- Add option to configure `image_max_pixels`
+- Update dependencies
 
 ### 0.4.5 - 2022-07-04
 - Update to iscc-schema v0.3.9
