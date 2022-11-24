@@ -169,8 +169,9 @@ def image_meta_embed(fp, meta):
     cmdf = "reg iscc http://purl.org/iscc/schema\n"
     cmdf += "reg dc http://purl.org/dc/elements/1.1/\n"
 
-    cmdf += f"set Xmp.iscc.name {meta.name}\n"
-    cmdf += f"set Xmp.dc.title {meta.name}\n"
+    if meta.name:
+        cmdf += f"set Xmp.iscc.name {meta.name}\n"
+        cmdf += f"set Xmp.dc.title {meta.name}\n"
     if meta.description:
         cmdf += f"set Xmp.iscc.description {meta.description}\n"
         cmdf += f"set Xmp.dc.description {meta.description}\n"
