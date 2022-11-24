@@ -1,6 +1,6 @@
 ## Changelog
 
-### 0.4.6 - Unreleased
+### 0.4.6 - 2022-11-24
 - Add support for earlier Pillow versions
 - Add option to configure `image_max_pixels`
 - Don´t embed empty titles in images
