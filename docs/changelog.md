@@ -6,6 +6,8 @@
 - Don´t embed empty titles in images
 - Handle extracted metadata gracefully
 - Fixed CVE-2007-4559
+- Update to iscc-schema v0.4.0
+- Update to iscc-core v0.2.12
 - Update to tika 2.6.0
 - Update dependencies
 
