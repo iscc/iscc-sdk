@@ -6,6 +6,7 @@
 - Don´t embed empty titles in images
 - Handle extracted metadata gracefully
 - Fixed CVE-2007-4559
+- Update to tika 2.6.0
 - Update dependencies
 
 ### 0.4.5 - 2022-07-04
