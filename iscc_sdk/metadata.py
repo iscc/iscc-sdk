@@ -40,7 +40,7 @@ def extract_metadata(fp):
     extractor = EXTRACTORS.get(mode)
     if extractor:
         metadata = extractor(fp)
-        return idk.IsccMeta.parse_obj(metadata)
+        return idk.IsccMeta.construct(**metadata)
 
 
 def embed_metadata(fp, meta):

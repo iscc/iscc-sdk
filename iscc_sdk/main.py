@@ -47,7 +47,7 @@ def code_iscc(fp):
     iscc_meta.update(content.dict())
     iscc_meta.update(meta.dict())
     iscc_meta.update(iscc_code)
-    return idk.IsccMeta.parse_obj(iscc_meta)
+    return idk.IsccMeta.construct(**iscc_meta)
 
 
 def code_meta(fp):
@@ -73,7 +73,7 @@ def code_meta(fp):
     )
 
     meta.update(metacode)
-    return idk.IsccMeta.parse_obj(meta)
+    return idk.IsccMeta.construct(**meta)
 
 
 def code_content(fp):
@@ -128,7 +128,7 @@ def code_text(fp):
     if idk.sdk_opts.granular:
         features = idk.text_features(text)
         meta["features"] = [features]
-    return idk.IsccMeta.parse_obj(meta)
+    return idk.IsccMeta.construct(**meta)
 
 
 def code_image(fp):
@@ -150,7 +150,7 @@ def code_image(fp):
     code_obj = ic.gen_image_code_v0(pixels, bits=idk.sdk_opts.image_bits)
     meta.update(code_obj)
 
-    return idk.IsccMeta.parse_obj(meta)
+    return idk.IsccMeta.construct(**meta)
 
 
 def code_audio(fp):
@@ -167,7 +167,7 @@ def code_audio(fp):
     code_obj = ic.gen_audio_code_v0(features["fingerprint"], bits=idk.sdk_opts.audio_bits)
     meta.update(code_obj)
 
-    return idk.IsccMeta.parse_obj(meta)
+    return idk.IsccMeta.construct(**meta)
 
 
 def code_video(fp):
@@ -186,7 +186,7 @@ def code_video(fp):
     thumbnail_image = idk.video_thumbnail(fp)
     thumbnail_durl = idk.image_to_data_url(thumbnail_image)
     meta["thumbnail"] = thumbnail_durl
-    return idk.IsccMeta.parse_obj(meta)
+    return idk.IsccMeta.construct(**meta)
 
 
 def code_data(fp):
@@ -204,7 +204,7 @@ def code_data(fp):
     with open(fp, "rb") as stream:
         meta = ic.gen_data_code_v0(stream, bits=idk.sdk_opts.data_bits)
 
-    return idk.IsccMeta.parse_obj(meta)
+    return idk.IsccMeta.construct(**meta)
 
 
 def code_instance(fp):
@@ -224,4 +224,4 @@ def code_instance(fp):
     with open(fp, "rb") as stream:
         meta = ic.gen_instance_code_v0(stream, bits=idk.sdk_opts.instance_bits)
 
-    return idk.IsccMeta.parse_obj(meta)
+    return idk.IsccMeta.construct(**meta)
