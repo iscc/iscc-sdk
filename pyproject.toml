@@ -48,7 +48,7 @@ platformdirs = "^2.5"
 jmespath = "^1.0"
 Pillow = "^9.0"
 pytaglib = "^1.5"
-numpy = "^1.22.3"
+numpy = "^1.22"
 
 [tool.poetry.dev-dependencies]
 pytest = "^7.0"
