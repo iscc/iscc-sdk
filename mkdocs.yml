@@ -97,8 +97,11 @@ nav:
   - Main: main.md
   - Mediatype: mediatype.md
   - Metadata: metadata.md
+  - Text: text.md
   - Image: image.md
   - Audio: audio.md
   - Video: video.md
-  - IPFS: ipfs.md
+  - Other:
+    - PDF: other/pdf.md
+    - IPFS: other/ipfs.md
   - Changelog: changelog.md
