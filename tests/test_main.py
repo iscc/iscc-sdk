@@ -4,15 +4,16 @@ import iscc_sdk as idk
 def test_code_iscc_text(pdf_file):
     assert idk.code_iscc(pdf_file).dict() == {
         "@type": "TextDigitalDocument",
-        "name": "title from metadata",
-        "iscc": "ISCC:KACV5NAQXBCHCWFWMNALVJHBLB7X7IFU4H2JIVUSWF5NLR6362TFHDY",
-        "filename": "text.pdf",
         "characters": 16995,
         "datahash": "1e207ad5c7dbf6a6538f15fd0439e0dc5ba03a043ea23f072aa4e2ba830811bdb5f0",
+        "filename": "text.pdf",
         "filesize": 188280,
+        "iscc": "ISCC:KACV5NAQXBCHCWFWMNALVJHBLB7X7IFU4H2JIVUSWF5NLR6362TFHDY",
         "mediatype": "application/pdf",
         "metahash": "1e201da548c5285ed35f293c3e22c2f050e037643aae8cf9244b532a162ff5031f52",
         "mode": "text",
+        "name": "title from metadata",
+        "thumbnail": "data:image/webp;base64,UklGRhQEAABXRUJQVlA4IAgEAACwEgCdASpjAIAAPrVSo02nJKMiJ3O6yOAWiWkzjSC1C6Reznp+sQABFkPaZh/aCmUqsW/BvosW2KfVw78WmUc08wM8nb3c11VnfyGy2a5aPdfxHCQTwGxGweNMGzxm2Z2jEFxvqwoATFlrf9xo/VE9udn1Q64BAxos65LBrtLozEg6mat+LakDTH4PFrwm0iNqiFpj+d5x/j78PkCBoAD+mzFNArdTvG0MlL8f5xHy09tSKqt7ZSeBIkC2lH3a5AaDoVPZ5jMsa45MNylxorbH2vtxADmw+4dd0LTPmWhnHRkJg743JLiKmu+0bzJdA94R+Dn7RWfgZDzCOEHZe3gZbWZ86jnQC2zkbN/fM8rEkr/gchLKWfFwdMYUdal/UUnt6dpcaicpTobp/EWflri7XaZzzwbPHk8Llt8haeVIFH3WCjc1dnNZgfXx5frHq+VrCQehUo0e7YzWDIem/Cr8EI/w1AKAktrRTOiSKN4VWNBmVIxUuQxnggkMGAX7F3sLkJO7FteTvcdaX43fliwsQhHXDZVQrtHB2vQnRe0UrIitpYDrfNTHw1DGe6wSwmmuKYzqK9O4DhPpnTSMYLTo+Smk7lyWLKVZ/k4pjQIZjVxV8figTBhkwuHgy6iFYznLwqNbNWnqqwVVNDYbni1Rkh1G7fiCHls/dcTGcoXAfTNYtTWg2pYuX3SpCnhXd1srtjTiM8fkkLuQzbDaiDGB73x3Z5Q7AxxPUll+1PfShIkYFoAkMHxRGf/UwNLTxLyPEHANTzOLU9pe2v2gFw8bn3fpLi+4g2Sa7tbYokmCsCGxkVmbC2XtCy5Yz4tbXPleOXiSdp1/xGUzPt7Fw/vMpCn9p2isiA8IwWrPWzSYeXs7JNxkFC2TB3ImDqVfPYY2Dgnr0BGXB7WhpezYYIpRr5FOSnovqo1oCzSeISKwh5ZILvJwdQ0QTFC4swbu/jZJ43mceHYzThelI73a9Q5yLvtmYumUCTP99mPZdKkqR8axaTu+IAaD2utarTsmi+UXhKMmxGU+niTjV5tRughpnYN6s+QVsECiyXHwwj6/eqv/eW+RlW1cGYxSbVmQ790bv0NJ7enZnofBXTkU1YXw7bUS1c59iW73vB/csUjXJ4nD4MqUBjT/49uOytubyNDPYGflJ1LyaJDeZq3X686BvOHRYKkxOjGSoEhG3Jw0RFwftjb5z5Hf8KxPT/JBneRmdaOqXLkrM59e6eHAYBGPASHvzbnY6dBB0yl2dU2wq1oAa7WZ/kUnepjnFa54fudvh0jbpBHaUx++I+odeIaRr7FerRkLnTyqUIuGey8GNAakDAw+3twOnba3UVHgWM86HBqe68HxzBZZ6ykNwsz64ABCV5zgAAA=",
     }
 
 

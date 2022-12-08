@@ -3,10 +3,10 @@ import json
 import sys
 from os.path import basename, splitext
 from pathlib import Path
-from typing import Generator
+from typing import Generator, Optional, Union
 from urllib.parse import urlparse
 from iscc_schema import IsccMeta
-
+from PIL import Image
 import xxhash
 from loguru import logger as log
 import iscc_sdk as idk
@@ -19,6 +19,7 @@ __all__ = [
     "text_features",
     "text_chunks",
     "text_name_from_uri",
+    "text_thumbnail",
 ]
 
 
@@ -136,7 +137,7 @@ def text_chunks(text, avg_size=idk.sdk_opts.text_avg_chunk_size):
     """
     Generates variable sized text chunks (without leading BOM)
     :param text: normalized plaintext
-    :parm: avg_size: Targeted average size of text chunks in bytes.
+    :param avg_size: Targeted average size of text chunks in bytes.
     """
     data = text.encode("utf-32-be")
     avg_size *= 4  # 4 bytes per character
@@ -145,9 +146,9 @@ def text_chunks(text, avg_size=idk.sdk_opts.text_avg_chunk_size):
 
 
 def text_name_from_uri(uri):
-    # type: (str, Path) -> str
+    # type: (Union[str, Path]) -> str
     """
-    Extract "filename" part of an uri without file extension to be used as fallback title for an
+    Extract `filename` part of an uri without file extension to be used as fallback title for an
     asset if no title information can be acquired.
 
     :param str uri: Url or file path
@@ -164,3 +165,17 @@ def text_name_from_uri(uri):
     name = name.replace("-", " ")
     name = name.replace("_", " ")
     return name
+
+
+def text_thumbnail(fp):
+    # type: (str) -> Optional[Image.Image]
+    """
+    Create a thumbnail for a text document.
+
+    :param str fp: Filepath to text document.
+    :return: Thumbnail image as PIL Image object
+    :rtype: Image.Image|None
+    """
+    mt, _ = idk.mediatype_and_mode(fp)
+    if mt == "application/pdf":
+        return idk.pdf_thumbnail(fp)

@@ -1,5 +1,8 @@
 ## Changelog
 
+### 0.4.8 - Unreleased
+- Integrate PDF thumbnail extraction
+
 ### 0.4.7 - 2022-12-08
 - Add metadata embedding support for PDFs
 - Add thumbnail support for PDFs

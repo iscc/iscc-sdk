@@ -122,6 +122,12 @@ def code_text(fp):
     :rtype: IsccMeta
     """
     meta = idk.text_meta_extract(fp)
+
+    thumbnail_img = idk.text_thumbnail(fp)
+    if thumbnail_img:
+        thumbnail_durl = idk.image_to_data_url(thumbnail_img)
+        meta["thumbnail"] = thumbnail_durl
+
     text = idk.text_extract(fp)
     code = ic.gen_text_code_v0(text, bits=idk.sdk_opts.text_bits)
     meta.update(code)
@@ -143,8 +149,8 @@ def code_image(fp):
     meta = idk.image_meta_extract(fp)
 
     thumbnail_img = idk.image_thumbnail(fp)
-    thumnnail_durl = idk.image_to_data_url(thumbnail_img)
-    meta["thumbnail"] = thumnnail_durl
+    thumbnail_durl = idk.image_to_data_url(thumbnail_img)
+    meta["thumbnail"] = thumbnail_durl
 
     pixels = idk.image_normalize(Image.open(fp))
     code_obj = ic.gen_image_code_v0(pixels, bits=idk.sdk_opts.image_bits)
