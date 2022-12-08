@@ -104,4 +104,5 @@ nav:
   - Other:
     - PDF: other/pdf.md
     - IPFS: other/ipfs.md
+    - Tools: other/tools.md
   - Changelog: changelog.md
