@@ -1,10 +1,10 @@
 ## Changelog
 
-### 0.4.7 - Unreleased
+### 0.4.7 - 2022-12-08
 - Add metadata embedding support for PDFs
 - Add thumbnail support for PDFs
-- Add documentation for text module
 - Improve text metadata extraction mapping
+- Improve documentation
 - Update dependencies
 
 ### 0.4.6 - 2022-11-24
