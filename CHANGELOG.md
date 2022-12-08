@@ -1,5 +1,12 @@
 ## Changelog
 
+### 0.4.7 - Unreleased
+- Add metadata embedding support for PDFs
+- Add thumbnail support for PDFs
+- Add documentation for text module
+- Improve text metadata extraction mapping
+- Update dependencies
+
 ### 0.4.6 - 2022-11-24
 - Add support for earlier Pillow versions
 - Add option to configure `image_max_pixels`

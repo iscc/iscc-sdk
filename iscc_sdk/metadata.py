@@ -21,6 +21,7 @@ EXTRACTORS = {
 }
 
 EMBEDDERS = {
+    "text": idk.text_meta_embed,
     "image": idk.image_meta_embed,
     "audio": idk.audio_meta_embed,
     "video": idk.video_meta_embed,

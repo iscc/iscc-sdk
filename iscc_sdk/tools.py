@@ -1,4 +1,4 @@
-"""*SDK binary media file handling tools*."""
+"""*Manage SDK binary media file handling tools*."""
 import os
 import shutil
 import subprocess
@@ -98,7 +98,7 @@ EXIV2JSON_RELPATH = {
 
 
 def install():
-    """Install binary tools for content extraction."""
+    """Install binary tools for content extraction and metadata handling."""
     with ThreadPoolExecutor(max_workers=6) as p:
         p.submit(exiv2_install)
         p.submit(fpcalc_install)
@@ -200,6 +200,7 @@ def ipfs_version_info():  # pragma: no cover
 
 
 def run_ipfs(args: List[str]):
+    """Run ipfs command with `args`. Install ipfs if not found."""
     cmd = [ipfs_bin()] + args
     try:
         result = subprocess.run(cmd, capture_output=True, check=True)
@@ -277,6 +278,7 @@ def exiv2_version_info():  # pragma: no cover
 
 
 def run_exiv2(args: List[str]):
+    """Run exiv2 command with `args`. Install exiv2 if not found."""
     cmd = [exiv2_bin()] + args
     try:
         result = subprocess.run(cmd, capture_output=True, check=True)
@@ -288,6 +290,7 @@ def run_exiv2(args: List[str]):
 
 
 def run_exiv2json(args: List[str]):
+    """Run exiv2json command with `args`. Install exiv2json if not found."""
     cmd = [exiv2json_bin()] + args
     try:
         result = subprocess.run(cmd, capture_output=True, check=True)
@@ -372,6 +375,7 @@ def fpcalc_version_info():  # pragma: no cover
 
 
 def run_fpcalc(args: List[str]):
+    """Run fpcalc command with `args`. Installs fpcalc if not found."""
     cmd = [fpcalc_bin()] + args
     try:
         result = subprocess.run(cmd, capture_output=True, check=True)
@@ -445,7 +449,7 @@ def ffmpeg_version_info():  # pragma: no cover
 
 
 def run_ffmpeg(args: List[str]):
-    """Run ffmpeg command with `args`"""
+    """Run ffmpeg command with `args`. Install ffmpeg if not found."""
     cmd = [ffmpeg_bin()] + args
     try:
         result = subprocess.run(cmd, capture_output=True, check=True)
@@ -558,6 +562,7 @@ def tika_version_info():  # pragma: no cover
 
 
 def run_tika(args: List[str]):
+    """Run tika command with `args`. Install tika if not found."""
     cmd = [java_bin(), "-jar", tika_bin()] + args
     try:
         result = subprocess.run(cmd, capture_output=True, check=True)

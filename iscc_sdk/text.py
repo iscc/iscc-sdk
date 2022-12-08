@@ -5,6 +5,7 @@ from os.path import basename, splitext
 from pathlib import Path
 from typing import Generator
 from urllib.parse import urlparse
+from iscc_schema import IsccMeta
 
 import xxhash
 from loguru import logger as log
@@ -13,6 +14,7 @@ import iscc_core as ic
 
 __all__ = [
     "text_meta_extract",
+    "text_meta_embed",
     "text_extract",
     "text_features",
     "text_chunks",
@@ -21,13 +23,26 @@ __all__ = [
 
 
 TEXT_META_MAP = {
+    "iscc_name": "name",
+    "iscc_description": "description",
+    "iscc_meta": "meta",
+    "iscc_license": "license",
+    "iscc_acquire": "acquire",
+    "iscc_credit": "credit",
+    "iscc_rights": "rights",
     "custom:iscc_name": "name",
     "custom:iscc_description": "description",
     "custom:iscc_meta": "meta",
+    "pdf:docinfo:title": "name",
+    "pdf:docinfo:subject": "description",
+    "pdf:docinfo:author": "creator",
+    "pdf:docinfo:creator": "creator",
+    "pdf:docinfo:keywords": "keywords",
     "dc:title": "name",
     "dc:description": "description",
     "dc:creator": "creator",
     "dc:rights": "rights",
+    "meta:keyword": "keywords",
 }
 
 
@@ -57,6 +72,21 @@ def text_meta_extract(fp):
             mapped[mapped_field] = value
             done.add(mapped_field)
     return mapped
+
+
+def text_meta_embed(fp, meta):
+    # type: (str, IsccMeta) -> Optional[str]
+    """
+    Embed metadata into a copy of the text document.
+
+    :param str fp: Filepath to source text document file
+    :param IsccMeta meta: Metadata to embed into text document
+    :return: Filepath to the new file with updated metadata (None if no embedding supported)
+    :rtype: str|None
+    """
+    mt, _ = idk.mediatype_and_mode(fp)
+    if mt == "application/pdf":
+        return idk.pdf_meta_embed(fp, meta)
 
 
 def text_extract(fp):
