@@ -307,6 +307,18 @@
   
 
 
+  <li class="md-tabs__item">
+    <a href="../options/" class="md-tabs__link">
+      Options
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
   
   
   
@@ -524,6 +536,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#iscc_sdk.text.text_thumbnail" class="md-nav__link">
+    text_thumbnail()
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -584,11 +603,26 @@
   
   
   
+    <li class="md-nav__item">
+      <a href="../options/" class="md-nav__link">
+        Options
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
     
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_9" type="checkbox" id="__nav_9" checked>
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_10" type="checkbox" id="__nav_10" checked>
       
       
       
@@ -601,13 +635,13 @@
         
       
       
-        <label class="md-nav__link" for="__nav_9">
+        <label class="md-nav__link" for="__nav_10">
           Other
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" aria-label="Other" data-md-level="1">
-        <label class="md-nav__title" for="__nav_9">
+        <label class="md-nav__title" for="__nav_10">
           <span class="md-nav__icon md-icon"></span>
           Other
         </label>
@@ -999,8 +1033,7 @@ Text should be normalized before extracting text features.</p>
 
   <div class="doc doc-contents ">
   
-      <p>Generates variable sized text chunks (without leading BOM)
-:parm: avg_size: Targeted average size of text chunks in bytes.</p>
+      <p>Generates variable sized text chunks (without leading BOM)</p>
 
   <p><strong>Parameters:</strong></p>
   <table>
@@ -1020,6 +1053,15 @@ Text should be normalized before extracting text features.</p>
           <td><p>normalized plaintext</p></td>
           <td>
               <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>avg_size</code></td>
+          <td>
+          </td>
+          <td><p>Targeted average size of text chunks in bytes.</p></td>
+          <td>
+                <code>idk.sdk_opts.text_avg_chunk_size</code>
           </td>
         </tr>
     </tbody>
@@ -1046,7 +1088,7 @@ Text should be normalized before extracting text features.</p>
 
   <div class="doc doc-contents ">
   
-      <p>Extract "filename" part of an uri without file extension to be used as fallback title for an
+      <p>Extract <code>filename</code> part of an uri without file extension to be used as fallback title for an
 asset if no title information can be acquired.</p>
 
   <p><strong>Parameters:</strong></p>
@@ -1087,6 +1129,71 @@ asset if no title information can be acquired.</p>
                 <code>str</code>
           </td>
           <td><p>derived name (might be an empty string)</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+  </div>
+
+</div>
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="iscc_sdk.text.text_thumbnail" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">text_thumbnail</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span></code>
+
+<a href="#iscc_sdk.text.text_thumbnail" class="headerlink" title="Permanent link">#</a></h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Create a thumbnail for a text document.</p>
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>fp</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>Filepath to text document.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code>Image.Image|None</code>
+          </td>
+          <td><p>Thumbnail image as PIL Image object</p></td>
         </tr>
     </tbody>
   </table>

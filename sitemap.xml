@@ -36,6 +36,11 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://sdk.iscc.codes/options/</loc>
+         <lastmod>2022-12-08</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://sdk.iscc.codes/text/</loc>
          <lastmod>2022-12-08</lastmod>
          <changefreq>daily</changefreq>
