@@ -70,6 +70,6 @@ def pdf_meta_embed(fp, meta):
             doc.xref_set_key(xref, "iscc_credit", fitz.get_pdf_str(meta.credit))
         if meta.rights:
             doc.xref_set_key(xref, "iscc_rights", fitz.get_pdf_str(meta.rights))
-            doc.set_metadata(new_meta)
+        doc.set_metadata(new_meta)
         doc.saveIncr()
     return temppdf

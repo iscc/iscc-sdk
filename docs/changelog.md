@@ -1,5 +1,8 @@
 ## Changelog
 
+## 0.4.9 - Unreleased
+- Fix PDF metadata embedding
+
 ### 0.4.8 - 2022-12-09
 - Separeta ISCC_CORE and ISCC_SDK options
 - Document ISCC_SDK option
