@@ -21,13 +21,26 @@ __all__ = [
 
 
 TEXT_META_MAP = {
+    "iscc_name": "name",
+    "iscc_description": "description",
+    "iscc_meta": "meta",
+    "iscc_license": "license",
+    "iscc_acquire": "acquire",
+    "iscc_credit": "credit",
+    "iscc_rights": "rights",
     "custom:iscc_name": "name",
     "custom:iscc_description": "description",
     "custom:iscc_meta": "meta",
+    "pdf:docinfo:title": "name",
+    "pdf:docinfo:subject": "description",
+    "pdf:docinfo:author": "creator",
+    "pdf:docinfo:creator": "creator",
+    "pdf:docinfo:keywords": "keywords",
     "dc:title": "name",
     "dc:description": "description",
     "dc:creator": "creator",
     "dc:rights": "rights",
+    "meta:keyword": "keywords",
 }
 
 
