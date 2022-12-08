@@ -22,6 +22,12 @@ def test_text_meta_extract_epub(epub_file):
     }
 
 
+def test_text_meta_embed_pdf(pdf_file):
+    meta = {"name": "testname", "description": "testdescription"}
+    new_file = idk.text_meta_embed(pdf_file, idk.IsccMeta(**meta))
+    assert idk.text_meta_extract(new_file) == meta
+
+
 def test_text_extract_pdf(pdf_file):
     text = idk.text_extract(pdf_file)
     assert text.strip().startswith("Bitcoin: A Peer-to-Peer Electronic Cash System")

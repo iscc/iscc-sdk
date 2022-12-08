@@ -5,7 +5,7 @@ import iscc_sdk as idk
 
 
 meta = {
-    "name": "Title CHANGED in PDF",
+    "name": "Iñtërnâtiônàlizætiøn☃",
     "description": "Description CHANGED in PDF",
     "meta": "someuri",
     "creator": "Author CHANGED in PDF",
