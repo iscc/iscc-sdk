@@ -69,7 +69,7 @@ def code_meta(fp):
         name=meta.get("name"),
         description=meta.get("description"),
         meta=meta.get("meta"),
-        bits=idk.sdk_opts.meta_bits,
+        bits=idk.core_opts.meta_bits,
     )
 
     meta.update(metacode)
@@ -129,7 +129,7 @@ def code_text(fp):
         meta["thumbnail"] = thumbnail_durl
 
     text = idk.text_extract(fp)
-    code = ic.gen_text_code_v0(text, bits=idk.sdk_opts.text_bits)
+    code = ic.gen_text_code_v0(text, bits=idk.core_opts.text_bits)
     meta.update(code)
     if idk.sdk_opts.granular:
         features = idk.text_features(text)
@@ -153,7 +153,7 @@ def code_image(fp):
     meta["thumbnail"] = thumbnail_durl
 
     pixels = idk.image_normalize(Image.open(fp))
-    code_obj = ic.gen_image_code_v0(pixels, bits=idk.sdk_opts.image_bits)
+    code_obj = ic.gen_image_code_v0(pixels, bits=idk.core_opts.image_bits)
     meta.update(code_obj)
 
     return idk.IsccMeta.construct(**meta)
@@ -170,7 +170,7 @@ def code_audio(fp):
     """
     meta = idk.audio_meta_extract(fp)
     features = idk.audio_features_extract(fp)
-    code_obj = ic.gen_audio_code_v0(features["fingerprint"], bits=idk.sdk_opts.audio_bits)
+    code_obj = ic.gen_audio_code_v0(features["fingerprint"], bits=idk.core_opts.audio_bits)
     meta.update(code_obj)
 
     return idk.IsccMeta.construct(**meta)
@@ -187,7 +187,7 @@ def code_video(fp):
     """
     meta = idk.video_meta_extract(fp)
     features = idk.video_features_extract(fp)
-    code_obj = ic.gen_video_code_v0(features, bits=idk.sdk_opts.video_bits)
+    code_obj = ic.gen_video_code_v0(features, bits=idk.core_opts.video_bits)
     meta.update(code_obj)
     thumbnail_image = idk.video_thumbnail(fp)
     thumbnail_durl = idk.image_to_data_url(thumbnail_image)
@@ -208,7 +208,7 @@ def code_data(fp):
     """
 
     with open(fp, "rb") as stream:
-        meta = ic.gen_data_code_v0(stream, bits=idk.sdk_opts.data_bits)
+        meta = ic.gen_data_code_v0(stream, bits=idk.core_opts.data_bits)
 
     return idk.IsccMeta.construct(**meta)
 
@@ -228,6 +228,6 @@ def code_instance(fp):
     :rtype: IsccMeta
     """
     with open(fp, "rb") as stream:
-        meta = ic.gen_instance_code_v0(stream, bits=idk.sdk_opts.instance_bits)
+        meta = ic.gen_instance_code_v0(stream, bits=idk.core_opts.instance_bits)
 
     return idk.IsccMeta.construct(**meta)

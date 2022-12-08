@@ -101,6 +101,7 @@ nav:
   - Image: image.md
   - Audio: audio.md
   - Video: video.md
+  - Options: options.md
   - Other:
     - PDF: other/pdf.md
     - IPFS: other/ipfs.md

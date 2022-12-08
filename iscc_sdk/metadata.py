@@ -66,8 +66,8 @@ class IsccMeta(iss.IsccMeta):
 
     @validator("name", pre=True)
     def trim_name(cls, v):
-        return ic.text_trim(v, idk.sdk_opts.meta_trim_name)
+        return ic.text_trim(v, idk.core_opts.meta_trim_name)
 
     @validator("description", pre=True)
     def trim_description(cls, v):
-        return ic.text_trim(v, idk.sdk_opts.meta_trim_description)
+        return ic.text_trim(v, idk.core_opts.meta_trim_description)

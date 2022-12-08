@@ -123,7 +123,7 @@ def text_features(text):
     feats = []
     for chunk in chunks:
         ngrams = (
-            "".join(chars) for chars in ic.sliding_window(chunk, idk.sdk_opts.text_ngram_size)
+            "".join(chars) for chars in ic.sliding_window(chunk, idk.core_opts.text_ngram_size)
         )
         features = [xxhash.xxh32_intdigest(s.encode("utf-8")) for s in ngrams]
         minimum_hash_digest = ic.alg_minhash_64(features)

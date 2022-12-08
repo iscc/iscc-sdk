@@ -1,6 +1,8 @@
 ## Changelog
 
 ### 0.4.8 - Unreleased
+- Separeta ISCC_CORE and ISCC_SDK options
+- Document ISCC_SDK option
 - Integrate PDF thumbnail extraction
 
 ### 0.4.7 - 2022-12-08

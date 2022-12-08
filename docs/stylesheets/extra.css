@@ -30,6 +30,9 @@
 }
 
 .doc-heading code {
-    font-weight: bold;
-    font-size: 0.9rem;
+    font-size: .9rem;
+}
+
+.doc-label code {
+    font-size: .6rem;
 }

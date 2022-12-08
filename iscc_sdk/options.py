@@ -1,58 +1,84 @@
-"""*SDK configuration and options*."""
-from typing import Optional
+"""SDK options can be configured using environment variables. Variables are defined as
+class-atributes on the `SdkOptions` instance.
 
-from iscc_core.options import CoreOptions
-from pydantic import Field, validator
+!!! example "Example how to access configuration options"
+    ```python
+    import iscc_sdk as idk
+
+    # To access ISCC_SDK_VIDEO_FPS setting use
+    fps: int = idk.sdk_opts.video_fps
+
+    # Configuration of the `iscc-core` dependency is also available
+    # To access ISCC_CORE_IMAGE_BITS use
+    image_bits: int = idk.core_opts.image_bits
+    ```
+
+
+"""
+from typing import Optional
+from pydantic import Field, validator, BaseSettings
 from PIL import Image
+import iscc_core
 
 
 __all__ = [
     "SdkOptions",
     "sdk_opts",
+    "core_opts",
 ]
 
 
-class SdkOptions(CoreOptions):
+class SdkOptions(BaseSettings):
+    """SDK Configuration Options"""
+
     class Config:
         validate_assignment = True
+        env_prefix = "ISCC_SDK_"
+        env_file = "iscc-sdk.env"
+        env_file_encoding = "utf-8"
 
     granular: bool = Field(
         False,
-        description="Generate additional granular fingerprints for ISCC-CODES",
+        description="ISCC_SDK_GRANULAR - Generate additional granular fingerprints for ISCC-CODES",
     )
 
     image_exif_transpose: bool = Field(
         True,
-        description="Transpose image according to EXIF Orientation tag",
+        description="ISCC_SDK_IMAGE_EXIF_TRANSPOSE - Transpose image according to EXIF Orientation tag",
     )
 
     image_fill_transparency: bool = Field(
-        True, description="Add white background to image if it has alpha transparency"
+        True,
+        description="ISCC_SDK_IMAGE_FILL_TRANSPARENCY - Add white background to image if it has alpha transparency",
     )
 
-    image_trim_border: bool = Field(True, description="Crop empty borders of images")
+    image_trim_border: bool = Field(
+        True, description="ISCC_SDK_IMAGE_TRIM_BORDER - Crop empty borders of images"
+    )
 
     image_thumbnail_size: int = Field(
-        128, description="Size of larger side of thumbnail in number of pixels"
+        128,
+        description="ISCC_SDK_IMAGE_THUMBNAIL_SIZE - Size of larger side of thumbnail in number of pixels",
     )
 
     image_thumbnail_quality: int = Field(
-        60, description="Thumbnail image compression setting (0-100)"
+        60,
+        description="ISCC_SDK_IMAGE_THUMBNAIL_QUALITY - Thumbnail image compression setting (0-100)",
     )
 
     image_max_pixels: Optional[int] = Field(
         128000000,
-        description="Maximum number of pixels allowed for processing (default 128Mpx / 0.5GB RGB)",
+        description="ISCC_SDK_IMAGE_MAX_PIXELS - Maximum number of pixels allowed for processing (default 128Mpx / 0.5GB RGB)",
     )
 
     text_avg_chunk_size: int = Field(
         1024,
-        description="Avg number of characters per text chunk for granular fingerprints",
+        description="ISCC_SDK_TEXT_AVG_CHUNK_SIZE - Avg number of characters per text chunk for granular fingerprints",
     )
 
     video_fps: int = Field(
         5,
-        description="Frames per second to process for video hash (ignored when 0).",
+        description="ISCC_SDK_VIDEO_FPS - Frames per second to process for video hash (ignored when 0).",
     )
 
     @validator("image_max_pixels")
@@ -62,3 +88,4 @@ class SdkOptions(CoreOptions):
 
 
 sdk_opts = SdkOptions()
+core_opts = iscc_core.core_opts
