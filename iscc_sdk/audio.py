@@ -110,7 +110,8 @@ def audio_meta_embed(fp, meta):
     tfile = shutil.copy(fp, tdir)
     obj = taglib.File(tfile)
     if meta.name:
-        obj.tags["ISCC:TITLE"] = [meta.name]
+        obj.tags["TITLE"] = [meta.name]
+        obj.tags["ISCC:NAME"] = [meta.name]
     if meta.description:
         obj.tags["ISCC:DESCRIPTION"] = [meta.description]
     if meta.meta:

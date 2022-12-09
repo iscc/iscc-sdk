@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "iscc-sdk"
-version = "0.5.0"
+version = "0.5.1"
 description = "SDK for creating ISCCs (International Standard Content Codes)"
 authors = ["Titusz <tp@py7.de>"]
 license = "Apache-2.0"
