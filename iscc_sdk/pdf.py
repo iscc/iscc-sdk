@@ -45,8 +45,7 @@ def pdf_meta_embed(fp, meta):
     temppdf = shutil.copy(fp, tempdir)
     with fitz.Document(temppdf) as doc:
         doc.del_xml_metadata()
-        doc.set_metadata({"title": ""})
-        new_meta = doc.metadata
+        new_meta = doc.metadata or {}
         what, value = doc.xref_get_key(-1, "Info")  # /Info key in the trailer
         xref = int(value.replace("0 R", ""))
 

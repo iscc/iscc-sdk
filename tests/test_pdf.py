@@ -26,6 +26,14 @@ def test_embed_metadata(pdf_file):
     assert idk.extract_metadata(new_file) == meta
 
 
+def test_embed_metadata_retains_existing(pdf_file):
+    new_file = idk.pdf_meta_embed(pdf_file, idk.IsccMeta(description="via embedding"))
+    assert idk.extract_metadata(new_file).dict() == {
+        "name": "title from metadata",
+        "description": "via embedding",
+    }
+
+
 def test_pdf_thumbnail(pdf_file):
     thumb = idk.pdf_thumbnail(pdf_file)
     assert isinstance(thumb, Image)
