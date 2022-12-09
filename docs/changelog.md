@@ -1,6 +1,6 @@
 ## Changelog
 
-## 0.5.0 - Unreleased
+## 0.5.0 - 2022-12-09
 - Add audio cover art thumbnailing
 - Integrate EPUB metadata embedding
 
