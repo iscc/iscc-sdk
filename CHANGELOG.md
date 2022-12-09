@@ -1,6 +1,6 @@
 ## Changelog
 
-## 0.4.9 - Unreleased
+## 0.4.9 - 2022-12-09
 - Add EPUB cover image thumbnail extraction
 - Add EPUB metadata embedding
 - Retain existing PDF DocInfo metadata when embedding
