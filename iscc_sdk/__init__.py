@@ -11,6 +11,7 @@ os.environ["LOGURU_AUTOINIT"] = "False"
 
 
 # Import full api to toplevel
+from iscc_sdk.monkeys import *
 from iscc_sdk.compat import *
 from iscc_sdk.options import *
 from iscc_sdk.tools import *
@@ -25,4 +26,5 @@ from iscc_sdk.mp7 import *
 from iscc_sdk.exceptions import *
 from iscc_sdk.metadata import *
 from iscc_sdk.pdf import *
+from iscc_sdk.epub import *
 from iscc_sdk.thumbnail import *

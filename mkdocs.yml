@@ -103,6 +103,7 @@ nav:
   - Video: video.md
   - Options: options.md
   - Other:
+    - EPUB: other/epub.md
     - PDF: other/pdf.md
     - IPFS: other/ipfs.md
     - Tools: other/tools.md

@@ -50,6 +50,7 @@ Pillow = "^9.0"
 pytaglib = "^1.5"
 numpy = "^1.22"
 pymupdf = "1.21.0"
+ebookmeta = "^1.2.10"
 
 [tool.poetry.dev-dependencies]
 pytest = "^7.0"

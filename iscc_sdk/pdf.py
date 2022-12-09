@@ -4,7 +4,6 @@ import tempfile
 from PIL import Image, ImageEnhance
 import fitz
 import iscc_sdk as idk
-from iscc_schema import IsccMeta
 
 __all__ = [
     "pdf_thumbnail",
@@ -32,7 +31,7 @@ def pdf_thumbnail(fp):
 
 
 def pdf_meta_embed(fp, meta):
-    # type: (str, IsccMeta) -> str
+    # type: (str, idk.IsccMeta) -> str
     """
     Embed metadata into a copy of the PDF file.
 

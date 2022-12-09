@@ -1,7 +1,9 @@
 ## Changelog
 
 ## 0.4.9 - Unreleased
-- Fix PDF metadata embedding
+- Add EPUB cover image thumbnail extraction
+- Add EPUB metadata embedding
+- Retain existing PDF DocInfo metadata when embedding
 
 ### 0.4.8 - 2022-12-09
 - Separeta ISCC_CORE and ISCC_SDK options

@@ -37,3 +37,13 @@ def test_embed_metadata_retains_existing(pdf_file):
 def test_pdf_thumbnail(pdf_file):
     thumb = idk.pdf_thumbnail(pdf_file)
     assert isinstance(thumb, Image)
+
+
+def test_text_thumbnail_with_pdf(pdf_file):
+    thumb = idk.text_thumbnail(pdf_file)
+    assert isinstance(thumb, Image)
+
+
+def test_thumbnail_with_pdf(pdf_file):
+    thumb = idk.thumbnail(pdf_file)
+    assert isinstance(thumb, Image)

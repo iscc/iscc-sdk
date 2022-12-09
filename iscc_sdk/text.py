@@ -179,3 +179,5 @@ def text_thumbnail(fp):
     mt, _ = idk.mediatype_and_mode(fp)
     if mt == "application/pdf":
         return idk.pdf_thumbnail(fp)
+    if mt == "application/epub+zip":
+        return idk.epub_thumbnail(fp)
