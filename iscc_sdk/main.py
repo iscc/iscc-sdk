@@ -169,6 +169,10 @@ def code_audio(fp):
     :rtype: IsccMeta
     """
     meta = idk.audio_meta_extract(fp)
+    thumbnail_img = idk.audio_thumbnail(fp)
+    if thumbnail_img:
+        thumbnail_durl = idk.image_to_data_url(thumbnail_img)
+        meta["thumbnail"] = thumbnail_durl
     features = idk.audio_features_extract(fp)
     code_obj = ic.gen_audio_code_v0(features["fingerprint"], bits=idk.core_opts.audio_bits)
     meta.update(code_obj)

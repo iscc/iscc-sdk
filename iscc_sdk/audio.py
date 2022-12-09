@@ -1,6 +1,10 @@
 """*Audio handling module*."""
 import shutil
 import tempfile
+from os.path import join
+from typing import Optional
+
+from PIL import Image, ImageEnhance
 from loguru import logger as log
 import json
 import taglib
@@ -11,6 +15,7 @@ __all__ = [
     "audio_meta_embed",
     "audio_meta_extract",
     "audio_features_extract",
+    "audio_thumbnail",
 ]
 
 
@@ -33,6 +38,32 @@ AUDIO_META_MAP = {
     "URL": "acquire",
     "ARTISTWEBPAGE": "acquire",
 }
+
+
+def audio_thumbnail(fp):
+    # type: (str) -> Optional[Image.Image]
+    """
+    Create a thumbnail from embedded cover art.
+
+    :param str fp: Filepath to audio file.
+    :return: Thumbnail image as PIL Image object
+    :rtype: Image.Image|None
+    """
+    tempdir = tempfile.mkdtemp()
+    tempimg = join(tempdir, "cover.jpg")
+    cmd = ["-i", fp, "-an", "-vcodec", "copy", tempimg]
+    size = idk.sdk_opts.image_thumbnail_size
+    try:
+        idk.run_ffmpeg(cmd)
+        img = Image.open(tempimg)
+    except Exception:
+        img = None
+    if img:
+        img.thumbnail((size, size), resample=idk.LANCZOS)
+        img = ImageEnhance.Sharpness(img.convert("RGB")).enhance(1.4)
+
+    shutil.rmtree(tempdir, ignore_errors=True)
+    return img
 
 
 def audio_meta_extract(fp):

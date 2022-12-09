@@ -61,7 +61,7 @@ poethepoet = "^0.16"
 bandit = "^1.7"
 mkdocs-material = "^8.2"
 mkdocstrings = {extras = ["python"], version = "^0.19"}
-iscc-samples = "^0.4"
+iscc-samples = "^0.5"
 codetiming = "^1.3"
 
 [tool.black]

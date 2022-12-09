@@ -33,6 +33,13 @@ def mp3_file(tmp_path_factory) -> str:
 
 
 @pytest.fixture(scope="module")
+def mp3_cover(tmp_path_factory) -> str:
+    dst = tmp_path_factory.mktemp("data") / "audio.mp3"
+    shutil.copy(audios("mp3")[1], dst)
+    return dst.as_posix()
+
+
+@pytest.fixture(scope="module")
 def wav_file(tmp_path_factory) -> str:
     dst = tmp_path_factory.mktemp("data") / "audio.wav"
     shutil.copy(audios("wav")[0], dst)

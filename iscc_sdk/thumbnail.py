@@ -11,6 +11,7 @@ THUMBNAILERS = {
     "image": idk.image_thumbnail,
     "video": idk.video_thumbnail,
     "text": idk.text_thumbnail,
+    "audio": idk.audio_thumbnail,
 }
 
 
