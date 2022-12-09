@@ -1,6 +1,6 @@
 ## Changelog
 
-## 0.5.1 - Unreleased
+## 0.5.1 - 2022-12-09
 - Fix audio title embedding
 
 ## 0.5.0 - 2022-12-09
