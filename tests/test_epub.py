@@ -39,3 +39,37 @@ def test_epub_meta_embed(epub_file):
         "creator": "Creator",
         "rights": "Public domain in the USA.",
     }
+
+
+def test_text_meta_embed_with_epub(epub_file):
+    meta = idk.IsccMeta(
+        name="Name",
+        description="Iñtërnâtiônàlizætiøn☃",
+        creator="Creator",
+        keywords="some, keywords",
+    )
+    new_file = idk.text_meta_embed(epub_file, meta)
+    meta = idk.extract_metadata(new_file)
+    assert meta.dict() == {
+        "description": "Iñtërnâtiônàlizætiøn☃",
+        "name": "Children's Literature",
+        "creator": "Creator",
+        "rights": "Public domain in the USA.",
+    }
+
+
+def test_embed_metadata_with_epub(epub_file):
+    meta = idk.IsccMeta(
+        name="Name",
+        description="Iñtërnâtiônàlizætiøn☃",
+        creator="Creator",
+        keywords="some, keywords",
+    )
+    new_file = idk.embed_metadata(epub_file, meta)
+    meta = idk.extract_metadata(new_file)
+    assert meta.dict() == {
+        "description": "Iñtërnâtiônàlizætiøn☃",
+        "name": "Children's Literature",
+        "creator": "Creator",
+        "rights": "Public domain in the USA.",
+    }

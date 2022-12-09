@@ -88,6 +88,8 @@ def text_meta_embed(fp, meta):
     mt, _ = idk.mediatype_and_mode(fp)
     if mt == "application/pdf":
         return idk.pdf_meta_embed(fp, meta)
+    if mt == "application/epub+zip":
+        return idk.epub_meta_embed(fp, meta)
 
 
 def text_extract(fp):
