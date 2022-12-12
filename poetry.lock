@@ -10,7 +10,7 @@ python-versions = ">=3.5"
 dev = ["cloudpickle", "coverage[toml] (>=5.0.2)", "furo", "hypothesis", "mypy (>=0.900,!=0.940)", "pre-commit", "pympler", "pytest (>=4.3.0)", "pytest-mypy-plugins", "sphinx", "sphinx-notfound-page", "zope.interface"]
 docs = ["furo", "sphinx", "sphinx-notfound-page", "zope.interface"]
 tests = ["cloudpickle", "coverage[toml] (>=5.0.2)", "hypothesis", "mypy (>=0.900,!=0.940)", "pympler", "pytest (>=4.3.0)", "pytest-mypy-plugins", "zope.interface"]
-tests_no_zope = ["cloudpickle", "coverage[toml] (>=5.0.2)", "hypothesis", "mypy (>=0.900,!=0.940)", "pympler", "pytest (>=4.3.0)", "pytest-mypy-plugins"]
+tests-no-zope = ["cloudpickle", "coverage[toml] (>=5.0.2)", "hypothesis", "mypy (>=0.900,!=0.940)", "pympler", "pytest (>=4.3.0)", "pytest-mypy-plugins"]
 
 [[package]]
 name = "bandit"
@@ -112,7 +112,7 @@ optional = false
 python-versions = ">=3.6.0"
 
 [package.extras]
-unicode_backport = ["unicodedata2"]
+unicode-backport = ["unicodedata2"]
 
 [[package]]
 name = "click"
@@ -177,7 +177,7 @@ python-versions = ">=3.5"
 
 [[package]]
 name = "ebookmeta"
-version = "1.2.10"
+version = "1.2.11"
 description = "Read/write ebook metadata for fb2, epub2 and epub3 files"
 category = "main"
 optional = false
@@ -797,7 +797,7 @@ urllib3 = ">=1.21.1,<1.27"
 
 [package.extras]
 socks = ["PySocks (>=1.5.6,!=1.5.7)"]
-use_chardet_on_py3 = ["chardet (>=3.0.2,<6)"]
+use-chardet-on-py3 = ["chardet (>=3.0.2,<6)"]
 
 [[package]]
 name = "six"
@@ -1152,8 +1152,8 @@ data-url = [
     {file = "data_url-1.0.7.tar.gz", hash = "sha256:951cad26c340c9a1a029b77718ab028580d851d5ff6777c84b34c224dab3e4c4"},
 ]
 ebookmeta = [
-    {file = "ebookmeta-1.2.10-py3-none-any.whl", hash = "sha256:ed41cd47c8726400a85c4c6eaa26c3ca980c555a37bd7da3edb1c9ed76890ad3"},
-    {file = "ebookmeta-1.2.10.tar.gz", hash = "sha256:1c849835b9fedba3f51c9539d1d58c36ace6140bbdd20d83d0294f7e05011408"},
+    {file = "ebookmeta-1.2.11-py3-none-any.whl", hash = "sha256:75ccdca8f99f1b3d4f3aaa3ba3ae529a3f4373e495144d43f8513df010fe76c4"},
+    {file = "ebookmeta-1.2.11.tar.gz", hash = "sha256:94abd0e8c82a4d3f8ebecf0086ad0fb60c70bbb928ee9c55c4553bbb9ed1c74d"},
 ]
 exceptiongroup = [
     {file = "exceptiongroup-1.0.4-py3-none-any.whl", hash = "sha256:542adf9dea4055530d6e1279602fa5cb11dab2395fa650b8674eaec35fc4a828"},
@@ -1673,12 +1673,6 @@ pytaglib = [
     {file = "pytaglib-1.5.0-cp310-cp310-win_amd64.whl", hash = "sha256:4bc09366c02e864e533956a04d95574ec7d2c0cf3c1ad8041e327f679769b5a7"},
     {file = "pytaglib-1.5.0-cp38-cp38-win_amd64.whl", hash = "sha256:e13d8cf999fb6407fa56db6ef6a0a317484e49324706fcb813de7c82a637d9d5"},
     {file = "pytaglib-1.5.0-cp39-cp39-win_amd64.whl", hash = "sha256:49487f390aa605cf5ebc72d5a74e53a843fb74a60946ffa7b1c970e2fa6b46d3"},
-    {file = "pytaglib-1.5.0-py3.10-linux-x86_64.egg", hash = "sha256:1b05826b7793d85adfbe1b5f6c6a97920a24f83b66b3d8bdc1b040b788d9d1ae"},
-    {file = "pytaglib-1.5.0-py3.10-win-amd64.egg", hash = "sha256:37fa1cd3f58c2814c5b7acad29a40f202ec6e20763c1c875c0512b1f27ec0b58"},
-    {file = "pytaglib-1.5.0-py3.8-linux-x86_64.egg", hash = "sha256:5d60f2777c6b1950db91b9ed750e4663593358abf016fbd8f99e222c1008082d"},
-    {file = "pytaglib-1.5.0-py3.8-win-amd64.egg", hash = "sha256:2357d14b6b5f6c3867bc169673587016ec9314287a943f1ad209d0fbe09db795"},
-    {file = "pytaglib-1.5.0-py3.9-linux-x86_64.egg", hash = "sha256:446fad443cc8a3515394aec5c623857ea7939a97016f9a567482f66832f8bd81"},
-    {file = "pytaglib-1.5.0-py3.9-win-amd64.egg", hash = "sha256:006a65af9a82fa143f8e2679335efed5f643c20b338245140dbb44094934f23c"},
     {file = "pytaglib-1.5.0.tar.gz", hash = "sha256:8f7603dffdb1930428b305e79b8ca127e9cffc4ce4d2f7440a5f5226a82e6e5f"},
 ]
 pytest = [
