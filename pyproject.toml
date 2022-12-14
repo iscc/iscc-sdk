@@ -49,7 +49,7 @@ jmespath = "^1.0"
 Pillow = "^9.0"
 pytaglib = "^1.5"
 numpy = "^1.22"
-pymupdf = "1.21.0"
+pymupdf = "1.21.1"
 ebookmeta = "^1.2.10"
 
 [tool.poetry.dev-dependencies]
