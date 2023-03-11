@@ -276,6 +276,7 @@ MEDIATYPE_NORM = {
     "image/x-ms-bmp": "image/bmp",
     "video/x-msvideo": "video/avi",
     "application/xml": "text/xml",
+    "application/vnd.ms-asf": "video/x-ms-asf",
 }
 
 SUPPORTED_EXTENSIONS = []

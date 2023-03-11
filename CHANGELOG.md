@@ -5,7 +5,8 @@
 - Added docx metadata embedding support
 - Improved error messages for unsupported mediatypes
 - Improved robustness of audio metadata extraction
-- Normalize mediatype application/xml to text/xml"
+- Normalize mediatype application/xml to text/xml
+- Nomralize mediatype application/vnd.ms-asf video/x-ms-asf
 - Updated to iscc-core 1.0.0
 - Updated various dependencies
 
