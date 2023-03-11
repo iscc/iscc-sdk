@@ -622,13 +622,13 @@ files = [
 
 [[package]]
 name = "iscc-core"
-version = "0.2.14"
+version = "1.0.0"
 description = "ISCC - Core Algorithms"
 category = "main"
 optional = false
 python-versions = ">=3.7.2,<4.0"
 files = [
-    {file = "iscc-core-0.2.14.tar.gz", hash = "sha256:5f66ab80e2055e0e35630fcc4cc52f1ddbb7177aa34d3b8569c4059cf237d5d5"},
+    {file = "iscc_core-1.0.0.tar.gz", hash = "sha256:029ed3656f953621df6e9616ae0685b3be6c9f2db886a6a586264378f244911c"},
 ]
 
 [package.dependencies]
@@ -650,13 +650,13 @@ turbo = ["cython (>=0.29,<0.30)"]
 
 [[package]]
 name = "iscc-samples"
-version = "0.5.0"
+version = "0.6.0"
 description = "A collection of media files as sample data for ISCC testing."
 category = "dev"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "iscc-samples-0.5.0.tar.gz", hash = "sha256:d2c42a727407340e96553ef456488b8b3435eba8408cbc9a83a2b08bcbc25cdf"},
+    {file = "iscc_samples-0.6.0.tar.gz", hash = "sha256:5714df1ecbc49df091042fabf2f96a9c99623eb442453598db26198c7d187d22"},
 ]
 
 [[package]]
@@ -1649,6 +1649,20 @@ files = [
 six = ">=1.5"
 
 [[package]]
+name = "python-docx"
+version = "0.8.11"
+description = "Create and update Microsoft Word .docx files."
+category = "main"
+optional = false
+python-versions = "*"
+files = [
+    {file = "python-docx-0.8.11.tar.gz", hash = "sha256:1105d233a0956dd8dd1e710d20b159e2d72ac3c301041b95f4d4ceb3e0ebebc4"},
+]
+
+[package.dependencies]
+lxml = ">=2.3.2"
+
+[[package]]
 name = "python-dotenv"
 version = "1.0.0"
 description = "Read key-value pairs from a .env file and set them as environment variables"
@@ -2085,4 +2099,4 @@ testing = ["big-O", "flake8 (<5)", "jaraco.functools", "jaraco.itertools", "more
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.8,<4.0"
-content-hash = "4bf9ebc9fbe4f3d66a0c2a48227d0ace83f1d68dad9f49f9fd50e97970ff707a"
+content-hash = "898eec51a1efa0b6c8d255f66d20f3bf502226d0feaba744fc2694ad52ea79b7"
