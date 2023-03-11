@@ -1563,18 +1563,32 @@ files = [
 ]
 
 [[package]]
-name = "pytaglib"
+name = "pytaglib-wheel"
 version = "1.5.0"
 description = "cross-platform, Python audio metadata (\"tagging\") library based on TagLib"
 category = "main"
 optional = false
 python-versions = ">=3.6"
 files = [
-    {file = "pytaglib-1.5.0-cp310-cp310-win_amd64.whl", hash = "sha256:4bc09366c02e864e533956a04d95574ec7d2c0cf3c1ad8041e327f679769b5a7"},
-    {file = "pytaglib-1.5.0-cp38-cp38-win_amd64.whl", hash = "sha256:e13d8cf999fb6407fa56db6ef6a0a317484e49324706fcb813de7c82a637d9d5"},
-    {file = "pytaglib-1.5.0-cp39-cp39-win_amd64.whl", hash = "sha256:49487f390aa605cf5ebc72d5a74e53a843fb74a60946ffa7b1c970e2fa6b46d3"},
-    {file = "pytaglib-1.5.0.tar.gz", hash = "sha256:8f7603dffdb1930428b305e79b8ca127e9cffc4ce4d2f7440a5f5226a82e6e5f"},
+    {file = "pytaglib_wheel-1.5.0-cp310-cp310-macosx_10_15_x86_64.whl", hash = "sha256:967e8dbd6fc788a8c23c08d1a6c3c5982c9b728c4cda1a6c00e459fe82b4b36f"},
+    {file = "pytaglib_wheel-1.5.0-cp310-cp310-manylinux_2_24_x86_64.whl", hash = "sha256:1abcd85a5b5748737c6c97cd35d4b02384eca7a2a2f5b1e4f016dcb6693e594d"},
+    {file = "pytaglib_wheel-1.5.0-cp310-cp310-win_amd64.whl", hash = "sha256:63127ba1624e26e89f8068da71ae6ef1fd2de1f0defc212846dec06271af68b0"},
+    {file = "pytaglib_wheel-1.5.0-cp311-cp311-macosx_10_9_universal2.whl", hash = "sha256:6dc1f19b5a848c86941ceb78f44fd48f7935fae23149903d20da44b483a0da79"},
+    {file = "pytaglib_wheel-1.5.0-cp311-cp311-manylinux_2_24_x86_64.whl", hash = "sha256:83ddb9bd3e36c6be9e8fc203fb73ae354983830c4c5c52e9126185e8edfbcb03"},
+    {file = "pytaglib_wheel-1.5.0-cp311-cp311-win_amd64.whl", hash = "sha256:42481a9868fa43f2c963e5dc575689fdfbe095c53a7ca922f5fb1bd8503c8cf8"},
+    {file = "pytaglib_wheel-1.5.0-cp37-cp37m-macosx_10_15_x86_64.whl", hash = "sha256:db24fbb88a954acd3ec0961d3bbbab8880257fcf64bc3c6d9d80f19fc9bffddb"},
+    {file = "pytaglib_wheel-1.5.0-cp37-cp37m-manylinux_2_24_x86_64.whl", hash = "sha256:2e1835498124155d460bd007db5f593906ad09704b51e3cc3a5994631de32801"},
+    {file = "pytaglib_wheel-1.5.0-cp37-cp37m-win_amd64.whl", hash = "sha256:a142e3544a3846a84792924fe758cf265f9d214e5249be22b1fb5f3f93734200"},
+    {file = "pytaglib_wheel-1.5.0-cp38-cp38-macosx_10_15_x86_64.whl", hash = "sha256:4154f1d492596d9d0780afd1d052a730db06f276ca962ef254fcbe9680e2ae63"},
+    {file = "pytaglib_wheel-1.5.0-cp38-cp38-manylinux_2_24_x86_64.whl", hash = "sha256:226a882880b0f907f23ac4c7632e1be230ca1b3175fb76d56fc4fee2d6004de5"},
+    {file = "pytaglib_wheel-1.5.0-cp38-cp38-win_amd64.whl", hash = "sha256:f96368a4c161f78e863aaa612abac6931068a543e14bc8794171fcf29c02a254"},
+    {file = "pytaglib_wheel-1.5.0-cp39-cp39-macosx_10_15_x86_64.whl", hash = "sha256:cad54b652acce3683bf7ebb02f4e6d07455494881856eb0ba3ec91c43c4f46d1"},
+    {file = "pytaglib_wheel-1.5.0-cp39-cp39-manylinux_2_24_x86_64.whl", hash = "sha256:5e4c6734fb9b5f722bea0b66cab223497b24a3ee4b03614586ba57ba63704cda"},
+    {file = "pytaglib_wheel-1.5.0-cp39-cp39-win_amd64.whl", hash = "sha256:2fc356007fd0f16b7190f8e147ac51f1717d8f32300d835f6818fca6e377ebdd"},
 ]
+
+[package.extras]
+tests = ["pytest"]
 
 [[package]]
 name = "pytest"
@@ -2071,4 +2085,4 @@ testing = ["big-O", "flake8 (<5)", "jaraco.functools", "jaraco.itertools", "more
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.8,<4.0"
-content-hash = "7ac1f12de57a88061c9155a17b0f65e62371b60f2864d70a644c9083815437bc"
+content-hash = "4bf9ebc9fbe4f3d66a0c2a48227d0ace83f1d68dad9f49f9fd50e97970ff707a"
