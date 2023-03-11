@@ -4,6 +4,7 @@ import os.path
 from PIL.Image import Image
 
 import iscc_sdk as idk
+import iscc_samples as iss
 
 
 meta = idk.IsccMeta.construct(
@@ -20,6 +21,12 @@ def test_audio_meta_extract(mp3_file):
         "name": "Belly Button",
         "duration": 15,
     }
+
+
+def test_audio_meta_extract_all():
+    for fp in iss.audios():
+        metadata = idk.audio_meta_extract(fp.as_posix())
+        assert isinstance(metadata, dict)
 
 
 def test_audio_meta_embed_mp3(mp3_file):

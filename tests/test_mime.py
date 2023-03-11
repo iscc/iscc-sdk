@@ -1,6 +1,7 @@
 import pytest
 
 import iscc_sdk as idk
+import iscc_samples as iss
 
 
 GIF_HEADER = bytes.fromhex("474946383961")
@@ -67,3 +68,17 @@ def test_mime_supported():
     assert idk.mediatype_supported("something/unknown") is False
     for mt in idk.SUPPORTED_MEDIATYPES.keys():
         assert idk.mediatype_supported(mt) is True
+
+
+def test_mime_samples():
+    for sample in iss.all():
+        # skiplist
+        if sample.suffix in (".mobi", ".sqlite"):
+            continue
+        mediatype, mode = idk.mediatype_and_mode(sample)
+        assert all((mediatype, mode))
+
+
+def test_media_type_and_mode_raises():
+    with pytest.raises(idk.IsccUnsupportedMediatype):
+        idk.mediatype_and_mode(iss.texts("mobi")[0].as_posix())

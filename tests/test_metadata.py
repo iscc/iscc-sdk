@@ -22,7 +22,7 @@ def test_embed_metadata(jpg_file):
     }
 
 
-def test_embed_metadata_unsupported(docx_file):
+def test_embed_metadata_unsupported(doc_file):
     meta = idk.IsccMeta(name="Some Title", description="Some Description")
-    new_file = idk.embed_metadata(docx_file, meta)
+    new_file = idk.embed_metadata(doc_file, meta)
     assert new_file is None
