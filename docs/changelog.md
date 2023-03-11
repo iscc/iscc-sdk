@@ -1,6 +1,12 @@
 ## Changelog
 
 ## 0.5.2 - Unreleased
+- Added WavPack support
+- Added docx metadata embedding support
+- Improved error messages for unsupported mediatypes
+- Improved robustness of audio metadata extraction
+- Updated to iscc-core 1.0.0
+- Updated various dependencies
 
 ## 0.5.1 - 2022-12-09
 - Fix audio title embedding
