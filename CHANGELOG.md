@@ -1,6 +1,6 @@
 ## Changelog
 
-## 0.5.2 - Unreleased
+## 0.5.2 - 2023-03-11
 - Added Python 3.11 support
 - Added WavPack support
 - Added docx metadata embedding support
@@ -10,7 +10,7 @@
 - Nomralize mediatype application/vnd.ms-asf video/x-ms-asf
 - Normalize mediatype application/vnd.adobe.flash.movie to application/x-shockwave-flash
 - Add docx and xlsx extensions to mediatypes
-- Updated to iscc-core 1.0.0
+- Updated to iscc-core 1.0.1
 - Updated various dependencies
 
 ## 0.5.1 - 2022-12-09
