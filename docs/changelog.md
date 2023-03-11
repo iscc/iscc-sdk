@@ -7,6 +7,8 @@
 - Improved robustness of audio metadata extraction
 - Normalize mediatype application/xml to text/xml
 - Nomralize mediatype application/vnd.ms-asf video/x-ms-asf
+- Normalize mediatype application/vnd.adobe.flash.movie to application/x-shockwave-flash
+- Add docx and xlsx extensions to mediatypes
 - Updated to iscc-core 1.0.0
 - Updated various dependencies
 

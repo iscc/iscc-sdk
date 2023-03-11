@@ -194,6 +194,10 @@ mimetypes.add_type("application/x-sqlite3", ".sqlite")
 mimetypes.add_type("video/mp4", ".f4v")
 mimetypes.add_type("video/h264", ".h264")
 mimetypes.add_type("audio/x-wavpack", ".wv")
+mimetypes.add_type(
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document", ".docx"
+)
+mimetypes.add_type("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", ".xlsx")
 
 
 SUPPORTED_MEDIATYPES = {
@@ -277,6 +281,7 @@ MEDIATYPE_NORM = {
     "video/x-msvideo": "video/avi",
     "application/xml": "text/xml",
     "application/vnd.ms-asf": "video/x-ms-asf",
+    "application/vnd.adobe.flash.movie": "application/x-shockwave-flash",
 }
 
 SUPPORTED_EXTENSIONS = []
