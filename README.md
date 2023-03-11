@@ -27,7 +27,7 @@ The component-based structure of the ISCC identifies content at multiple levels 
 
 ## Requirements
 
-Python 3.8 to 3.10
+Python 3.8 to 3.11
 
 On Linux and MacOS taglib needs to be installed as a prerequisite.
 On Ubuntu, Mint and other Debian-Based distributions do:

@@ -1,6 +1,7 @@
 ## Changelog
 
 ## 0.5.2 - Unreleased
+- Added pythpn 3.11 support
 - Added WavPack support
 - Added docx metadata embedding support
 - Improved error messages for unsupported mediatypes
