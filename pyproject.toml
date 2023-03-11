@@ -51,7 +51,7 @@ pytaglib-wheel = "^1.5"
 numpy = "^1.22"
 pymupdf = "1.21"
 ebookmeta = "^1.2"
-python-docx = "^0.8.11"
+python-docx = "^0.8"
 
 [tool.poetry.dev-dependencies]
 pytest = "^7.0"
