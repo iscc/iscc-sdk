@@ -275,6 +275,7 @@ MEDIATYPE_NORM = {
     "audio/x-wav": "audio/wav",
     "image/x-ms-bmp": "image/bmp",
     "video/x-msvideo": "video/avi",
+    "application/xml": "text/xml",
 }
 
 SUPPORTED_EXTENSIONS = []

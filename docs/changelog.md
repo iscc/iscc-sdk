@@ -5,6 +5,7 @@
 - Added docx metadata embedding support
 - Improved error messages for unsupported mediatypes
 - Improved robustness of audio metadata extraction
+- Normalize mediatype application/xml to text/xml"
 - Updated to iscc-core 1.0.0
 - Updated various dependencies
 
@@ -14,7 +15,6 @@
 ## 0.5.0 - 2022-12-09
 - Add audio cover art thumbnailing
 - Integrate EPUB metadata embedding
-
 
 ## 0.4.9 - 2022-12-09
 - Add EPUB cover image thumbnail extraction
