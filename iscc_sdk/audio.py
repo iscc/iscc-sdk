@@ -1,7 +1,7 @@
 """*Audio handling module*."""
 import shutil
 import tempfile
-from os.path import join
+from os.path import join, basename
 from typing import Optional
 
 from PIL import Image, ImageEnhance
@@ -75,7 +75,11 @@ def audio_meta_extract(fp):
     :return: Metadata mapped to IsccMeta schema
     :rtype: dict
     """
-    obj = taglib.File(fp)
+    try:
+        obj = taglib.File(fp)
+    except OSError as e:
+        log.error(f"Failed metadata extraction for {basename(fp)}: {e}")
+        return {}
     meta = dict(obj.tags)
     mapped = dict()
     done = set()

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "iscc-sdk"
-version = "0.5.1"
+version = "0.5.2"
 description = "SDK for creating ISCCs (International Standard Content Codes)"
 authors = ["Titusz <tp@py7.de>"]
 license = "Apache-2.0"
@@ -39,7 +39,7 @@ classifiers=[
 [tool.poetry.dependencies]
 python = ">=3.8,<4.0"
 cython = "^0.29"
-iscc-core = "^0.2"
+iscc-core = "^1.0"
 iscc-schema = "^0.4"
 python-magic-bin = { version = "^0.4", markers = "sys_platform == 'win32' or (sys_platform == 'darwin' and platform_machine == 'x86_64')" }
 python-magic = { version = "^0.4", markers = "sys_platform == 'linux' or (sys_platform == 'darwin' and platform_machine == 'arm64')" }
@@ -47,10 +47,11 @@ install-jdk = "^0.3"
 platformdirs = "^2.5"
 jmespath = "^1.0"
 Pillow = "^9.0"
-pytaglib = "^1.5"
+pytaglib-wheel = "^1.5"
 numpy = "^1.22"
-pymupdf = "1.21.0"
-ebookmeta = "^1.2.10"
+pymupdf = "1.21"
+ebookmeta = "^1.2"
+python-docx = "^0.8.11"
 
 [tool.poetry.dev-dependencies]
 pytest = "^7.0"
@@ -61,7 +62,7 @@ poethepoet = "^0.16"
 bandit = "^1.7"
 mkdocs-material = "^8.2"
 mkdocstrings = {extras = ["python"], version = "^0.19"}
-iscc-samples = "^0.5"
+iscc-samples = "^0.6"
 codetiming = "^1.3"
 
 [tool.black]
@@ -81,5 +82,5 @@ sec = { cmd = "poetry run bandit -r iscc_sdk -q", help = "Security check with ba
 all = ["docs", "lf", "black", "test"]
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
+requires = ["poetry>=1.4.0", "Cython"]
 build-backend = "poetry.core.masonry.api"

@@ -1,12 +1,23 @@
 ## Changelog
 
+## 0.5.2 - Unreleased
+- Added WavPack support
+- Added docx metadata embedding support
+- Improved error messages for unsupported mediatypes
+- Improved robustness of audio metadata extraction
+- Normalize mediatype application/xml to text/xml
+- Nomralize mediatype application/vnd.ms-asf video/x-ms-asf
+- Normalize mediatype application/vnd.adobe.flash.movie to application/x-shockwave-flash
+- Add docx and xlsx extensions to mediatypes
+- Updated to iscc-core 1.0.0
+- Updated various dependencies
+
 ## 0.5.1 - 2022-12-09
 - Fix audio title embedding
 
 ## 0.5.0 - 2022-12-09
 - Add audio cover art thumbnailing
 - Integrate EPUB metadata embedding
-
 
 ## 0.4.9 - 2022-12-09
 - Add EPUB cover image thumbnail extraction

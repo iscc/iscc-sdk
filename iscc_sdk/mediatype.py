@@ -42,7 +42,10 @@ def mediatype_and_mode(fp):
         data = infile.read(4096)
 
     mediatype = mediatype_guess(data, file_name=basename(fp))
-    mode = mediatype_to_mode(mediatype)
+    try:
+        mode = mediatype_to_mode(mediatype)
+    except idk.IsccUnsupportedMediatype:
+        raise idk.IsccUnsupportedMediatype(f"Unsupported mediatype {mediatype} for {basename(fp)}")
     return mediatype, mode
 
 
@@ -190,6 +193,11 @@ mimetypes.add_type("application/x-mobipocket-ebook", ".mobi")
 mimetypes.add_type("application/x-sqlite3", ".sqlite")
 mimetypes.add_type("video/mp4", ".f4v")
 mimetypes.add_type("video/h264", ".h264")
+mimetypes.add_type("audio/x-wavpack", ".wv")
+mimetypes.add_type(
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document", ".docx"
+)
+mimetypes.add_type("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", ".xlsx")
 
 
 SUPPORTED_MEDIATYPES = {
@@ -219,6 +227,10 @@ SUPPORTED_MEDIATYPES = {
         "mode": "text",
         "ext": "pptx",
     },
+    "application/vnd.ms-powerpoint": {
+        "mode": "text",
+        "ext": "ppt",
+    },
     "application/vnd.ms-excel": {"mode": "text", "ext": "xls"},
     # "application/x-mobipocket-ebook": {
     #     "mode": "text",
@@ -241,6 +253,7 @@ SUPPORTED_MEDIATYPES = {
     "audio/x-aiff": {"mode": "audio", "ext": "aif"},
     "audio/x-flac": {"mode": "audio", "ext": "flac"},
     "audio/opus": {"mode": "audio", "ext": "opus"},
+    "audio/x-wavpack": {"mode": "audio", "ext": "wv"},
     # Video Formats
     "application/vnd.rn-realmedia": {"mode": "video", "ext": "rm"},
     "video/x-dirac": {"mode": "video", "ext": "drc"},
@@ -266,6 +279,9 @@ MEDIATYPE_NORM = {
     "audio/x-wav": "audio/wav",
     "image/x-ms-bmp": "image/bmp",
     "video/x-msvideo": "video/avi",
+    "application/xml": "text/xml",
+    "application/vnd.ms-asf": "video/x-ms-asf",
+    "application/vnd.adobe.flash.movie": "application/x-shockwave-flash",
 }
 
 SUPPORTED_EXTENSIONS = []
