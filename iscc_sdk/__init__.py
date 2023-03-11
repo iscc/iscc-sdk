@@ -27,4 +27,5 @@ from iscc_sdk.exceptions import *
 from iscc_sdk.metadata import *
 from iscc_sdk.pdf import *
 from iscc_sdk.epub import *
+from iscc_sdk.docx_ import *
 from iscc_sdk.thumbnail import *
