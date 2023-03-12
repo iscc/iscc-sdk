@@ -33,10 +33,12 @@ jobs:
         with:
           poetry-version: 1.4.0
 
+      - name: Disable Poetry Modern Installer
+        if: matrix.os == 'windows-latest'
+        run: poetry config installer.modern-installation false
+
       - name: Install Dependencies
-        run: |
-          poetry config installer.modern-installation false
-          poetry install
+        run: poetry install
 
       - name: Run Tests
         run: poetry run pytest --cov=iscc_sdk --cov-report=xml -q tests
