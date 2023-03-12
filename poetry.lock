@@ -665,13 +665,28 @@ files = [
 
 [[package]]
 name = "iscc-core"
-version = "1.0.1"
+version = "1.0.3"
 description = "ISCC - Core Algorithms"
 category = "main"
 optional = false
 python-versions = ">=3.7.2,<4.0"
 files = [
-    {file = "iscc_core-1.0.1.tar.gz", hash = "sha256:ca72710d830b2490150edff446af9c65e787f504f3653b1fd68fa446174fc10b"},
+    {file = "iscc_core-1.0.3-cp310-cp310-macosx_11_0_x86_64.whl", hash = "sha256:60b01e6f2e56afeca19df181859aee52cf0ab9c55150d6a019638cce26cc66dd"},
+    {file = "iscc_core-1.0.3-cp310-cp310-manylinux_2_31_x86_64.whl", hash = "sha256:ed681626400221c4000f337665d89b6a53c039d1fe70990241b3e8032a0eddf5"},
+    {file = "iscc_core-1.0.3-cp310-cp310-win_amd64.whl", hash = "sha256:d8dee13cda9f15f1643b1c6e8cfa675258d0193b305bb9e5a4744ccbd4470ade"},
+    {file = "iscc_core-1.0.3-cp311-cp311-macosx_11_0_x86_64.whl", hash = "sha256:3324c228a7a9a386e3e3c4c6d24b4aa58896b1fc94fbaa1dc328f19a86beb3a3"},
+    {file = "iscc_core-1.0.3-cp311-cp311-manylinux_2_31_x86_64.whl", hash = "sha256:920f6f242e64ec869e680b5a8f1169d8e566963c9da51a947c99ade924ed8d9e"},
+    {file = "iscc_core-1.0.3-cp311-cp311-win_amd64.whl", hash = "sha256:95e8cad7387db838b5cc40125d40d77cf1b380fd6ebdef437ba3bbfe79f5aa68"},
+    {file = "iscc_core-1.0.3-cp37-cp37m-macosx_11_0_x86_64.whl", hash = "sha256:7b763a30de8535604b9127761d266d76ac5e2f82664f8c3f81e1ec49068c62b5"},
+    {file = "iscc_core-1.0.3-cp37-cp37m-manylinux_2_31_x86_64.whl", hash = "sha256:aa58936d781af9aae0dcb2893f73d69ea35067b3a432267c1f1f35e3055fcf79"},
+    {file = "iscc_core-1.0.3-cp37-cp37m-win_amd64.whl", hash = "sha256:2ea64d71194841aad488c40cb91cc81b0262036b3adf209f6809bf578c618aa9"},
+    {file = "iscc_core-1.0.3-cp38-cp38-macosx_11_0_x86_64.whl", hash = "sha256:81a14c05715eb18d01824393a515f4028880d3a5052d9880fbd4d40a33046a79"},
+    {file = "iscc_core-1.0.3-cp38-cp38-manylinux_2_31_x86_64.whl", hash = "sha256:42ae58b4a060b92853ff6f9965a04fec7806f9f0d6251b3c34cf336fa7be1bb3"},
+    {file = "iscc_core-1.0.3-cp38-cp38-win_amd64.whl", hash = "sha256:c8f5c24481a549cc98fa8b3076464a886d5a854b9c3c4e4ecb20439f38145ea9"},
+    {file = "iscc_core-1.0.3-cp39-cp39-macosx_11_0_x86_64.whl", hash = "sha256:3624ead122f434ac0990acc76252edc5509a744fa46fb96d9f3fd9a10486ecaf"},
+    {file = "iscc_core-1.0.3-cp39-cp39-manylinux_2_31_x86_64.whl", hash = "sha256:ea36095768a7da62368ca12b8a9df78b271f6755f9b8685e8beec9259e3aae5f"},
+    {file = "iscc_core-1.0.3-cp39-cp39-win_amd64.whl", hash = "sha256:c72341a5b54e873bedfc714d7813f17f2568c88179c79e901725ae41ca64fbb5"},
+    {file = "iscc_core-1.0.3.tar.gz", hash = "sha256:d1bb45822d4e8e44664f421daa0252effeaec2865a95c27ce0a0fd9987d7f705"},
 ]
 
 [package.dependencies]
@@ -2244,4 +2259,4 @@ testing = ["big-O", "flake8 (<5)", "jaraco.functools", "jaraco.itertools", "more
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.8,<4.0"
-content-hash = "8a835b915e15282b148f08e523c2f78ee77abfd2e2c40c1ad8c255038097f01e"
+content-hash = "10241f0aa3de04149f90bfbc8d8288894603302ad3bdf2c6262ed3e4fe50e420"

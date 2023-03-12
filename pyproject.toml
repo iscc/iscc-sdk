@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "iscc-sdk"
-version = "0.5.2"
+version = "0.5.3"
 description = "SDK for creating ISCCs (International Standard Content Codes)"
 authors = ["Titusz <tp@py7.de>"]
 license = "Apache-2.0"
@@ -39,8 +39,8 @@ classifiers=[
 
 [tool.poetry.dependencies]
 python = ">=3.8,<4.0"
-cython = "^0.29"
-iscc-core = "^1.0.1"
+cython = "^0.29.33"
+iscc-core = "^1.0.3"
 iscc-schema = "^0.4"
 python-magic-bin = { version = "^0.4", markers = "sys_platform == 'win32' or (sys_platform == 'darwin' and platform_machine == 'x86_64')" }
 python-magic = { version = "^0.4", markers = "sys_platform == 'linux' or (sys_platform == 'darwin' and platform_machine == 'arm64')" }
@@ -53,6 +53,7 @@ numpy = "^1.22"
 pymupdf = "1.21"
 ebookmeta = "^1.2"
 python-docx = "^0.8"
+
 
 [tool.poetry.dev-dependencies]
 pytest = "^7.0"

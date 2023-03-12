@@ -1,5 +1,8 @@
 ## Changelog
 
+## 0.5.3 - Unreleased
+- Update to iscc-core 1.0.3 using binary wheels
+
 ## 0.5.2 - 2023-03-11
 - Added Python 3.11 support
 - Added WavPack support
