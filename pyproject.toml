@@ -50,7 +50,7 @@ jmespath = "^1.0"
 Pillow = "^9.0"
 pytaglib-wheel = "^1.5"
 numpy = "^1.22"
-pymupdf = "1.21"
+pymupdf = "^1.21"
 ebookmeta = "^1.2"
 python-docx = "^0.8"
 
@@ -58,12 +58,12 @@ python-docx = "^0.8"
 [tool.poetry.dev-dependencies]
 pytest = "^7.0"
 black = "^22.1"
-coverage = "^6.3"
+coverage = "^7.0"
 pytest-cov = "^4.0"
 poethepoet = "^0.16"
 bandit = "^1.7"
 mkdocs-material = "^9.1"
-mkdocstrings = {extras = ["python"], version = "^0.19"}
+mkdocstrings = {extras = ["python"], version = "^0.20"}
 iscc-samples = "^0.6"
 codetiming = "^1.3"
 

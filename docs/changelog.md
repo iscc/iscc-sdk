@@ -97,5 +97,5 @@
 ## 0.2.0 - 2022-03-10
 - Added IPFS support
 
-## 0.1.0 - 22022-03-09
+## 0.1.0 - 2022-03-09
 - Initial release with support for ISCC Content-Code Image
