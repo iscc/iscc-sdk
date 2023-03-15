@@ -19,7 +19,7 @@
         <link rel="next" href="main/">
       
       <link rel="icon" href="images/iscc-logo-icon-black.svg">
-      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.1.2">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.1.3">
     
     
       
@@ -27,7 +27,7 @@
       
     
     
-      <link rel="stylesheet" href="assets/stylesheets/main.7bf56d0a.min.css">
+      <link rel="stylesheet" href="assets/stylesheets/main.c4a75a56.min.css">
       
         
         <link rel="stylesheet" href="assets/stylesheets/palette.a0c5b2b5.min.css">
@@ -469,6 +469,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    Troubleshooting
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#project-status" class="md-nav__link">
     Project Status
   </a>
@@ -759,13 +766,23 @@
 <a href="https://codecov.io/gh/iscc/iscc-sdk"><img alt="Coverage" src="https://codecov.io/gh/iscc/iscc-sdk/branch/main/graph/badge.svg?token=7BJ7HJU815" /></a>
 <a href="https://www.codacy.com/gh/iscc/iscc-sdk/dashboard"><img alt="Quality" src="https://app.codacy.com/project/badge/Grade/aa791abf9d824f6aa65a8f86b9222c90" /></a>
 <a href="https://pepy.tech/project/iscc-sdk"><img alt="Downloads" src="https://pepy.tech/badge/iscc-sdk" /></a></p>
-<p><code>iscc-sdk</code> is a Python development kit for creating and managing <a href="https://core.iscc.codes">ISCC</a> (<em>International Standard Content Code</em>)</p>
+<p><code>iscc-sdk</code> is a Python development kit for creating and managing <a href="https://core.iscc.codes">ISCC</a>
+(<em>International Standard Content Code</em>)</p>
 <h2 id="what-is-an-iscc">What is an ISCC<a class="headerlink" href="#what-is-an-iscc" title="Permanent link">#</a></h2>
 <p>The ISCC is a similarity preserving identifier for digital media assets.</p>
-<p>ISCCs are generated algorithmically from digital content, just like cryptographic hashes. However, instead of using a single cryptographic hash function to identify data only, the ISCC uses various algorithms to create a composite identifier that exhibits similarity-preserving properties (soft hash).</p>
-<p>The component-based structure of the ISCC identifies content at multiple levels of abstraction. Each component is self-describing, modular, and can be used separately or with others to aid in various content identification tasks. The algorithmic design supports content deduplication, database synchronization, indexing, integrity verification, timestamping, versioning, data provenance, similarity clustering, anomaly detection, usage tracking, allocation of royalties, fact-checking and general digital asset management use-cases.</p>
+<p>ISCCs are generated algorithmically from digital content, just like cryptographic hashes. However,
+instead of using a single cryptographic hash function to identify data only, the ISCC uses various
+algorithms to create a composite identifier that exhibits similarity-preserving properties (soft
+hash).</p>
+<p>The component-based structure of the ISCC identifies content at multiple levels of abstraction. Each
+component is self-describing, modular, and can be used separately or with others to aid in various
+content identification tasks. The algorithmic design supports content deduplication, database
+synchronization, indexing, integrity verification, timestamping, versioning, data provenance,
+similarity clustering, anomaly detection, usage tracking, allocation of royalties, fact-checking and
+general digital asset management use-cases.</p>
 <h2 id="what-is-iscc-sdk">What is <code>iscc-sdk</code><a class="headerlink" href="#what-is-iscc-sdk" title="Permanent link">#</a></h2>
-<p><code>iscc-sdk</code> is built on top of <code>iscc-core</code> and adds high level features for generating and handling ISCC codes for all the different mediatypes:</p>
+<p><code>iscc-sdk</code> is built on top of <code>iscc-core</code> and adds high level features for generating and handling
+ISCC codes for all the different mediatypes:</p>
 <ul>
 <li>mediatype detection</li>
 <li>metadata extraction and embedding</li>
@@ -773,23 +790,25 @@
 <li>iscc indexing and search</li>
 </ul>
 <h2 id="requirements">Requirements<a class="headerlink" href="#requirements" title="Permanent link">#</a></h2>
-<p>Python 3.8 to 3.11</p>
-<p>On Linux and MacOS taglib needs to be installed as a prerequisite.
-On Ubuntu, Mint and other Debian-Based distributions do:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>libtag1-dev
-</code></pre></div>
-<p>On a Mac, use HomeBrew:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>brew<span class="w"> </span>install<span class="w"> </span>taglib
-</code></pre></div>
+<p>Python 3.8 to 3.11 on 64-bit systems</p>
 <h2 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">#</a></h2>
 <p>Use the Python package manager <a href="https://pip.pypa.io/en/stable/">pip</a> to install <code>iscc-sdk</code>.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>pip<span class="w"> </span>install<span class="w"> </span>iscc-sdk
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>pip<span class="w"> </span>install<span class="w"> </span>iscc-sdk
 </code></pre></div>
 <h2 id="documentation">Documentation<a class="headerlink" href="#documentation" title="Permanent link">#</a></h2>
 <p><a href="https://sdk.iscc.codes">https://sdk.iscc.codes</a></p>
+<h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">#</a></h2>
+<p>On Linux and MacOS might need to install taglib as a prerequisite. On Ubuntu, Mint and other
+Debian-Based distributions do:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>libtag1-dev
+</code></pre></div>
+<p>On a Mac, use HomeBrew:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>brew<span class="w"> </span>install<span class="w"> </span>taglib
+</code></pre></div>
 <h2 id="project-status">Project Status<a class="headerlink" href="#project-status" title="Permanent link">#</a></h2>
 <p>The ISCC has been accepted by ISO as full work item ISO/AWI 24138 - International Standard Content
-Code and is currently being standardized at TC 46/SC 9/WG 18. <a href="https://www.iso.org/standard/77899.html">https://www.iso.org/standard/77899.html</a></p>
+Code and is currently being standardized at TC 46/SC 9/WG 18.
+<a href="https://www.iso.org/standard/77899.html">https://www.iso.org/standard/77899.html</a></p>
 <div class="admonition attention">
 <p class="admonition-title">Attention</p>
 <p>The <code>iscc-sdk</code> library and the accompanying documentation is under development. API changes and
@@ -798,7 +817,8 @@ other backward incompatible changes are to be expected until the upcoming v1.5 s
 <h2 id="maintainers">Maintainers<a class="headerlink" href="#maintainers" title="Permanent link">#</a></h2>
 <p><a href="https://github.com/titusz">@titusz</a></p>
 <h2 id="contributing">Contributing<a class="headerlink" href="#contributing" title="Permanent link">#</a></h2>
-<p>Pull requests are welcome. For significant changes, please open an issue first to discuss your plans. Please make sure to update tests as appropriate.</p>
+<p>Pull requests are welcome. For significant changes, please open an issue first to discuss your
+plans. Please make sure to update tests as appropriate.</p>
 <p>You may also want join our developer chat on Telegram at <a href="https://t.me/iscc_dev">https://t.me/iscc_dev</a>.</p>
 
 
@@ -846,7 +866,7 @@ other backward incompatible changes are to be expected until the upcoming v1.5 s
     <script id="__config" type="application/json">{"base": ".", "features": ["toc.integrate", "navigation.indexes", "navigation.tracking", "navigation.tabs", "navigation.tabs.sticky", "navigation.expand"], "search": "assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="assets/javascripts/bundle.fc8c2696.min.js"></script>
+      <script src="assets/javascripts/bundle.efa0ade1.min.js"></script>
       
     
   </body>
