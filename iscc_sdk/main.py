@@ -114,6 +114,7 @@ def code_content(fp):
 
 
 def code_text(fp):
+    # type: (str) -> idk.IsccMeta
     """
     Generate Content-Code Text.
 
@@ -121,12 +122,14 @@ def code_text(fp):
     :return: ISCC metadata including Text-Code.
     :rtype: IsccMeta
     """
-    meta = idk.text_meta_extract(fp)
+    meta = dict()
 
-    thumbnail_img = idk.text_thumbnail(fp)
-    if thumbnail_img:
-        thumbnail_durl = idk.image_to_data_url(thumbnail_img)
-        meta["thumbnail"] = thumbnail_durl
+    if idk.sdk_opts.extract_metadata:
+        meta = idk.text_meta_extract(fp)
+        thumbnail_img = idk.text_thumbnail(fp)
+        if thumbnail_img:
+            thumbnail_durl = idk.image_to_data_url(thumbnail_img)
+            meta["thumbnail"] = thumbnail_durl
 
     text = idk.text_extract(fp)
     code = ic.gen_text_code_v0(text, bits=idk.core_opts.text_bits)
@@ -146,11 +149,12 @@ def code_image(fp):
     :return: ISCC metadata including Image-Code.
     :rtype: IsccMeta
     """
-    meta = idk.image_meta_extract(fp)
-
-    thumbnail_img = idk.image_thumbnail(fp)
-    thumbnail_durl = idk.image_to_data_url(thumbnail_img)
-    meta["thumbnail"] = thumbnail_durl
+    meta = dict()
+    if idk.sdk_opts.extract_metadata:
+        meta = idk.image_meta_extract(fp)
+        thumbnail_img = idk.image_thumbnail(fp)
+        thumbnail_durl = idk.image_to_data_url(thumbnail_img)
+        meta["thumbnail"] = thumbnail_durl
 
     pixels = idk.image_normalize(Image.open(fp))
     code_obj = ic.gen_image_code_v0(pixels, bits=idk.core_opts.image_bits)
@@ -168,11 +172,13 @@ def code_audio(fp):
     :return: ISCC metadata including Audio-Code.
     :rtype: IsccMeta
     """
-    meta = idk.audio_meta_extract(fp)
-    thumbnail_img = idk.audio_thumbnail(fp)
-    if thumbnail_img:
-        thumbnail_durl = idk.image_to_data_url(thumbnail_img)
-        meta["thumbnail"] = thumbnail_durl
+    meta = dict()
+    if idk.sdk_opts.extract_metadata:
+        meta = idk.audio_meta_extract(fp)
+        thumbnail_img = idk.audio_thumbnail(fp)
+        if thumbnail_img:
+            thumbnail_durl = idk.image_to_data_url(thumbnail_img)
+            meta["thumbnail"] = thumbnail_durl
     features = idk.audio_features_extract(fp)
     code_obj = ic.gen_audio_code_v0(features["fingerprint"], bits=idk.core_opts.audio_bits)
     meta.update(code_obj)
@@ -189,13 +195,18 @@ def code_video(fp):
     :return: ISCC metadata including Image-Code.
     :rtype: IsccMeta
     """
-    meta = idk.video_meta_extract(fp)
+    meta = dict()
+
+    if idk.sdk_opts.extract_metadata:
+        meta = idk.video_meta_extract(fp)
+        thumbnail_image = idk.video_thumbnail(fp)
+        thumbnail_durl = idk.image_to_data_url(thumbnail_image)
+        meta["thumbnail"] = thumbnail_durl
+
     features = idk.video_features_extract(fp)
     code_obj = ic.gen_video_code_v0(features, bits=idk.core_opts.video_bits)
     meta.update(code_obj)
-    thumbnail_image = idk.video_thumbnail(fp)
-    thumbnail_durl = idk.image_to_data_url(thumbnail_image)
-    meta["thumbnail"] = thumbnail_durl
+
     return idk.IsccMeta.construct(**meta)
 
 

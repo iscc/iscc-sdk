@@ -78,3 +78,10 @@ def test_video_mp7sig_extract(mp4_file):
 def test_video_features_extract(mp4_file):
     features = idk.video_features_extract(mp4_file)
     assert features[0][:20] == (0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0)
+
+
+def test_code_video_no_meta_extract(mp4_file):
+    idk.sdk_opts.extract_metadata = False
+    meta = idk.code_video(mp4_file)
+    assert meta.dict() == {"iscc": "ISCC:EMAV4DUD6QORW4X4"}
+    idk.sdk_opts.extract_metadata = True

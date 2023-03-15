@@ -42,6 +42,11 @@ class SdkOptions(BaseSettings):
         description="ISCC_SDK_GRANULAR - Generate additional granular fingerprints for ISCC-CODES",
     )
 
+    extract_metadata: bool = Field(
+        True,
+        description="ISCC_EXTRACT_METADATA - Extract metadata from digital assets (defaut: True)",
+    )
+
     image_exif_transpose: bool = Field(
         True,
         description="ISCC_SDK_IMAGE_EXIF_TRANSPOSE - Transpose image according to EXIF Orientation tag",

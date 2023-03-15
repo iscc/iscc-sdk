@@ -175,3 +175,10 @@ def test_embed_metadata_non_uri(jpg_file):
         "license": "Hello World",
         "width": 200,
     }
+
+
+def test_code_image_no_metadata(jpg_file):
+    idk.sdk_opts.extract_metadata = False
+    meta = idk.code_image(jpg_file)
+    assert meta.dict() == {"iscc": "ISCC:EEA4GQZQTY6J5DTH"}
+    idk.sdk_opts.extract_metadata = True

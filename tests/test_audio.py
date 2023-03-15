@@ -210,3 +210,10 @@ def test_audio_embed_title(mp3_cover):
     new_file = idk.embed_metadata(mp3_cover, idk.IsccMeta(name="Embedded Title"))
     meta = idk.extract_metadata(new_file)
     assert meta.dict() == {"creator": "Test Artist", "duration": 15, "name": "Embedded Title"}
+
+
+def test_code_audio_metadata_extraction_disabled(mp3_cover):
+    idk.sdk_opts.extract_metadata = False
+    meta = idk.code_audio(mp3_cover)
+    assert meta.dict() == {"iscc": "ISCC:EIAWUJFCEZZOJYVD"}
+    idk.sdk_opts.extract_metadata = True

@@ -73,3 +73,10 @@ def test_text_features(docx_file):
     txt = idk.text_extract(docx_file)
     features = idk.text_features(txt)
     assert features == {"kind": "text", "version": 0, "features": ["eGluK69boGk"], "sizes": [6069]}
+
+
+def test_code_text_no_meta_extract(docx_file):
+    idk.sdk_opts.extract_metadata = False
+    meta = idk.code_text(docx_file)
+    assert meta.dict() == {"characters": 4951, "iscc": "ISCC:EAAQMBEYQF6457DP"}
+    idk.sdk_opts.extract_metadata = True

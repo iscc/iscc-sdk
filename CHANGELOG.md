@@ -1,6 +1,8 @@
 ## Changelog
 
 ## 0.5.4 - Unreleased
+- Added global `extract_metadata` option
+- Removed taglib installation from CI
 
 ## 0.5.3 - 2023-03-12
 - Update to iscc-core 1.0.3 using binary wheels
