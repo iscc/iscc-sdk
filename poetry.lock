@@ -992,6 +992,81 @@ files = [
 ]
 
 [[package]]
+name = "mdformat"
+version = "0.7.16"
+description = "CommonMark compliant Markdown formatter"
+category = "dev"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "mdformat-0.7.16-py3-none-any.whl", hash = "sha256:76398d03baa394f331fb560fd0aed8257cf77b65b1c8146b92d395af16253662"},
+    {file = "mdformat-0.7.16.tar.gz", hash = "sha256:99b105033207d2ab70ba1ced8e07327ed4ef1e0a6bc1c7c00207ea73ab502782"},
+]
+
+[package.dependencies]
+importlib-metadata = {version = ">=3.6.0", markers = "python_version < \"3.10\""}
+markdown-it-py = ">=1.0.0,<3.0.0"
+tomli = {version = ">=1.1.0", markers = "python_version < \"3.11\""}
+
+[[package]]
+name = "mdformat-admon"
+version = "1.0.1"
+description = "An mdformat plugin for admonitions."
+category = "dev"
+optional = false
+python-versions = ">=3.7.2"
+files = [
+    {file = "mdformat_admon-1.0.1-py3-none-any.whl", hash = "sha256:0fe25914cfccd150c88481c90a920dfa827c46a327301eb4f5220c8e2798ee39"},
+    {file = "mdformat_admon-1.0.1.tar.gz", hash = "sha256:3f0c672b9fdced9b45f7c0287bc636429a882130f2f11e4d2468c959ed3fb7fe"},
+]
+
+[package.dependencies]
+mdformat = ">=0.7.16"
+mdit-py-plugins = ">=0.3.2"
+
+[package.extras]
+dev = ["pre-commit"]
+test = ["pytest (>=7.0)", "pytest-cov"]
+
+[[package]]
+name = "mdformat-tables"
+version = "0.4.1"
+description = "An mdformat plugin for rendering tables."
+category = "dev"
+optional = false
+python-versions = ">=3.6.1"
+files = [
+    {file = "mdformat_tables-0.4.1-py3-none-any.whl", hash = "sha256:981f3dc7350027f78e3fd6a5fe8a16e123eec423af2d140e588d855751501019"},
+    {file = "mdformat_tables-0.4.1.tar.gz", hash = "sha256:3024e88e9d29d7b8bb07fd6b59c9d5dcf14d2060122be29e30e72d27b65d7da9"},
+]
+
+[package.dependencies]
+mdformat = ">=0.7.5,<0.8.0"
+
+[package.extras]
+test = ["coverage", "pytest (>=6.0,<7.0)", "pytest-cov"]
+
+[[package]]
+name = "mdit-py-plugins"
+version = "0.3.5"
+description = "Collection of plugins for markdown-it-py"
+category = "dev"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "mdit-py-plugins-0.3.5.tar.gz", hash = "sha256:eee0adc7195e5827e17e02d2a258a2ba159944a0748f59c5099a4a27f78fcf6a"},
+    {file = "mdit_py_plugins-0.3.5-py3-none-any.whl", hash = "sha256:ca9a0714ea59a24b2b044a1831f48d817dd0c817e84339f20e7889f392d77c4e"},
+]
+
+[package.dependencies]
+markdown-it-py = ">=1.0.0,<3.0.0"
+
+[package.extras]
+code-style = ["pre-commit"]
+rtd = ["attrs", "myst-parser (>=0.16.1,<0.17.0)", "sphinx-book-theme (>=0.1.0,<0.2.0)"]
+testing = ["coverage", "pytest", "pytest-cov", "pytest-regressions"]
+
+[[package]]
 name = "mdurl"
 version = "0.1.2"
 description = "Markdown URL utilities"
@@ -2260,4 +2335,4 @@ testing = ["big-O", "flake8 (<5)", "jaraco.functools", "jaraco.itertools", "more
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.8,<4.0"
-content-hash = "a84172fe874455967f3179e7e05f27c21070e65c68f23ba86fc21fa01067c0da"
+content-hash = "ccb3845f07add773e08655e75bf7b8dd0809503eb0b7874fc519a060a3683e36"
