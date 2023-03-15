@@ -1,6 +1,6 @@
 ## Changelog
 
-## 0.5.4 - Unreleased
+## 0.5.4 - 2023-03-15
 - Added global `extract_metadata` option
 - Removed taglib installation from CI
 
