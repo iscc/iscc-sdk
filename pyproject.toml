@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "iscc-sdk"
-version = "0.5.4"
+version = "0.5.5"
 description = "SDK for creating ISCCs (International Standard Content Codes)"
 authors = ["Titusz <tp@py7.de>"]
 license = "Apache-2.0"
@@ -48,7 +48,7 @@ install-jdk = "^0.3"
 platformdirs = "^3.1"
 jmespath = "^1.0"
 Pillow = "^9.0"
-pytaglib-wheel = "^1.5"
+pytaglib = "^2.0"
 numpy = "^1.22"
 pymupdf = "^1.21"
 ebookmeta = "^1.2"
