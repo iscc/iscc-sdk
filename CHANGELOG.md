@@ -1,7 +1,8 @@
 ## Changelog
 
-## 0.5.5 - Unreleased
+## 0.5.5 - 2023-03-26
 - Switch to official pytaglib distribution
+- Update dependencies
 
 ## 0.5.4 - 2023-03-15
 - Added global `extract_metadata` option
