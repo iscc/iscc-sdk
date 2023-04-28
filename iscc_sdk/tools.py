@@ -70,6 +70,7 @@ FPCALC_CHECKSUMS = {
 TIKA_VERSION = "2.6.0"
 TIKA_URL = f"{BASE_URL}/tika-app-{TIKA_VERSION}.jar"
 TIKA_CHECKSUM = "4e91e89461a67c6a28c401ab131288979e76d3edca7bbb0b2f4844dd3539358e"
+TIKA_INSTALL_ATTEMPTS = 0
 
 EXIV2_VERSION = "0.27.2"
 EXIV2_URLS = {
@@ -539,11 +540,18 @@ def tika_install():  # pragma: no cover
         log.debug("Tika is already installed")
         return tika_bin()
     else:
-        log.critical("installing tika")
-        path = tika_download()
-        st = os.stat(tika_bin())
-        os.chmod(tika_bin(), st.st_mode | stat.S_IEXEC)
-        return path
+        global TIKA_INSTALL_ATTEMPTS
+        if TIKA_INSTALL_ATTEMPTS == 0:
+            log.critical("Installing Tika")
+            path = tika_download()
+            st = os.stat(tika_bin())
+            os.chmod(tika_bin(), st.st_mode | stat.S_IEXEC)
+            TIKA_INSTALL_ATTEMPTS += 1
+            return path
+        else:
+            log.critical("Allready installed tika in this session not attemting a second time!")
+            log.critical("Check your environment (internet access / java setup)")
+            sys.exit(1)
 
 
 def tika_version_info():  # pragma: no cover
