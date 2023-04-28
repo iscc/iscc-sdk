@@ -1,6 +1,9 @@
 ## Changelog
 
 ## 0.5.6 - Unreleased
+- Don´t pin poetry build requirement version
+- Use latest poetry with default settings in CI
+- Update dependencies
 
 ## 0.5.5 - 2023-03-26
 - Switch to official pytaglib distribution
