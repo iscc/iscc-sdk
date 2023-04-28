@@ -1,7 +1,9 @@
 ## Changelog
 
-## 0.5.6 - Unreleased
+## 0.5.6 - 2023-04-28
+- Don´t install tika more than once per session
 - Don´t pin poetry build requirement version
+- Publish wheels
 - Use latest poetry with default settings in CI
 - Update dependencies
 

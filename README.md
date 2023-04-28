@@ -47,13 +47,23 @@ Use the Python package manager [pip](https://pip.pypa.io/en/stable/) to install 
 pip install iscc-sdk
 ```
 
+## Getting Started
+
+Create an ISCC-CODE for a media file:
+
+```python
+import iscc_sdk as idk
+
+print(idk.code_iscc("/path/to/mediafile.jpg"))
+```
+
 ## Documentation
 
 <https://sdk.iscc.codes>
 
 ## Troubleshooting
 
-On Linux and MacOS might need to install taglib as a prerequisite. On Ubuntu, Mint and other
+On Linux and MacOS you might need to install taglib as a prerequisite. On Ubuntu, Mint and other
 Debian-Based distributions do:
 
 ```shell
