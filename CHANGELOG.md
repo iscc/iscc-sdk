@@ -1,6 +1,7 @@
 ## Changelog
 
 ## 0.5.7 - Unreleased
+- Added parallel processing of ISCC-UNITs
 - Updated dependencies
 - Fixed mkdocstrings
 

@@ -1,6 +1,6 @@
 """*SDK main top-level functions*."""
+from concurrent.futures import ThreadPoolExecutor
 from os.path import basename
-
 from PIL import Image
 import iscc_core as ic
 import iscc_sdk as idk
@@ -31,11 +31,20 @@ def code_iscc(fp):
     :rtype: IsccMeta
     """
 
-    # Generate ISCC-UNITs
-    instance = code_instance(fp)
-    data = code_data(fp)
-    content = code_content(fp)
-    meta = code_meta(fp)
+    # Generate ISCC-UNITs in parallel
+    with ThreadPoolExecutor() as executor:
+        instance = executor.submit(code_instance, fp)
+        data = executor.submit(code_data, fp)
+        content = executor.submit(code_content, fp)
+        meta = executor.submit(code_meta, fp)
+
+    # Wait for all futures to complete and retrieve their results
+    instance, data, content, meta = (
+        instance.result(),
+        data.result(),
+        content.result(),
+        meta.result(),
+    )
 
     # Compose ISCC-CODE
     iscc_code = ic.gen_iscc_code_v0([meta.iscc, content.iscc, data.iscc, instance.iscc])
