@@ -1,6 +1,7 @@
 ## Changelog
 
 ## 0.5.7 - Unreleased
+- Updated dependencies
 
 ## 0.5.6 - 2023-04-28
 - Don´t install tika more than once per session
