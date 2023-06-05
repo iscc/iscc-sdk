@@ -1,5 +1,7 @@
 ## Changelog
 
+## 0.5.7 - Unreleased
+
 ## 0.5.6 - 2023-04-28
 - Don´t install tika more than once per session
 - Don´t pin poetry build requirement version
