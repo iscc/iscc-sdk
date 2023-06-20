@@ -209,8 +209,9 @@ def code_video(fp):
     if idk.sdk_opts.extract_metadata:
         meta = idk.video_meta_extract(fp)
         thumbnail_image = idk.video_thumbnail(fp)
-        thumbnail_durl = idk.image_to_data_url(thumbnail_image)
-        meta["thumbnail"] = thumbnail_durl
+        if thumbnail_image is not None:
+            thumbnail_durl = idk.image_to_data_url(thumbnail_image)
+            meta["thumbnail"] = thumbnail_durl
 
     features = idk.video_features_extract(fp)
     code_obj = ic.gen_video_code_v0(features, bits=idk.core_opts.video_bits)
