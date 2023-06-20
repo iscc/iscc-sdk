@@ -57,6 +57,18 @@ import iscc_sdk as idk
 print(idk.code_iscc("/path/to/mediafile.jpg"))
 ```
 
+Using the CLI tool to create an ISCC-CODE
+
+```shell
+idk create /path/to/mediafile.jpg
+```
+
+Batch creation of ISCC-CODEs
+
+```shell
+idk batch /folder_with_media_files
+```
+
 ## Documentation
 
 <https://sdk.iscc.codes>
