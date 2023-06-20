@@ -85,9 +85,15 @@ def test_cli_batch_not_a_folder():
     assert "Invalid folder" in result.stdout
 
 
-def test_cli_batch(image_dir):
+def test_cli_batch(asset_tree):
     from iscc_sdk.cli import iter_unprocessed
 
-    result = runner.invoke(app, ["batch", image_dir.as_posix()])
+    result = runner.invoke(app, ["batch", asset_tree.as_posix()])
     assert result.exit_code == 0
-    assert list(iter_unprocessed(image_dir)) == []
+    assert list(iter_unprocessed(asset_tree)) == []
+
+
+def test_cli_selftest():
+    result = runner.invoke(app, ["selftest"])
+    assert result.exit_code == 0
+    assert "PASSED" in result.stdout

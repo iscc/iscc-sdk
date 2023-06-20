@@ -142,5 +142,14 @@ def batch(folder: Path, workers: int = os.cpu_count()):
                 progress.update(task_id, advance=file_sizes_dict[fp], refresh=True)
 
 
+@app.command()
+def selftest():
+    """Run conformance tests."""
+    log.add(console.print, format=log_formatter, colorize=True)
+    from iscc_core.conformance import conformance_selftest
+
+    conformance_selftest()
+
+
 if __name__ == "__main__":  # pragma: no cover
     app()

@@ -113,10 +113,10 @@ def epub_file(tmp_path_factory):
     return dst.as_posix()
 
 
-@pytest.fixture(scope="module")
-def image_dir(tmp_path_factory):
+@pytest.fixture(scope="session")
+def asset_tree(tmp_path_factory):
     src = images()[0].parent
-    dst = tmp_path_factory.mktemp("images")
+    dst = tmp_path_factory.mktemp("tree")
     imgdir = shutil.copytree(src, dst, dirs_exist_ok=True)
     subdir = imgdir / "subdir"
     subdir.mkdir()
