@@ -35,17 +35,15 @@ def test_code_iscc_image(jpg_file):
     }
 
 
-def test_code_iscc_audio():
-    from iscc_samples import audios
-
-    assert idk.code_iscc(audios("mp3")[0].as_posix()).dict() == {
+def test_code_iscc_audio(mp3_file):
+    assert idk.code_iscc(mp3_file).dict() == {
         "@type": "AudioObject",
         "iscc": "ISCC:KIC2JKSX7OH5PBIENISKEJTS4TRKHYJBCZDNLQXYILWJHQAP3N3KPTQ",
         "name": "Belly Button",
         "datahash": "1e20ec93c00fdb76a7cec587e4a2bddfa8d0a0bac8110d0c7130c351ea07c366d626",
         "duration": 15,
         "filesize": 225707,
-        "filename": "demo.mp3",
+        "filename": "audio.mp3",
         "mediatype": "audio/mpeg",
         "metahash": "1e20c4933dc8c03ea58568159a1cbfb04132c7db93b6b4cd025ffd4db37f52a4756f",
         "mode": "audio",

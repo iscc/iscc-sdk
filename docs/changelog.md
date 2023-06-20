@@ -4,6 +4,7 @@
 - Added parallel processing of ISCC-UNITs
 - Handle video thumbnail extraction errors gracefully
 - Add basic command line interface
+- Support concurrent audio metadata extraction
 - Updated dependencies
 - Fixed mkdocstrings
 

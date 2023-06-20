@@ -113,7 +113,7 @@ def epub_file(tmp_path_factory):
     return dst.as_posix()
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="module")
 def asset_tree(tmp_path_factory):
     src = images()[0].parent
     dst = tmp_path_factory.mktemp("tree")

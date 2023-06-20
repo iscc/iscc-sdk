@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 import os.path
-
 from PIL.Image import Image
-
 import iscc_sdk as idk
 import iscc_samples as iss
 
@@ -21,6 +19,15 @@ def test_audio_meta_extract(mp3_file):
         "name": "Belly Button",
         "duration": 15,
     }
+
+
+def test_audio_meta_extract_concurrent(mp3_file):
+    with open(mp3_file, "rb") as infile:
+        data = infile.read(64)
+        assert idk.audio_meta_extract(mp3_file) == {
+            "name": "Belly Button",
+            "duration": 15,
+        }
 
 
 def test_audio_meta_extract_all():

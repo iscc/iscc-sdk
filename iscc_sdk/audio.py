@@ -75,14 +75,27 @@ def audio_meta_extract(fp):
     :return: Metadata mapped to IsccMeta schema
     :rtype: dict
     """
-    try:
-        obj = taglib.File(fp)
-    except OSError as e:
-        log.error(f"Failed metadata extraction for {basename(fp)}: {e}")
-        return {}
-    meta = dict(obj.tags)
     mapped = dict()
     done = set()
+
+    try:
+        obj = taglib.File(fp)
+        meta = dict(obj.tags)
+        mapped["duration"] = obj.length
+        obj.close()
+    except OSError as e:  # pragma: no cover
+        # This is a workaround for the issue that taglib requires exclusive access even for reading.
+        log.warning(f"Create tempfile for taglib access {basename(fp)}: {e}")
+        try:
+            with idk.TempFile(fp) as tmp_path:
+                obj = taglib.File(tmp_path.as_posix())
+                meta = dict(obj.tags)
+                mapped["duration"] = obj.length
+                obj.close()
+        except Exception as e:
+            log.warning(f"Failed metadata extraction for {basename(fp)}: {e}")
+            return mapped
+
     for tag, mapped_field in AUDIO_META_MAP.items():
         if mapped_field in done:
             continue
@@ -91,12 +104,10 @@ def audio_meta_extract(fp):
             log.debug(f"Mapping audio metadata: {tag} -> {mapped_field} -> {value[0]}")
             mapped[mapped_field] = value[0]
             done.add(mapped_field)
-    mapped["duration"] = obj.length
     # Todo - add bitrate, channels, samplerate to iscc-schema
     # mapped["bitrate"] = obj.bitrate
     # mapped["channels"] = obj.channels
     # mapped["samplerate"] = obj.sampleRate
-    obj.close()
     return mapped
 
 
@@ -107,7 +118,7 @@ def audio_meta_embed(fp, meta):
 
     :param str fp: Filepath to source audio file
     :param IsccMeta meta: Metadata to embed into audio file
-    :return: Filepath to new video file with updated metadata
+    :return: Filepath to new audio file with updated metadata
     :rtype: str
     """
     tdir = tempfile.mkdtemp()
