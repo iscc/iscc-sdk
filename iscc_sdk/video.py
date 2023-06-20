@@ -1,10 +1,8 @@
 """*Video handling module*"""
 import os
-from typing import Tuple, List
-
+from typing import Tuple, List, Optional
 from loguru import logger as log
 import io
-import subprocess
 import sys
 import tempfile
 from os.path import join, basename
@@ -159,7 +157,7 @@ def video_meta_embed(fp, meta):
 
 
 def video_thumbnail(fp):
-    # type: (str) -> Image.Image
+    # type: (str) -> Optional[Image.Image]
     """
     Create a thumbnail for a video.
 
@@ -182,8 +180,11 @@ def video_thumbnail(fp):
         "image2pipe",
         "-",
     ]
-
-    result = idk.run_ffmpeg(args)
+    try:
+        result = idk.run_ffmpeg(args)
+    except Exception as e:
+        log.error(f"Failed video thumbnail extraction: {e}")
+        return None
     img_obj = Image.open(io.BytesIO(result.stdout))
     return ImageEnhance.Sharpness(img_obj.convert("RGB")).enhance(1.4)
 

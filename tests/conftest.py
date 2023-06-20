@@ -86,6 +86,13 @@ def mov_file(tmp_path_factory):
 
 
 @pytest.fixture(scope="module")
+def ogv_file(tmp_path_factory):
+    dst = tmp_path_factory.mktemp("data") / "video.ogv"
+    shutil.copy(videos("ogv")[0], dst)
+    return dst.as_posix()
+
+
+@pytest.fixture(scope="module")
 def docx_file(tmp_path_factory):
     dst = tmp_path_factory.mktemp("data") / "text.docx"
     shutil.copy(texts("docx")[0], dst)
@@ -104,3 +111,14 @@ def epub_file(tmp_path_factory):
     dst = tmp_path_factory.mktemp("data") / "text.epub"
     shutil.copy(texts("epub")[0], dst)
     return dst.as_posix()
+
+
+@pytest.fixture(scope="module")
+def image_dir(tmp_path_factory):
+    src = images()[0].parent
+    dst = tmp_path_factory.mktemp("images")
+    imgdir = shutil.copytree(src, dst, dirs_exist_ok=True)
+    subdir = imgdir / "subdir"
+    subdir.mkdir()
+    shutil.copy(audios("mp3")[0], subdir)
+    return imgdir

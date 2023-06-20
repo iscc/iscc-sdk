@@ -2,6 +2,7 @@
 
 ## 0.5.7 - Unreleased
 - Added parallel processing of ISCC-UNITs
+- Handle video thumbnail extraction errors gracefully
 - Updated dependencies
 - Fixed mkdocstrings
 
