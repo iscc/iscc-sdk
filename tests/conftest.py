@@ -119,9 +119,9 @@ def epub_file(tmp_path_factory):
 def asset_tree(tmp_path_factory):
     dst = Path(tmp_path_factory.mktemp("data"))
     for img_path in images()[:3]:
-        shutil.copy(img_path, dst)
+        shutil.copy2(img_path, dst)
     subdir = dst / "subdir"
     subdir.mkdir()
     for audio_path in audios()[:2]:
-        shutil.copy(audio_path, subdir)
+        shutil.copy2(audio_path, subdir)
     return dst.as_posix()
