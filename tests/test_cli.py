@@ -90,3 +90,8 @@ def test_cli_batch(asset_tree):
 def test_cli_selftest():
     result = runner.invoke(app, ["selftest"])
     assert result.exit_code == 0
+
+
+def test_cli_install():
+    result = runner.invoke(app, ["install"])
+    assert result.exit_code == 0
