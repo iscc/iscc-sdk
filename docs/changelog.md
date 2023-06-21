@@ -1,6 +1,6 @@
 ## Changelog
 
-## 0.5.7 - Unreleased
+## 0.5.7 - 2023-06-21
 - Added parallel processing of ISCC-UNITs
 - Handle video thumbnail extraction errors gracefully
 - Add basic command line interface for batch processing
