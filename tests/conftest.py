@@ -118,7 +118,7 @@ def epub_file(tmp_path_factory):
 @pytest.fixture(scope="module")
 def asset_tree(tmp_path_factory):
     dst = Path(tmp_path_factory.mktemp("data"))
-    for img_path in images()[:3]:
+    for img_path in videos()[:3]:
         shutil.copy2(img_path, dst)
     subdir = dst / "subdir"
     subdir.mkdir()

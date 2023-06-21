@@ -32,7 +32,7 @@ def log_formatter(record: dict) -> str:  # pragma: no cover
     }
     lvl_color = color_map.get(record["level"].name, "cyan")
     return (
-        "[not bold green]{time:YYYY/MM/DD HH:mm:ss}[/not bold green] | {module:<12} | {level}"
+        "[not bold green]{time:YYYY/MM/DD HH:mm:ss}[/not bold green] | {module}:{line:<12} | {level}"
         + f"  - [{lvl_color}]{{message}}[/{lvl_color}]"
     )
 
@@ -69,7 +69,7 @@ def iter_unprocessed(path, root_path=None):
         for file_entry in files:
             file_path = Path(file_entry)
             # Ignore result files
-            if file_path.name.endswith(".iscc.json"):
+            if file_path.name.endswith(".iscc.json") or file_path.name.endswith(".iscc.mp7sig"):
                 continue
             # Ignore files that have results
             if Path(file_path.as_posix() + ".iscc.json").exists():
@@ -134,11 +134,11 @@ def batch(folder: Path, workers: int = os.cpu_count()):  # pragma: no cover
                 fp, iscc_meta = future.result()
                 if isinstance(iscc_meta, idk.IsccMeta):
                     out_path = Path(fp.as_posix() + ".iscc.json")
-                    with out_path.open(mode="wt") as outf:
+                    with out_path.open(mode="wt", encoding="utf-8") as outf:
                         outf.write(iscc_meta.json(indent=2))
                     log.info(f"Finished {fp.name}")
                 else:
-                    log.warning(f"Failed {fp.name}: {iscc_meta}")
+                    log.error(f"Failed {fp.name}: {iscc_meta}")
                 progress.update(task_id, advance=file_sizes_dict[fp], refresh=True)
 
 

@@ -1,6 +1,8 @@
 ## Changelog
 
 ## 0.5.8 - Unreleased
+- Ignore signature files in batch command
+- Fix encoding of result files
 - Updated dependencies
 
 ## 0.5.7 - 2023-06-21
