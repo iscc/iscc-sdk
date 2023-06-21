@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import pytest
 from iscc_samples import images, texts, audios, videos
 import shutil
@@ -115,10 +117,11 @@ def epub_file(tmp_path_factory):
 
 @pytest.fixture(scope="module")
 def asset_tree(tmp_path_factory):
-    src = images()[0].parent
-    dst = tmp_path_factory.mktemp("tree")
-    imgdir = shutil.copytree(src, dst, dirs_exist_ok=True)
-    subdir = imgdir / "subdir"
+    dst = Path(tmp_path_factory.mktemp("data"))
+    for img_path in images()[:3]:
+        shutil.copy(img_path, dst)
+    subdir = dst / "subdir"
     subdir.mkdir()
-    shutil.copy(audios("mp3")[0], subdir)
-    return imgdir
+    for audio_path in audios()[:2]:
+        shutil.copy(audio_path, subdir)
+    return dst.as_posix()

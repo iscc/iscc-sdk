@@ -79,7 +79,7 @@ def test_cli_batch_not_a_folder():
 
 
 def test_cli_batch(asset_tree):
-    result = runner.invoke(app, ["batch", asset_tree.as_posix()])
+    result = runner.invoke(app, ["batch", asset_tree])
     assert result.exit_code == 0
     assert list(iter_unprocessed(asset_tree)) == []
 
