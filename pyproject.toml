@@ -58,7 +58,7 @@ numpy = "^1.22"
 pymupdf = "^1.21"
 ebookmeta = "^1.2"
 python-docx = "^0.8"
-typer = "^0.9"
+typer = {extras = ["all"], version = "^0.9.0"}
 
 
 [tool.poetry.dev-dependencies]

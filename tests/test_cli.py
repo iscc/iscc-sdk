@@ -1,6 +1,3 @@
-import os
-import shutil
-import tempfile
 from pathlib import Path
 from typing import Tuple
 from typer.testing import CliRunner
@@ -81,15 +78,10 @@ def test_cli_batch_not_a_folder():
     assert "Invalid folder" in result.stdout
 
 
-def test_cli_batch():
-    import subprocess
-    path = iss.images()[0].parent
-    cmd = ["poetry", "run", "idk", "batch", path.as_posix()]
-    result = subprocess.run(cmd)
-    assert result.returncode == 0
-    assert list(iter_unprocessed(path)) == []
-    for rfile in path.glob("*.iscc.json"):
-        rfile.unlink()
+def test_cli_batch(asset_tree):
+    result = runner.invoke(app, ["batch", asset_tree.as_posix()])
+    assert result.exit_code == 0
+    assert list(iter_unprocessed(asset_tree)) == []
 
 
 def test_cli_selftest():

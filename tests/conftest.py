@@ -113,3 +113,15 @@ def epub_file(tmp_path_factory):
     dst = tmp_path_factory.mktemp("data") / "text.epub"
     shutil.copy(texts("epub")[0], dst)
     return dst.as_posix()
+
+
+@pytest.fixture(scope="module")
+def asset_tree(tmp_path_factory):
+    dst = Path(tmp_path_factory.mktemp("data"))
+    for img_path in images()[:3]:
+        shutil.copy2(img_path, dst)
+    subdir = dst / "subdir"
+    subdir.mkdir()
+    for audio_path in audios()[:2]:
+        shutil.copy2(audio_path, subdir)
+    return dst

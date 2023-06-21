@@ -32,7 +32,7 @@ def log_formatter(record: dict) -> str:  # pragma: no cover
     }
     lvl_color = color_map.get(record["level"].name, "cyan")
     return (
-        "[not bold green]{time:YYYY/MM/DD HH:mm:ss}[/not bold green] | {module:<12} | {level.icon}"
+        "[not bold green]{time:YYYY/MM/DD HH:mm:ss}[/not bold green] | {module:<12} | {level}"
         + f"  - [{lvl_color}]{{message}}[/{lvl_color}]"
     )
 
@@ -136,7 +136,7 @@ def batch(folder: Path, workers: int = os.cpu_count()):
                     out_path = Path(fp.as_posix() + ".iscc.json")
                     with out_path.open(mode="wt") as outf:
                         outf.write(iscc_meta.json(indent=2))
-                    log.debug(f"Finished {fp.name}")
+                    log.info(f"Finished {fp.name}")
                 else:  # pragma: no cover
                     log.warning(f"Failed {fp.name}: {iscc_meta}")
                 progress.update(task_id, advance=file_sizes_dict[fp], refresh=True)
