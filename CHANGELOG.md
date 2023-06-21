@@ -1,6 +1,6 @@
 ## Changelog
 
-## 0.5.8 - Unreleased
+## 0.5.8 - 2023-06-21
 - Add `install` cli command
 - Ignore signature files in batch cli command
 - Fix encoding of result files
