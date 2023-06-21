@@ -31,20 +31,11 @@ def code_iscc(fp):
     :rtype: IsccMeta
     """
 
-    # Generate ISCC-UNITs in parallel
-    with ThreadPoolExecutor() as executor:
-        instance = executor.submit(code_instance, fp)
-        data = executor.submit(code_data, fp)
-        content = executor.submit(code_content, fp)
-        meta = executor.submit(code_meta, fp)
-
-    # Wait for all futures to complete and retrieve their results
-    instance, data, content, meta = (
-        instance.result(),
-        data.result(),
-        content.result(),
-        meta.result(),
-    )
+    # Generate ISCC-UNITs
+    instance = code_instance(fp)
+    data = code_data(fp)
+    content = code_content(fp)
+    meta = code_meta(fp)
 
     # Compose ISCC-CODE
     iscc_code = ic.gen_iscc_code_v0([meta.iscc, content.iscc, data.iscc, instance.iscc])
@@ -57,6 +48,46 @@ def code_iscc(fp):
     iscc_meta.update(meta.dict())
     iscc_meta.update(iscc_code)
     return idk.IsccMeta.construct(**iscc_meta)
+
+
+# def code_iscc(fp):
+#     # type: (str) -> idk.IsccMeta
+#     """
+#     Generate ISCC-CODE.
+#
+#     The ISCC-CODE is a composite of Meta, Content, Data and Instance Codes.
+#
+#     :param str fp: Filepath used for ISCC-CODE creation.
+#     :return: ISCC metadata including ISCC-CODE and merged metadata from ISCC-UNITs.
+#     :rtype: IsccMeta
+#     """
+#
+#     # Generate ISCC-UNITs in parallel
+#     with ThreadPoolExecutor() as executor:
+#         instance = executor.submit(code_instance, fp)
+#         data = executor.submit(code_data, fp)
+#         content = executor.submit(code_content, fp)
+#         meta = executor.submit(code_meta, fp)
+#
+#     # Wait for all futures to complete and retrieve their results
+#     instance, data, content, meta = (
+#         instance.result(),
+#         data.result(),
+#         content.result(),
+#         meta.result(),
+#     )
+#
+#     # Compose ISCC-CODE
+#     iscc_code = ic.gen_iscc_code_v0([meta.iscc, content.iscc, data.iscc, instance.iscc])
+#
+#     # Merge ISCC Metadata
+#     iscc_meta = dict(filename=basename(fp))
+#     iscc_meta.update(instance.dict())
+#     iscc_meta.update(data.dict())
+#     iscc_meta.update(content.dict())
+#     iscc_meta.update(meta.dict())
+#     iscc_meta.update(iscc_code)
+#     return idk.IsccMeta.construct(**iscc_meta)
 
 
 def code_meta(fp):
