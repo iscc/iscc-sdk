@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import os
+from pathlib import Path
 
 from PIL import Image
 import iscc_sdk as idk
@@ -83,6 +84,13 @@ def test_video_mp7sig_extract(mp4_file):
 def test_video_features_extract(mp4_file):
     features = idk.video_features_extract(mp4_file)
     assert features[0][:20] == (0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0)
+
+
+def test_video_features_extract_store(mp4_file):
+    idk.sdk_opts.video_store_mp7sig = True
+    idk.video_features_extract(mp4_file)
+    assert Path(mp4_file + ".iscc.mp7sig").exists()
+    idk.sdk_opts.video_store_mp7sig = True
 
 
 def test_code_video_no_meta_extract(mp4_file):

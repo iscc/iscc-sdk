@@ -200,6 +200,12 @@ def video_features_extract(fp):
     """
     # TODO use confidence value to improve simililarity hash.
     sig = video_mp7sig_extract(fp)
+
+    if idk.sdk_opts.video_store_mp7sig:
+        outp = fp + ".iscc.mp7sig"
+        with open(outp, "wb") as outf:
+            outf.write(sig)
+
     frames = idk.read_mp7_signature(sig)
     return [tuple(frame.vector.tolist()) for frame in frames]
 

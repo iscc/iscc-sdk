@@ -3,7 +3,8 @@
 ## 0.5.7 - Unreleased
 - Added parallel processing of ISCC-UNITs
 - Handle video thumbnail extraction errors gracefully
-- Add basic command line interface
+- Add basic command line interface for batch processing
+- Add option to keep MP7 Video Signature
 - Support concurrent audio metadata extraction
 - Updated dependencies
 - Fixed mkdocstrings

@@ -1,5 +1,4 @@
 import os
-import sys
 from concurrent.futures import ProcessPoolExecutor, as_completed
 from typing import Iterator, Optional, Tuple
 from loguru import logger as log
@@ -80,6 +79,7 @@ def iter_unprocessed(path, root_path=None):
 
 
 def process_file(fp: Path):
+    idk.sdk_opts.video_store_mp7sig = True
     try:
         return fp, idk.code_iscc(fp.as_posix())
     except Exception as e:
