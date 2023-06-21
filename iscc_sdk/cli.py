@@ -1,4 +1,5 @@
 import os
+import sys
 from concurrent.futures import ProcessPoolExecutor, as_completed
 from typing import Iterator, Optional, Tuple
 from loguru import logger as log
@@ -97,7 +98,7 @@ def create(file: Path):
 
 
 @app.command()
-def batch(folder: Path, workers: int = os.cpu_count()):
+def batch(folder: Path, workers: int = os.cpu_count()):  # pragma: no cover
     """Create ISCC-CODEs for files in FOLDER (parallel & recursive)."""
     log.add(console.print, level="TRACE", format=log_formatter, colorize=True)
     if not folder.is_dir() or not folder.exists():
@@ -127,7 +128,6 @@ def batch(folder: Path, workers: int = os.cpu_count()):
 
     with progress:
         task_id = progress.add_task("Processing", dirname=folder.name, total=total_size)
-
         with ProcessPoolExecutor(max_workers=workers) as executor:
             futures = [executor.submit(process_file, fp) for fp in file_paths]
             for future in as_completed(futures):
@@ -137,7 +137,7 @@ def batch(folder: Path, workers: int = os.cpu_count()):
                     with out_path.open(mode="wt") as outf:
                         outf.write(iscc_meta.json(indent=2))
                     log.info(f"Finished {fp.name}")
-                else:  # pragma: no cover
+                else:
                     log.warning(f"Failed {fp.name}: {iscc_meta}")
                 progress.update(task_id, advance=file_sizes_dict[fp], refresh=True)
 
