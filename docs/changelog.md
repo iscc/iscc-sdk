@@ -1,6 +1,6 @@
 ## Changelog
 
-## 0.5.9 - Unreleased
+## 0.5.9 - 2023-06-21
 - Fix stdout decoding
 
 ## 0.5.8 - 2023-06-21
