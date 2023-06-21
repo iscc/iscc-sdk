@@ -1,5 +1,8 @@
 ## Changelog
 
+## 0.5.8 - Unreleased
+- Updated dependencies
+
 ## 0.5.7 - 2023-06-21
 - Added parallel processing of ISCC-UNITs
 - Handle video thumbnail extraction errors gracefully
