@@ -82,20 +82,12 @@ def test_cli_batch_not_a_folder():
 
 
 def test_cli_batch():
-    tempdir = Path(tempfile.mkdtemp())
-    os.chmod(tempdir, 0o777)
-    for img_path in iss.images()[:3]:
-        np = shutil.copy(img_path, tempdir)
-        os.chmod(np, 0o777)
-    subdir = tempdir / "subdir"
-    subdir.mkdir()
-    for audio_path in iss.audios()[:3]:
-        np = shutil.copy(audio_path, tempdir)
-        os.chmod(np, 0o777)
-    result = runner.invoke(app, ["batch", tempdir.as_posix()])
+    path = iss.images()[0].parent
+    result = runner.invoke(app, ["batch", path.as_posix()])
     assert result.exit_code == 0
-    assert list(iter_unprocessed(tempdir)) == []
-    shutil.rmtree(tempdir)
+    assert list(iter_unprocessed(path)) == []
+    for rfile in path.glob("*.iscc.json"):
+        rfile.unlink()
 
 
 def test_cli_selftest():
