@@ -127,7 +127,8 @@ def image_meta_extract(fp):
     """
     args = ["--all", fp]
     result = idk.run_exiv2json(args)
-    text = result.stdout.decode(sys.stdout.encoding, errors="ignore")
+    encoding = sys.stdout.encoding or "utf-8"
+    text = result.stdout.decode(encoding, errors="ignore")
 
     # We may get all sorts of crazy control-chars, delete them.
     mpa = dict.fromkeys(range(32))

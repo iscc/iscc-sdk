@@ -272,7 +272,8 @@ def exiv2_version_info():  # pragma: no cover
         r = subprocess.run(
             [exiv2_bin(), "--version"], stdout=subprocess.PIPE, stderr=subprocess.STDOUT
         )
-        vi = r.stdout.decode(sys.stdout.encoding)
+        encoding = sys.stdout.encoding or "utf-8"
+        vi = r.stdout.decode(encoding)
         return vi.splitlines()[0]
     except FileNotFoundError:
         return "exiv2 not installed"
@@ -496,7 +497,8 @@ def java_install():  # pragma: no cover
 def java_version_info():  # pragma: no cover
     try:
         r = subprocess.run([java_bin(), "-version"], stderr=subprocess.PIPE)
-        return r.stderr.decode(sys.stdout.encoding).splitlines()[0]
+        encoding = sys.stdout.encoding or "utf-8"
+        return r.stderr.decode(encoding).splitlines()[0]
     except subprocess.CalledProcessError:
         return "JAVA not installed"
 
@@ -564,7 +566,8 @@ def tika_version_info():  # pragma: no cover
     """
     try:
         r = subprocess.run([java_bin(), "-jar", tika_bin(), "--version"], stdout=subprocess.PIPE)
-        return r.stdout.decode(sys.stdout.encoding).strip()
+        encoding = sys.stdout.encoding or "utf-8"
+        return r.stdout.decode(encoding).strip()
     except subprocess.CalledProcessError:
         return "Tika not installed"
 

@@ -54,7 +54,8 @@ def video_meta_extract(fp):
     args = ["-i", fp, "-movflags", "use_metadata_tags", "-f", "ffmetadata", "-"]
 
     result = idk.run_ffmpeg(args)
-    text = result.stdout.decode(sys.stdout.encoding, errors="ignore")
+    encoding = sys.stdout.encoding or "utf-8"
+    text = result.stdout.decode(encoding, errors="ignore")
 
     # parse metadata
     meta = dict()

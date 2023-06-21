@@ -59,7 +59,8 @@ def text_meta_extract(fp):
     args = ["--metadata", "-j", "--encoding=UTF-8", fp]
 
     result = idk.run_tika(args)
-    meta = json.loads(result.stdout.decode(sys.stdout.encoding, errors="ignore"))
+    encoding = sys.stdout.encoding or "utf-8"
+    meta = json.loads(result.stdout.decode(encoding, errors="ignore"))
     mapped = dict()
     done = set()
     for tag, mapped_field in TEXT_META_MAP.items():

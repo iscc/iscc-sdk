@@ -1,5 +1,8 @@
 ## Changelog
 
+## 0.5.9 - Unreleased
+- Fix stdout decoding
+
 ## 0.5.8 - 2023-06-21
 - Add `install` cli command
 - Ignore signature files in batch cli command
