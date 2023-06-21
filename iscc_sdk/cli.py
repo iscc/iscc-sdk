@@ -4,6 +4,7 @@ from typing import Iterator, Optional, Tuple
 from loguru import logger as log
 import typer
 from pathlib import Path
+import iscc_core as ic
 import iscc_sdk as idk
 from rich.console import Console
 from rich.progress import (
@@ -35,6 +36,9 @@ def log_formatter(record: dict) -> str:  # pragma: no cover
         "[not bold green]{time:YYYY/MM/DD HH:mm:ss}[/not bold green] | {module}:{line:<12} | {level}"
         + f"  - [{lvl_color}]{{message}}[/{lvl_color}]"
     )
+
+
+log.add(console.print, level="TRACE", format=log_formatter, colorize=True)
 
 
 def iter_unprocessed(path, root_path=None):
@@ -89,6 +93,7 @@ def process_file(fp: Path):
 @app.command()
 def create(file: Path):
     """Create ISCC-CODE for single FILE."""
+    log.remove()
     if file.is_file() and file.exists():
         result = idk.code_iscc(file.as_posix())
         typer.echo(result.json(indent=2))
@@ -100,7 +105,6 @@ def create(file: Path):
 @app.command()
 def batch(folder: Path, workers: int = os.cpu_count()):  # pragma: no cover
     """Create ISCC-CODEs for files in FOLDER (parallel & recursive)."""
-    log.add(console.print, level="TRACE", format=log_formatter, colorize=True)
     if not folder.is_dir() or not folder.exists():
         typer.echo(f"Invalid folder {folder}")
         raise typer.Exit(1)
@@ -143,12 +147,15 @@ def batch(folder: Path, workers: int = os.cpu_count()):  # pragma: no cover
 
 
 @app.command()
+def install():
+    """Install content processing tools."""
+    idk.install()
+
+
+@app.command()
 def selftest():
     """Run conformance tests."""
-    log.add(console.print, format=log_formatter, colorize=True)
-    from iscc_core.conformance import conformance_selftest
-
-    conformance_selftest()
+    ic.conformance_selftest()
 
 
 if __name__ == "__main__":  # pragma: no cover

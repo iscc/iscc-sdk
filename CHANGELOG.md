@@ -1,7 +1,8 @@
 ## Changelog
 
 ## 0.5.8 - Unreleased
-- Ignore signature files in batch command
+- Add `install` cli command
+- Ignore signature files in batch cli command
 - Fix encoding of result files
 - Updated dependencies
 
