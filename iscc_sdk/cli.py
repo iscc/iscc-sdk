@@ -33,7 +33,7 @@ def _log_formatter(record: dict) -> str:  # pragma: no cover
     }
     lvl_color = color_map.get(record["level"].name, "cyan")
     return (
-        "[not bold green]{time:YYYY/MM/DD HH:mm:ss}[/not bold green] | {module}:{line:<12} | {level}"
+        "[not bold green]{time:YYYY/MM/DD HH:mm:ss}[/not bold green] | {module:<12} | {line:<3} | {level.icon}"
         + f"  - [{lvl_color}]{{message}}[/{lvl_color}]"
     )
 
