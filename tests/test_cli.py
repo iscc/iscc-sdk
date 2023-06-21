@@ -1,3 +1,5 @@
+import shutil
+import tempfile
 from pathlib import Path
 from typing import Tuple
 from typer.testing import CliRunner
@@ -78,10 +80,18 @@ def test_cli_batch_not_a_folder():
     assert "Invalid folder" in result.stdout
 
 
-def test_cli_batch(asset_tree):
-    result = runner.invoke(app, ["batch", asset_tree])
+def test_cli_batch():
+    tempdir = Path(tempfile.mkdtemp())
+    for img_path in iss.images()[:3]:
+        shutil.copy2(img_path, tempdir)
+    subdir = tempdir / "subdir"
+    subdir.mkdir()
+    for audio_path in iss.audios()[:3]:
+        shutil.copy2(audio_path, tempdir)
+    result = runner.invoke(app, ["batch", tempdir.as_posix()])
     assert result.exit_code == 0
-    assert list(iter_unprocessed(asset_tree)) == []
+    assert list(iter_unprocessed(tempdir)) == []
+    shutil.rmtree(tempdir)
 
 
 def test_cli_selftest():
