@@ -90,4 +90,3 @@ def test_cli_batch(asset_tree):
 def test_cli_selftest():
     result = runner.invoke(app, ["selftest"])
     assert result.exit_code == 0
-    assert "PASSED" in result.stdout

@@ -20,7 +20,7 @@ console = Console()
 app = typer.Typer(add_completion=False, no_args_is_help=True)
 
 
-def log_formatter(record: dict) -> str:  # pragma: no cover
+def _log_formatter(record: dict) -> str:  # pragma: no cover
     """Log message formatter"""
     color_map = {
         "TRACE": "blue",
@@ -38,7 +38,7 @@ def log_formatter(record: dict) -> str:  # pragma: no cover
     )
 
 
-log.add(console.print, level="TRACE", format=log_formatter, colorize=True)
+log.add(console.print, level="DEBUG", format=_log_formatter, colorize=True)
 
 
 def iter_unprocessed(path, root_path=None):
