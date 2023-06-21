@@ -24,7 +24,7 @@ jobs:
         run: poetry install
 
       - name: Run Tests
-        run: poetry run pytest --cov=iscc_sdk --cov-report=xml -q tests
+        run: poetry run pytest --cov=iscc_sdk --cov-report=xml -v tests
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
