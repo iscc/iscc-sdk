@@ -82,9 +82,11 @@ def test_cli_batch_not_a_folder():
 
 
 def test_cli_batch():
+    import subprocess
     path = iss.images()[0].parent
-    result = runner.invoke(app, ["batch", path.as_posix()])
-    assert result.exit_code == 0
+    cmd = ["poetry", "run", "idk", "batch", path.as_posix()]
+    result = subprocess.run(cmd)
+    assert result.returncode == 0
     assert list(iter_unprocessed(path)) == []
     for rfile in path.glob("*.iscc.json"):
         rfile.unlink()
