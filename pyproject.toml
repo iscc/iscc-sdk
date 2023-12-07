@@ -95,5 +95,5 @@ sec = { cmd = "poetry run bandit -r iscc_sdk -q", help = "Security check with ba
 all = ["format-md", "docs", "lf", "black", "test"]
 
 [build-system]
-requires = ["poetry-core>=1.0.0", "Cython", "setuptools", "wheel"]
+requires = ["poetry-core>=1.0.0", "Cython", "setuptools>=69.0.2", "wheel"]
 build-backend = "poetry.core.masonry.api"
