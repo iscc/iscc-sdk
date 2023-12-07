@@ -16,10 +16,10 @@ classifiers=[
     "Natural Language :: English",
     "Operating System :: OS Independent",
     "Programming Language :: Cython",
-    "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
     "Topic :: Multimedia",
     "Topic :: Multimedia :: Graphics",
     "Topic :: Multimedia :: Sound/Audio",
@@ -43,7 +43,7 @@ idk = 'iscc_sdk.cli:app'
 
 
 [tool.poetry.dependencies]
-python = ">=3.8,<4.0"
+python = ">=3.9,<4.0"
 cython = "*"
 iscc-core = "^1.0"
 iscc-schema = "^0.4"
@@ -54,7 +54,7 @@ platformdirs = "^3.1"
 jmespath = "^1.0"
 Pillow = "*"
 pytaglib = "^2.0"
-numpy = "^1.22"
+numpy = "^1.25"
 pymupdf = "^1.21"
 ebookmeta = "^1.2"
 python-docx = "^0.8"
@@ -80,7 +80,7 @@ griffe = "<0.27.4"
 [tool.black]
 skip-string-normalization = false
 line-length = 100
-target-version = ['py38']
+target-version = ['py39']
 
 [tool.coverage.run]
 omit = ["iscc_sdk/install.py"]
