@@ -7,7 +7,7 @@ license = "Apache-2.0"
 readme = "README.md"
 homepage = "https://sdk.iscc.codes"
 repository = "https://github.com/iscc/iscc-sdk"
-keywords=["iscc", "identifier", "media", "content", "hash", "blockchain", "similarity"]
+keywords=["iscc", "identifier", "media", "content", "similarity"]
 classifiers=[
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
@@ -44,7 +44,7 @@ idk = 'iscc_sdk.cli:app'
 
 [tool.poetry.dependencies]
 python = ">=3.8,<4.0"
-cython = "^0.29"
+cython = "*"
 iscc-core = "^1.0"
 iscc-schema = "^0.4"
 python-magic-bin = { version = "^0.4", markers = "sys_platform == 'win32' or (sys_platform == 'darwin' and platform_machine == 'x86_64')" }
@@ -52,7 +52,7 @@ python-magic = { version = "^0.4", markers = "sys_platform == 'linux' or (sys_pl
 install-jdk = "^0.3"
 platformdirs = "^3.1"
 jmespath = "^1.0"
-Pillow = "^9.0"
+Pillow = "*"
 pytaglib = "^2.0"
 numpy = "^1.22"
 pymupdf = "^1.21"
