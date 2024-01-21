@@ -16,7 +16,11 @@ class-atributes on the `SdkOptions` instance.
 
 """
 from typing import Optional
-from pydantic import Field, validator, BaseSettings
+
+try:
+    from pydantic.v1 import Field, validator, BaseSettings
+except ImportError:  # pragma: no cover
+    from pydantic import Field, validator, BaseSettings
 from PIL import Image
 import iscc_core
 

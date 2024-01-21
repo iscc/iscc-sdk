@@ -1,7 +1,10 @@
 """*Metadata handling functions*"""
 from typing import Optional
 
-from pydantic import validator
+try:
+    from pydantic.v1 import validator
+except ImportError:  # pragma: no cover
+    from pydantic import validator
 
 import iscc_sdk as idk
 import iscc_core as ic

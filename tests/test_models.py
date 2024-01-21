@@ -1,6 +1,10 @@
 # -*- coding: utf-8 -*-
 import pytest
-from pydantic import ValidationError
+
+try:
+    from pydantic.v1 import ValidationError
+except ImportError:
+    from pydantic import ValidationError
 import iscc_core as ic
 import iscc_sdk as idk
 
@@ -28,8 +32,8 @@ def test_IsccMeta_dict_defaults_exclude_none_unset():
 def test_IsccMeta_json():
     im = idk.IsccMeta(iscc="ISCC:MEAJU5AXCPOIOYFL")
     assert im.json() == (
-        '{"@context": "http://purl.org/iscc/context/0.4.0.jsonld", "@type": '
-        '"CreativeWork", "$schema": "http://purl.org/iscc/schema/0.4.0.json", "iscc": '
+        '{"@context": "http://purl.org/iscc/context", "@type": '
+        '"CreativeWork", "$schema": "http://purl.org/iscc/schema", "iscc": '
         '"ISCC:MEAJU5AXCPOIOYFL"}'
     )
 
@@ -37,8 +41,8 @@ def test_IsccMeta_json():
 def test_IsccMeta_jcs():
     im = idk.IsccMeta(iscc="ISCC:MEAJU5AXCPOIOYFL")
     assert im.jcs() == (
-        b'{"$schema":"http://purl.org/iscc/schema/0.4.0.json","@context":"http://purl.'
-        b'org/iscc/context/0.4.0.jsonld","@type":"CreativeWork","iscc":"ISCC:MEAJU5AXC'
+        b'{"$schema":"http://purl.org/iscc/schema","@context":"http://purl.'
+        b'org/iscc/context","@type":"CreativeWork","iscc":"ISCC:MEAJU5AXC'
         b'POIOYFL"}'
     )
 
