@@ -71,8 +71,8 @@ def test_video_thumbnail(mp4_file):
     assert isinstance(thumb, Image.Image)
 
 
-def test_video_thumbnail_fail(ogv_file):
-    thumb = idk.video_thumbnail(ogv_file)
+def test_video_thumbnail_fail(docx_file):
+    thumb = idk.video_thumbnail(docx_file)
     assert thumb is None
 
 

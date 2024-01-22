@@ -43,16 +43,16 @@ IPFS_CHECKSUMS = {
     "darwin-64": "3797fd0e6d5f922c095a12d860baccb49d90cef74accf49d219d4cea1b0d2bd7",
 }
 
-FFMPEG_VERSION = "4.4.1"
+FFMPEG_VERSION = "6.1"
 FFMPEG_URLS = {
     "windows-64": f"{BASE_URL}/ffmpeg-{FFMPEG_VERSION}-win-64.zip",
     "linux-64": f"{BASE_URL}/ffmpeg-{FFMPEG_VERSION}-linux-64.zip",
     "darwin-64": f"{BASE_URL}/ffmpeg-{FFMPEG_VERSION}-osx-64.zip",
 }
 FFMPEG_CHECKSUMS = {
-    "windows-64": "b77405ee98580971cb36c4ca0c7f888283dcffc347c282b304abbb3c1eee6fc2",
-    "linux-64": "a8ac9f1e28ad31ca366dba17dd0c486926d533d76ffc9b47a976308245ab064e",
-    "darwin-64": "33f980b5b59ddfc663170a419110e9504527c092b21ba6592c525f7a7c183887",
+    "linux-64": "e96b9796ad7404151eabaaaea30151fb9226554ee87d5164161fd20de4482dd1",
+    "darwin-64": "ba9313f7bf8c46ebe60b8f39fa6de1657c94f51fd14d77c6e02ef09fab6ff5bc",
+    "windows-64": "06814a07bff1f281a5282110ebff2ccb088cd9ffda35fce5af63b8e88cc2385a",
 }
 
 FPCALC_VERSION = "1.5.1"
