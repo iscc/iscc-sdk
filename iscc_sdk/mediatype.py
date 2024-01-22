@@ -3,7 +3,7 @@ from os.path import basename
 from loguru import logger as log
 from typing import List, Optional, Union
 import mimetypes
-from py_file_type import magic
+import magic
 import iscc_sdk as idk
 
 
