@@ -1,5 +1,10 @@
 ## Changelog
 
+## 0.6.0 - Unreleased
+- Add Python 3.12 Support
+- Add Pydantic v2 Support
+- Dropped Python 3.8 Support
+
 ## 0.5.9 - 2023-06-21
 - Fix stdout decoding
 
