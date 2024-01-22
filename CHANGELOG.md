@@ -1,10 +1,10 @@
 ## Changelog
 
-## 0.6.0 - Unreleased
+## 0.6.0 - 2024-01-22
 - Add avif and heic image format support
 - Update to Exiv2 0.27.7
 - Update to Tika 2.9.1
-- Uppdate to FFMPEG 6.1
+- Update to FFMPEG 6.1
 - Add Python 3.12 Support
 - Add Pydantic v2 Support
 - Dropped Python 3.8 Support
