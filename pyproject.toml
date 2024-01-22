@@ -47,8 +47,7 @@ python = ">=3.9,<4.0"
 cython = "*"
 iscc-core = "^1.0.7"
 iscc-schema = "^0.4.1"
-python-magic-bin = { version = "^0.4", markers = "sys_platform == 'win32' or (sys_platform == 'darwin' and platform_machine == 'x86_64')" }
-python-magic = { version = "^0.4", markers = "sys_platform == 'linux' or (sys_platform == 'darwin' and platform_machine == 'arm64')" }
+py-file-type = "^0.1"
 install-jdk = "^0.3"
 platformdirs = "*"
 jmespath = "^1.0"

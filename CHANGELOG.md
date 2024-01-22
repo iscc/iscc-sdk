@@ -1,7 +1,7 @@
 ## Changelog
 
 ## 0.6.0 - Unreleased
-- Add avif and heif image format support
+- Add avif and heic image format support
 - Update to Exiv2 0.27.7
 - Update to Tika 2.9.1
 - Add Python 3.12 Support

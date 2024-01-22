@@ -3,7 +3,7 @@ from os.path import basename
 from loguru import logger as log
 from typing import List, Optional, Union
 import mimetypes
-import magic
+from py_file_type import magic
 import iscc_sdk as idk
 
 
@@ -198,7 +198,7 @@ mimetypes.add_type(
     "application/vnd.openxmlformats-officedocument.wordprocessingml.document", ".docx"
 )
 mimetypes.add_type("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", ".xlsx")
-mimetypes.add_type("image/heif", ".heif")
+mimetypes.add_type("image/heic", ".heic")
 mimetypes.add_type("image/avif", ".avif")
 
 SUPPORTED_MEDIATYPES = {
@@ -246,7 +246,7 @@ SUPPORTED_MEDIATYPES = {
     "image/vnd.adobe.photoshop": {"mode": "image", "ext": "psd"},
     "application/postscript": {"mode": "image", "ext": "eps"},
     "image/avif": {"mode": "image", "ext": "avif"},
-    "image/heif": {"mode": "image", "ext": "heif"},
+    "image/heic": {"mode": "image", "ext": "heic"},
     # Audio Formats
     "audio/mpeg": {"mode": "audio", "ext": "mp3"},
     "audio/wav": {"mode": "audio", "ext": "wav"},
