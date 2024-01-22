@@ -1,6 +1,7 @@
 ## Changelog
 
 ## 0.6.0 - Unreleased
+- Add avif and heif image format support
 - Update to Exiv2 0.27.7
 - Add Python 3.12 Support
 - Add Pydantic v2 Support

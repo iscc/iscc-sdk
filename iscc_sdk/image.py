@@ -1,4 +1,5 @@
 """*Image handling module*."""
+import pillow_avif
 import base64
 import io
 import shutil
@@ -12,6 +13,9 @@ from iscc_schema import IsccMeta
 from loguru import logger as log
 from PIL import Image, ImageEnhance, ImageChops, ImageOps
 import iscc_sdk as idk
+from pillow_heif import register_heif_opener
+
+register_heif_opener()
 
 
 __all__ = [

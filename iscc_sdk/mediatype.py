@@ -198,7 +198,8 @@ mimetypes.add_type(
     "application/vnd.openxmlformats-officedocument.wordprocessingml.document", ".docx"
 )
 mimetypes.add_type("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", ".xlsx")
-
+mimetypes.add_type("image/heif", ".heif")
+mimetypes.add_type("image/avif", ".avif")
 
 SUPPORTED_MEDIATYPES = {
     # Text Formats
@@ -244,6 +245,8 @@ SUPPORTED_MEDIATYPES = {
     "image/tiff": {"mode": "image", "ext": "tif"},
     "image/vnd.adobe.photoshop": {"mode": "image", "ext": "psd"},
     "application/postscript": {"mode": "image", "ext": "eps"},
+    "image/avif": {"mode": "image", "ext": "avif"},
+    "image/heif": {"mode": "image", "ext": "heif"},
     # Audio Formats
     "audio/mpeg": {"mode": "audio", "ext": "mp3"},
     "audio/wav": {"mode": "audio", "ext": "wav"},
