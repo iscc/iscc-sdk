@@ -81,8 +81,8 @@ EXIV2_URLS = {
 
 EXIV2_CHECKSUMS = {
     "windows-64": "6df00b16bf33d83ae78d91aa08e1ead8c945856951d7955d4c663a45b051feae",
-    "linux-64": "77cc0200c13a4c7d42363cddc76befdf8b8a19225bf48f8bcce8914d12cb1eae",
-    "darwin-64": "f81a99689507de4c177aeb0a93c1442962619747184b91b9498cbd78242695d1",
+    "linux-64": "cb8e9274e9bc4859c68febe21e773ae9a39781375e8a6a78c60d3e8ff800f35e",
+    "darwin-64": "2ed28a06ff8a68206e23fbccf8a994b36fdc29d53f05d4f25f7a5b67a40fd264",
 }
 
 EXIV2_RELPATH = {
