@@ -51,6 +51,11 @@ class SdkOptions(BaseSettings):
         description="ISCC_EXTRACT_METADATA - Extract metadata from digital assets (defaut: True)",
     )
 
+    create_thumbnail: bool = Field(
+        True,
+        description="ISCC_CREATE_THUMBNAIL - Create thumbail for digital assets (defaut: True)",
+    )
+
     image_exif_transpose: bool = Field(
         True,
         description="ISCC_SDK_IMAGE_EXIF_TRANSPOSE - Transpose image according to EXIF Orientation tag",

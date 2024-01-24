@@ -219,8 +219,10 @@ def test_audio_embed_title(mp3_cover):
     assert meta.dict() == {"creator": "Test Artist", "duration": 15, "name": "Embedded Title"}
 
 
-def test_code_audio_metadata_extraction_disabled(mp3_cover):
+def test_code_audio_metadata_meta_thumb_disabled(mp3_cover):
     idk.sdk_opts.extract_metadata = False
+    idk.sdk_opts.create_thumbnail = False
     meta = idk.code_audio(mp3_cover)
     assert meta.dict() == {"iscc": "ISCC:EIAWUJFCEZZOJYVD"}
     idk.sdk_opts.extract_metadata = True
+    idk.sdk_opts.create_thumbnail = True

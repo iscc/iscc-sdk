@@ -35,7 +35,7 @@ def code_iscc(fp):
     with ThreadPoolExecutor() as executor:
         instance = executor.submit(code_instance, fp)
         data = executor.submit(code_data, fp)
-        content = executor.submit(code_content, fp)
+        content = executor.submit(code_content, fp, False, None)  # Skip metadata extraction
         meta = executor.submit(code_meta, fp)
 
     # Wait for all futures to complete and retrieve their results
@@ -85,12 +85,14 @@ def code_meta(fp):
     return idk.IsccMeta.construct(**meta)
 
 
-def code_content(fp):
-    # type: (str) -> idk.IsccMeta
+def code_content(fp, extract_meta=None, create_thumb=None):
+    # type: (str, bool|None, bool|None) -> idk.IsccMeta
     """
     Detect mediatype and create corresponding Content-Code.
 
     :param str fp: Filepath
+    :param bool|None extract_meta: Whether to extract metadata.
+    :param bool|None create_thumb: Whether to create a thumbnail.
     :return: Content-Code wrapped in ISCC metadata.
     :rtype: IsccMeta
     """
@@ -105,13 +107,13 @@ def code_content(fp):
     mediatype, mode = idk.mediatype_and_mode(fp)
 
     if mode == "image":
-        cc = code_image(fp)
+        cc = code_image(fp, extract_meta, create_thumb)
     elif mode == "audio":
-        cc = code_audio(fp)
+        cc = code_audio(fp, extract_meta, create_thumb)
     elif mode == "video":
-        cc = code_video(fp)
+        cc = code_video(fp, extract_meta, create_thumb)
     elif mode == "text":
-        cc = code_text(fp)
+        cc = code_text(fp, extract_meta, create_thumb)
     else:  # pragma nocover
         raise idk.IsccUnsupportedMediatype(mediatype)
 
@@ -122,19 +124,28 @@ def code_content(fp):
     return cc
 
 
-def code_text(fp):
-    # type: (str) -> idk.IsccMeta
+def code_text(fp, extract_meta=None, create_thumb=None):
+    # type: (str, bool|None, bool|None) -> idk.IsccMeta
     """
     Generate Content-Code Text.
 
     :param str fp: Filepath used for Text-Code creation.
+    :param bool|None extract_meta: Whether to extract metadata.
+    :param bool|None create_thumb: Whether to create a thumbnail.
     :return: ISCC metadata including Text-Code.
     :rtype: IsccMeta
     """
     meta = dict()
 
-    if idk.sdk_opts.extract_metadata:
+    if extract_meta is None:
+        extract_meta = idk.sdk_opts.extract_metadata
+    if create_thumb is None:
+        create_thumb = idk.sdk_opts.create_thumbnail
+
+    if extract_meta:
         meta = idk.text_meta_extract(fp)
+
+    if create_thumb:
         thumbnail_img = idk.text_thumbnail(fp)
         if thumbnail_img:
             thumbnail_durl = idk.image_to_data_url(thumbnail_img)
@@ -149,18 +160,27 @@ def code_text(fp):
     return idk.IsccMeta.construct(**meta)
 
 
-def code_image(fp):
-    # type: (str) -> idk.IsccMeta
+def code_image(fp, extract_meta=None, create_thumb=None):
+    # type: (str, bool|None, bool|None) -> idk.IsccMeta
     """
     Generate Content-Code Image.
 
     :param str fp: Filepath used for Image-Code creation.
+    :param bool|None extract_meta: Whether to extract metadata.
+    :param bool|None create_thumb: Whether to create a thumbnail.
     :return: ISCC metadata including Image-Code.
     :rtype: IsccMeta
     """
     meta = dict()
-    if idk.sdk_opts.extract_metadata:
+
+    if extract_meta is None:
+        extract_meta = idk.sdk_opts.extract_metadata
+    if create_thumb is None:
+        create_thumb = idk.sdk_opts.create_thumbnail
+
+    if extract_meta:
         meta = idk.image_meta_extract(fp)
+    if create_thumb:
         thumbnail_img = idk.image_thumbnail(fp)
         thumbnail_durl = idk.image_to_data_url(thumbnail_img)
         meta["thumbnail"] = thumbnail_durl
@@ -172,22 +192,32 @@ def code_image(fp):
     return idk.IsccMeta.construct(**meta)
 
 
-def code_audio(fp):
-    # type: (str) -> idk.IsccMeta
+def code_audio(fp, extract_meta=None, create_thumb=None):
+    # type: (str, bool|None, bool|None) -> idk.IsccMeta
     """
     Generate Content-Code Audio.
 
     :param str fp: Filepath used for Audio-Code creation.
+    :param bool|None extract_meta: Whether to extract metadata.
+    :param bool|None create_thumb: Whether to create a thumbnail.
     :return: ISCC metadata including Audio-Code.
     :rtype: IsccMeta
     """
     meta = dict()
-    if idk.sdk_opts.extract_metadata:
+
+    if extract_meta is None:
+        extract_meta = idk.sdk_opts.extract_metadata
+    if create_thumb is None:
+        create_thumb = idk.sdk_opts.create_thumbnail
+
+    if extract_meta:
         meta = idk.audio_meta_extract(fp)
+    if create_thumb:
         thumbnail_img = idk.audio_thumbnail(fp)
         if thumbnail_img:
             thumbnail_durl = idk.image_to_data_url(thumbnail_img)
             meta["thumbnail"] = thumbnail_durl
+
     features = idk.audio_features_extract(fp)
     code_obj = ic.gen_audio_code_v0(features["fingerprint"], bits=idk.core_opts.audio_bits)
     meta.update(code_obj)
@@ -195,19 +225,27 @@ def code_audio(fp):
     return idk.IsccMeta.construct(**meta)
 
 
-def code_video(fp):
+def code_video(fp, extract_meta=None, create_thumb=None):
     # type: (str) -> idk.IsccMeta
     """
     Generate Content-Code Video.
 
     :param str fp: Filepath used for Video-Code creation.
+    :param bool|None extract_meta: Whether to extract metadata.
+    :param bool|None create_thumb: Whether to create a thumbnail.
     :return: ISCC metadata including Image-Code.
     :rtype: IsccMeta
     """
     meta = dict()
 
-    if idk.sdk_opts.extract_metadata:
+    if extract_meta is None:
+        extract_meta = idk.sdk_opts.extract_metadata
+    if create_thumb is None:
+        create_thumb = idk.sdk_opts.create_thumbnail
+
+    if extract_meta:
         meta = idk.video_meta_extract(fp)
+    if create_thumb:
         thumbnail_image = idk.video_thumbnail(fp)
         if thumbnail_image is not None:
             thumbnail_durl = idk.image_to_data_url(thumbnail_image)

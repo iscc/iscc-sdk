@@ -1,6 +1,8 @@
 ## Changelog
 
 ## 0.6.1 - Unreleased
+- Add `extract_meta` & `create_thumb` parameters
+- Fix redundant metadata extraction
 - Updated dependencies
 
 ## 0.6.0 - 2024-01-22

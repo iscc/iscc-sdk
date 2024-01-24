@@ -93,8 +93,10 @@ def test_video_features_extract_store(mp4_file):
     idk.sdk_opts.video_store_mp7sig = True
 
 
-def test_code_video_no_meta_extract(mp4_file):
+def test_code_video_nometa_nothumb(mp4_file):
     idk.sdk_opts.extract_metadata = False
+    idk.sdk_opts.create_thumbnail = False
     meta = idk.code_video(mp4_file)
     assert meta.dict() == {"iscc": "ISCC:EMAV4DUD6QORW4X4"}
     idk.sdk_opts.extract_metadata = True
+    idk.sdk_opts.create_thumbnail = True
