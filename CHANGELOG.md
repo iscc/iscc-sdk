@@ -1,5 +1,7 @@
 ## Changelog
 
+## 0.6.1 - Unreleased
+
 ## 0.6.0 - 2024-01-22
 - Add avif and heic image format support
 - Update to Exiv2 0.27.7
