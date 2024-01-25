@@ -137,7 +137,7 @@ def test_code_text_granular(docx_file):
             {
                 "kind": "text",
                 "version": 0,
-                "features": ["eGluK69boGk"],
+                "features": ["BgSYgX3O_G8"],
                 "sizes": [6069],
             }
         ],

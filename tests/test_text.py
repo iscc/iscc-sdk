@@ -72,7 +72,20 @@ def test_text_chunks(docx_file):
 def test_text_features(docx_file):
     txt = idk.text_extract(docx_file)
     features = idk.text_features(txt)
-    assert features == {"kind": "text", "version": 0, "features": ["eGluK69boGk"], "sizes": [6069]}
+    assert features == {"kind": "text", "version": 0, "features": ["BgSYgX3O_G8"], "sizes": [6069]}
+
+
+def test_text_features_stable(doc_file):
+    expected = "j4Bo-QrY2pg"
+
+    # Robust changes: whitespace, case, control characters, marks (diacritics), and punctuation
+    txt_a = "The ISCC is a similarity preserving fingerprint / identifier for digital media assets."
+    txt_b = "The Iscc\n is a similärity preserving; fingerprint identifier for digital media assets"
+
+    feat_a = idk.text_features(txt_a)["features"][0]
+    feat_b = idk.text_features(txt_b)["features"][0]
+    assert feat_a == expected
+    assert feat_b == expected
 
 
 def test_code_text_no_meta_extract(docx_file):
