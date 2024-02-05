@@ -4,6 +4,7 @@
 - Improved robustness of granular text features
 - Added `extract_meta` & `create_thumb` parameters
 - Fixed redundant metadata extraction
+- Collapes chunks for granular text features
 - Updated dependencies
 
 ## 0.6.0 - 2024-01-22
