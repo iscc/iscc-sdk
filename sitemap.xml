@@ -2,72 +2,72 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://sdk.iscc.codes/</loc>
-         <lastmod>2024-01-22</lastmod>
+         <lastmod>2024-02-05</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://sdk.iscc.codes/audio/</loc>
-         <lastmod>2024-01-22</lastmod>
+         <lastmod>2024-02-05</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://sdk.iscc.codes/changelog/</loc>
-         <lastmod>2024-01-22</lastmod>
+         <lastmod>2024-02-05</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://sdk.iscc.codes/image/</loc>
-         <lastmod>2024-01-22</lastmod>
+         <lastmod>2024-02-05</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://sdk.iscc.codes/main/</loc>
-         <lastmod>2024-01-22</lastmod>
+         <lastmod>2024-02-05</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://sdk.iscc.codes/mediatype/</loc>
-         <lastmod>2024-01-22</lastmod>
+         <lastmod>2024-02-05</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://sdk.iscc.codes/metadata/</loc>
-         <lastmod>2024-01-22</lastmod>
+         <lastmod>2024-02-05</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://sdk.iscc.codes/options/</loc>
-         <lastmod>2024-01-22</lastmod>
+         <lastmod>2024-02-05</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://sdk.iscc.codes/text/</loc>
-         <lastmod>2024-01-22</lastmod>
+         <lastmod>2024-02-05</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://sdk.iscc.codes/video/</loc>
-         <lastmod>2024-01-22</lastmod>
+         <lastmod>2024-02-05</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://sdk.iscc.codes/other/epub/</loc>
-         <lastmod>2024-01-22</lastmod>
+         <lastmod>2024-02-05</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://sdk.iscc.codes/other/ipfs/</loc>
-         <lastmod>2024-01-22</lastmod>
+         <lastmod>2024-02-05</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://sdk.iscc.codes/other/pdf/</loc>
-         <lastmod>2024-01-22</lastmod>
+         <lastmod>2024-02-05</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://sdk.iscc.codes/other/tools/</loc>
-         <lastmod>2024-01-22</lastmod>
+         <lastmod>2024-02-05</lastmod>
          <changefreq>daily</changefreq>
     </url>
 </urlset>

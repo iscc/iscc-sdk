@@ -22,7 +22,7 @@
       
       
       <link rel="icon" href="../images/iscc-logo-icon-black.svg">
-      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.4">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.7">
     
     
       
@@ -30,7 +30,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.50c56a3b.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.f2e4d321.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
@@ -1103,7 +1103,7 @@
 
 
 <h3 id="iscc_sdk.main.code_content" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">code_content</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">code_content</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="n">extract_meta</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">create_thumb</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span></code>
 
 <a href="#iscc_sdk.main.code_content" class="headerlink" title="Permanent link">#</a></h3>
 
@@ -1131,6 +1131,26 @@
           <td><p>Filepath</p></td>
           <td>
               <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>extract_meta</code></td>
+          <td>
+                <code>bool|None</code>
+          </td>
+          <td><p>Whether to extract metadata.</p></td>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>create_thumb</code></td>
+          <td>
+                <code>bool|None</code>
+          </td>
+          <td><p>Whether to create a thumbnail.</p></td>
+          <td>
+                <code>None</code>
           </td>
         </tr>
     </tbody>
@@ -1168,7 +1188,7 @@
 
 
 <h3 id="iscc_sdk.main.code_text" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">code_text</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">code_text</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="n">extract_meta</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">create_thumb</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span></code>
 
 <a href="#iscc_sdk.main.code_text" class="headerlink" title="Permanent link">#</a></h3>
 
@@ -1196,6 +1216,26 @@
           <td><p>Filepath used for Text-Code creation.</p></td>
           <td>
               <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>extract_meta</code></td>
+          <td>
+                <code>bool|None</code>
+          </td>
+          <td><p>Whether to extract metadata.</p></td>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>create_thumb</code></td>
+          <td>
+                <code>bool|None</code>
+          </td>
+          <td><p>Whether to create a thumbnail.</p></td>
+          <td>
+                <code>None</code>
           </td>
         </tr>
     </tbody>
@@ -1233,7 +1273,7 @@
 
 
 <h3 id="iscc_sdk.main.code_image" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">code_image</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">code_image</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="n">extract_meta</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">create_thumb</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span></code>
 
 <a href="#iscc_sdk.main.code_image" class="headerlink" title="Permanent link">#</a></h3>
 
@@ -1261,6 +1301,26 @@
           <td><p>Filepath used for Image-Code creation.</p></td>
           <td>
               <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>extract_meta</code></td>
+          <td>
+                <code>bool|None</code>
+          </td>
+          <td><p>Whether to extract metadata.</p></td>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>create_thumb</code></td>
+          <td>
+                <code>bool|None</code>
+          </td>
+          <td><p>Whether to create a thumbnail.</p></td>
+          <td>
+                <code>None</code>
           </td>
         </tr>
     </tbody>
@@ -1298,7 +1358,7 @@
 
 
 <h3 id="iscc_sdk.main.code_audio" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">code_audio</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">code_audio</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="n">extract_meta</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">create_thumb</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span></code>
 
 <a href="#iscc_sdk.main.code_audio" class="headerlink" title="Permanent link">#</a></h3>
 
@@ -1326,6 +1386,26 @@
           <td><p>Filepath used for Audio-Code creation.</p></td>
           <td>
               <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>extract_meta</code></td>
+          <td>
+                <code>bool|None</code>
+          </td>
+          <td><p>Whether to extract metadata.</p></td>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>create_thumb</code></td>
+          <td>
+                <code>bool|None</code>
+          </td>
+          <td><p>Whether to create a thumbnail.</p></td>
+          <td>
+                <code>None</code>
           </td>
         </tr>
     </tbody>
@@ -1363,7 +1443,7 @@
 
 
 <h3 id="iscc_sdk.main.code_video" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">code_video</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">code_video</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="n">extract_meta</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">create_thumb</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span></code>
 
 <a href="#iscc_sdk.main.code_video" class="headerlink" title="Permanent link">#</a></h3>
 
@@ -1391,6 +1471,26 @@
           <td><p>Filepath used for Video-Code creation.</p></td>
           <td>
               <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>extract_meta</code></td>
+          <td>
+                <code>bool|None</code>
+          </td>
+          <td><p>Whether to extract metadata.</p></td>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>create_thumb</code></td>
+          <td>
+                <code>bool|None</code>
+          </td>
+          <td><p>Whether to create a thumbnail.</p></td>
+          <td>
+                <code>None</code>
           </td>
         </tr>
     </tbody>
@@ -1613,10 +1713,10 @@ checking a full 256-bit multihash is provided with the <code>datahash</code> fie
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "..", "features": ["toc.integrate", "navigation.indexes", "navigation.tracking", "navigation.tabs", "navigation.tabs.sticky", "navigation.expand"], "search": "../assets/javascripts/workers/search.c011b7c0.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["toc.integrate", "navigation.indexes", "navigation.tracking", "navigation.tabs", "navigation.tabs.sticky", "navigation.expand"], "search": "../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.7389ff0e.min.js"></script>
+      <script src="../assets/javascripts/bundle.caa56a14.min.js"></script>
       
     
   </body>
