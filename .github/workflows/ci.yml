@@ -27,7 +27,8 @@ jobs:
         run: poetry run pytest --cov=iscc_sdk --cov-report=xml -v tests
 
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v3
+        if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.9'
+        uses: codecov/codecov-action@v4
 
   analyze:
     name: Analyze
