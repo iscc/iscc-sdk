@@ -45,8 +45,8 @@ idk = 'iscc_sdk.cli:app'
 [tool.poetry.dependencies]
 python = ">=3.9,<4.0"
 cython = "*"
-iscc-core = "^1.0.7"
-iscc-schema = "^0.4.1"
+iscc-core = "^1.0"
+iscc-schema = "^0.4"
 python-magic-bin = { version = "^0.4", markers = "sys_platform == 'win32' or (sys_platform == 'darwin' and platform_machine == 'x86_64')" }
 python-magic = { version = "^0.4", markers = "sys_platform == 'linux' or (sys_platform == 'darwin' and platform_machine == 'arm64')" }
 install-jdk = "^0.3"
@@ -58,43 +58,40 @@ numpy = "^1.25"
 pymupdf = "^1.21"
 ebookmeta = "^1.2"
 python-docx = "*"
-typer = {extras = ["all"], version = "^0.9.0"}
+typer = "*"
 pillow-avif-plugin = "^1.4"
 pillow-heif = "^0.14"
 
 
-[tool.poetry.dev-dependencies]
-pytest = "^7.0"
-black = "^22.1"
-coverage = "^7.0"
-pytest-cov = "^4.0"
-poethepoet = "^0.16"
-bandit = "^1.7"
-mkdocs-material = "^9.1"
-mkdocstrings-python = "<1.1"
-iscc-samples = "^0.6"
-codetiming = "^1.3"
+[tool.poetry.group.dev.dependencies]
+pytest = "*"
+ruff = "*"
+coverage = "*"
+pytest-cov = "*"
+poethepoet = "*"
+bandit = "*"
+mkdocs-material = "*"
+mkdocstrings-python = "*"
+iscc-samples = "*"
+codetiming = "*"
 mdformat = "*"
 mdformat_admon = "*"
 mdformat_tables = "*"
 griffe = "<0.27.4"
 
-[tool.black]
-skip-string-normalization = false
+[tool.ruff]
 line-length = 100
-target-version = ['py39']
 
 [tool.coverage.run]
 omit = ["iscc_sdk/install.py"]
 
 [tool.poe.tasks]
-docs = { cmd = "poetry run python -m devtools.build_docs", help = "Copy README.md to /docs" }
-black = { cmd = "poetry run black .", help = "Code style formating with black" }
-format-md = { cmd = "mdformat --wrap 100 README.md", help = "Markdown formating with mdformat" }
+build-docs = { cmd = "poetry run python -m devtools.build_docs", help = "Copy README.md to /docs" }
+format-code = { cmd = "poetry run ruff format", help = "Code style formating with ruff" }
+format-md = { cmd = "poetry run mdformat --wrap 100 README.md", help = "Markdown formating with mdformat" }
 lf = { cmd = "poetry run python -m devtools.lf", help = "Convert line endings to lf"}
 test = { cmd = "poetry run pytest --cov=iscc_sdk --cov-fail-under=100", help = "Run tests with coverage" }
-sec = { cmd = "poetry run bandit -r iscc_sdk -q", help = "Security check with bandit" }
-all = ["format-md", "docs", "lf", "black", "test"]
+all = ["format-md", "build-docs", "lf", "format-code", "test"]
 
 [build-system]
 requires = ["poetry-core>=1.0.0", "Cython", "setuptools>=69.0.2", "wheel"]
