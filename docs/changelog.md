@@ -1,5 +1,8 @@
 ## Changelog
 
+## 0.6.2 - Unreleased
+- Update and relax dependencies
+
 ## 0.6.1 - 2024-02-05
 - Improved robustness of granular text features
 - Added `extract_meta` & `create_thumb` parameters
