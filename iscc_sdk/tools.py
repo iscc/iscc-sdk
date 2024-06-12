@@ -1,4 +1,5 @@
 """*Manage SDK binary media file handling tools*."""
+
 import os
 import shutil
 import subprocess
@@ -131,7 +132,6 @@ def extract(archive):  # pragma: no cover
         with tarfile.open(archive, "r:gz") as tar_file:
 
             def is_within_directory(directory, target):
-
                 abs_directory = os.path.abspath(directory)
                 abs_target = os.path.abspath(target)
 
@@ -140,7 +140,6 @@ def extract(archive):  # pragma: no cover
                 return prefix == abs_directory
 
             def safe_extract(tar, path=".", members=None, *, numeric_owner=False):
-
                 for member in tar.getmembers():
                     member_path = os.path.join(path, member.name)
                     if not is_within_directory(path, member_path):

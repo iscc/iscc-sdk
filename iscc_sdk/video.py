@@ -1,4 +1,5 @@
 """*Video handling module*"""
+
 import os
 from typing import Tuple, List, Optional
 from loguru import logger as log

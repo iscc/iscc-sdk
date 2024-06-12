@@ -1,4 +1,5 @@
 """IPFS wrapper"""
+
 import sys
 from os.path import basename
 import iscc_sdk as idk

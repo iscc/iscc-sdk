@@ -96,7 +96,7 @@ https://www.iso.org/standard/77899.html
 
 !!! attention
     The `iscc-sdk` library and the accompanying documentation is under development. API changes and
-    other backward incompatible changes are to be expected until the upcoming v1.5 stable release.
+    other backward incompatible changes are to be expected until the upcoming v1.0 stable release.
 
 ## Maintainers
 

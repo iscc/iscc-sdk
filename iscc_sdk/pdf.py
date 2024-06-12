@@ -1,4 +1,5 @@
 """*PDF handling module*."""
+
 import shutil
 import tempfile
 from PIL import Image, ImageEnhance

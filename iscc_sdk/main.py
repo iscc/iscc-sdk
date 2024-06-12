@@ -1,4 +1,5 @@
 """*SDK main top-level functions*."""
+
 from concurrent.futures import ThreadPoolExecutor
 from os.path import basename
 from PIL import Image

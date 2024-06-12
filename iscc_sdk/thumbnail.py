@@ -1,4 +1,5 @@
 """*Generate thumbnails for media assets*"""
+
 from typing import Optional
 from PIL import Image
 import iscc_sdk as idk

@@ -1,4 +1,5 @@
 """*Metadata handling functions*"""
+
 from typing import Optional
 
 try:

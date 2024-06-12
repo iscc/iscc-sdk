@@ -1,4 +1,5 @@
 """Monkey Patches"""
+
 import ebookmeta
 from ebookmeta import Epub2, _get_ebook
 

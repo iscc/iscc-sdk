@@ -1,4 +1,5 @@
 """Copy README.md to documentation index.md"""
+
 from os.path import abspath, dirname, join
 import shutil
 

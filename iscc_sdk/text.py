@@ -1,4 +1,5 @@
 """*Text handling functions*."""
+
 import json
 import sys
 from os.path import basename, splitext

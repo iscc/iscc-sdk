@@ -1,4 +1,5 @@
 """*Image handling module*."""
+
 import pillow_avif
 import base64
 import io
