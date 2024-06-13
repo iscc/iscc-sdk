@@ -1,6 +1,6 @@
 ## Changelog
 
-## 0.6.2 - Unreleased
+## 0.6.2 - 2024-06-13
 - Update and relax dependencies
 - Update ISO project status
 
