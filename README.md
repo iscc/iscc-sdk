@@ -90,9 +90,8 @@ brew install taglib
 
 ## Project Status
 
-The ISCC has been accepted by ISO as full work item ISO/AWI 24138 - International Standard Content
-Code and is currently being standardized at TC 46/SC 9/WG 18.
-https://www.iso.org/standard/77899.html
+The ISCC is published as [ISO 24138:2024](https://www.iso.org/standard/77899.html) - International
+Standard Content Code within [ISO/TC 46/SC 9/WG 18](https://www.iso.org/committee/48836.html).
 
 !!! attention
     The `iscc-sdk` library and the accompanying documentation is under development. API changes and

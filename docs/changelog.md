@@ -2,6 +2,7 @@
 
 ## 0.6.2 - Unreleased
 - Update and relax dependencies
+- Update ISO project status
 
 ## 0.6.1 - 2024-02-05
 - Improved robustness of granular text features
