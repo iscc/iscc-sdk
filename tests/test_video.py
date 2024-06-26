@@ -81,6 +81,20 @@ def test_video_mp7sig_extract(mp4_file):
     assert sig[-32:].hex() == "9ef43526febb8d3e674975584ad6812ccc144cba28b3e134cd173888449cf51e"
 
 
+def test_video_mp7sig_extract_scenes_compat(mp4_file):
+    sig, scenes = idk.video_mp7sig_extract_scenes(mp4_file)
+    assert sig[-32:].hex() == "9ef43526febb8d3e674975584ad6812ccc144cba28b3e134cd173888449cf51e"
+
+
+def test_video_mp7sig_extract_scenes_detected(mp4_file):
+    _, scenes = idk.video_mp7sig_extract_scenes(mp4_file, scene_limit=0.2)
+    assert scenes == [7.625, 10.125, 15.208, 36.0, 38.458, 39.958, 46.625, 60.0]
+
+
+def test_video_parse_scenes_empty():
+    assert idk.video_parse_scenes(" ") == []
+
+
 def test_video_features_extract(mp4_file):
     features = idk.video_features_extract(mp4_file)
     assert features[0][:20] == (0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0)

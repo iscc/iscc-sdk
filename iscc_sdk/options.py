@@ -96,6 +96,11 @@ class SdkOptions(BaseSettings):
         description="ISCC_SDK_VIDEO_FPS - Frames per second to process for video hash (ignored when 0).",
     )
 
+    video_scene_limit: float = Field(
+        0.4,
+        description="ISCC_SDK_VIDEO_SCENE_LIMIT - Threshold value above which a scene cut is created (default 0.4)",
+    )
+
     video_store_mp7sig: bool = Field(
         False,
         description="ISCC_SDK_VIDEO_STORE_MP7SIG - Store extracted MP7 Video as <videofile>.iscc.mp7sig",

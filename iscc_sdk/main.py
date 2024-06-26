@@ -246,6 +246,7 @@ def code_video(fp, extract_meta=None, create_thumb=None):
 
     if extract_meta:
         meta = idk.video_meta_extract(fp)
+
     if create_thumb:
         thumbnail_image = idk.video_thumbnail(fp)
         if thumbnail_image is not None:

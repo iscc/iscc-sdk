@@ -18,7 +18,9 @@ __all__ = [
     "video_meta_embed",
     "video_thumbnail",
     "video_mp7sig_extract",
+    "video_mp7sig_extract_scenes",
     "video_features_extract",
+    "video_parse_scenes",
 ]
 
 VIDEO_META_MAP = {
@@ -234,3 +236,92 @@ def video_mp7sig_extract(fp):
         sigdata = sig.read()
     os.remove(sigfile_path)
     return sigdata
+
+
+def video_mp7sig_extract_scenes(fp, scene_limit=None):
+    """Extract MPEG-7 Video Signature and Scenes.
+
+    :param str fp: Filepath to video file.
+    :param Optional[float] scene_limit: Threshold value above which a scene cut is created (0.4)
+    :return: raw signature data
+    :rtype: bytes
+    """
+
+    scene_limit = scene_limit or idk.sdk_opts.video_scene_limit
+
+    sigfile_path = Path(tempfile.mkdtemp(), token_hex(16) + ".bin")
+    sigfile_path_escaped = sigfile_path.as_posix().replace(":", "\\\\:")
+
+    scene_path = Path(tempfile.mkdtemp(), token_hex(16) + ".cut")
+    scene_path_escaped = scene_path.as_posix().replace(":", "\\\\:")
+
+    sig_cmd = f"signature=format=binary:filename={sigfile_path_escaped}"
+    sig_cmd = f"fps=fps={idk.sdk_opts.video_fps}," + sig_cmd
+    scene_cmd = f"select='gte(scene,0)',metadata=print:file={scene_path_escaped}"
+
+    args = [
+        "-i",
+        fp,
+        "-an",
+        "-sn",
+        "-filter_complex",
+        f"split[in1][in2];[in1]{scene_cmd}[out1];[in2]{sig_cmd}[out2]",
+        "-map",
+        "[out1]",
+        "-f",
+        "null",
+        "-",
+        "-map",
+        "[out2]",
+        "-f",
+        "null",
+        "-",
+    ]
+
+    idk.run_ffmpeg(args)
+
+    with open(sigfile_path, "rb") as sig:
+        sigdata = sig.read()
+    os.remove(sigfile_path)
+
+    with open(scene_path, "rt", encoding="utf-8") as scenein:
+        scenetext = scenein.read()
+    os.remove(scene_path)
+
+    scenes = video_parse_scenes(scenetext, scene_limit)
+
+    return sigdata, scenes
+
+
+def video_parse_scenes(scene_text, scene_limit=None):
+    # type: (str) -> List[float]
+    """Parse scene score output from ffmpeg
+
+    :param str scene_text: Scene score output from ffmpeg
+    :param Optional[float] scene_limit: Threshold value above which a scene cut is created (0.4)
+    """
+
+    scene_limit = scene_limit or idk.sdk_opts.video_scene_limit
+
+    if not scene_text.strip():
+        return []
+
+    times = []
+    scores = []
+    for line in scene_text.splitlines():
+        if line.startswith("frame:"):
+            ts = round(float(line.split()[-1].split(":")[-1]), 3)
+            times.append(ts)
+        if line.startswith("lavfi.scene_score"):
+            scores.append(float(line.split("=")[-1]))
+
+    cutpoints = []
+    for ts, score in zip(times, scores):
+        if score >= scene_limit:
+            cutpoints.append(ts)
+
+    # append last frame timestamp if not in cutpoints
+    if cutpoints and cutpoints[-1] != times[-1]:
+        cutpoints.append(times[-1])
+
+    return cutpoints[1:]
