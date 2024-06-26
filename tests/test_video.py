@@ -114,3 +114,89 @@ def test_code_video_nometa_nothumb(mp4_file):
     assert meta.dict() == {"iscc": "ISCC:EMAV4DUD6QORW4X4"}
     idk.sdk_opts.extract_metadata = True
     idk.sdk_opts.create_thumbnail = True
+
+
+def test_code_video_granular_scenes(mp4_file):
+    idk.sdk_opts.granular = True
+    idk.sdk_opts.video_scene_limit = 0.2
+    idk.sdk_opts.create_thumbnail = False
+    idk.sdk_opts.extract_metadata = True
+    result = idk.code_video(mp4_file).dict()
+    assert result == {
+        "iscc": "ISCC:EMAV4DUD6QORW4X4",
+        "name": "Kali by Anokato - Spiral Sessions 2019",
+        "features": {
+            "kind": "video",
+            "version": 0,
+            "sizes": [7.625, 2.5, 5.083, 20.792, 2.458, 1.5, 6.667],
+            "features": [
+                "XxqT9x1acvw",
+                "HEqSawAW8oQ",
+                "VA7Q9A0esuw",
+                "Xg4H9H1S8vU",
+                "l06Qp9wbcow",
+                "UWAQkpxZMqg",
+                "HloAnYYVUqU",
+            ],
+        },
+    }
+
+
+def test_code_iscc_video_granular(mp4_file):
+    idk.sdk_opts.granular = True
+    idk.sdk_opts.video_scene_limit = 0.2
+    idk.sdk_opts.create_thumbnail = False
+    idk.sdk_opts.extract_metadata = True
+    result = idk.code_iscc(mp4_file).dict()
+    assert result == {
+        "@type": "VideoObject",
+        "iscc": "ISCC:KMCV6UK6BSXJ3I4GLYHIH5A5DNZPYBWQO33FNHPQFOOUCLLW3HKRNUA",
+        "name": "Kali by Anokato - Spiral Sessions 2019",
+        "mode": "video",
+        "mediatype": "video/mp4",
+        "filename": "video.mp4",
+        "filesize": 2161914,
+        "metahash": "1e2096c0a53475a186ce37622aba7ba70651fc62cc8150f59eee6d17dc16d9bfbf25",
+        "datahash": "1e209d412d76d9d516d07bb60f1ab3c1a5c1b176ed4f1cec94c96222a5d013ec3e38",
+        "features": {
+            "kind": "video",
+            "version": 0,
+            "features": [
+                "XxqT9x1acvw",
+                "HEqSawAW8oQ",
+                "VA7Q9A0esuw",
+                "Xg4H9H1S8vU",
+                "l06Qp9wbcow",
+                "UWAQkpxZMqg",
+                "HloAnYYVUqU",
+            ],
+            "sizes": [7.625, 2.5, 5.083, 20.792, 2.458, 1.5, 6.667],
+        },
+    }
+
+
+def test_code_iscc_video_granular_no_scenes(mp4_file):
+    idk.sdk_opts.granular = True
+    idk.sdk_opts.video_scene_limit = 0.8
+    idk.sdk_opts.create_thumbnail = False
+    idk.sdk_opts.extract_metadata = True
+    result = idk.code_iscc(mp4_file).dict()
+    assert result == {
+        "@type": "VideoObject",
+        "iscc": "ISCC:KMCV6UK6BSXJ3I4GLYHIH5A5DNZPYBWQO33FNHPQFOOUCLLW3HKRNUA",
+        "name": "Kali by Anokato - Spiral Sessions 2019",
+        "mode": "video",
+        "mediatype": "video/mp4",
+        "filename": "video.mp4",
+        "filesize": 2161914,
+        "metahash": "1e2096c0a53475a186ce37622aba7ba70651fc62cc8150f59eee6d17dc16d9bfbf25",
+        "datahash": "1e209d412d76d9d516d07bb60f1ab3c1a5c1b176ed4f1cec94c96222a5d013ec3e38",
+        "features": {
+            "kind": "video",
+            "version": 0,
+            "features": [
+                "Xg6D9B0bcvw",
+            ],
+            "sizes": [59.8],
+        },
+    }

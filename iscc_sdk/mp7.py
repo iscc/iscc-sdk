@@ -11,6 +11,7 @@ import numpy as np
 
 __all__ = [
     "read_mp7_signature",
+    "Frame",
 ]
 
 

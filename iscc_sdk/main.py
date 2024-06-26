@@ -253,9 +253,26 @@ def code_video(fp, extract_meta=None, create_thumb=None):
             thumbnail_durl = idk.image_to_data_url(thumbnail_image)
             meta["thumbnail"] = thumbnail_durl
 
-    features = idk.video_features_extract(fp)
+    sig, scenes = None, []
+    if idk.sdk_opts.granular:
+        sig, scenes = idk.video_mp7sig_extract_scenes(fp)
+    else:
+        sig = idk.video_mp7sig_extract(fp)
+
+    if idk.sdk_opts.video_store_mp7sig:
+        outp = fp + ".iscc.mp7sig"
+        with open(outp, "wb") as outf:
+            outf.write(sig)
+
+    frames = idk.read_mp7_signature(sig)
+    features = [tuple(frame.vector.tolist()) for frame in frames]
+
     code_obj = ic.gen_video_code_v0(features, bits=idk.core_opts.video_bits)
     meta.update(code_obj)
+
+    if idk.sdk_opts.granular:
+        granular = idk.video_compute_granular(frames, scenes)
+        meta["features"] = granular
 
     return idk.IsccMeta.construct(**meta)
 

@@ -11,6 +11,7 @@ from pathlib import Path
 from secrets import token_hex
 from PIL import Image, ImageEnhance
 import iscc_sdk as idk
+import iscc_core as ic
 
 
 __all__ = [
@@ -21,6 +22,7 @@ __all__ = [
     "video_mp7sig_extract_scenes",
     "video_features_extract",
     "video_parse_scenes",
+    "video_compute_granular",
 ]
 
 VIDEO_META_MAP = {
@@ -325,3 +327,35 @@ def video_parse_scenes(scene_text, scene_limit=None):
         cutpoints.append(times[-1])
 
     return cutpoints[1:]
+
+
+def video_compute_granular(frames, scenes):
+    # type: (List[idk.Frame], List[float]) -> dict
+    """Compute video signatures for individual scenes in video.
+    Returns a dictionary conforming to `shema.Feature`- objects.
+    """
+    features, sizes, segment = [], [], []
+    start_frame = 0
+    for cidx, cutpoint in enumerate(scenes):
+        try:
+            frames = frames[start_frame:]
+        except IndexError:  # pragma: no cover
+            break
+        for fidx, frame in enumerate(frames):
+            frame_t = tuple(frame.vector.tolist())
+            segment.append(frame_t)
+            if frame.elapsed >= cutpoint:
+                features.append(ic.encode_base64(ic.soft_hash_video_v0(segment, 64)))
+                segment = []
+                prev_cutpoint = 0 if cidx == 0 else scenes[cidx - 1]
+                duration = round(cutpoint - prev_cutpoint, 3)
+                sizes.append(duration)
+                start_frame = fidx + 1
+                break
+    if not features:
+        log.info("No scenes detected. Use all frames")
+        segment = [tuple(frame.vector.tolist()) for frame in frames]
+        features = [ic.encode_base64(ic.soft_hash_video_v0(segment, 64))]
+        sizes = [round(float(frames[-1].elapsed), 3)]
+
+    return dict(kind="video", version=0, features=features, sizes=sizes)
