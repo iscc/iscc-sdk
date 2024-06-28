@@ -3,6 +3,7 @@
 import io
 import shutil
 import tempfile
+from pathlib import Path
 
 import ebookmeta
 from PIL import Image, ImageEnhance
@@ -16,15 +17,15 @@ __all__ = [
 
 
 def epub_thumbnail(fp):
-    # type: (str) -> Image.Image
+    # type: (str|Path) -> Image.Image
     """
     Creat thumbnail from EPUB document cover image.
 
-    :param str fp: Filepath to EPUB document.
+    :param fp: Filepath to EPUB document.
     :return: Thumbnail image as PIL Image object
-    :rtype: Image.Image
     """
-    meta = ebookmeta.get_metadata(fp)
+    fp = Path(fp)
+    meta = ebookmeta.get_metadata(fp.as_posix())
     data = meta.cover_image_data
     img = Image.open(io.BytesIO(data))
     size = idk.sdk_opts.image_thumbnail_size
@@ -33,15 +34,15 @@ def epub_thumbnail(fp):
 
 
 def epub_meta_embed(fp, meta):
-    # type: (str, idk.IsccMeta) -> str
+    # type: (str|Path, idk.IsccMeta) -> str
     """
     Embed metadata into a copy of the EPUB file.
 
-    :param str fp: Filepath to source EPUB file
+    :param fp: Filepath to source EPUB file
     :param IsccMeta meta: Metadata to embed into EPUB
-    :return: Filepath to the new PDF file with updated metadata
-    :rtype: str
+    :return: Filepath to the new EPUB file with updated metadata
     """
+    fp = Path(fp)
     tempdir = tempfile.mkdtemp()
     tempepub = shutil.copy(fp, tempdir)
     new_meta = ebookmeta.get_metadata(tempepub)

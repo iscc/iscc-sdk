@@ -1,5 +1,7 @@
 """*Image handling module*."""
 
+from pathlib import Path
+
 import pillow_avif
 import base64
 import io
@@ -7,7 +9,6 @@ import shutil
 import sys
 import json
 import tempfile
-from os.path import basename, join
 from typing import Sequence
 import jmespath
 from iscc_schema import IsccMeta
@@ -40,9 +41,8 @@ def image_normalize(img):
     """
     Normalize image for hash calculation.
 
-    :param Image.Image img: Pillow Image Object
+    :param img: Pillow Image Object
     :return: Normalized and flattened image as 1024-pixel array (from 32x32 gray pixels)
-    :rtype: Sequence[int]
     """
 
     # Transpose image according to EXIF Orientation tag
@@ -74,9 +74,8 @@ def image_exif_transpose(img):
     """
     Transpose image according to EXIF Orientation tag
 
-    :param Image.Image img: Pillow Image Object
+    :param img: Pillow Image Object
     :return: EXIF transposed image
-    :rtype: Image.Image
     """
     img = ImageOps.exif_transpose(img)
     log.debug(f"Image exif transpose applied")
@@ -88,9 +87,8 @@ def image_fill_transparency(img):
     """
     Add white background to image if it has alpha transparency.
 
-    :param Image.Image img: Pillow Image Object
+    :param img: Pillow Image Object
     :return: Image with transparency replaced by white background
-    :rtype: Image.Image
     """
     if img.mode != "RGBA":
         img = img.convert("RGBA")
@@ -106,9 +104,8 @@ def image_trim_border(img):
 
     Takes the upper left pixel as reference for border color.
 
-    :param Image.Image img: Pillow Image Object
+    :param img: Pillow Image Object
     :return: Image with uniform colored (empty) border removed.
-    :rtype: Image.Image
     """
 
     bg = Image.new(img.mode, img.size, img.getpixel((0, 0)))
@@ -122,14 +119,14 @@ def image_trim_border(img):
 
 
 def image_meta_extract(fp):
-    # type: (str) -> dict
+    # type: (str|Path) -> dict
     """
     Extract metadata from image.
 
-    :param str fp: Filepath to image file.
+    :param fp: Filepath to image file.
     :return: Metadata mapped to IsccMeta schema
-    :rtype: dict
     """
+    fp = Path(fp)
     args = ["--all", fp]
     result = idk.run_exiv2json(args)
     encoding = sys.stdout.encoding or "utf-8"
@@ -163,15 +160,15 @@ def image_meta_extract(fp):
 
 
 def image_meta_embed(fp, meta):
-    # type: (str, IsccMeta) -> str
+    # type: (str|Path, IsccMeta) -> Path
     """
     Embed metadata into a copy of the image file.
 
-    :param str fp: Filepath to source image file
-    :param IsccMeta meta: Metadata to embed into image
+    :param fp: Filepath to source image file
+    :param meta: Metadata to embed into image
     :return: Filepath to the new image file with updated metadata
-    :rtype: str
     """
+    fp = Path(fp)
     cmdf = "reg iscc http://purl.org/iscc/schema\n"
     cmdf += "reg dc http://purl.org/dc/elements/1.1/\n"
 
@@ -194,9 +191,9 @@ def image_meta_embed(fp, meta):
         cmdf += f"set Xmp.dc.rights {meta.rights}\n"
 
     # Create temp filepaths
-    tempdir = tempfile.mkdtemp()
-    metafile = join(tempdir, "meta.txt")
-    imagefile = shutil.copy(fp, tempdir)
+    tempdir = Path(tempfile.mkdtemp())
+    metafile = tempdir / "meta.txt"
+    imagefile = Path(shutil.copy(fp, tempdir))
 
     # Store metadata
     with open(metafile, "wt", encoding="utf-8") as outf:
@@ -204,32 +201,32 @@ def image_meta_embed(fp, meta):
 
     # Embed metaadata
     args = ["-m", metafile, imagefile]
-    log.debug(f"Embedding {meta.dict(exclude_unset=True)} in {basename(imagefile)}")
+    log.debug(f"Embedding {meta.dict(exclude_unset=True)} in {imagefile.name}")
     idk.run_exiv2(args)
     return imagefile
 
 
 def image_meta_delete(fp):
-    # type: (str) -> None
+    # type: (str|Path) -> None
     """
     Delete all metadata from image.
 
-    :param str fp: Filepath to image file.
-    :rtype: None
+    :param fp: Filepath to image file.
     """
+    fp = Path(fp)
     args = ["rm", fp]
     return idk.run_exiv2(args)
 
 
 def image_thumbnail(fp):
-    # type: (str) -> Image.Image
+    # type: (str|Path) -> Image.Image
     """
     Create a thumbnail for an image.
 
-    :param str fp: Filepath to image file.
+    :param fp: Filepath to image file.
     :return: Thumbnail image as PIL Image object
-    :rtype: Image.Image
     """
+    fp = Path(fp)
     size = idk.sdk_opts.image_thumbnail_size
     img = Image.open(fp)
     img.thumbnail((size, size), resample=idk.LANCZOS)
@@ -241,9 +238,8 @@ def image_to_data_url(img):
     """
     Convert PIL Image object to WebP Data-URL.
 
-    :param Image.Image img: PIL Image object to encode as WebP Data-URL.
+    :param img: PIL Image object to encode as WebP Data-URL.
     :return: Data-URL string
-    :rtype: str
     """
     quality = idk.sdk_opts.image_thumbnail_quality
     raw = io.BytesIO()

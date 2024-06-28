@@ -1,6 +1,6 @@
 """*Detect and map RFC6838 mediatypes to ISCC processing modes*."""
 
-from os.path import basename
+from pathlib import Path
 from loguru import logger as log
 from typing import List, Optional, Union
 import mimetypes
@@ -23,7 +23,7 @@ __all__ = [
 
 
 def mediatype_and_mode(fp):
-    # type: (str) -> tuple
+    # type: (str|Path) -> tuple[str, str]
     """
     Detect mediatype and processing mode for a file.
 
@@ -35,18 +35,18 @@ def mediatype_and_mode(fp):
 
         ```
 
-    :param str fp: Filepath
+    :param fp: Filepath
     :return: A tuple of `mediatype` and `mode`
-    :rtype: tuple[str, str]
     """
+    fp = Path(fp)
     with open(fp, "rb") as infile:
         data = infile.read(4096)
 
-    mediatype = mediatype_guess(data, file_name=basename(fp))
+    mediatype = mediatype_guess(data, file_name=fp.name)
     try:
         mode = mediatype_to_mode(mediatype)
     except idk.IsccUnsupportedMediatype:
-        raise idk.IsccUnsupportedMediatype(f"Unsupported mediatype {mediatype} for {basename(fp)}")
+        raise idk.IsccUnsupportedMediatype(f"Unsupported mediatype {mediatype} for {fp.name}")
     return mediatype, mode
 
 

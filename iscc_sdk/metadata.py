@@ -1,5 +1,6 @@
 """*Metadata handling functions*"""
 
+from pathlib import Path
 from typing import Optional
 
 try:
@@ -33,14 +34,14 @@ EMBEDDERS = {
 
 
 def extract_metadata(fp):
-    # type: (str) -> idk.IsccMeta
+    # type: (str|Path) -> idk.IsccMeta
     """
     Extract metadata from file.
 
-    :param str fp: Filepath to media file.
+    :param fp: Filepath to media file.
     :return: Metadata mapped to IsccMeta schema
-    :rtype: IsccMeta
     """
+    fp = Path(fp)
     mime, mode = idk.mediatype_and_mode(fp)
     extractor = EXTRACTORS.get(mode)
     if extractor:

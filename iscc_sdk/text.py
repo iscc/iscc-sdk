@@ -49,14 +49,14 @@ TEXT_META_MAP = {
 
 
 def text_meta_extract(fp):
-    # type: (str) -> dict
+    # type: (str|Path) -> dict
     """
     Extract metadata from text document file.
 
-    :param str fp: Filepath to text document file.
+    :param fp: Filepath to text document file.
     :return: Metadata mapped to IsccMeta schema
-    :rtype: dict
     """
+    fp = Path(fp)
     args = ["--metadata", "-j", "--encoding=UTF-8", fp]
 
     result = idk.run_tika(args)
@@ -78,15 +78,15 @@ def text_meta_extract(fp):
 
 
 def text_meta_embed(fp, meta):
-    # type: (str, IsccMeta) -> Optional[str]
+    # type: (str|Path, IsccMeta) -> Path|None
     """
     Embed metadata into a copy of the text document.
 
-    :param str fp: Filepath to source text document file
-    :param IsccMeta meta: Metadata to embed into text document
+    :param fp: Filepath to source text document file
+    :param meta: Metadata to embed into text document
     :return: Filepath to the new file with updated metadata (None if no embedding supported)
-    :rtype: str|None
     """
+    fp = Path(fp)
     mt, _ = idk.mediatype_and_mode(fp)
     if mt == "application/pdf":
         return idk.pdf_meta_embed(fp, meta)
@@ -97,20 +97,19 @@ def text_meta_embed(fp, meta):
 
 
 def text_extract(fp):
-    # type: (str) -> str
+    # type: (str|Path) -> str
     """
     Extract plaintext from a text document.
 
-    :param st fp: Filepath to text document file.
+    :param fp: Filepath to text document file.
     :return: Extracted plaintext
-    :rtype: str
     """
-
+    fp = Path(fp)
     args = ["--text", "--encoding=UTF-8", fp]
     result = idk.run_tika(args)
     text = result.stdout.decode(encoding="UTF-8").strip()
     if not text:
-        raise idk.IsccExtractionError(f"No text extracted from {basename(fp)}")
+        raise idk.IsccExtractionError(f"No text extracted from {fp.name}")
     return result.stdout.decode(encoding="UTF-8")
 
 
@@ -120,7 +119,7 @@ def text_features(text):
     Create granular fingerprint for text (minhashes over ngrams from cdc-chunks).
     Text should be normalized before extracting text features.
 
-    :param str text: Normalized plaintext.
+    :param text: Normalized plaintext.
     :returns dict: Dictionary with 'sizes' and 'features'.
     """
     clean_text = ic.text_clean(text)
@@ -158,9 +157,8 @@ def text_name_from_uri(uri):
     Extract `filename` part of an uri without file extension to be used as fallback title for an
     asset if no title information can be acquired.
 
-    :param str uri: Url or file path
+    :param uri: Url or file path
     :return: derived name (might be an empty string)
-    :rtype: str
     """
     if isinstance(uri, Path):
         result = urlparse(uri.as_uri())
@@ -175,13 +173,12 @@ def text_name_from_uri(uri):
 
 
 def text_thumbnail(fp):
-    # type: (str) -> Optional[Image.Image]
+    # type: (str|Path) -> Image.Image|None
     """
     Create a thumbnail for a text document.
 
-    :param str fp: Filepath to text document.
+    :param fp: Filepath to text document.
     :return: Thumbnail image as PIL Image object
-    :rtype: Image.Image|None
     """
     mt, _ = idk.mediatype_and_mode(fp)
     if mt == "application/pdf":

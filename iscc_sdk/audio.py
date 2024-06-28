@@ -2,9 +2,7 @@
 
 import shutil
 import tempfile
-from os.path import join, basename
-from typing import Optional
-
+from pathlib import Path
 from PIL import Image, ImageEnhance
 from loguru import logger as log
 import json
@@ -42,16 +40,16 @@ AUDIO_META_MAP = {
 
 
 def audio_thumbnail(fp):
-    # type: (str) -> Optional[Image.Image]
+    # type: (str|Path) -> Image.Image|None
     """
     Create a thumbnail from embedded cover art.
 
-    :param str fp: Filepath to audio file.
+    :param fp: Filepath to audio file.
     :return: Thumbnail image as PIL Image object
-    :rtype: Image.Image|None
     """
-    tempdir = tempfile.mkdtemp()
-    tempimg = join(tempdir, "cover.jpg")
+    fp = Path(fp)
+    tempdir = Path(tempfile.mkdtemp())
+    tempimg = tempdir / "cover.jpg"
     cmd = ["-i", fp, "-an", "-vcodec", "copy", tempimg]
     size = idk.sdk_opts.image_thumbnail_size
     try:
@@ -68,14 +66,14 @@ def audio_thumbnail(fp):
 
 
 def audio_meta_extract(fp):
-    # type: (str) -> dict
+    # type: (str|Path) -> dict
     """
     Extract metadata from audio file.
 
-    :param str fp: Filepath to audio file.
+    :param fp: Filepath to audio file.
     :return: Metadata mapped to IsccMeta schema
-    :rtype: dict
     """
+    fp = Path(fp)
     mapped = dict()
     done = set()
 
@@ -86,7 +84,7 @@ def audio_meta_extract(fp):
         obj.close()
     except OSError as e:  # pragma: no cover
         # This is a workaround for the issue that taglib requires exclusive access even for reading.
-        log.warning(f"Create tempfile for taglib access {basename(fp)}: {e}")
+        log.warning(f"Create tempfile for taglib access {fp.name}: {e}")
         try:
             with idk.TempFile(fp) as tmp_path:
                 obj = taglib.File(tmp_path.as_posix())
@@ -94,7 +92,7 @@ def audio_meta_extract(fp):
                 mapped["duration"] = obj.length
                 obj.close()
         except Exception as e:
-            log.warning(f"Failed metadata extraction for {basename(fp)}: {e}")
+            log.warning(f"Failed metadata extraction for {fp.name}: {e}")
             return mapped
 
     for tag, mapped_field in AUDIO_META_MAP.items():
@@ -113,15 +111,15 @@ def audio_meta_extract(fp):
 
 
 def audio_meta_embed(fp, meta):
-    # type: (str, idk.IsccMeta) -> str
+    # type: (str|Path, idk.IsccMeta) -> str
     """
     Embed metadata into a copy of the audio file.
 
-    :param str fp: Filepath to source audio file
+    :param fp: Filepath to source audio file
     :param IsccMeta meta: Metadata to embed into audio file
     :return: Filepath to new audio file with updated metadata
-    :rtype: str
     """
+    fp = Path(fp)
     tdir = tempfile.mkdtemp()
     tfile = shutil.copy(fp, tdir)
     obj = taglib.File(tfile)
@@ -142,14 +140,14 @@ def audio_meta_embed(fp, meta):
 
 
 def audio_features_extract(fp):
-    # type: (str) -> dict
+    # type: (str|Path) -> dict
     """
     Exctracts chromprint fingerprint.
 
-    :param str fp: Filepath
+    :param fp: Filepath
     :return: A dict with `duration` in seconds and `fingerprint` 32-bit integers
-    :rtype: dict
     """
+    fp = Path(fp)
     args = ["-raw", "-json", "-signed", "-length", "0", fp]
     proc = idk.run_fpcalc(args)
     result = json.loads(proc.stdout)

@@ -2,6 +2,8 @@
 
 import shutil
 import tempfile
+from pathlib import Path
+
 from PIL import Image, ImageEnhance
 import fitz
 import iscc_sdk as idk
@@ -13,14 +15,14 @@ __all__ = [
 
 
 def pdf_thumbnail(fp):
-    # type: (str) -> Image.Image
+    # type: (str|Path) -> Image.Image
     """
     Create a thumbnail from PDF document.
 
-    :param str fp: Filepath to PDF document.
+    :param fp: Filepath to PDF document.
     :return: Thumbnail image as PIL Image object
-    :rtype: Image.Image
     """
+    fp = Path(fp)
     with fitz.Document(fp) as doc:
         page = doc.load_page(0)
         pix = page.get_pixmap()
@@ -32,15 +34,15 @@ def pdf_thumbnail(fp):
 
 
 def pdf_meta_embed(fp, meta):
-    # type: (str, idk.IsccMeta) -> str
+    # type: (str|Path, idk.IsccMeta) -> Path
     """
     Embed metadata into a copy of the PDF file.
 
-    :param str fp: Filepath to source PDF file
-    :param IsccMeta meta: Metadata to embed into PDF
+    :param fp: Filepath to source PDF file
+    :param meta: Metadata to embed into PDF
     :return: Filepath to the new PDF file with updated metadata
-    :rtype: str
     """
+    fp = Path(fp)
     tempdir = tempfile.mkdtemp()
     temppdf = shutil.copy(fp, tempdir)
     with fitz.Document(temppdf) as doc:
@@ -71,4 +73,4 @@ def pdf_meta_embed(fp, meta):
             doc.xref_set_key(xref, "iscc_rights", fitz.get_pdf_str(meta.rights))
         doc.set_metadata(new_meta)
         doc.saveIncr()
-    return temppdf
+    return Path(temppdf)

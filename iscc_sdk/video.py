@@ -6,7 +6,6 @@ from loguru import logger as log
 import io
 import sys
 import tempfile
-from os.path import join, basename
 from pathlib import Path
 from secrets import token_hex
 from PIL import Image, ImageEnhance
@@ -47,14 +46,14 @@ VIDEO_META_MAP = {
 
 
 def video_meta_extract(fp):
-    # type: (str) -> dict
+    # type: (str|Path) -> dict
     """
     Extract metadata from video.
 
-    :param str fp: Filepath to video file
+    :param fp: Filepath to video file
     :return: Metdata mpped to IsccMeta schema
-    :rtype: dict
     """
+    fp = Path(fp)
 
     args = ["-i", fp, "-movflags", "use_metadata_tags", "-f", "ffmetadata", "-"]
 
@@ -92,18 +91,17 @@ def video_meta_extract(fp):
 
 
 def video_meta_embed(fp, meta):
-    # type: (str, idk.IsccMeta) -> str
+    # type: (str|Path, idk.IsccMeta) -> Path
     """
     Embed metadata into a copy of the video file.
 
     Supported fields: name, description, meta, creator, license, aquire
 
-    :param str fp: Filepath to source video file
-    :param IsccMeta meta: Metadata to embed into video
+    :param fp: Filepath to source video file
+    :param meta: Metadata to embed into video
     :return: Filepath to new video file with updated metadata
-    :rtype: str
     """
-
+    fp = Path(fp)
     write_map = {
         "name": "iscc_name",
         "description": "iscc_description",
@@ -135,9 +133,9 @@ def video_meta_embed(fp, meta):
             cmdf += f"{write_map[field]}={value}\n"
 
     # Create temp filepaths
-    tempdir = tempfile.mkdtemp()
-    metafile = join(tempdir, "meta.txt")
-    videofile = join(tempdir, basename(fp))
+    tempdir = Path(tempfile.mkdtemp())
+    metafile = tempdir / "meta.txt"
+    videofile = tempdir / fp.name
 
     # Store metadata
     with open(metafile, "wt", encoding="utf-8") as outf:
@@ -163,14 +161,15 @@ def video_meta_embed(fp, meta):
 
 
 def video_thumbnail(fp):
-    # type: (str) -> Optional[Image.Image]
+    # type: (str|Path) -> Image.Image|None
     """
     Create a thumbnail for a video.
 
-    :param str fp: Filepath to video file.
+    :param fp: Filepath to video file.
     :return: Raw PNG byte data
     :rtype: bytes
     """
+    fp = Path(fp)
     size = idk.sdk_opts.image_thumbnail_size
 
     args = [
@@ -196,19 +195,19 @@ def video_thumbnail(fp):
 
 
 def video_features_extract(fp):
-    # type: (str) -> List[Tuple[int, ...]]
+    # type: (str|Path) -> List[Tuple[int, ...]]
     """
     Extract video features.
 
-    :param str fp: Filepath to video file.
+    :param fp: Filepath to video file.
     :return: A sequence of frame signatures.
-    :rtype: Sequence[Tuple[int, ...]]
     """
+    fp = Path(fp)
     # TODO use confidence value to improve simililarity hash.
     sig = video_mp7sig_extract(fp)
 
     if idk.sdk_opts.video_store_mp7sig:
-        outp = fp + ".iscc.mp7sig"
+        outp = fp.as_posix() + ".iscc.mp7sig"
         with open(outp, "wb") as outf:
             outf.write(sig)
 
@@ -217,13 +216,13 @@ def video_features_extract(fp):
 
 
 def video_mp7sig_extract(fp):
-    # type: (str) -> bytes
+    # type: (str|Path) -> bytes
     """Extract MPEG-7 Video Signature.
 
-    :param str fp: Filepath to video file.
+    :param fp: Filepath to video file.
     :return: raw signature data
-    :rtype: bytes
     """
+    fp = Path(fp)
 
     sigfile_path = Path(tempfile.mkdtemp(), token_hex(16) + ".bin")
     sigfile_path_escaped = sigfile_path.as_posix().replace(":", "\\\\:")
@@ -241,13 +240,14 @@ def video_mp7sig_extract(fp):
 
 
 def video_mp7sig_extract_scenes(fp, scene_limit=None):
+    # type: (str|Path, int|None) -> tuple[bytes, list[float]]
     """Extract MPEG-7 Video Signature and Scenes.
 
-    :param str fp: Filepath to video file.
-    :param Optional[float] scene_limit: Threshold value above which a scene cut is created (0.4)
-    :return: raw signature data
-    :rtype: bytes
+    :param fp: Filepath to video file.
+    :param scene_limit: Threshold value above which a scene cut is created (0.4)
+    :return: tuple of raw signature data and list of scene cutpoints
     """
+    fp = Path(fp)
 
     scene_limit = scene_limit or idk.sdk_opts.video_scene_limit
 
@@ -296,11 +296,13 @@ def video_mp7sig_extract_scenes(fp, scene_limit=None):
 
 
 def video_parse_scenes(scene_text, scene_limit=None):
-    # type: (str) -> List[float]
-    """Parse scene score output from ffmpeg
+    # type: (str, int|None) -> List[float]
+    """
+    Parse scene score output from ffmpeg
 
-    :param str scene_text: Scene score output from ffmpeg
-    :param Optional[float] scene_limit: Threshold value above which a scene cut is created (0.4)
+    :param scene_text: Scene score output from ffmpeg
+    :param scene_limit: Threshold value above which a scene cut is created (0.4)
+    :return: Scene cutpoints
     """
 
     scene_limit = scene_limit or idk.sdk_opts.video_scene_limit
@@ -331,8 +333,12 @@ def video_parse_scenes(scene_text, scene_limit=None):
 
 def video_compute_granular(frames, scenes):
     # type: (List[idk.Frame], List[float]) -> dict
-    """Compute video signatures for individual scenes in video.
-    Returns a dictionary conforming to `shema.Feature`- objects.
+    """
+    Compute video signatures for individual scenes in video.
+
+    :param frames: List of video frames.
+    :param scenes: List of video scene cutpints.
+    :return: A dictionary conforming to `shema.Feature`- objects.
     """
     features, sizes, segment = [], [], []
     start_frame = 0

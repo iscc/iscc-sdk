@@ -1,4 +1,6 @@
 import tempfile
+from pathlib import Path
+
 from docx import Document
 import iscc_sdk as idk
 import shutil
@@ -17,17 +19,18 @@ META_DOCX_MAP = {
 
 
 def docx_meta_embed(fp, meta):
-    # type: (str, idk.IsccMeta) -> str
+    # type: (str|Path, idk.IsccMeta) -> str
     """
-    Embed metadata into a copy of the PDF file.
-    :param str fp: Filepath to source PDF file
-    :param IsccMeta meta: Metadata to embed into PDF
-    :return: Filepath to the new PDF file with updated metadata
-    :rtype: str
+    Embed metadata into a copy of the DOCX file.
+
+    :param fp: Filepath to source DOCX file
+    :param meta: Metadata to embed into DOCX
+    :return: Filepath to the new DOCX file with updated metadata
     """
+    fp = Path(fp)
     tempdir = tempfile.mkdtemp()
     tempdoc = shutil.copy(fp, tempdir)
-    doc = Document(fp)
+    doc = Document(fp.as_posix())
     new_meta = doc.core_properties
     for iscc_field, docx_field in META_DOCX_MAP.items():
         value = getattr(meta, iscc_field)

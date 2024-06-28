@@ -1,7 +1,7 @@
 """*SDK main top-level functions*."""
 
 from concurrent.futures import ThreadPoolExecutor
-from os.path import basename
+from pathlib import Path
 from PIL import Image
 import iscc_core as ic
 import iscc_sdk as idk
@@ -21,16 +21,16 @@ __all__ = [
 
 
 def code_iscc(fp):
-    # type: (str) -> idk.IsccMeta
+    # type: (str|Path) -> idk.IsccMeta
     """
     Generate ISCC-CODE.
 
     The ISCC-CODE is a composite of Meta, Content, Data and Instance Codes.
 
-    :param str fp: Filepath used for ISCC-CODE creation.
+    :param fp: Filepath used for ISCC-CODE creation.
     :return: ISCC metadata including ISCC-CODE and merged metadata from ISCC-UNITs.
-    :rtype: IsccMeta
     """
+    fp = Path(fp)
 
     # Generate ISCC-UNITs in parallel
     with ThreadPoolExecutor() as executor:
@@ -51,7 +51,7 @@ def code_iscc(fp):
     iscc_code = ic.gen_iscc_code_v0([meta.iscc, content.iscc, data.iscc, instance.iscc])
 
     # Merge ISCC Metadata
-    iscc_meta = dict(filename=basename(fp))
+    iscc_meta = dict(filename=fp.name)
     iscc_meta.update(instance.dict())
     iscc_meta.update(data.dict())
     iscc_meta.update(content.dict())
@@ -61,14 +61,14 @@ def code_iscc(fp):
 
 
 def code_meta(fp):
-    # type: (str) -> idk.IsccMeta
+    # type: (str|Path) -> idk.IsccMeta
     """
     Generate Meta-Code from digital asset.
 
-    :param str fp: Filepath used for Meta-Code creation.
+    :param fp: Filepath used for Meta-Code creation.
     :return: ISCC metadata including Meta-Code and extracted metadata fields.
-    :rtype: IsccMeta
     """
+    fp = Path(fp)
 
     meta = idk.extract_metadata(fp).dict()
 
@@ -87,17 +87,16 @@ def code_meta(fp):
 
 
 def code_content(fp, extract_meta=None, create_thumb=None):
-    # type: (str, bool|None, bool|None) -> idk.IsccMeta
+    # type: (str|Path, bool|None, bool|None) -> idk.IsccMeta
     """
     Detect mediatype and create corresponding Content-Code.
 
-    :param str fp: Filepath
-    :param bool|None extract_meta: Whether to extract metadata.
-    :param bool|None create_thumb: Whether to create a thumbnail.
+    :param fp: Filepath
+    :param extract_meta: Whether to extract metadata.
+    :param create_thumb: Whether to create a thumbnail.
     :return: Content-Code wrapped in ISCC metadata.
-    :rtype: IsccMeta
     """
-
+    fp = Path(fp)
     schema_org_map = {
         "text": "TextDigitalDocument",
         "image": "ImageObject",
@@ -126,16 +125,16 @@ def code_content(fp, extract_meta=None, create_thumb=None):
 
 
 def code_text(fp, extract_meta=None, create_thumb=None):
-    # type: (str, bool|None, bool|None) -> idk.IsccMeta
+    # type: (str|Path, bool|None, bool|None) -> idk.IsccMeta
     """
     Generate Content-Code Text.
 
-    :param str fp: Filepath used for Text-Code creation.
-    :param bool|None extract_meta: Whether to extract metadata.
-    :param bool|None create_thumb: Whether to create a thumbnail.
+    :param fp: Filepath used for Text-Code creation.
+    :param extract_meta: Whether to extract metadata.
+    :param create_thumb: Whether to create a thumbnail.
     :return: ISCC metadata including Text-Code.
-    :rtype: IsccMeta
     """
+    fp = Path(fp)
     meta = dict()
 
     if extract_meta is None:
@@ -162,16 +161,16 @@ def code_text(fp, extract_meta=None, create_thumb=None):
 
 
 def code_image(fp, extract_meta=None, create_thumb=None):
-    # type: (str, bool|None, bool|None) -> idk.IsccMeta
+    # type: (str|Path, bool|None, bool|None) -> idk.IsccMeta
     """
     Generate Content-Code Image.
 
-    :param str fp: Filepath used for Image-Code creation.
-    :param bool|None extract_meta: Whether to extract metadata.
-    :param bool|None create_thumb: Whether to create a thumbnail.
+    :param fp: Filepath used for Image-Code creation.
+    :param extract_meta: Whether to extract metadata.
+    :param create_thumb: Whether to create a thumbnail.
     :return: ISCC metadata including Image-Code.
-    :rtype: IsccMeta
     """
+    fp = Path(fp)
     meta = dict()
 
     if extract_meta is None:
@@ -194,16 +193,16 @@ def code_image(fp, extract_meta=None, create_thumb=None):
 
 
 def code_audio(fp, extract_meta=None, create_thumb=None):
-    # type: (str, bool|None, bool|None) -> idk.IsccMeta
+    # type: (str|Path, bool|None, bool|None) -> idk.IsccMeta
     """
     Generate Content-Code Audio.
 
-    :param str fp: Filepath used for Audio-Code creation.
-    :param bool|None extract_meta: Whether to extract metadata.
-    :param bool|None create_thumb: Whether to create a thumbnail.
+    :param fp: Filepath used for Audio-Code creation.
+    :param extract_meta: Whether to extract metadata.
+    :param create_thumb: Whether to create a thumbnail.
     :return: ISCC metadata including Audio-Code.
-    :rtype: IsccMeta
     """
+    fp = Path(fp)
     meta = dict()
 
     if extract_meta is None:
@@ -227,16 +226,16 @@ def code_audio(fp, extract_meta=None, create_thumb=None):
 
 
 def code_video(fp, extract_meta=None, create_thumb=None):
-    # type: (str) -> idk.IsccMeta
+    # type: (str|Path) -> idk.IsccMeta
     """
     Generate Content-Code Video.
 
-    :param str fp: Filepath used for Video-Code creation.
-    :param bool|None extract_meta: Whether to extract metadata.
-    :param bool|None create_thumb: Whether to create a thumbnail.
+    :param fp: Filepath used for Video-Code creation.
+    :param extract_meta: Whether to extract metadata.
+    :param create_thumb: Whether to create a thumbnail.
     :return: ISCC metadata including Image-Code.
-    :rtype: IsccMeta
     """
+    fp = Path(fp)
     meta = dict()
 
     if extract_meta is None:
@@ -260,7 +259,7 @@ def code_video(fp, extract_meta=None, create_thumb=None):
         sig = idk.video_mp7sig_extract(fp)
 
     if idk.sdk_opts.video_store_mp7sig:
-        outp = fp + ".iscc.mp7sig"
+        outp = fp.with_suffix(".iscc.mp7sig")
         with open(outp, "wb") as outf:
             outf.write(sig)
 
@@ -278,17 +277,16 @@ def code_video(fp, extract_meta=None, create_thumb=None):
 
 
 def code_data(fp):
-    # type: (str) -> idk.IsccMeta
+    # type: (str|Path) -> idk.IsccMeta
     """
     Create ISCC Data-Code.
 
     The Data-Code is a similarity preserving hash of the input data.
 
-    :param str fp: Filepath used for Data-Code creation.
+    :param fp: Filepath used for Data-Code creation.
     :return: ISCC metadata including Data-Code.
-    :rtype: IsccMeta
     """
-
+    fp = Path(fp)
     with open(fp, "rb") as stream:
         meta = ic.gen_data_code_v0(stream, bits=idk.core_opts.data_bits)
 
@@ -296,7 +294,7 @@ def code_data(fp):
 
 
 def code_instance(fp):
-    # type: (str) -> idk.IsccMeta
+    # type: (str|Path) -> idk.IsccMeta
     """
     Create ISCC Instance-Code.
 
@@ -305,10 +303,10 @@ def code_instance(fp):
     to the data of the referenced media asset. For cryptographicaly secure integrity
     checking a full 256-bit multihash is provided with the `datahash` field.
 
-    :param str fp: Filepath used for Instance-Code creation.
+    :param fp: Filepath used for Instance-Code creation.
     :return: ISCC metadata including Instance-Code, datahash and filesize.
-    :rtype: IsccMeta
     """
+    fp = Path(fp)
     with open(fp, "rb") as stream:
         meta = ic.gen_instance_code_v0(stream, bits=idk.core_opts.instance_bits)
 

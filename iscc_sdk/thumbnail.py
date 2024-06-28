@@ -1,6 +1,6 @@
 """*Generate thumbnails for media assets*"""
 
-from typing import Optional
+from pathlib import Path
 from PIL import Image
 import iscc_sdk as idk
 
@@ -17,14 +17,14 @@ THUMBNAILERS = {
 
 
 def thumbnail(fp):
-    # type: (str) -> Optional[Image.Image]
+    # type: (str|Path) -> Image.Image|None
     """
     Create a thumbnail for a media asset.
 
-    :param str fp: Filepath to media file.
+    :param fp: Filepath to media file.
     :return: Thumbnail image as PIL Image object
-    :rtype: Image.Image|None
     """
+    fp = Path(fp)
     mime, mode = idk.mediatype_and_mode(fp)
     thumbnailer = THUMBNAILERS.get(mode)
     if thumbnailer:
