@@ -1,7 +1,11 @@
 """*Video handling module*"""
 
+import json
 import os
+from fractions import Fraction
 from typing import Tuple, List, Optional
+
+from langcodes import standardize_tag
 from loguru import logger as log
 import io
 import sys
@@ -9,6 +13,7 @@ import tempfile
 from pathlib import Path
 from secrets import token_hex
 from PIL import Image, ImageEnhance
+import jmespath
 import iscc_sdk as idk
 import iscc_core as ic
 
@@ -46,12 +51,102 @@ VIDEO_META_MAP = {
 
 
 def video_meta_extract(fp):
-    # type: (str|Path) -> dict
+    # type: (str | Path) -> dict
     """
-    Extract metadata from video.
+    Extract video metadata using FFMPEG and FFPROBE
 
     :param fp: Filepath to video file
-    :return: Metdata mpped to IsccMeta schema
+    :return: Metdata mapped to IsccMeta schema
+    """
+    fp = Path(fp)
+    ffprobe = video_meta_extract_ffprobe(fp)
+    ffmpeg = video_meta_extract_ffmpeg(fp)
+    ffprobe.update(ffmpeg)
+    return ffprobe
+
+
+def video_meta_extract_ffprobe(fp):
+    # type: (str|Path) -> dict
+    """
+    Extract video metadata using FFROBE
+
+    :param fp: Filepath to video file
+    :return: Metdata mapped to IsccMeta schema
+    """
+    fp = Path(fp)
+
+    args = [
+        "-hide_banner",
+        "-loglevel",
+        "fatal",
+        "-find_stream_info",
+        "-show_error",
+        "-show_format",
+        "-show_streams",
+        "-show_programs",
+        "-show_chapters",
+        "-show_private_data",
+        "-print_format",
+        "json",
+        "-i",
+        fp,
+    ]
+
+    res = idk.run_ffprobe(args)
+    metadata = json.loads(res.stdout)
+
+    video_streams = jmespath.search("streams[?codec_type=='video']", metadata)
+    n_streams = len(video_streams)
+    if n_streams == 0:  # pragma: no cover
+        raise ValueError("No video stream detected")
+    if n_streams != 1:  # pragma: no cover
+        log.warning(f"Detected {n_streams} video streams.")
+
+    vstream = video_streams[0]
+
+    meta = dict()
+
+    # Duration
+    duration_format = jmespath.search("format.duration", metadata)
+    duration_streams = jmespath.search("streams[?codec_type=='video'].duration", metadata)
+    durations = [duration_format] + duration_streams if duration_format else duration_streams
+    if durations:
+        duration = max(round(float(d), 3) for d in durations)
+        meta["duration"] = duration
+    else:  # pragma: no cover
+        log.warning("failed to extract duration")
+
+    # Dimensions
+    meta["height"] = vstream.get("height")
+    meta["width"] = vstream.get("width")
+
+    # FPS
+    fps = vstream.get("r_frame_rate")
+    if fps:
+        fps = round(float(Fraction(fps)), 3)
+        meta["fps"] = fps
+
+    # Title
+    meta["name"] = jmespath.search("format.tags.title", metadata)
+
+    # Language
+    langs = jmespath.search("streams[*].tags.language", metadata)
+    lang = jmespath.search("format.tags.language", metadata)
+    if lang:  # pragma: no cover
+        langs.insert(0, lang)
+    if langs:
+        meta["language"] = standardize_tag(langs[0])
+
+    return meta
+
+
+def video_meta_extract_ffmpeg(fp):
+    # type: (str|Path) -> dict
+    """
+    Extract metadata from video using ffmpeg.
+
+    :param fp: Filepath to video file
+    :return: Metdata mapped to IsccMeta schema
     """
     fp = Path(fp)
 

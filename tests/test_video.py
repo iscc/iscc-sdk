@@ -18,37 +18,61 @@ meta = idk.IsccMeta(
 
 
 def test_video_metadata_extract_mp4(mp4_file):
-    assert idk.video_meta_extract(mp4_file) == {"name": "Kali by Anokato - Spiral Sessions 2019"}
+    assert idk.video_meta_extract(mp4_file) == {
+        "duration": 60.14,
+        "fps": 24.0,
+        "height": 144,
+        "language": "en",
+        "name": "Kali by Anokato - Spiral Sessions 2019",
+        "width": 176,
+    }
 
 
 def test_video_metadata_embed_mp4(mp4_file):
     new_file = idk.video_meta_embed(mp4_file, meta)
     assert idk.video_meta_extract(new_file) == {
-        "name": "Hello",
-        "description": "Wörld",
-        "meta": "somestring",
-        "creator": "The Creator",
-        "license": "https://example.com/license",
         "acquire": "https://example.com/buy",
+        "creator": "The Creator",
+        "description": "Wörld",
+        "duration": 60.14,
+        "fps": 24.0,
+        "height": 144,
+        "language": "en",
+        "license": "https://example.com/license",
+        "meta": "somestring",
+        "name": "Hello",
         "rights": "Copyright Notice",
+        "width": 176,
     }
     os.remove(new_file)
 
 
 def test_video_metadata_extract_mov(mov_file):
-    assert idk.video_meta_extract(mov_file) == {"name": "Kali by Anokato - Spiral Sessions 2019"}
+    assert idk.video_meta_extract(mov_file) == {
+        "duration": 60.14,
+        "fps": 24.0,
+        "height": 144,
+        "language": "en",
+        "name": "Kali by Anokato - Spiral Sessions 2019",
+        "width": 176,
+    }
 
 
 def test_video_metadata_embed_mov(mov_file):
     new_file = idk.video_meta_embed(mov_file, meta)
     assert idk.video_meta_extract(new_file) == {
-        "name": "Hello",
-        "description": "Wörld",
-        "meta": "somestring",
-        "creator": "The Creator",
-        "license": "https://example.com/license",
         "acquire": "https://example.com/buy",
+        "creator": "The Creator",
+        "description": "Wörld",
+        "duration": 60.14,
+        "fps": 24.0,
+        "height": 144,
+        "language": "en",
+        "license": "https://example.com/license",
+        "meta": "somestring",
+        "name": "Hello",
         "rights": "Copyright Notice",
+        "width": 176,
     }
     os.remove(new_file)
 
@@ -59,10 +83,15 @@ def test_video_metadata_escaping(mp4_file):
         description="Multi\nLine\n\nDescription with ; and other = crazy characters\n",
     )
     new_file = idk.video_meta_embed(mp4_file, meta)
-    assert idk.video_meta_extract(new_file) == dict(
-        name="Some # Name",
-        description="Multi\nLine\n\nDescription with ; and other = crazy characters",
-    )
+    assert idk.video_meta_extract(new_file) == {
+        "description": "Multi\n" "Line\n" "\n" "Description with ; and other = crazy characters",
+        "duration": 60.14,
+        "fps": 24.0,
+        "height": 144,
+        "language": "en",
+        "name": "Some # Name",
+        "width": 176,
+    }
     os.remove(new_file)
 
 
@@ -123,12 +152,8 @@ def test_code_video_granular_scenes(mp4_file):
     idk.sdk_opts.extract_metadata = True
     result = idk.code_video(mp4_file).dict()
     assert result == {
-        "iscc": "ISCC:EMAV4DUD6QORW4X4",
-        "name": "Kali by Anokato - Spiral Sessions 2019",
+        "duration": 60.14,
         "features": {
-            "kind": "video",
-            "version": 0,
-            "sizes": [7.625, 2.5, 5.083, 20.792, 2.458, 1.5, 6.667],
             "features": [
                 "XxqT9x1acvw",
                 "HEqSawAW8oQ",
@@ -138,7 +163,16 @@ def test_code_video_granular_scenes(mp4_file):
                 "UWAQkpxZMqg",
                 "HloAnYYVUqU",
             ],
+            "kind": "video",
+            "sizes": [7.625, 2.5, 5.083, 20.792, 2.458, 1.5, 6.667],
+            "version": 0,
         },
+        "fps": 24.0,
+        "height": 144,
+        "iscc": "ISCC:EMAV4DUD6QORW4X4",
+        "language": "en",
+        "name": "Kali by Anokato - Spiral Sessions 2019",
+        "width": 176,
     }
 
 
@@ -150,17 +184,9 @@ def test_code_iscc_video_granular(mp4_file):
     result = idk.code_iscc(mp4_file).dict()
     assert result == {
         "@type": "VideoObject",
-        "iscc": "ISCC:KMCV6UK6BSXJ3I4GLYHIH5A5DNZPYBWQO33FNHPQFOOUCLLW3HKRNUA",
-        "name": "Kali by Anokato - Spiral Sessions 2019",
-        "mode": "video",
-        "mediatype": "video/mp4",
-        "filename": "video.mp4",
-        "filesize": 2161914,
-        "metahash": "1e2096c0a53475a186ce37622aba7ba70651fc62cc8150f59eee6d17dc16d9bfbf25",
         "datahash": "1e209d412d76d9d516d07bb60f1ab3c1a5c1b176ed4f1cec94c96222a5d013ec3e38",
+        "duration": 60.14,
         "features": {
-            "kind": "video",
-            "version": 0,
             "features": [
                 "XxqT9x1acvw",
                 "HEqSawAW8oQ",
@@ -170,8 +196,21 @@ def test_code_iscc_video_granular(mp4_file):
                 "UWAQkpxZMqg",
                 "HloAnYYVUqU",
             ],
+            "kind": "video",
             "sizes": [7.625, 2.5, 5.083, 20.792, 2.458, 1.5, 6.667],
+            "version": 0,
         },
+        "filename": "video.mp4",
+        "filesize": 2161914,
+        "fps": 24.0,
+        "height": 144,
+        "iscc": "ISCC:KMCV6UK6BSXJ3I4GLYHIH5A5DNZPYBWQO33FNHPQFOOUCLLW3HKRNUA",
+        "language": "en",
+        "mediatype": "video/mp4",
+        "metahash": "1e2096c0a53475a186ce37622aba7ba70651fc62cc8150f59eee6d17dc16d9bfbf25",
+        "mode": "video",
+        "name": "Kali by Anokato - Spiral Sessions 2019",
+        "width": 176,
     }
 
 
@@ -183,20 +222,18 @@ def test_code_iscc_video_granular_no_scenes(mp4_file):
     result = idk.code_iscc(mp4_file).dict()
     assert result == {
         "@type": "VideoObject",
-        "iscc": "ISCC:KMCV6UK6BSXJ3I4GLYHIH5A5DNZPYBWQO33FNHPQFOOUCLLW3HKRNUA",
-        "name": "Kali by Anokato - Spiral Sessions 2019",
-        "mode": "video",
-        "mediatype": "video/mp4",
+        "datahash": "1e209d412d76d9d516d07bb60f1ab3c1a5c1b176ed4f1cec94c96222a5d013ec3e38",
+        "duration": 60.14,
+        "features": {"features": ["Xg6D9B0bcvw"], "kind": "video", "sizes": [59.8], "version": 0},
         "filename": "video.mp4",
         "filesize": 2161914,
+        "fps": 24.0,
+        "height": 144,
+        "iscc": "ISCC:KMCV6UK6BSXJ3I4GLYHIH5A5DNZPYBWQO33FNHPQFOOUCLLW3HKRNUA",
+        "language": "en",
+        "mediatype": "video/mp4",
         "metahash": "1e2096c0a53475a186ce37622aba7ba70651fc62cc8150f59eee6d17dc16d9bfbf25",
-        "datahash": "1e209d412d76d9d516d07bb60f1ab3c1a5c1b176ed4f1cec94c96222a5d013ec3e38",
-        "features": {
-            "kind": "video",
-            "version": 0,
-            "features": [
-                "Xg6D9B0bcvw",
-            ],
-            "sizes": [59.8],
-        },
+        "mode": "video",
+        "name": "Kali by Anokato - Spiral Sessions 2019",
+        "width": 176,
     }

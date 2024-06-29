@@ -1,7 +1,9 @@
 ## Changelog
 
 ## 0.7.0 - Unreleased
-
+- Added support for scene based granular video code processing
+- Added ffprobe video metadata extraction (duration, fps, width, height, language)
+- Added support str and Path objects for all file inpunts
 
 ## 0.6.2 - 2024-06-13
 - Update and relax dependencies

@@ -54,14 +54,19 @@ def test_code_iscc_video(mp4_file):
     assert idk.code_iscc(mp4_file).dict() == {
         "@type": "VideoObject",
         "datahash": "1e209d412d76d9d516d07bb60f1ab3c1a5c1b176ed4f1cec94c96222a5d013ec3e38",
+        "duration": 60.14,
         "filename": "video.mp4",
         "filesize": 2161914,
+        "fps": 24.0,
+        "height": 144,
         "iscc": "ISCC:KMCV6UK6BSXJ3I4GLYHIH5A5DNZPYBWQO33FNHPQFOOUCLLW3HKRNUA",
+        "language": "en",
         "mediatype": "video/mp4",
         "metahash": "1e2096c0a53475a186ce37622aba7ba70651fc62cc8150f59eee6d17dc16d9bfbf25",
         "mode": "video",
         "name": "Kali by Anokato - Spiral Sessions 2019",
         "thumbnail": "data:image/webp;base64,UklGRkAFAABXRUJQVlA4IDQFAABQHACdASqAAGkAPrVUoU0nJL+iJds7o/AWiUAaVUmMC9Ymbvi4gI54bTdt50rwr7N+M3nP42/ab9zzG+k74b8n/VrvT9OHkr3QnKPB0+k/qr4qX8d6D/UjzQ/9N6a94N4t7AH8n/u3/R9lT+k8bP0p7Af66dcEw8O/Fjh0V9q/EzGIXOPxxGpc24WPN9p12h+zeDRpntIPLKARwz62m3BPGyFS9rzZiv3VJlg+hNKMMfZMQJzHYwM5pXOu/B8cvvwU0x4TrPQT/1NWb1QiI/XoZOGjVrAntgus6zRf5zFWbUxamLYiInReOWnQAP750EAB6/Gz7ppI6A3w/zt8U/tR4HwZILZiEJ39oTo6Jf1u3N4w7w0ALWz10zrZ8GVMOcoN7ib8ZG9jZz1xUfcW9Sdg0+9vgh5GLQpOT77rQTmy2vkPAmUpMeQOnCAYqmD8In78khGhd2PPfNzF5wjbMmcxmZr8pk0Tzza+jvY6twcoqfijYdYqRMT6BRQl95E1TQJ2vBWwn/5P406F/viJYID3/5Dl3LJlsmMlCDoIcd8zEtx+XLqcpUaER8pnGFbViIzy/0X3LvUkP9xlJzidkB3CgqYf26aIdunTUCYRLfeSpj2yptiOXx0YmRzx5XxrPm3i7GO2smpd6/o9ZIX9Q3vG20223jlv2Qrl2PToH2G91tWwDBpFLiyX+ojOGEyAtJ+PIxKoIxthBeved8lNoDHtsI2dur5AhYy0TVIwP0e6fQ0lsiHaEdU8AvOFGw5f/WaKrif6HjVbFKFQgEyBbFUQM8Xrykx3X8cKCq0EPcjj2ggd++n10yVCX4GSdB/Trerpf69HVhpJtMZLynD1z3cf9VI28q+1/LtCt8W7yI7GTekUoZaDEjALNUNT8ry/l9egi6aK59BAYWqvDgT8Vcu7hOiFL/qJBepaPtIUQkin19qvzT+9T0d8SGoG0binZs1UbMxY1phQeT3U16T17OxvcmhVnOV0C92EginYKqZw5n/xat/JbmptnAZP19BGkcOqnRCxVeJgwkxRB9vzu1xLM1i3Dt+WKXyv50lK4ykfU2srsOJHpSLgMz75gbyhEitaPiW49IooZ7Ae61bI6JMoI0N7kBDpFs8jOGXtczQBSAEtVe++l89JefzWcS2EH9Lmyk3+q7O0yHz2eE3KcImzXnN8AL/kcB0H28Y2q7WTRjGPg7qIzeg5rsuOBsSMstmMfGM1YDWb9k55rWvedKYcrQc4Tyc4uxLXOoZzfPfXVHO6sFJBw2DGX3n6sb8fegUVN+uxLKJnO4fkvw3aD6aamRI2lL1m3Z6YeRbIRkVAUbxu7QkFcfQ/NmygSImoYv96fjbxvoQLSMdaSj5ZCYYgx/J8n/XyeRaCsWAOeUqsx93z+Fq0JPrnOxm9ypga1WYQhn8RYnGjcd+y6uHoq7VAzXunweVYJGYMD5IDBZtaYCywWZHM2z5FtkzAlomZR173ct/Ls+p036ukw/nMbCKeHnkJ884g1xNf6Flzc7LRTA0H6Ttrz3rukIxtReTvlQ1FuI9QCxk3tVP9MzNrHhtwq85YHYLcgBopKZqMJxkCm62YZ+ckmErtGImje7dBmxlAZe290TV0R2vYx51znfnph4aLw6OiksjFM//JnYh/JEMYlTjl/v4LCa8qFgHQ/yPJql1BtdwmM9g3NkoL50nf/cOlQmSwljeE33QqAp0NwgkAlo7c3/LEib8gvzr+CHETvA4pAL1yMJfLDfxlG5U/+AeRF6lDsnZfKTDeUeZwAAAAAAA=",
+        "width": 176,
     }
 
 
@@ -78,18 +83,23 @@ def test_code_meta_image(jpg_file):
 
 def test_code_meta_audio(mp3_file):
     assert idk.code_meta(mp3_file).dict() == {
-        "iscc": "ISCC:AAA2JKSX7OH5PBIE",
-        "name": "Belly Button",
         "duration": 15,
+        "iscc": "ISCC:AAA2JKSX7OH5PBIE",
         "metahash": "1e20c4933dc8c03ea58568159a1cbfb04132c7db93b6b4cd025ffd4db37f52a4756f",
+        "name": "Belly Button",
     }
 
 
 def test_code_meta_video(mp4_file):
     assert idk.code_meta(mp4_file).dict() == {
+        "duration": 60.14,
+        "fps": 24.0,
+        "height": 144,
         "iscc": "ISCC:AAAV6UK6BSXJ3I4G",
-        "name": "Kali by Anokato - Spiral Sessions 2019",
+        "language": "en",
         "metahash": "1e2096c0a53475a186ce37622aba7ba70651fc62cc8150f59eee6d17dc16d9bfbf25",
+        "name": "Kali by Anokato - Spiral Sessions 2019",
+        "width": 176,
     }
 
 
@@ -158,9 +168,14 @@ def test_code_image(jpg_file):
 
 def test_code_video(mp4_file):
     assert idk.code_video(mp4_file).dict() == {
+        "duration": 60.14,
+        "fps": 24.0,
+        "height": 144,
         "iscc": "ISCC:EMAV4DUD6QORW4X4",
+        "language": "en",
         "name": "Kali by Anokato - Spiral Sessions 2019",
         "thumbnail": "data:image/webp;base64,UklGRkAFAABXRUJQVlA4IDQFAABQHACdASqAAGkAPrVUoU0nJL+iJds7o/AWiUAaVUmMC9Ymbvi4gI54bTdt50rwr7N+M3nP42/ab9zzG+k74b8n/VrvT9OHkr3QnKPB0+k/qr4qX8d6D/UjzQ/9N6a94N4t7AH8n/u3/R9lT+k8bP0p7Af66dcEw8O/Fjh0V9q/EzGIXOPxxGpc24WPN9p12h+zeDRpntIPLKARwz62m3BPGyFS9rzZiv3VJlg+hNKMMfZMQJzHYwM5pXOu/B8cvvwU0x4TrPQT/1NWb1QiI/XoZOGjVrAntgus6zRf5zFWbUxamLYiInReOWnQAP750EAB6/Gz7ppI6A3w/zt8U/tR4HwZILZiEJ39oTo6Jf1u3N4w7w0ALWz10zrZ8GVMOcoN7ib8ZG9jZz1xUfcW9Sdg0+9vgh5GLQpOT77rQTmy2vkPAmUpMeQOnCAYqmD8In78khGhd2PPfNzF5wjbMmcxmZr8pk0Tzza+jvY6twcoqfijYdYqRMT6BRQl95E1TQJ2vBWwn/5P406F/viJYID3/5Dl3LJlsmMlCDoIcd8zEtx+XLqcpUaER8pnGFbViIzy/0X3LvUkP9xlJzidkB3CgqYf26aIdunTUCYRLfeSpj2yptiOXx0YmRzx5XxrPm3i7GO2smpd6/o9ZIX9Q3vG20223jlv2Qrl2PToH2G91tWwDBpFLiyX+ojOGEyAtJ+PIxKoIxthBeved8lNoDHtsI2dur5AhYy0TVIwP0e6fQ0lsiHaEdU8AvOFGw5f/WaKrif6HjVbFKFQgEyBbFUQM8Xrykx3X8cKCq0EPcjj2ggd++n10yVCX4GSdB/Trerpf69HVhpJtMZLynD1z3cf9VI28q+1/LtCt8W7yI7GTekUoZaDEjALNUNT8ry/l9egi6aK59BAYWqvDgT8Vcu7hOiFL/qJBepaPtIUQkin19qvzT+9T0d8SGoG0binZs1UbMxY1phQeT3U16T17OxvcmhVnOV0C92EginYKqZw5n/xat/JbmptnAZP19BGkcOqnRCxVeJgwkxRB9vzu1xLM1i3Dt+WKXyv50lK4ykfU2srsOJHpSLgMz75gbyhEitaPiW49IooZ7Ae61bI6JMoI0N7kBDpFs8jOGXtczQBSAEtVe++l89JefzWcS2EH9Lmyk3+q7O0yHz2eE3KcImzXnN8AL/kcB0H28Y2q7WTRjGPg7qIzeg5rsuOBsSMstmMfGM1YDWb9k55rWvedKYcrQc4Tyc4uxLXOoZzfPfXVHO6sFJBw2DGX3n6sb8fegUVN+uxLKJnO4fkvw3aD6aamRI2lL1m3Z6YeRbIRkVAUbxu7QkFcfQ/NmygSImoYv96fjbxvoQLSMdaSj5ZCYYgx/J8n/XyeRaCsWAOeUqsx93z+Fq0JPrnOxm9ypga1WYQhn8RYnGjcd+y6uHoq7VAzXunweVYJGYMD5IDBZtaYCywWZHM2z5FtkzAlomZR173ct/Ls+p036ukw/nMbCKeHnkJ884g1xNf6Flzc7LRTA0H6Ttrz3rukIxtReTvlQ1FuI9QCxk3tVP9MzNrHhtwq85YHYLcgBopKZqMJxkCm62YZ+ckmErtGImje7dBmxlAZe290TV0R2vYx51znfnph4aLw6OiksjFM//JnYh/JEMYlTjl/v4LCa8qFgHQ/yPJql1BtdwmM9g3NkoL50nf/cOlQmSwljeE33QqAp0NwgkAlo7c3/LEib8gvzr+CHETvA4pAL1yMJfLDfxlG5U/+AeRF6lDsnZfKTDeUeZwAAAAAAA=",
+        "width": 176,
     }
 
 

@@ -61,6 +61,7 @@ python-docx = "*"
 typer = "*"
 pillow-avif-plugin = "^1.4"
 pillow-heif = "^0.14"
+langcodes = "^3.4.0"
 
 
 [tool.poetry.group.dev.dependencies]
