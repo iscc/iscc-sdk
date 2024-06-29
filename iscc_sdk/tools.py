@@ -21,6 +21,7 @@ from concurrent.futures import ThreadPoolExecutor
 
 __all__ = [
     "install",
+    "run_ffprobe",
     "run_ffmpeg",
     "run_fpcalc",
     "run_exiv2",
@@ -42,6 +43,18 @@ IPFS_CHECKSUMS = {
     "windows-64": "a2af645936a090c296b5d54755af0e9d6b1021f652195bb8fc596cf2073001c7",
     "linux-64": "7312b34bc7179c94c96e09a067b61d405672653bbaf70abee30396433a18ef81",
     "darwin-64": "3797fd0e6d5f922c095a12d860baccb49d90cef74accf49d219d4cea1b0d2bd7",
+}
+
+FFPROBE_VERSION = "6.1"
+FFPROBE_URLS = {
+    "windows-64": f"{BASE_URL}/ffprobe-{FFPROBE_VERSION}-win-64.zip",
+    "linux-64": f"{BASE_URL}/ffprobe-{FFPROBE_VERSION}-linux-64.zip",
+    "darwin-64": f"{BASE_URL}/ffprobe-{FFPROBE_VERSION}-macos-64.zip",
+}
+FFPROBE_CHECKSUMS = {
+    "linux-64": "bd01b79f3a0d0a19cd0e086b38f60b4fad4d3274bb5cfebf8abc3f1da5603a16",
+    "darwin-64": "799f36c0cd8797b015186e7aa78d1dd93a634f56e084325de2672d89a840eabb",
+    "windows-64": "75497ab05dad5b8e7edb52ad1e1b626c8756fe33ae67825ab202b213f6d80548",
 }
 
 FFMPEG_VERSION = "6.1"
@@ -104,6 +117,7 @@ def install():
     with ThreadPoolExecutor(max_workers=6) as p:
         p.submit(exiv2_install)
         p.submit(fpcalc_install)
+        p.submit(ffprobe_install)
         p.submit(ffmpeg_install)
         p.submit(tika_install)
         p.submit(ipfs_install)
@@ -157,7 +171,7 @@ def extract(archive):  # pragma: no cover
 
 
 def ipfs_download_url() -> str:
-    """Return system and version dependant IPFS download url."""
+    """Return system and version dependent IPFS download url."""
     return IPFS_URLS[system_tag()]
 
 
@@ -217,7 +231,7 @@ def run_ipfs(args: List[str]):
 
 
 def exiv2_download_url() -> str:
-    """Return system and version dependant exiv2 download url."""
+    """Return system and version dependent exiv2 download url."""
     return EXIV2_URLS[system_tag()]
 
 
@@ -321,7 +335,7 @@ def fpcalc_is_installed():  # pragma: no cover
 
 
 def fpcalc_download_url():
-    """Return system and version dependant download url."""
+    """Return system and version dependent download url."""
     return FPCALC_URLS[system_tag()]
 
 
@@ -388,12 +402,87 @@ def run_fpcalc(args: List[str]):
 
 
 ########################################################################################
+# ffprobe                                                                              #
+########################################################################################
+
+
+def ffprobe_download_url():
+    """Return system dependent download url."""
+    return FFPROBE_URLS[system_tag()]
+
+
+def ffprobe_bin() -> str:
+    """Returns local path to ffprobe executable."""
+    path = os.path.join(idk.dirs.user_data_dir, "ffprobe-{}".format(FFPROBE_VERSION))
+    if system() == "Windows":
+        path += ".exe"
+    return path
+
+
+def ffprobe_download():  # pragma: no cover
+    """Download ffprobe and return path to archive file."""
+    b3 = FFPROBE_CHECKSUMS.get(system_tag())
+    return download_file(ffprobe_download_url(), checksum=b3)
+
+
+def ffprobe_extract(archive: str):  # pragma: no cover
+    """Extract ffprobe from archive."""
+    fname = "ffprobe.exe" if system() == "Windows" else "ffprobe"
+    with zipfile.ZipFile(archive) as zip_file:
+        with zip_file.open(fname) as zf, open(ffprobe_bin(), "wb") as lf:
+            shutil.copyfileobj(zf, lf)
+    os.unlink(archive)
+
+
+def ffprobe_install():  # pragma: no cover
+    """Install ffprobe command line tool and return path to executable."""
+    if is_installed(ffprobe_bin()):
+        log.debug("ffprobe is already installed")
+        return ffprobe_bin()
+    log.critical("installing ffprobe")
+    archive_path = ffprobe_download()
+    ffprobe_extract(archive_path)
+    st = os.stat(ffprobe_bin())
+    os.chmod(ffprobe_bin(), st.st_mode | stat.S_IEXEC)
+    assert is_installed(ffprobe_bin())
+    return ffprobe_bin()
+
+
+def ffprobe_version_info():  # pragma: no cover
+    """Get ffprobe version"""
+    try:
+        r = subprocess.run([ffprobe_bin(), "-version"], stdout=subprocess.PIPE)
+        return (
+            r.stdout.decode("utf-8")
+            .strip()
+            .splitlines()[0]
+            .split()[2]
+            .rstrip("-static")
+            .rstrip("-tessu")
+        )
+    except FileNotFoundError:
+        return "ffprobe not installed"
+
+
+def run_ffprobe(args: List[str]):  # pragma: no cover
+    """Run ffprobe command with `args`. Install ffprobe if not found."""
+    cmd = [ffprobe_bin()] + args
+    try:
+        result = subprocess.run(cmd, capture_output=True, check=True)
+    except FileNotFoundError:  # pragma: no cover
+        print("FFPROBE not found - installing ...")
+        ffprobe_install()
+        result = subprocess.run(cmd, capture_output=True, check=True)
+    return result
+
+
+########################################################################################
 # ffmpeg                                                                               #
 ########################################################################################
 
 
 def ffmpeg_download_url():
-    """Return system dependant download url."""
+    """Return system dependent download url."""
     return FFMPEG_URLS[system_tag()]
 
 
