@@ -169,9 +169,9 @@ def mediatype_to_mode(mime_type):
     # type: (str) -> str
     """Get perceptual processing mode from mimetype.
 
-    :param str mime_type: RFC-6838 mediatype string
-    :return str: Processing mode ("text", "image", "audio", "video")
-    :raise ValueError: if no matching processing mode was found.
+    :param mime_type: RFC-6838 mediatype string
+    :return Processing mode ("text", "image", "audio", "video")
+    :raise IsccUnsupportedMediatype: if no matching processing mode was found.
     """
 
     mime_type = mediatype_clean(mime_type)
@@ -181,7 +181,7 @@ def mediatype_to_mode(mime_type):
 
     # Fallback to guess mode by top-level type
     mode = mime_type.split("/")[0]
-    if mode in ["text", "image", "audio", "video"]:
+    if mode in ["text", "image", "audio", "video"] and mime_type not in UNSUPPORTED_MEDIATYPES:
         log.warning(f"Guessing perceptual mode from {mime_type}")
         return mode
 
@@ -201,6 +201,7 @@ mimetypes.add_type(
 mimetypes.add_type("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", ".xlsx")
 mimetypes.add_type("image/heic", ".heic")
 mimetypes.add_type("image/avif", ".avif")
+
 
 SUPPORTED_MEDIATYPES = {
     # Text Formats
@@ -277,6 +278,12 @@ SUPPORTED_MEDIATYPES = {
     "video/h264": {"mode": "video", "ext": "h264"},
     "video/x-ms-wmv": {"mode": "video", "ext": "wmv"},
 }
+
+# Signals eplixitly unsupported mediatypes that fail processing
+UNSUPPORTED_MEDIATYPES = {
+    "image/svg+xml": {"mode": "image", "ext": "svg"},
+}
+
 
 MEDIATYPE_NORM = {
     "audio/x-aiff": "audio/aiff",

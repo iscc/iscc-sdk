@@ -116,6 +116,18 @@ def epub_file(tmp_path_factory):
 
 
 @pytest.fixture(scope="module")
+def svg_file(tmp_path_factory) -> str:
+    dst = tmp_path_factory.mktemp("data") / "image.svg"
+    svg_content = """
+    <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100">
+        <circle cx="50" cy="50" r="40" stroke="black" stroke-width="3" fill="red" />
+    </svg>
+    """
+    dst.write_text(svg_content)
+    return dst.as_posix()
+
+
+@pytest.fixture(scope="module")
 def asset_tree(tmp_path_factory):
     dst = Path(tmp_path_factory.mktemp("data"))
     for img_path in videos()[:3]:

@@ -95,8 +95,12 @@ def create(file: Path):
     """Create ISCC-CODE for single FILE."""
     log.remove()
     if file.is_file() and file.exists():
-        result = idk.code_iscc(file.as_posix())
-        typer.echo(result.json(indent=2))
+        try:
+            result = idk.code_iscc(file.as_posix())
+            typer.echo(result.json(indent=2))
+        except idk.IsccUnsupportedMediatype as e:
+            typer.echo(e)
+            raise typer.Exit(code=1)
     else:
         typer.echo(f"Invalid file path {file}")
         raise typer.Exit(code=1)

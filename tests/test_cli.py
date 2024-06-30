@@ -68,6 +68,12 @@ def test_cli_create():
     }
 
 
+def test_cli_create_unsupported(svg_file):
+    result = runner.invoke(app, ["create", svg_file])
+    assert result.exit_code == 1
+    assert "Unsupported mediatype image/svg+xml" in result.stdout
+
+
 def test_cli_batch_no_arg():
     result = runner.invoke(app, ["batch"])
     assert result.exit_code == 2

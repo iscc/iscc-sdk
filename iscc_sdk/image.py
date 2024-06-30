@@ -189,6 +189,8 @@ def image_meta_embed(fp, meta):
         cmdf += f"set Xmp.dc.creator {meta.creator}\n"
     if meta.rights:
         cmdf += f"set Xmp.dc.rights {meta.rights}\n"
+    if meta.identifier:
+        cmdf += f"set Xmp.dc.identifier {meta.identifier}\n"
 
     # Create temp filepaths
     tempdir = Path(tempfile.mkdtemp())
