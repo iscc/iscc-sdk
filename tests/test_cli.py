@@ -52,7 +52,10 @@ def test_cli_create_not_file():
 def test_cli_create():
     result = runner.invoke(app, ["create", iss.audios(ext="mp3")[0].as_posix()])
     assert result.exit_code == 0
-    assert json.loads(result.stdout) == {
+    data = json.loads(result.stdout)
+    assert "iscc-sdk" in data["generator"]
+    del data["generator"]
+    assert data == {
         "@context": "http://purl.org/iscc/context",
         "$schema": "http://purl.org/iscc/schema",
         "@type": "AudioObject",

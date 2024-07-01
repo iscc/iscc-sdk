@@ -2,7 +2,7 @@ import iscc_sdk as idk
 
 
 def test_code_iscc_text(pdf_file):
-    assert idk.code_iscc(pdf_file).dict() == {
+    assert idk.code_iscc(pdf_file).dict(exclude={"generator"}) == {
         "@type": "TextDigitalDocument",
         "characters": 16995,
         "datahash": "1e207ad5c7dbf6a6538f15fd0439e0dc5ba03a043ea23f072aa4e2ba830811bdb5f0",
@@ -18,7 +18,7 @@ def test_code_iscc_text(pdf_file):
 
 
 def test_code_iscc_image(jpg_file):
-    assert idk.code_iscc(jpg_file).dict() == {
+    assert idk.code_iscc(jpg_file).dict(exclude={"generator"}) == {
         "@type": "ImageObject",
         "iscc": "ISCC:KECWRY3VY6R5SNV4YNBTBHR4T2HGP3HKVFO7TYUP2BKVFG724W63HVI",
         "creator": "Some Cat Lover",
@@ -36,7 +36,7 @@ def test_code_iscc_image(jpg_file):
 
 
 def test_code_iscc_audio(mp3_file):
-    assert idk.code_iscc(mp3_file).dict() == {
+    assert idk.code_iscc(mp3_file).dict(exclude={"generator"}) == {
         "@type": "AudioObject",
         "iscc": "ISCC:KIC2JKSX7OH5PBIENISKEJTS4TRKHYJBCZDNLQXYILWJHQAP3N3KPTQ",
         "name": "Belly Button",
@@ -51,7 +51,7 @@ def test_code_iscc_audio(mp3_file):
 
 
 def test_code_iscc_video(mp4_file):
-    assert idk.code_iscc(mp4_file).dict() == {
+    assert idk.code_iscc(mp4_file).dict(exclude={"generator"}) == {
         "@type": "VideoObject",
         "datahash": "1e209d412d76d9d516d07bb60f1ab3c1a5c1b176ed4f1cec94c96222a5d013ec3e38",
         "duration": 60.14,
@@ -193,7 +193,7 @@ def test_code_instance(png_file):
 
 def test_code_iscc_non_uri_metadata(jpg_file):
     new_file = idk.image_meta_embed(jpg_file, idk.IsccMeta.construct(license="Hello World"))
-    assert idk.code_iscc(new_file).dict() == {
+    assert idk.code_iscc(new_file).dict(exclude={"generator"}) == {
         "@type": "ImageObject",
         "creator": "Some Cat Lover",
         "datahash": "1e2010f846e2a950469a4b0e310accd76574e019faa858805ba4f6543498623e53ed",

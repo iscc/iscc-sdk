@@ -181,7 +181,7 @@ def test_code_iscc_video_granular(mp4_file):
     idk.sdk_opts.video_scene_limit = 0.2
     idk.sdk_opts.create_thumbnail = False
     idk.sdk_opts.extract_metadata = True
-    result = idk.code_iscc(mp4_file).dict()
+    result = idk.code_iscc(mp4_file).dict(exclude={"generator"})
     assert result == {
         "@type": "VideoObject",
         "datahash": "1e209d412d76d9d516d07bb60f1ab3c1a5c1b176ed4f1cec94c96222a5d013ec3e38",
@@ -219,7 +219,7 @@ def test_code_iscc_video_granular_no_scenes(mp4_file):
     idk.sdk_opts.video_scene_limit = 0.8
     idk.sdk_opts.create_thumbnail = False
     idk.sdk_opts.extract_metadata = True
-    result = idk.code_iscc(mp4_file).dict()
+    result = idk.code_iscc(mp4_file).dict(exclude={"generator"})
     assert result == {
         "@type": "VideoObject",
         "datahash": "1e209d412d76d9d516d07bb60f1ab3c1a5c1b176ed4f1cec94c96222a5d013ec3e38",

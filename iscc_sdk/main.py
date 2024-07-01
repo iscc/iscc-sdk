@@ -57,6 +57,7 @@ def code_iscc(fp):
     iscc_meta.update(content.dict())
     iscc_meta.update(meta.dict())
     iscc_meta.update(iscc_code)
+    iscc_meta["generator"] = f"iscc-sdk - v{idk.__version__}"
     return idk.IsccMeta.construct(**iscc_meta)
 
 
