@@ -49,7 +49,7 @@ iscc-core = "^1.0"
 iscc-schema = "^0.4"
 python-magic-bin = { version = "^0.4", markers = "sys_platform == 'win32' or (sys_platform == 'darwin' and platform_machine == 'x86_64')" }
 python-magic = { version = "^0.4", markers = "sys_platform == 'linux' or (sys_platform == 'darwin' and platform_machine == 'arm64')" }
-install-jdk = "^0.3"
+install-jdk = "^1.1"
 platformdirs = "*"
 jmespath = "^1.0"
 Pillow = "*"

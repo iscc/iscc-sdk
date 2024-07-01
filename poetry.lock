@@ -605,12 +605,13 @@ files = [
 
 [[package]]
 name = "install-jdk"
-version = "0.3.0"
-description = "Installs AdoptOpenJDK Java"
+version = "1.1.0"
+description = "install-jdk allows you to easily install latest Java OpenJDK version. Supports OpenJDK builds from Adoptium (previously AdoptOpenJDK), Corretto, and Zulu. Simplify your Java development with the latest OpenJDK builds."
 optional = false
-python-versions = ">=3.6"
+python-versions = ">=3.6,<4.0"
 files = [
-    {file = "install-jdk-0.3.0.tar.gz", hash = "sha256:889965b0af68bb4669166804f33d5dce9cd6cf57f02a045e427e508998d569a1"},
+    {file = "install_jdk-1.1.0-py3-none-any.whl", hash = "sha256:b63f0fcd63f7abab3443d4120ba92716397753b8a8ea3c85762a629925a9936e"},
+    {file = "install_jdk-1.1.0.tar.gz", hash = "sha256:2bfd53caf660e4916df0215a5715519dcb9547fa2a5f07421fd97a8046851eaa"},
 ]
 
 [[package]]
@@ -2745,4 +2746,4 @@ test = ["big-O", "importlib-resources", "jaraco.functools", "jaraco.itertools", 
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9,<4.0"
-content-hash = "348776b0a38de64644eade93c0148879d1c0639a56a76bb8c8c1bb8e0d5232a8"
+content-hash = "8e83c6252ea76b0a0c2d7d9e5fee23c10f7bfbddaf1427f01ccfd371cb81ba56"
