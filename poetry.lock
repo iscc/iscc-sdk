@@ -2067,50 +2067,53 @@ files = [
 
 [[package]]
 name = "pytaglib"
-version = "2.1.0"
+version = "3.0.0"
 description = "cross-platform, Python audio metadata (\"tagging\") library based on TagLib"
 optional = false
 python-versions = ">=3.6"
 files = [
-    {file = "pytaglib-2.1.0-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:599a15ede4b80c8a35549993f44eddf05579d0915c51d2b98a6ff5e3c1294767"},
-    {file = "pytaglib-2.1.0-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:33f54db28a6f78ecd502680c3a34366ce7fbda76736a048a270c5b92760a516f"},
-    {file = "pytaglib-2.1.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:0d96563998fb88ca60f9b897d819323014b27f431d925bff13085912e63ecefa"},
-    {file = "pytaglib-2.1.0-cp310-cp310-musllinux_1_1_x86_64.whl", hash = "sha256:7260f346f519600662e7324f3a02fdc8a7eeb8a85b938a8136fcfd79918f684b"},
-    {file = "pytaglib-2.1.0-cp310-cp310-win_amd64.whl", hash = "sha256:d02fe61117468b6742b91b3a64718a6e12ce8aab5084ab2d6505696a72303a56"},
-    {file = "pytaglib-2.1.0-cp311-cp311-macosx_10_9_x86_64.whl", hash = "sha256:bb386541200fc74c07100e1555720311aa8fe8aa953a9d6a2884e77290a3e685"},
-    {file = "pytaglib-2.1.0-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:935ce0c1f0f36365eeb931418238ce3c98f89a84f0fec998e6d980ca738d3e39"},
-    {file = "pytaglib-2.1.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:376130120b56809262d8524fc15340cae61898c7f3c1f422c053d83c694443b1"},
-    {file = "pytaglib-2.1.0-cp311-cp311-musllinux_1_1_x86_64.whl", hash = "sha256:95e31a70acd9b29905d11b78cf6f8468f7206982710d9c289cd11282b6a260e7"},
-    {file = "pytaglib-2.1.0-cp311-cp311-win_amd64.whl", hash = "sha256:b824a51097361532eafbd29fe8c74eb7b7db6133108e45ec6ca026c2e5a6ca4a"},
-    {file = "pytaglib-2.1.0-cp312-cp312-macosx_10_9_x86_64.whl", hash = "sha256:2e79511e3d6efaab20e82457ac0bd433821931fcc6139d257a1d5f997054c9bf"},
-    {file = "pytaglib-2.1.0-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:a8216e5b0d633e88176a043d6449e31d87a5addc890d4618db37b3627c9ba453"},
-    {file = "pytaglib-2.1.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:19b5ed29bfa0df5c6e39c0466986ef12adea2ba551dac1a24bc9f9100dd87c4e"},
-    {file = "pytaglib-2.1.0-cp312-cp312-musllinux_1_1_x86_64.whl", hash = "sha256:793c9f64050da83295c60b06a93b06e86f9e4f3ed39f1f9e902c0b225d568d40"},
-    {file = "pytaglib-2.1.0-cp312-cp312-win_amd64.whl", hash = "sha256:d6bb8b21130bcf56e9084d01fc64e19a022b86117f0a12f520dfdeddcde24fe9"},
-    {file = "pytaglib-2.1.0-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:f77774e2400508a9485acb13e8b69e251dd5f2f4e2df666a5dd6f3b288ef8f24"},
-    {file = "pytaglib-2.1.0-cp38-cp38-macosx_11_0_arm64.whl", hash = "sha256:388cc408ce47b9c76e22b56fa540078b7c3e88053795c42608818dc2d9c494dd"},
-    {file = "pytaglib-2.1.0-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:d22860329f670c70ff1274ccfdf1b616195f6b1592a0fcc1d41d319365b1aa81"},
-    {file = "pytaglib-2.1.0-cp38-cp38-musllinux_1_1_x86_64.whl", hash = "sha256:1c26fcb5a1fc9847ef7d0363929dc00e118f12348cd80b85e9c83b231cc10d31"},
-    {file = "pytaglib-2.1.0-cp38-cp38-win_amd64.whl", hash = "sha256:b79bc64c4b7d53b0adb5db46d24ce837ba4d0429b6eb44707cf2c92d201d66ce"},
-    {file = "pytaglib-2.1.0-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:23c5ebacdb98c82398281258499c364d930cf94c4ffc9fd7f1f3b6974ad3336a"},
-    {file = "pytaglib-2.1.0-cp39-cp39-macosx_11_0_arm64.whl", hash = "sha256:7f6657331bbbcee01444a7099e2c53310d91fcb58bcae2c002a5adf517585e82"},
-    {file = "pytaglib-2.1.0-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:90bb174b52d88d226acf017ad37479b2351225736051888cd67adafe5f15a7a5"},
-    {file = "pytaglib-2.1.0-cp39-cp39-musllinux_1_1_x86_64.whl", hash = "sha256:4bce43086429c61604edecd6fea5baad9080b994523a8409717d126fbae0d972"},
-    {file = "pytaglib-2.1.0-cp39-cp39-win_amd64.whl", hash = "sha256:7a8ae4254565ec5eeaa9120f256650dd9f6ec72852513eb86fdd5716dbd75bc5"},
-    {file = "pytaglib-2.1.0-pp310-pypy310_pp73-macosx_10_9_x86_64.whl", hash = "sha256:147981520eca554e6f0df21a937aac4ea7020ec2cfb495393018fd34d95db654"},
-    {file = "pytaglib-2.1.0-pp310-pypy310_pp73-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:9a16a84f79398766269ceb8cb4c2eebec49135e3b1088e727014cfd3650a9586"},
-    {file = "pytaglib-2.1.0-pp310-pypy310_pp73-win_amd64.whl", hash = "sha256:1024de35533ef09234daf1b5781ae604362e20c6b273a5bbdb10213eb2b1bff8"},
-    {file = "pytaglib-2.1.0-pp38-pypy38_pp73-macosx_10_9_x86_64.whl", hash = "sha256:81868d49d1a575c802214b44e4c5d4617667617241842413c278800ccbb2527f"},
-    {file = "pytaglib-2.1.0-pp38-pypy38_pp73-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:7d497f3e5b5c664ab79efeb38a01b36f827aafe61e5ce5b15df385d1ce771c90"},
-    {file = "pytaglib-2.1.0-pp38-pypy38_pp73-win_amd64.whl", hash = "sha256:63da383a035e761a57f0f19f6bb2af8e12949f3ac82f98faa40a83dd4611cc6e"},
-    {file = "pytaglib-2.1.0-pp39-pypy39_pp73-macosx_10_9_x86_64.whl", hash = "sha256:f42ac6eb74bb147bfccf5bf379b727fb6e1b982ca42bd8d50b74f7c30a01fead"},
-    {file = "pytaglib-2.1.0-pp39-pypy39_pp73-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:25dd234240233effb0bdc546cf4431131f2a37995162dca0f5906cba4ca6920d"},
-    {file = "pytaglib-2.1.0-pp39-pypy39_pp73-win_amd64.whl", hash = "sha256:d2037fe2e94ebee7623b181254c7fa410c02fe18eeb35595716140f0b924464b"},
-    {file = "pytaglib-2.1.0.tar.gz", hash = "sha256:6b0e1a2d0602a9c457254c2e0fe72063ddb205d2a7fd283bf912e4e7bcca48af"},
+    {file = "pytaglib-3.0.0-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:539d33af2672f1222dbacbd2e65e7d567916142227e95fb9352b32dd253600bd"},
+    {file = "pytaglib-3.0.0-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:1fe64ad4f8aec50bfeee8c3a1840f446e083a895cba0c139c6e29bb60be38cd6"},
+    {file = "pytaglib-3.0.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:6a6b25bd9c742b07fa565b716e27506d395f189ef7d1f9b57a59c58375ed34d4"},
+    {file = "pytaglib-3.0.0-cp310-cp310-musllinux_1_1_x86_64.whl", hash = "sha256:7b793d60d94757b579d42f0de201ff993b26a65bb92c4dd3d6214af64c9d305c"},
+    {file = "pytaglib-3.0.0-cp310-cp310-win_amd64.whl", hash = "sha256:6363cbc6075fec16c7feb055e3d244dd73a31076ee62edd7c5dad01f12eb3f31"},
+    {file = "pytaglib-3.0.0-cp311-cp311-macosx_10_9_x86_64.whl", hash = "sha256:92da8c4ae0d15fc1036f2a61d77d66a623740db501300f34f9fdaab573e68d08"},
+    {file = "pytaglib-3.0.0-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:6d4c8ef3038025a611caed9d31905f56e623c9d0b8238d2b195c5b3e2a96fb2d"},
+    {file = "pytaglib-3.0.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:0510f39a93a4b49ab959b10f4b2b30f2290081cbdf5e5838ac4a003b33e3cd9b"},
+    {file = "pytaglib-3.0.0-cp311-cp311-musllinux_1_1_x86_64.whl", hash = "sha256:16c1441ee5301eb340751642cce11dd3c3f9af97775b11aa7130d83774d571fd"},
+    {file = "pytaglib-3.0.0-cp311-cp311-win_amd64.whl", hash = "sha256:c09be1d51aa58efad2c4ba6524f054caa646b0c9f5a5fa9aad6c532e7c6e3934"},
+    {file = "pytaglib-3.0.0-cp312-cp312-macosx_10_9_x86_64.whl", hash = "sha256:913402cd6c7d1fd09d2407886924c3ad74eae8c015443000c41a59088031124a"},
+    {file = "pytaglib-3.0.0-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:2f89c0da136cca832405a2fae449e6b41cb8b493f8c0a947acb29268af893cdd"},
+    {file = "pytaglib-3.0.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:c566d95adedb20d77a1110cc6ed2b34773779710b985f3a92aceafc4917df025"},
+    {file = "pytaglib-3.0.0-cp312-cp312-musllinux_1_1_x86_64.whl", hash = "sha256:6d6885c3c3aea225594b4e861f9b84f58bffb088ce20b86be6d6ca7618aa0719"},
+    {file = "pytaglib-3.0.0-cp312-cp312-win_amd64.whl", hash = "sha256:f80deb28c0d81f2d4b294f4a4d5f9a291a4bdb7fa13984453c4f8d8034ae671e"},
+    {file = "pytaglib-3.0.0-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:9cba1b16174dafd0d0cfd9cb0b753a503aba837b4090a6963dcefd15ea5c93b8"},
+    {file = "pytaglib-3.0.0-cp38-cp38-macosx_11_0_arm64.whl", hash = "sha256:59c7162f2ee44b6005c6b088b35a3ae6afc3f214e3c349d8e9cc6acf9722c857"},
+    {file = "pytaglib-3.0.0-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:f6dc29067f16fde4d0cf91569c4b6b38f505ea3ae0acfed212ee735233108a05"},
+    {file = "pytaglib-3.0.0-cp38-cp38-musllinux_1_1_x86_64.whl", hash = "sha256:d53ff49146e22cde7231f6a6088bb063b4a8d640235d4dbba148aedd53fbf895"},
+    {file = "pytaglib-3.0.0-cp38-cp38-win_amd64.whl", hash = "sha256:285b28c1a2fdcbc215eb91bb984177f32eed01a03e78040dfa6dce2a48076793"},
+    {file = "pytaglib-3.0.0-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:d571fb572ebe8b382c34f0209a0accdcfcac3647ccd8bfa9d9e6061de5341ab1"},
+    {file = "pytaglib-3.0.0-cp39-cp39-macosx_11_0_arm64.whl", hash = "sha256:9d4585cbe1df3af721ccba9d0174c524fe0b453a89562e622f7e842255241ceb"},
+    {file = "pytaglib-3.0.0-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:62592d9d97942e5df1622efe6438f9828088d0d7373bd3a70e5de356be4d5a07"},
+    {file = "pytaglib-3.0.0-cp39-cp39-musllinux_1_1_x86_64.whl", hash = "sha256:f1c10fcaeffe4392acdc0640586f698e04a761f2896c18e671107451e1e80437"},
+    {file = "pytaglib-3.0.0-cp39-cp39-win_amd64.whl", hash = "sha256:4ed415954e8ea0467d16dc307f574e3da314a268a875704159a4438cdc71d8b7"},
+    {file = "pytaglib-3.0.0-pp310-pypy310_pp73-macosx_10_9_x86_64.whl", hash = "sha256:b286b7f409d3a9c19695a21487238b91d97734a2013551526bea5d563d616fbe"},
+    {file = "pytaglib-3.0.0-pp310-pypy310_pp73-macosx_11_0_arm64.whl", hash = "sha256:818727622ccf68ff275a2fc712f4c977bc21227249ce9149ee91cd407b2c39bb"},
+    {file = "pytaglib-3.0.0-pp310-pypy310_pp73-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:f652eca86928cc8bcb74667db77322fd7d5301d30e207025d0e87a5579f85f94"},
+    {file = "pytaglib-3.0.0-pp310-pypy310_pp73-win_amd64.whl", hash = "sha256:cf2711b47f4995ebf3b5174986faf17abb7bf8b8fd207ec6bdc82d2d180ea83e"},
+    {file = "pytaglib-3.0.0-pp38-pypy38_pp73-macosx_10_9_x86_64.whl", hash = "sha256:28c70531da92b96c564b797d1e6646bf1549da13c0bc312c8c0a0f5c7998b598"},
+    {file = "pytaglib-3.0.0-pp38-pypy38_pp73-macosx_11_0_arm64.whl", hash = "sha256:2a4729e2005e711930467003729e5cbcdae1eecace40628f5afa0ef5b2f05c8e"},
+    {file = "pytaglib-3.0.0-pp38-pypy38_pp73-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:343ff7291f2869cdea4f06de67bec115817f02b2e1c9ac92f5f25f46700af2cc"},
+    {file = "pytaglib-3.0.0-pp38-pypy38_pp73-win_amd64.whl", hash = "sha256:fbb1ae40348258104035c32d629758591a4f7c2a69f827d158d29ac6745ba8d5"},
+    {file = "pytaglib-3.0.0-pp39-pypy39_pp73-macosx_10_9_x86_64.whl", hash = "sha256:a28319dbf11ee479f65283cac90b81984dfdc7d4b6254f8c5867cc982d3014b9"},
+    {file = "pytaglib-3.0.0-pp39-pypy39_pp73-macosx_11_0_arm64.whl", hash = "sha256:d9dd787f5fc3b33d9f861c1cd87a630136022c531080eaa88d7ac761f192cb5a"},
+    {file = "pytaglib-3.0.0-pp39-pypy39_pp73-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:9a779b3b5d6b18406fbfd02a751e96b7829fe850754125f12a1062043f928e07"},
+    {file = "pytaglib-3.0.0-pp39-pypy39_pp73-win_amd64.whl", hash = "sha256:292d413b5c8f64e4ee3fbfc723f1203c126342a3b054fb023052a0e1dcaac803"},
+    {file = "pytaglib-3.0.0.tar.gz", hash = "sha256:b1e666ba77f34493841c1165d9b5559c87ea7c9f9e03ddbb8d11008855d5398c"},
 ]
 
 [package.extras]
-tests = ["pytest (>=7.4.3,<7.5.0)"]
+tests = ["pytest (>=8.1.1,<8.2.0)"]
 
 [[package]]
 name = "pytest"
@@ -2742,4 +2745,4 @@ test = ["big-O", "importlib-resources", "jaraco.functools", "jaraco.itertools", 
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9,<4.0"
-content-hash = "f7ad362905a76ad31c1c8703559b72b4393c1ea4baec3429bccc28b885275b9e"
+content-hash = "348776b0a38de64644eade93c0148879d1c0639a56a76bb8c8c1bb8e0d5232a8"

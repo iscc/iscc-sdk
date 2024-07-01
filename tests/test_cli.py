@@ -65,7 +65,7 @@ def test_cli_create():
         "filename": "demo.mp3",
         "filesize": 225707,
         "mediatype": "audio/mpeg",
-        "duration": 15,
+        "duration": 15.543,
         "metahash": "1e20c4933dc8c03ea58568159a1cbfb04132c7db93b6b4cd025ffd4db37f52a4756f",
         "datahash": "1e20ec93c00fdb76a7cec587e4a2bddfa8d0a0bac8110d0c7130c351ea07c366d626",
     }
