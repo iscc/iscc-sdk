@@ -123,7 +123,7 @@ def svg_file(tmp_path_factory) -> str:
         <circle cx="50" cy="50" r="40" stroke="black" stroke-width="3" fill="red" />
     </svg>
     """
-    dst.write_text(svg_content)
+    dst.write_bytes(svg_content.encode("utf-8"))
     return dst.as_posix()
 
 
