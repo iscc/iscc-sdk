@@ -62,6 +62,7 @@ typer = "*"
 pillow-avif-plugin = "^1.4"
 pillow-heif = "^0.14"
 langcodes = "^3.4.0"
+mkdocstrings = {extras = ["python"], version = "^0.25.1"}
 
 
 [tool.poetry.group.dev.dependencies]
@@ -71,13 +72,13 @@ coverage = "*"
 pytest-cov = "*"
 poethepoet = "*"
 mkdocs-material = "*"
-mkdocstrings-python = "*"
+#mkdocstrings-python = "*"
 iscc-samples = "*"
 codetiming = "*"
 mdformat = "*"
 mdformat_admon = "*"
 mdformat_tables = "*"
-griffe = "<0.27.4"
+#griffe = "<0.27.4"
 
 [tool.ruff]
 line-length = 100
