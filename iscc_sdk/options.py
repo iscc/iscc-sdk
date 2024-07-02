@@ -106,6 +106,10 @@ class SdkOptions(BaseSettings):
         description="ISCC_SDK_VIDEO_STORE_MP7SIG - Store extracted MP7 Video as <videofile>.iscc.mp7sig",
     )
 
+    fallback: bool = Field(
+        False, description="ISCC_SDK_FALLBACK - Create 2-UNIT ISCC-SUM for unsupported media types"
+    )
+
     @validator("image_max_pixels")
     def set_pillow(cls, v):
         Image.MAX_IMAGE_PIXELS = v

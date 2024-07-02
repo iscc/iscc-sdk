@@ -1,5 +1,6 @@
 """*SDK main top-level functions*."""
 
+from loguru import logger as log
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from PIL import Image
@@ -23,41 +24,76 @@ __all__ = [
 def code_iscc(fp):
     # type: (str|Path) -> idk.IsccMeta
     """
-    Generate ISCC-CODE.
+    Generate a complete ISCC-CODE for the given file.
 
-    The ISCC-CODE is a composite of Meta, Content, Data and Instance Codes.
+    This function creates a full ISCC-CODE by combining Meta, Content, Data, and Instance Codes.
+    It automatically detects the media type and processes the file accordingly.
 
-    :param fp: Filepath used for ISCC-CODE creation.
-    :return: ISCC metadata including ISCC-CODE and merged metadata from ISCC-UNITs.
+    The function performs the following steps:
+    1. Reads the file and determines its MIME type.
+    2. Generates Instance and Data Codes for all file types.
+    3. For supported media types, generates Content and Meta Codes.
+    4. Combines all generated codes into a single ISCC-CODE.
+    5. Merges metadata from all ISCC units.
+
+    Note:
+
+    - This function uses multithreading to improve performance.
+    - The behavior can be customized through the `sdk_opts` settings. For example, setting
+      `sdk_opts.fallback` to True will allow processing of unsupported media types in a
+      fallback mode instead of raising an exception.
+
+    :param fp: str or Path object representing the filepath of the file to process.
+    :return: IsccMeta object with complete ISCC-CODE and merged metadata from all ISCC-UNITs.
+    :raises idk.IsccUnsupportedMediatype:
+        If the media type is not supported. By default, the function will raise this exception for
+        unsupported media types, as sdk_opts.fallback is False by default.
     """
     fp = Path(fp)
+    iscc_meta = dict(filename=fp.name)
+    iscc_units = []
 
-    # Generate ISCC-UNITs in parallel
+    with open(fp, "rb") as infile:
+        data = infile.read(4096)
+
+    mime = idk.mediatype_guess(data, file_name=fp.name)
+    iscc_meta["mediatype"] = mime
+
     with ThreadPoolExecutor() as executor:
-        instance = executor.submit(code_instance, fp)
-        data = executor.submit(code_data, fp)
-        content = executor.submit(code_content, fp, False, None)  # Skip metadata extraction
-        meta = executor.submit(code_meta, fp)
+        # Always process instance and data
+        instance_future = executor.submit(code_instance, fp)
+        data_future = executor.submit(code_data, fp)
+        try:
+            mode = idk.mediatype_to_mode(mime)
+            log.debug(f"Processing {fp.name} - media type: {mime} - processing mode: {mode}")
 
-    # Wait for all futures to complete and retrieve their results
-    instance, data, content, meta = (
-        instance.result(),
-        data.result(),
-        content.result(),
-        meta.result(),
-    )
+        except idk.IsccUnsupportedMediatype:
+            if not idk.sdk_opts.fallback:
+                raise
+            log.warning(f"Processing {fp.name} - media type: {mime} - processing mode: sum")
+        else:
+            # Process content and meta for supported media types
+            content_future = executor.submit(code_content, fp, False, None)
+            meta_future = executor.submit(code_meta, fp)
+
+            content = content_future.result()
+            meta = meta_future.result()
+            iscc_units.extend([meta.iscc, content.iscc])
+            iscc_meta.update(content.dict())
+            iscc_meta.update(meta.dict())
+        finally:
+            # Wait for instance and data to complete
+            instance = instance_future.result()
+            data = data_future.result()
+            iscc_units.extend([data.iscc, instance.iscc])
+            iscc_meta.update(instance.dict())
+            iscc_meta.update(data.dict())
 
     # Compose ISCC-CODE
-    iscc_code = ic.gen_iscc_code_v0([meta.iscc, content.iscc, data.iscc, instance.iscc])
-
-    # Merge ISCC Metadata
-    iscc_meta = dict(filename=fp.name)
-    iscc_meta.update(instance.dict())
-    iscc_meta.update(data.dict())
-    iscc_meta.update(content.dict())
-    iscc_meta.update(meta.dict())
+    iscc_code = ic.gen_iscc_code_v0(iscc_units)
     iscc_meta.update(iscc_code)
     iscc_meta["generator"] = f"iscc-sdk - v{idk.__version__}"
+
     return idk.IsccMeta.construct(**iscc_meta)
 
 

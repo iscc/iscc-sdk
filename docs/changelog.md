@@ -5,6 +5,7 @@
 - Added ffprobe video metadata extraction (duration, fps, width, height, language)
 - Added support str and Path objects for all file inpunts
 - Added `generator` (name and version of software) to ISCC metadata
+- Added optional fallback to ISCC-SUM for unsupported media types
 - Handle unsupported SVG files gracefully
 
 ## 0.6.2 - 2024-06-13
