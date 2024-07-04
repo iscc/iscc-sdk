@@ -4,7 +4,6 @@ from fractions import Fraction
 from functools import lru_cache
 from typing import Tuple, List
 from bitarray import bitarray
-import bitarray
 from bitarray.util import ba2int
 import numpy as np
 
@@ -72,7 +71,7 @@ def read_mp7_signature(byte_data):
     :rtype: List[Frame]
     """
     table_3_bit = calc_byte_to_bit3()
-    data_bits = bitarray.bitarray()
+    data_bits = bitarray()
     data_bits.frombytes(byte_data)
     pos = 0
     pos += 129
