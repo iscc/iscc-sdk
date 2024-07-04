@@ -12,7 +12,7 @@ class TempFile:
     def __init__(self, original_path):
         # type: (str|Path) -> None
         self.original_path = Path(original_path)
-        self.temp_dir = None
+        self.temp_dir: Path | None = None
 
     def __enter__(self):
         # type: () -> Path
