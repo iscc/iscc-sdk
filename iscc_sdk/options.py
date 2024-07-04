@@ -43,71 +43,71 @@ class SdkOptions(BaseSettings):
         env_file_encoding = "utf-8"
 
     granular: bool = Field(
-        False,
+        default=False,
         description="ISCC_SDK_GRANULAR - Generate additional granular fingerprints for ISCC-CODES",
     )
 
     extract_metadata: bool = Field(
-        True,
+        default=True,
         description="ISCC_EXTRACT_METADATA - Extract metadata from digital assets (defaut: True)",
     )
 
     create_thumbnail: bool = Field(
-        True,
+        default=True,
         description="ISCC_CREATE_THUMBNAIL - Create thumbail for digital assets (defaut: True)",
     )
 
     image_exif_transpose: bool = Field(
-        True,
+        default=True,
         description="ISCC_SDK_IMAGE_EXIF_TRANSPOSE - Transpose image according to EXIF Orientation tag",
     )
 
     image_fill_transparency: bool = Field(
-        True,
+        default=True,
         description="ISCC_SDK_IMAGE_FILL_TRANSPARENCY - Add white background to image if it has alpha transparency",
     )
 
     image_trim_border: bool = Field(
-        True, description="ISCC_SDK_IMAGE_TRIM_BORDER - Crop empty borders of images"
+        default=True, description="ISCC_SDK_IMAGE_TRIM_BORDER - Crop empty borders of images"
     )
 
     image_thumbnail_size: int = Field(
-        128,
+        default=128,
         description="ISCC_SDK_IMAGE_THUMBNAIL_SIZE - Size of larger side of thumbnail in number of pixels",
     )
 
     image_thumbnail_quality: int = Field(
-        60,
+        default=60,
         description="ISCC_SDK_IMAGE_THUMBNAIL_QUALITY - Thumbnail image compression setting (0-100)",
     )
 
     image_max_pixels: Optional[int] = Field(
-        128000000,
+        default=128000000,
         description="ISCC_SDK_IMAGE_MAX_PIXELS - Maximum number of pixels allowed for processing (default 128Mpx / 0.5GB RGB)",
     )
 
     text_avg_chunk_size: int = Field(
-        1024,
+        default=1024,
         description="ISCC_SDK_TEXT_AVG_CHUNK_SIZE - Avg number of characters per text chunk for granular fingerprints",
     )
 
     video_fps: int = Field(
-        5,
+        default=5,
         description="ISCC_SDK_VIDEO_FPS - Frames per second to process for video hash (ignored when 0).",
     )
 
     video_scene_limit: float = Field(
-        0.4,
+        default=0.4,
         description="ISCC_SDK_VIDEO_SCENE_LIMIT - Threshold value above which a scene cut is created (default 0.4)",
     )
 
     video_store_mp7sig: bool = Field(
-        False,
+        default=False,
         description="ISCC_SDK_VIDEO_STORE_MP7SIG - Store extracted MP7 Video as <videofile>.iscc.mp7sig",
     )
 
     fallback: bool = Field(
-        False, description="ISCC_SDK_FALLBACK - Create 2-UNIT ISCC-SUM for unsupported media types"
+        default=False, description="ISCC_SDK_FALLBACK - Create 2-UNIT ISCC-SUM for unsupported media types"
     )
 
     @validator("image_max_pixels")
