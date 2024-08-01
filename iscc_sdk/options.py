@@ -107,7 +107,8 @@ class SdkOptions(BaseSettings):
     )
 
     fallback: bool = Field(
-        default=False, description="ISCC_SDK_FALLBACK - Create 2-UNIT ISCC-SUM for unsupported media types"
+        default=False,
+        description="ISCC_SDK_FALLBACK - Create 2-UNIT ISCC-SUM for unsupported media types",
     )
 
     @validator("image_max_pixels")
