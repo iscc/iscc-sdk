@@ -17,6 +17,7 @@ class-atributes on the `SdkOptions` instance.
 """
 
 from typing import Optional
+import copy
 
 try:
     from pydantic.v1 import Field, validator, BaseSettings
@@ -115,6 +116,21 @@ class SdkOptions(BaseSettings):
     def set_pillow(cls, v):
         Image.MAX_IMAGE_PIXELS = v
         return v
+
+    def override(self, update=None):
+        # type: (dict|None) -> SdkOptions
+        """Returns an updated and validated deep copy of the current settings instance."""
+
+        update = update or {}  # sets {} if update is None
+
+        opts = copy.deepcopy(self)
+        # We need update fields individually so validation gets triggered
+        for field, value in update.items():
+            if hasattr(self, field):
+                setattr(opts, field, value)
+            else:
+                raise ValueError(f"Invalid field: {field}")
+        return opts
 
 
 sdk_opts = SdkOptions()

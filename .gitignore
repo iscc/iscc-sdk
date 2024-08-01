@@ -7,3 +7,5 @@ __pycache__
 .coverage
 coverage.xml
 
+.aider*
+.aider.conf.yml
