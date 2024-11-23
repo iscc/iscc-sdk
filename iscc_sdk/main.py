@@ -1,5 +1,7 @@
 """*SDK main top-level functions*."""
 
+from typing import Any
+
 from loguru import logger as log
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
@@ -21,8 +23,8 @@ __all__ = [
 ]
 
 
-def code_iscc(fp):
-    # type: (str|Path) -> idk.IsccMeta
+def code_iscc(fp, **options):
+    # type: (str|Path, Any) -> idk.IsccMeta
     """
     Generate a complete ISCC-CODE for the given file.
 
@@ -40,16 +42,18 @@ def code_iscc(fp):
 
     - This function uses multithreading to improve performance.
     - The behavior can be customized through the `sdk_opts` settings. For example, setting
-      `sdk_opts.fallback` to True will allow processing of unsupported media types in a
+      `fallback` to True will allow processing of unsupported media types in a
       fallback mode instead of raising an exception.
 
     :param fp: str or Path object representing the filepath of the file to process.
+    :param options: Custom processing options for overriding global options
     :return: IsccMeta object with complete ISCC-CODE and merged metadata from all ISCC-UNITs.
     :raises idk.IsccUnsupportedMediatype:
         If the media type is not supported. By default, the function will raise this exception for
         unsupported media types, as sdk_opts.fallback is False by default.
     """
     fp = Path(fp)
+    opts = idk.sdk_opts.override(options)
     iscc_meta = dict(filename=fp.name)
     iscc_units = []
 
@@ -68,7 +72,7 @@ def code_iscc(fp):
             log.debug(f"Processing {fp.name} - media type: {mime} - processing mode: {mode}")
 
         except idk.IsccUnsupportedMediatype:
-            if not idk.sdk_opts.fallback:
+            if not opts.fallback:
                 raise
             log.warning(f"Processing {fp.name} - media type: {mime} - processing mode: sum")
         else:
