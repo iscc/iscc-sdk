@@ -84,7 +84,7 @@ def test_video_metadata_escaping(mp4_file):
     )
     new_file = idk.video_meta_embed(mp4_file, meta)
     assert idk.video_meta_extract(new_file) == {
-        "description": "Multi\n" "Line\n" "\n" "Description with ; and other = crazy characters",
+        "description": "Multi\nLine\n\nDescription with ; and other = crazy characters",
         "duration": 60.14,
         "fps": 24.0,
         "height": 144,
