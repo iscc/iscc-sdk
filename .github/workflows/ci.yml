@@ -22,7 +22,9 @@ jobs:
 
       - name: Install System Dependencies
         if: startsWith(matrix.os, 'macos')
-        run: brew install libmagic
+        run: |
+          brew install libmagic
+          brew install gettext
 
       - name: Install Dependencies
         run: poetry install
