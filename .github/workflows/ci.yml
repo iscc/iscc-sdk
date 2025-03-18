@@ -25,6 +25,7 @@ jobs:
         run: |
           brew install libmagic
           brew install gettext
+          brew link --force gettext
 
       - name: Install Dependencies
         run: poetry install

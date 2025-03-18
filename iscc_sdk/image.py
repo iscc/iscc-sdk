@@ -130,32 +130,119 @@ def image_meta_extract(fp):
     :return: Metadata mapped to IsccMeta schema
     :rtype: dict
     """
-    args = ["--all", fp]
-    result = idk.run_exiv2json(args)
+    # Use exiv2 with -pa to get all metadata in a readable format
+    args = ["-pa", fp]
+    result = idk.run_exiv2(args)
     encoding = sys.stdout.encoding or "utf-8"
     text = result.stdout.decode(encoding, errors="ignore")
 
-    # We may get all sorts of crazy control-chars, delete them.
-    mpa = dict.fromkeys(range(32))
-    clean = text.translate(mpa)
+    # Parse the exiv2 output into a structured format
+    meta_dict = {}
+    for line in text.splitlines():
+        line = line.strip()
+        if not line:
+            continue
 
-    meta = json.loads(clean)
+        # Split the line into key and value parts
+        parts = line.split(None, 1)
+        if len(parts) == 2:
+            key, value = parts
+            # Split the key into namespace, group, and tag
+            key_parts = key.split(".")
+            if len(key_parts) >= 2:
+                namespace = key_parts[0]
+                if namespace not in meta_dict:
+                    meta_dict[namespace] = {}
+
+                # Handle different key formats
+                if len(key_parts) >= 3:
+                    group = key_parts[1]
+                    tag = ".".join(key_parts[2:])
+
+                    if group not in meta_dict[namespace]:
+                        meta_dict[namespace][group] = {}
+
+                    meta_dict[namespace][group][tag] = value
+                else:
+                    # Handle simpler key format
+                    group = key_parts[1]
+                    meta_dict[namespace][group] = value
+
+    # Map the extracted metadata to IsccMeta schema
     mapped = dict()
     done = set()
+
+    # Helper function to search in the parsed metadata structure
+    def search_meta(path):
+        parts = path.split(".")
+        if len(parts) < 3:
+            return None
+
+        namespace, group, tag = parts[0], parts[1], ".".join(parts[2:])
+
+        if namespace in meta_dict and group in meta_dict[namespace]:
+            if isinstance(meta_dict[namespace][group], dict) and tag in meta_dict[namespace][group]:
+                return meta_dict[namespace][group][tag]
+        return None
+
+    # Helper function to clean metadata values
+    def clean_value(value):
+        if not isinstance(value, str):
+            return value
+
+        # Clean LangAlt format: "LangAlt     1  lang="x-default" Concentrated Cat"
+        if "LangAlt" in value and 'lang="x-default"' in value:
+            parts = value.split('lang="x-default"')
+            if len(parts) > 1:
+                return parts[1].strip()
+
+        # Clean XmpSeq format: "XmpSeq      1  Some Cat Lover"
+        if "XmpSeq" in value and "  " in value:
+            parts = value.split("  ")
+            if len(parts) > 2:
+                return parts[-1].strip()
+
+        # Clean other potential formats with similar patterns
+        if "  " in value:
+            # Check if the value starts with a known format indicator
+            known_formats = ["XmpText", "XmpBag", "XmpAlt"]
+            for fmt in known_formats:
+                if value.startswith(fmt):
+                    parts = value.split("  ")
+                    if len(parts) > 2:
+                        return parts[-1].strip()
+
+        return value
+
+    # Map metadata using the IMAGE_META_MAP
     for tag, mapped_field in IMAGE_META_MAP.items():
         if mapped_field in done:
             continue
-        value = jmespath.search(tag, meta)
+
+        value = search_meta(tag)
         if value:
+            # Handle structured metadata if needed
             if isinstance(value, dict):
-                value = jmespath.search('lang."x-default"', value)
-                if not value:  # pragma: no cover
-                    log.critical(f"Structured image metdata skipped: {value}")
+                if "lang" in value and "x-default" in value["lang"]:
+                    value = value["lang"]["x-default"]
+                else:  # pragma: no cover
+                    log.critical(f"Structured image metadata skipped: {value}")
                     continue
+
+            # Clean the value to remove format information
+            value = clean_value(value)
+
             log.debug(f"Mapping image metadata: {tag} -> {mapped_field} -> {value}")
             mapped[mapped_field] = value
             done.add(mapped_field)
 
+    # Special handling for Licensor URL (acquire field)
+    licensor_url = search_meta("Xmp.plus.Licensor.plus.LicensorURL")
+    if licensor_url:
+        mapped["acquire"] = clean_value(licensor_url)
+        log.debug(f"Mapping image metadata: Xmp.plus.Licensor.plus.LicensorURL -> acquire -> {licensor_url}")
+
+    # Add image dimensions
     with Image.open(fp) as img:
         mapped["width"], mapped["height"] = img.size
 
@@ -271,7 +358,8 @@ IMAGE_META_MAP = {
     "Iptc.Application2.Byline": "creator",
     "Exif.Image.Artist": "creator",
     "Xmp.xmpRights.WebStatement": "license",
-    "Xmp.plus.Licensor[0].plus.LicensorURL": "acquire",
+    "Xmp.plus.Licensor[1]/plus:LicensorURL": "acquire",
+    "Xmp.plus.Licensor.plus.LicensorURL": "acquire",
     "Xmp.dc.rights": "rights",
     "Xmp.dc.identifier": "identifier",
     "Xmp.xmp.Identifier": "identifier",

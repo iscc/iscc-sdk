@@ -7,7 +7,7 @@ import sys
 import tarfile
 import zipfile
 from pathlib import Path
-from platform import system, architecture
+from platform import system, architecture, machine
 from typing import List
 from urllib.parse import urlparse
 from urllib.request import urlretrieve
@@ -73,29 +73,33 @@ TIKA_URL = f"{BASE_URL}/tika-app-{TIKA_VERSION}.jar"
 TIKA_CHECKSUM = "11b52a16d853fdf2f9c0fd292fc1e1fc3c29e40e81959c06b2c55722fe4399d1"
 TIKA_INSTALL_ATTEMPTS = 0
 
-EXIV2_VERSION = "0.27.7"
+EXIV2_VERSION = "0.28.5"
 EXIV2_URLS = {
-    "windows-64": f"{BASE_URL}/exiv2-{EXIV2_VERSION}-2019msvc64.zip",
-    "linux-64": f"{BASE_URL}/exiv2-{EXIV2_VERSION}-Linux64.tar.gz",
-    "darwin-64": f"{BASE_URL}/exiv2-{EXIV2_VERSION}-Darwin.tar.gz",
+    "windows-64": f"{BASE_URL}/exiv2-{EXIV2_VERSION}-2022msvc-AMD64.zip",
+    "linux-64": f"{BASE_URL}/exiv2-{EXIV2_VERSION}-Linux-x86_64.tar.gz",
+    "darwin-64-x86_64": f"{BASE_URL}/exiv2-{EXIV2_VERSION}-Darwin-x86_64.tar.gz",
+    "darwin-64-arm64": f"{BASE_URL}/exiv2-{EXIV2_VERSION}-Darwin-arm64.tar.gz",
 }
 
 EXIV2_CHECKSUMS = {
-    "windows-64": "6df00b16bf33d83ae78d91aa08e1ead8c945856951d7955d4c663a45b051feae",
-    "linux-64": "cb8e9274e9bc4859c68febe21e773ae9a39781375e8a6a78c60d3e8ff800f35e",
-    "darwin-64": "2ed28a06ff8a68206e23fbccf8a994b36fdc29d53f05d4f25f7a5b67a40fd264",
+    "windows-64": "7561f99a5e01ab66738b726ce92a8cd35d4c27c3198845bbadb143b94216434b",
+    "linux-64": "33663d1d899c5e66fca399b0798a9c231cfe987985fbad5400bcbbe3aa4a5b31",
+    "darwin-64-x86_64": "57ede243d312290bcfaf2af0a123b5203b56b82bcb440c13e854a4514bf95bb8",
+    "darwin-64-arm64": "a453598dde78fe2512aaa5a260dfbc8011d1dd0d14bf544466b357fe32b3fa90",
 }
 
 EXIV2_RELPATH = {
-    "windows-64": f"exiv2-{EXIV2_VERSION}-2019msvc64/bin/exiv2.exe",
-    "linux-64": f"exiv2-{EXIV2_VERSION}-Linux64/bin/exiv2",
-    "darwin-64": f"exiv2-{EXIV2_VERSION}-Darwin/bin/exiv2",
+    "windows-64": f"exiv2-{EXIV2_VERSION}-2022msvc-AMD64/bin/exiv2.exe",
+    "linux-64": f"exiv2-{EXIV2_VERSION}-Linux-x86_64/bin/exiv2",
+    "darwin-64-x86_64": f"exiv2-{EXIV2_VERSION}-Darwin-x86_64/bin/exiv2",
+    "darwin-64-arm64": f"exiv2-{EXIV2_VERSION}-Darwin-arm64/bin/exiv2",
 }
 
 EXIV2JSON_RELPATH = {
-    "windows-64": f"exiv2-{EXIV2_VERSION}-2019msvc64/bin/exiv2json.exe",
-    "linux-64": f"exiv2-{EXIV2_VERSION}-Linux64/bin/exiv2json",
-    "darwin-64": f"exiv2-{EXIV2_VERSION}-Darwin/bin/exiv2json",
+    "windows-64": f"exiv2-{EXIV2_VERSION}-2022msvc-AMD64/bin/exiv2json.exe",
+    "linux-64": f"exiv2-{EXIV2_VERSION}-Linux-x86_64/bin/exiv2json",
+    "darwin-64-x86_64": f"exiv2-{EXIV2_VERSION}-Darwin-x86_64/bin/exiv2json",
+    "darwin-64-arm64": f"exiv2-{EXIV2_VERSION}-Darwin-arm64/bin/exiv2json",
 }
 
 
@@ -113,6 +117,15 @@ def install():
 def system_tag():
     os_tag = system().lower()
     os_bits = architecture()[0].rstrip("bit")
+
+    # Special handling for macOS to detect architecture
+    if os_tag == "darwin":
+        mac_machine = machine()
+        if mac_machine == "arm64":
+            return f"{os_tag}-{os_bits}-arm64"
+        else:
+            return f"{os_tag}-{os_bits}-x86_64"
+
     return f"{os_tag}-{os_bits}"
 
 
@@ -268,14 +281,18 @@ def exiv2_install():  # pragma: no cover
 def exiv2_version_info():  # pragma: no cover
     """Get exiv2 version info."""
     try:
-        r = subprocess.run(
-            [exiv2_bin(), "--version"], stdout=subprocess.PIPE, stderr=subprocess.STDOUT
-        )
+        r = subprocess.run([exiv2_bin(), "--version"], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         encoding = sys.stdout.encoding or "utf-8"
         vi = r.stdout.decode(encoding)
         return vi.splitlines()[0]
     except FileNotFoundError:
         return "exiv2 not installed"
+    except subprocess.CalledProcessError as e:
+        # Handle the case where exiv2 fails to run due to missing dependencies
+        output = e.output.decode(encoding) if e.output else "Unknown error"
+        if "dyld" in output and "libintl" in output:
+            return "exiv2 installed but missing libintl dependency"
+        return f"exiv2 error: {output}"
 
 
 def run_exiv2(args: List[str]):
@@ -291,15 +308,12 @@ def run_exiv2(args: List[str]):
 
 
 def run_exiv2json(args: List[str]):
-    """Run exiv2json command with `args`. Install exiv2json if not found."""
-    cmd = [exiv2json_bin()] + args
-    try:
-        result = subprocess.run(cmd, capture_output=True, check=True)
-    except FileNotFoundError:  # pragma: no cover
-        print("EXIV2 not found - installing ...")
-        exiv2_install()
-        result = subprocess.run(cmd, capture_output=True, check=True)
-    return result
+    """
+    Run exiv2 command with JSON-like output. This is a compatibility function
+    that uses the main exiv2 command since exiv2json is no longer available.
+    """
+    # Forward to run_exiv2 with appropriate flags
+    return run_exiv2(args)
 
 
 ########################################################################################
@@ -437,14 +451,7 @@ def ffmpeg_version_info():  # pragma: no cover
     """Get ffmpeg version."""
     try:
         r = subprocess.run([ffmpeg_bin(), "-version"], stdout=subprocess.PIPE)
-        return (
-            r.stdout.decode("utf-8")
-            .strip()
-            .splitlines()[0]
-            .split()[2]
-            .rstrip("-static")
-            .rstrip("-tessu")
-        )
+        return r.stdout.decode("utf-8").strip().splitlines()[0].split()[2].rstrip("-static").rstrip("-tessu")
     except FileNotFoundError:
         return "ffmpeg not installed"
 
