@@ -123,7 +123,23 @@ def system_tag():
 
 def is_installed(fp: str) -> bool:
     """Check if binary at `fp` exists and is executable."""
-    return os.path.isfile(fp) and os.access(fp, os.X_OK)
+    exists = os.path.isfile(fp)
+    executable = os.access(fp, os.X_OK) if exists else False
+
+    if not exists:
+        log.debug(f"Binary not found at path: {fp}")
+    elif not executable:
+        log.debug(f"Binary found but not executable: {fp}")
+        # Try to make it executable on macOS
+        if system().lower() == "darwin":
+            try:
+                os.chmod(fp, os.stat(fp).st_mode | stat.S_IEXEC)
+                executable = os.access(fp, os.X_OK)
+                log.debug(f"Attempted to make executable on macOS: {executable}")
+            except Exception as e:
+                log.debug(f"Failed to make executable on macOS: {e}")
+
+    return exists and executable
 
 
 def extract(archive):  # pragma: no cover
@@ -188,11 +204,24 @@ def ipfs_install():  # pragma: no cover
     log.critical("installing ipfs")
     archive_path = ipfs_download()
     extract(archive_path)
-    st = os.stat(ipfs_bin())
-    os.chmod(ipfs_bin(), st.st_mode | stat.S_IEXEC)
+
+    # Ensure executable permissions are set
+    bin_path = ipfs_bin()
+    try:
+        st = os.stat(bin_path)
+        os.chmod(bin_path, st.st_mode | stat.S_IEXEC | stat.S_IXGRP | stat.S_IXOTH)
+        log.debug(f"Set executable permissions for {bin_path}")
+    except Exception as e:
+        log.critical(f"Failed to set executable permissions: {e}")
+
     # Initialize ipfs repo
-    subprocess.run([ipfs_bin(), "init"])
-    return ipfs_bin()
+    try:
+        subprocess.run([bin_path, "init"])
+        log.debug("Initialized IPFS repository")
+    except Exception as e:
+        log.critical(f"Failed to initialize IPFS repository: {e}")
+
+    return bin_path
 
 
 def ipfs_version_info():  # pragma: no cover
@@ -250,24 +279,38 @@ def exiv2_install():  # pragma: no cover
     log.critical("installing exiv2")
     archive_path = exiv2_download()
     extract(archive_path)
-    st = os.stat(exiv2_bin())
-    os.chmod(exiv2_bin(), st.st_mode | stat.S_IEXEC)
+
+    # Ensure executable permissions are set
+    bin_path = exiv2_bin()
+    try:
+        st = os.stat(bin_path)
+        os.chmod(bin_path, st.st_mode | stat.S_IEXEC | stat.S_IXGRP | stat.S_IXOTH)
+        log.debug(f"Set executable permissions for {bin_path}")
+    except Exception as e:
+        log.critical(f"Failed to set executable permissions: {e}")
 
     # macOS workaround to avoid dynamic linking issues
     # Correct way would be to set DYLD_LIBRARY_PATH when calling exiv2,
     # but this makes it easier.
     if system().lower() == "darwin":
-        lib_path = Path(exiv2_bin()).parent / ".." / "lib" / "libexiv2.27.dylib"
-        lib_bin_path = Path(exiv2_bin()).parent / "libexiv2.27.dylib"
-        os.symlink(lib_path, lib_bin_path)
+        try:
+            lib_path = Path(exiv2_bin()).parent / ".." / "lib" / "libexiv2.27.dylib"
+            lib_bin_path = Path(exiv2_bin()).parent / "libexiv2.27.dylib"
+            if lib_path.exists() and not lib_bin_path.exists():
+                os.symlink(lib_path, lib_bin_path)
+                log.debug(f"Created symlink for libexiv2.27.dylib")
+        except Exception as e:
+            log.critical(f"Failed to create symlink for libexiv2: {e}")
 
-    return exiv2_bin()
+    return bin_path
 
 
 def exiv2_version_info():  # pragma: no cover
     """Get exiv2 version info."""
     try:
-        r = subprocess.run([exiv2_bin(), "--version"], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        r = subprocess.run(
+            [exiv2_bin(), "--version"], stdout=subprocess.PIPE, stderr=subprocess.STDOUT
+        )
         encoding = sys.stdout.encoding or "utf-8"
         vi = r.stdout.decode(encoding)
         return vi.splitlines()[0]
@@ -352,9 +395,17 @@ def fpcalc_install():  # pragma: no cover
     log.critical("installing fpcalc")
     archive_path = fpcalc_download()
     fpcalc_extract(archive_path)
-    st = os.stat(fpcalc_bin())
-    os.chmod(fpcalc_bin(), st.st_mode | stat.S_IEXEC)
-    return fpcalc_bin()
+
+    # Ensure executable permissions are set
+    bin_path = fpcalc_bin()
+    try:
+        st = os.stat(bin_path)
+        os.chmod(bin_path, st.st_mode | stat.S_IEXEC | stat.S_IXGRP | stat.S_IXOTH)
+        log.debug(f"Set executable permissions for {bin_path}")
+    except Exception as e:
+        log.critical(f"Failed to set executable permissions: {e}")
+
+    return bin_path
 
 
 def fpcalc_version_info():  # pragma: no cover
@@ -419,8 +470,16 @@ def ffmpeg_install():  # pragma: no cover
     log.critical("installing ffmpeg")
     archive_path = ffmpeg_download()
     ffmpeg_extract(archive_path)
-    st = os.stat(ffmpeg_bin())
-    os.chmod(ffmpeg_bin(), st.st_mode | stat.S_IEXEC)
+
+    # Ensure executable permissions are set
+    bin_path = ffmpeg_bin()
+    try:
+        st = os.stat(bin_path)
+        os.chmod(bin_path, st.st_mode | stat.S_IEXEC | stat.S_IXGRP | stat.S_IXOTH)
+        log.debug(f"Set executable permissions for {bin_path}")
+    except Exception as e:
+        log.critical(f"Failed to set executable permissions: {e}")
+
     return ffmpeg_bin()
 
 
@@ -428,7 +487,14 @@ def ffmpeg_version_info():  # pragma: no cover
     """Get ffmpeg version."""
     try:
         r = subprocess.run([ffmpeg_bin(), "-version"], stdout=subprocess.PIPE)
-        return r.stdout.decode("utf-8").strip().splitlines()[0].split()[2].rstrip("-static").rstrip("-tessu")
+        return (
+            r.stdout.decode("utf-8")
+            .strip()
+            .splitlines()[0]
+            .split()[2]
+            .rstrip("-static")
+            .rstrip("-tessu")
+        )
     except FileNotFoundError:
         return "ffmpeg not installed"
 

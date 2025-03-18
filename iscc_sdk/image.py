@@ -240,7 +240,9 @@ def image_meta_extract(fp):
     licensor_url = search_meta("Xmp.plus.Licensor.plus.LicensorURL")
     if licensor_url:
         mapped["acquire"] = clean_value(licensor_url)
-        log.debug(f"Mapping image metadata: Xmp.plus.Licensor.plus.LicensorURL -> acquire -> {licensor_url}")
+        log.debug(
+            f"Mapping image metadata: Xmp.plus.Licensor.plus.LicensorURL -> acquire -> {licensor_url}"
+        )
 
     # Add image dimensions
     with Image.open(fp) as img:
