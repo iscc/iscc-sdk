@@ -34,7 +34,7 @@ jobs:
         run: echo "DYLD_LIBRARY_PATH=/usr/local/lib" >> $GITHUB_ENV
 
       - name: Run Tests
-        run: poetry run pytest --xvs --cov=iscc_sdk --cov-report=xml -v tests
+        run: poetry run pytest -xvs --cov=iscc_sdk --cov-report=xml -v tests
 
       - name: Upload coverage to Codecov
         if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.11'
