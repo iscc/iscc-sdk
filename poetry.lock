@@ -2295,7 +2295,7 @@ description = "File type identification using libmagic"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 groups = ["main"]
-markers = "sys_platform == \"linux\" or sys_platform == \"darwin\" and platform_machine == \"arm64\""
+markers = "sys_platform == \"linux\" or sys_platform == \"darwin\""
 files = [
     {file = "python-magic-0.4.27.tar.gz", hash = "sha256:c1ba14b08e4a5f5c31a302b7721239695b2f0f058d125bd5ce1ee36b9d9d3c3b"},
     {file = "python_magic-0.4.27-py2.py3-none-any.whl", hash = "sha256:c212960ad306f700aa0d01e5d7a325d20548ff97eb9920dcd29513174f0294d3"},
@@ -2308,7 +2308,7 @@ description = "File type identification using libmagic binary package"
 optional = false
 python-versions = "*"
 groups = ["main"]
-markers = "sys_platform == \"win32\" or sys_platform == \"darwin\" and platform_machine == \"x86_64\""
+markers = "sys_platform == \"win32\""
 files = [
     {file = "python_magic_bin-0.4.14-py2.py3-none-macosx_10_6_intel.whl", hash = "sha256:7b1743b3dbf16601d6eedf4e7c2c9a637901b0faaf24ad4df4d4527e7d8f66a4"},
     {file = "python_magic_bin-0.4.14-py2.py3-none-win32.whl", hash = "sha256:34a788c03adde7608028203e2dbb208f1f62225ad91518787ae26d603ae68892"},
@@ -2819,4 +2819,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.9,<4.0"
-content-hash = "0697132d9b7e7763793d0e1cfc3a2c418a14439fcffcf74f69f525edc9db8ad9"
+content-hash = "e44093c706d026b9025ea06eb5d1e91532319b55d5421f13ab00122013a3af59"

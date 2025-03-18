@@ -20,6 +20,10 @@ jobs:
         with:
           poetry-version: 1.7.1
 
+      - name: Install System Dependencies
+        if: startsWith(matrix.os, 'macos')
+        run: brew install libmagic
+
       - name: Install Dependencies
         run: poetry install
 
