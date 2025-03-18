@@ -33,6 +33,10 @@ jobs:
         if: matrix.os == 'macos-15'
         run: echo "DYLD_LIBRARY_PATH=/usr/local/lib" >> $GITHUB_ENV
 
+      - name: Set TAGLIB_LIBRARY for macOS
+        if: matrix.os == 'macos-15'
+        run: echo "TAGLIB_LIBRARY=/usr/local/opt/taglib/lib/libtag_c.dylib" >> $GITHUB_ENV
+
       - name: Run Tests
         run: poetry run pytest -xvs --cov=iscc_sdk --cov-report=xml -v tests
 
