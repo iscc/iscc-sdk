@@ -82,7 +82,7 @@ def audio_meta_extract(fp):
     try:
         obj = taglib.File(fp)
         meta = dict(obj.tags)
-        mapped["duration"] = obj.length
+        mapped["duration"] = int(obj.length)
         obj.close()
     except OSError as e:  # pragma: no cover
         # This is a workaround for the issue that taglib requires exclusive access even for reading.
@@ -91,7 +91,7 @@ def audio_meta_extract(fp):
             with idk.TempFile(fp) as tmp_path:
                 obj = taglib.File(tmp_path.as_posix())
                 meta = dict(obj.tags)
-                mapped["duration"] = obj.length
+                mapped["duration"] = int(obj.length)
                 obj.close()
         except Exception as e:
             log.warning(f"Failed metadata extraction for {basename(fp)}: {e}")
