@@ -24,7 +24,6 @@ __all__ = [
     "run_ffmpeg",
     "run_fpcalc",
     "run_exiv2",
-    "run_exiv2json",
     "run_ipfs",
     "run_tika",
 ]
@@ -93,13 +92,6 @@ EXIV2_RELPATH = {
     "linux-64": f"exiv2-{EXIV2_VERSION}-Linux-x86_64/bin/exiv2",
     "darwin-64-x86_64": f"exiv2-{EXIV2_VERSION}-Darwin-x86_64/bin/exiv2",
     "darwin-64-arm64": f"exiv2-{EXIV2_VERSION}-Darwin-arm64/bin/exiv2",
-}
-
-EXIV2JSON_RELPATH = {
-    "windows-64": f"exiv2-{EXIV2_VERSION}-2022msvc-AMD64/bin/exiv2json.exe",
-    "linux-64": f"exiv2-{EXIV2_VERSION}-Linux-x86_64/bin/exiv2json",
-    "darwin-64-x86_64": f"exiv2-{EXIV2_VERSION}-Darwin-x86_64/bin/exiv2json",
-    "darwin-64-arm64": f"exiv2-{EXIV2_VERSION}-Darwin-arm64/bin/exiv2json",
 }
 
 
@@ -239,10 +231,6 @@ def exiv2_bin() -> str:
     return os.path.join(idk.dirs.user_data_dir, EXIV2_RELPATH[system_tag()])
 
 
-def exiv2json_bin() -> str:
-    return os.path.join(idk.dirs.user_data_dir, EXIV2JSON_RELPATH[system_tag()])
-
-
 def exiv2_is_installed():  # pragma: no cover
     """Check if exiv2 is installed."""
     fp = exiv2_bin()
@@ -264,8 +252,6 @@ def exiv2_install():  # pragma: no cover
     extract(archive_path)
     st = os.stat(exiv2_bin())
     os.chmod(exiv2_bin(), st.st_mode | stat.S_IEXEC)
-    st = os.stat(exiv2json_bin())
-    os.chmod(exiv2json_bin(), st.st_mode | stat.S_IEXEC)
 
     # macOS workaround to avoid dynamic linking issues
     # Correct way would be to set DYLD_LIBRARY_PATH when calling exiv2,
@@ -305,15 +291,6 @@ def run_exiv2(args: List[str]):
         exiv2_install()
         result = subprocess.run(cmd, capture_output=True, check=True)
     return result
-
-
-def run_exiv2json(args: List[str]):
-    """
-    Run exiv2 command with JSON-like output. This is a compatibility function
-    that uses the main exiv2 command since exiv2json is no longer available.
-    """
-    # Forward to run_exiv2 with appropriate flags
-    return run_exiv2(args)
 
 
 ########################################################################################

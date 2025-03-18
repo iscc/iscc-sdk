@@ -24,10 +24,6 @@ def test_exiv2_bin():
     assert os.path.basename(bpath).startswith("exiv2")
 
 
-def test_exiv2json_bin():
-    assert "exiv2" in tools.exiv2json_bin()
-
-
 def test_fpcalc_downlod_url():
     assert "fpcalc" in tools.fpcalc_download_url()
 
