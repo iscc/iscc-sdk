@@ -161,11 +161,11 @@ def text_name_from_uri(uri):
     :return: derived name (might be an empty string)
     """
     if isinstance(uri, Path):
-        result = urlparse(uri.as_uri())
+        # Handle Path objects directly to avoid as_uri() issues with relative paths
+        base = uri.name
     else:
         result = urlparse(uri)
-
-    base = basename(result.path) if result.path else basename(result.netloc)
+        base = basename(result.path) if result.path else basename(result.netloc)
     name = splitext(base)[0]
     name = name.replace("-", " ")
     name = name.replace("_", " ")
