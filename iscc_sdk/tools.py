@@ -1,6 +1,7 @@
 """*Manage SDK binary media file handling tools*."""
 
 import os
+import platform
 import shutil
 import subprocess
 import sys
@@ -272,9 +273,26 @@ def exiv2_install():  # pragma: no cover
     # Correct way would be to set DYLD_LIBRARY_PATH when calling exiv2,
     # but this makes it easier.
     if system().lower() == "darwin":
-        lib_path = Path(exiv2_bin()).parent / ".." / "lib" / "libexiv2.27.dylib"
-        lib_bin_path = Path(exiv2_bin()).parent / "libexiv2.27.dylib"
-        os.symlink(lib_path, lib_bin_path)
+        bin_dir = Path(exiv2_bin()).parent
+        lib_dir = bin_dir / ".." / "lib"
+
+        # Link the main libexiv2 library
+        lib_path = lib_dir / "libexiv2.27.dylib"
+        lib_bin_path = bin_dir / "libexiv2.27.dylib"
+        if not lib_bin_path.exists():
+            os.symlink(lib_path, lib_bin_path)
+
+        # Get macOS version to handle version-specific dependencies
+        macos_version = platform.mac_ver()[0]
+        is_macos_15_or_newer = macos_version and int(macos_version.split(".")[0]) >= 15
+
+        # Add extra symlinks for macos-15+ which needs additional dependencies
+        if is_macos_15_or_newer:
+            # Link all dylib files from lib directory to bin directory
+            for lib_file in lib_dir.glob("*.dylib"):
+                target_path = bin_dir / lib_file.name
+                if not target_path.exists():
+                    os.symlink(lib_file, target_path)
 
     return exiv2_bin()
 
@@ -282,9 +300,7 @@ def exiv2_install():  # pragma: no cover
 def exiv2_version_info():  # pragma: no cover
     """Get exiv2 version info."""
     try:
-        r = subprocess.run(
-            [exiv2_bin(), "--version"], stdout=subprocess.PIPE, stderr=subprocess.STDOUT
-        )
+        r = subprocess.run([exiv2_bin(), "--version"], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         encoding = sys.stdout.encoding or "utf-8"
         vi = r.stdout.decode(encoding)
         return vi.splitlines()[0]
@@ -452,14 +468,7 @@ def ffprobe_version_info():  # pragma: no cover
     """Get ffprobe version"""
     try:
         r = subprocess.run([ffprobe_bin(), "-version"], stdout=subprocess.PIPE)
-        return (
-            r.stdout.decode("utf-8")
-            .strip()
-            .splitlines()[0]
-            .split()[2]
-            .rstrip("-static")
-            .rstrip("-tessu")
-        )
+        return r.stdout.decode("utf-8").strip().splitlines()[0].split()[2].rstrip("-static").rstrip("-tessu")
     except FileNotFoundError:
         return "ffprobe not installed"
 
@@ -526,14 +535,7 @@ def ffmpeg_version_info():  # pragma: no cover
     """Get ffmpeg version."""
     try:
         r = subprocess.run([ffmpeg_bin(), "-version"], stdout=subprocess.PIPE)
-        return (
-            r.stdout.decode("utf-8")
-            .strip()
-            .splitlines()[0]
-            .split()[2]
-            .rstrip("-static")
-            .rstrip("-tessu")
-        )
+        return r.stdout.decode("utf-8").strip().splitlines()[0].split()[2].rstrip("-static").rstrip("-tessu")
     except FileNotFoundError:
         return "ffmpeg not installed"
 
