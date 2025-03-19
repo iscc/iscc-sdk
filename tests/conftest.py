@@ -1,4 +1,5 @@
 from pathlib import Path
+from textwrap import dedent
 
 import pytest
 from iscc_samples import images, texts, audios, videos
@@ -118,11 +119,11 @@ def epub_file(tmp_path_factory):
 @pytest.fixture(scope="module")
 def svg_file(tmp_path_factory) -> str:
     dst = tmp_path_factory.mktemp("data") / "image.svg"
-    svg_content = """
+    svg_content = dedent("""
     <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100">
         <circle cx="50" cy="50" r="40" stroke="black" stroke-width="3" fill="red" />
     </svg>
-    """
+    """)
     dst.write_bytes(svg_content.encode("utf-8"))
     return dst.as_posix()
 

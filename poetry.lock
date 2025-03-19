@@ -2015,6 +2015,18 @@ tomli = {version = ">=1.2.2", markers = "python_version < \"3.11\""}
 poetry-plugin = ["poetry (>=1.2.0,<3.0.0)"]
 
 [[package]]
+name = "puremagic"
+version = "1.28"
+description = "Pure python implementation of magic file detection"
+optional = false
+python-versions = "*"
+groups = ["main"]
+files = [
+    {file = "puremagic-1.28-py3-none-any.whl", hash = "sha256:e16cb9708ee2007142c37931c58f07f7eca956b3472489106a7245e5c3aa1241"},
+    {file = "puremagic-1.28.tar.gz", hash = "sha256:195893fc129657f611b86b959aab337207d6df7f25372209269ed9e303c1a8c0"},
+]
+
+[[package]]
 name = "pybase64"
 version = "1.4.1"
 description = "Fast Base64 encoding/decoding"
@@ -2493,31 +2505,18 @@ files = [
 cli = ["click (>=5.0)"]
 
 [[package]]
-name = "python-magic"
-version = "0.4.27"
-description = "File type identification using libmagic"
+name = "python-magic-pure"
+version = "0.1.0"
+description = "Pure python replacement for python-magic."
 optional = false
-python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
+python-versions = ">=3.7"
 groups = ["main"]
-markers = "sys_platform == \"linux\" or sys_platform == \"darwin\" and platform_machine == \"arm64\""
 files = [
-    {file = "python-magic-0.4.27.tar.gz", hash = "sha256:c1ba14b08e4a5f5c31a302b7721239695b2f0f058d125bd5ce1ee36b9d9d3c3b"},
-    {file = "python_magic-0.4.27-py2.py3-none-any.whl", hash = "sha256:c212960ad306f700aa0d01e5d7a325d20548ff97eb9920dcd29513174f0294d3"},
+    {file = "python-magic-pure-0.1.0.tar.gz", hash = "sha256:65246cac5da45275d73e7ef9df2d17b4aaf9ef66d0477e38536b58958074110e"},
 ]
 
-[[package]]
-name = "python-magic-bin"
-version = "0.4.14"
-description = "File type identification using libmagic binary package"
-optional = false
-python-versions = "*"
-groups = ["main"]
-markers = "sys_platform == \"win32\" or sys_platform == \"darwin\" and platform_machine == \"x86_64\""
-files = [
-    {file = "python_magic_bin-0.4.14-py2.py3-none-macosx_10_6_intel.whl", hash = "sha256:7b1743b3dbf16601d6eedf4e7c2c9a637901b0faaf24ad4df4d4527e7d8f66a4"},
-    {file = "python_magic_bin-0.4.14-py2.py3-none-win32.whl", hash = "sha256:34a788c03adde7608028203e2dbb208f1f62225ad91518787ae26d603ae68892"},
-    {file = "python_magic_bin-0.4.14-py2.py3-none-win_amd64.whl", hash = "sha256:90be6206ad31071a36065a2fc169c5afb5e0355cbe6030e87641c6c62edc2b69"},
-]
+[package.dependencies]
+puremagic = ">=1.27"
 
 [[package]]
 name = "pyyaml"
@@ -3043,4 +3042,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.9,<4.0"
-content-hash = "eace0911a39682b595dbab471ece9f2f82195cd6cbc35955309db6d692619f46"
+content-hash = "9d62a50d35c053bbe416ba64b0434c08fc2baf841ea8a8f3486797a9187e4fc4"

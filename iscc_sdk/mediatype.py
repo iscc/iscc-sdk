@@ -86,6 +86,10 @@ def mediatype_guess(data, file_name=None):
     if guess_data and "ogg" in guess_data:
         media_type = guess_data
 
+    if media_type is None:
+        log.warning("Could not detect mediatype. Fallback to application/octet-stream")
+        return "application/octet-stream"  # Generic binary data as fallback
+
     log.debug(f"{media_type} mediatype detected")
 
     return media_type
@@ -144,7 +148,11 @@ def mediatype_from_data(data):
     :return: Mediatype string
     :rtype: str
     """
-    return magic.from_buffer(data, mime=True)
+    try:
+        return magic.from_buffer(data, mime=True)
+    except Exception as e:
+        log.warning((f"Failed mediatype sniffing: {e}"))
+        return None
 
 
 def mediatype_clean(mime):
@@ -290,6 +298,7 @@ MEDIATYPE_NORM = {
     "audio/x-wav": "audio/wav",
     "image/x-ms-bmp": "image/bmp",
     "video/x-msvideo": "video/avi",
+    "application/ogg": "video/ogg",
     "application/xml": "text/xml",
     "application/vnd.ms-asf": "video/x-ms-asf",
     "application/vnd.adobe.flash.movie": "application/x-shockwave-flash",

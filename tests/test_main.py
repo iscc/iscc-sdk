@@ -215,10 +215,10 @@ def test_code_iscc_sum_fallback(svg_file):
     idk.sdk_opts.fallback = True
     result = idk.code_iscc(svg_file)
     assert result.dict(exclude={"generator"}) == {
-        "iscc": "ISCC:KUAHPKDWWUYLTV2LWK6LTRJQP33TO",
+        "datahash": "1e20344474d5a2ba3451baeba1565b3932f369980f32d705617020a11f7817bd56c9",
         "filename": "image.svg",
-        "filesize": 171,
+        "filesize": 155,
+        "iscc": "ISCC:KUAPHHVHTGLKQFQ3GRCHJVNCXI2FC",
         "mediatype": "image/svg+xml",
-        "datahash": "1e20b2bcb9c5307ef7376aafb8fea6440399d7e6520fe43402e5e5943a51af25a748",
     }
     idk.sdk_opts.fallback = False
