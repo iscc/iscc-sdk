@@ -70,6 +70,19 @@ def test_mime_supported():
         assert idk.mediatype_supported(mt) is True
 
 
+def test_mime_guess_no_detection():
+    # Test case where no mediatype can be detected - should return octet-stream fallback
+    empty_data = b""
+    assert idk.mediatype_guess(empty_data) == "application/octet-stream"
+
+
+def test_mime_from_data_exception_handling():
+    # Test the exception handling in mediatype_from_data
+    # Use invalid data that causes magic.from_buffer to fail
+    invalid_data = None
+    assert idk.mediatype_from_data(invalid_data) is None
+
+
 def test_mime_samples():
     for sample in iss.all():
         # skiplist
