@@ -8,6 +8,7 @@
 - Added optional fallback to ISCC-SUM for unsupported media types
 - Handle unsupported SVG files gracefully
 - Replaced python-magic with puremagic wrapper for cross-platform compatibility
+- Fix bug with thumbnail generation for image modes
 
 ## 0.6.2 - 2024-06-13
 - Update and relax dependencies

@@ -231,8 +231,12 @@ def image_thumbnail(fp):
     fp = Path(fp)
     size = idk.sdk_opts.image_thumbnail_size
     img = Image.open(fp)
+
+    # Convert to RGB before resizing
+    img = img.convert("RGB")
+
     img.thumbnail((size, size), resample=idk.LANCZOS)
-    return ImageEnhance.Sharpness(img.convert("RGB")).enhance(1.4)
+    return ImageEnhance.Sharpness(img).enhance(1.4)
 
 
 def image_to_data_url(img):
