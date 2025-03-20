@@ -253,8 +253,18 @@ def image_meta_delete(fp):
     :param fp: Filepath to image file.
     """
     fp = Path(fp)
-    args = ["rm", fp]
-    return idk.run_exiv2(args)
+    img_exiv = exiv2.ImageFactory.open(str(fp))
+    img_exiv.readMetadata()
+
+    # Clear all metadata
+    img_exiv.exifData().clear()
+    img_exiv.xmpData().clear()
+    img_exiv.iptcData().clear()
+
+    # Write the cleared metadata back to the file
+    img_exiv.writeMetadata()
+
+    log.debug(f"Deleted all metadata from {fp.name}")
 
 
 def image_thumbnail(fp):
