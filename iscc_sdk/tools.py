@@ -26,7 +26,6 @@ __all__ = [
     "run_ffmpeg",
     "run_fpcalc",
     "run_exiv2",
-    "run_exiv2json",
     "run_ipfs",
     "run_tika",
 ]
@@ -104,12 +103,6 @@ EXIV2_RELPATH = {
     "windows-64": f"exiv2-{EXIV2_VERSION}-2019msvc64/bin/exiv2.exe",
     "linux-64": f"exiv2-{EXIV2_VERSION}-Linux64/bin/exiv2",
     "darwin-64": f"exiv2-{EXIV2_VERSION}-Darwin/bin/exiv2",
-}
-
-EXIV2JSON_RELPATH = {
-    "windows-64": f"exiv2-{EXIV2_VERSION}-2019msvc64/bin/exiv2json.exe",
-    "linux-64": f"exiv2-{EXIV2_VERSION}-Linux64/bin/exiv2json",
-    "darwin-64": f"exiv2-{EXIV2_VERSION}-Darwin/bin/exiv2json",
 }
 
 
@@ -241,10 +234,6 @@ def exiv2_bin() -> str:
     return os.path.join(idk.dirs.user_data_dir, EXIV2_RELPATH[system_tag()])
 
 
-def exiv2json_bin() -> str:
-    return os.path.join(idk.dirs.user_data_dir, EXIV2JSON_RELPATH[system_tag()])
-
-
 def exiv2_is_installed():  # pragma: no cover
     """Check if exiv2 is installed."""
     fp = exiv2_bin()
@@ -266,8 +255,6 @@ def exiv2_install():  # pragma: no cover
     extract(archive_path)
     st = os.stat(exiv2_bin())
     os.chmod(exiv2_bin(), st.st_mode | stat.S_IEXEC)
-    st = os.stat(exiv2json_bin())
-    os.chmod(exiv2json_bin(), st.st_mode | stat.S_IEXEC)
 
     # macOS workaround to avoid dynamic linking issues
     # Correct way would be to set DYLD_LIBRARY_PATH when calling exiv2,
@@ -313,18 +300,6 @@ def exiv2_version_info():  # pragma: no cover
 def run_exiv2(args: List[str]):
     """Run exiv2 command with `args`. Install exiv2 if not found."""
     cmd = [exiv2_bin()] + args
-    try:
-        result = subprocess.run(cmd, capture_output=True, check=True)
-    except FileNotFoundError:  # pragma: no cover
-        print("EXIV2 not found - installing ...")
-        exiv2_install()
-        result = subprocess.run(cmd, capture_output=True, check=True)
-    return result
-
-
-def run_exiv2json(args: List[str]):
-    """Run exiv2json command with `args`. Install exiv2json if not found."""
-    cmd = [exiv2json_bin()] + args
     try:
         result = subprocess.run(cmd, capture_output=True, check=True)
     except FileNotFoundError:  # pragma: no cover
