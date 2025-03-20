@@ -79,17 +79,11 @@ mdformat = "*"
 mdformat_admon = "*"
 mdformat_tables = "*"
 
-
 [tool.ruff]
 line-length = 100
 
 [tool.coverage.run]
 omit = ["iscc_sdk/install.py"]
-
-[tool.coverage.report]
-show_missing = true
-skip_covered = true
-fail_under = 100
 
 [tool.poe.tasks]
 build-docs = { cmd = "poetry run python -m devtools.build_docs", help = "Copy README.md to /docs" }
