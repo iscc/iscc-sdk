@@ -86,12 +86,17 @@ line-length = 100
 [tool.coverage.run]
 omit = ["iscc_sdk/install.py"]
 
+[tool.coverage.report]
+show_missing = true
+skip_covered = true
+fail_under = 100
+
 [tool.poe.tasks]
 build-docs = { cmd = "poetry run python -m devtools.build_docs", help = "Copy README.md to /docs" }
 format-code = { cmd = "poetry run ruff format", help = "Code style formating with ruff" }
 format-md = { cmd = "poetry run mdformat --wrap 100 README.md", help = "Markdown formating with mdformat" }
 lf = { cmd = "poetry run python -m devtools.lf", help = "Convert line endings to lf"}
-test = { cmd = "poetry run pytest --cov=iscc_sdk --cov-fail-under=100", help = "Run tests with coverage" }
+test = { cmd = "poetry run pytest --cov=iscc_sdk --cov-fail-under=100 -p no:warnings", help = "Run tests with coverage" }
 all = ["format-md", "build-docs", "lf", "format-code", "test"]
 
 [build-system]

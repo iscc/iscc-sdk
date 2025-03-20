@@ -159,6 +159,21 @@ def test_embed_metadata_non_uri(jpg_file):
     }
 
 
+def test_clean_xmp_value():
+    """Test the _clean_xmp_value function that processes XMP language qualifiers."""
+    # Test with language qualifier
+    value = 'lang="x-default" Some Value'
+    assert idk.image._clean_xmp_value(value) == "Some Value"
+
+    # Test without language qualifier
+    value = "Some Value"
+    assert idk.image._clean_xmp_value(value) == "Some Value"
+
+    # Test with incomplete qualifier (edge case)
+    value = 'lang="x-default'
+    assert idk.image._clean_xmp_value(value) == 'lang="x-default'
+
+
 def test_code_image_nometa_nothumb(jpg_file):
     idk.sdk_opts.extract_metadata = False
     idk.sdk_opts.create_thumbnail = False
