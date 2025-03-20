@@ -15,15 +15,6 @@ def test_is_installed():
     assert tools.is_installed(tools.ffmpeg_bin())
 
 
-def test_exiv2_download_url():
-    assert "exiv" in tools.exiv2_download_url()
-
-
-def test_exiv2_bin():
-    bpath = tools.exiv2_bin()
-    assert os.path.basename(bpath).startswith("exiv2")
-
-
 def test_fpcalc_downlod_url():
     assert "fpcalc" in tools.fpcalc_download_url()
 
@@ -72,10 +63,6 @@ def test_ffmpeg_version_info():
 
 def test_fpcalc_version_info():
     assert tools.FPCALC_VERSION in tools.fpcalc_version_info()
-
-
-def test_exiv2_version_info():
-    assert "exiv2" in tools.exiv2_version_info().lower()
 
 
 def test_ipfs_download_url():

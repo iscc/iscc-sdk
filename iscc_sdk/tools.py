@@ -25,7 +25,6 @@ __all__ = [
     "run_ffprobe",
     "run_ffmpeg",
     "run_fpcalc",
-    "run_exiv2",
     "run_ipfs",
     "run_tika",
 ]
@@ -86,30 +85,10 @@ TIKA_URL = f"{BASE_URL}/tika-app-{TIKA_VERSION}.jar"
 TIKA_CHECKSUM = "11b52a16d853fdf2f9c0fd292fc1e1fc3c29e40e81959c06b2c55722fe4399d1"
 TIKA_INSTALL_ATTEMPTS = 0
 
-EXIV2_VERSION = "0.27.7"
-EXIV2_URLS = {
-    "windows-64": f"{BASE_URL}/exiv2-{EXIV2_VERSION}-2019msvc64.zip",
-    "linux-64": f"{BASE_URL}/exiv2-{EXIV2_VERSION}-Linux64.tar.gz",
-    "darwin-64": f"{BASE_URL}/exiv2-{EXIV2_VERSION}-Darwin.tar.gz",
-}
-
-EXIV2_CHECKSUMS = {
-    "windows-64": "6df00b16bf33d83ae78d91aa08e1ead8c945856951d7955d4c663a45b051feae",
-    "linux-64": "cb8e9274e9bc4859c68febe21e773ae9a39781375e8a6a78c60d3e8ff800f35e",
-    "darwin-64": "2ed28a06ff8a68206e23fbccf8a994b36fdc29d53f05d4f25f7a5b67a40fd264",
-}
-
-EXIV2_RELPATH = {
-    "windows-64": f"exiv2-{EXIV2_VERSION}-2019msvc64/bin/exiv2.exe",
-    "linux-64": f"exiv2-{EXIV2_VERSION}-Linux64/bin/exiv2",
-    "darwin-64": f"exiv2-{EXIV2_VERSION}-Darwin/bin/exiv2",
-}
-
 
 def install():
     """Install binary tools for content extraction and metadata handling."""
     with ThreadPoolExecutor(max_workers=6) as p:
-        p.submit(exiv2_install)
         p.submit(fpcalc_install)
         p.submit(ffprobe_install)
         p.submit(ffmpeg_install)
@@ -215,96 +194,6 @@ def run_ipfs(args: List[str]):
     except FileNotFoundError:  # pragma: no cover
         print("IPFS not found - installing ...")
         ipfs_install()
-        result = subprocess.run(cmd, capture_output=True, check=True)
-    return result
-
-
-########################################################################################
-# Exiv2                                                                                #
-########################################################################################
-
-
-def exiv2_download_url() -> str:
-    """Return system and version dependent exiv2 download url."""
-    return EXIV2_URLS[system_tag()]
-
-
-def exiv2_bin() -> str:
-    """Returns local path to exiv2 executable."""
-    return os.path.join(idk.dirs.user_data_dir, EXIV2_RELPATH[system_tag()])
-
-
-def exiv2_is_installed():  # pragma: no cover
-    """Check if exiv2 is installed."""
-    fp = exiv2_bin()
-    return os.path.isfile(fp) and os.access(fp, os.X_OK)
-
-
-def exiv2_download():  # pragma: no cover
-    b3 = EXIV2_CHECKSUMS[system_tag()]
-    return download_file(exiv2_download_url(), checksum=b3)
-
-
-def exiv2_install():  # pragma: no cover
-    """Install exiv2 command line tool and return path to executable."""
-    if exiv2_is_installed():
-        log.debug("Exiv2 is already installed.")
-        return exiv2_bin()
-    log.critical("installing exiv2")
-    archive_path = exiv2_download()
-    extract(archive_path)
-    st = os.stat(exiv2_bin())
-    os.chmod(exiv2_bin(), st.st_mode | stat.S_IEXEC)
-
-    # macOS workaround to avoid dynamic linking issues
-    # Correct way would be to set DYLD_LIBRARY_PATH when calling exiv2,
-    # but this makes it easier.
-    if system().lower() == "darwin":
-        bin_dir = Path(exiv2_bin()).parent
-        lib_dir = bin_dir / ".." / "lib"
-
-        # Link the main libexiv2 library
-        lib_path = lib_dir / "libexiv2.27.dylib"
-        lib_bin_path = bin_dir / "libexiv2.27.dylib"
-        if not lib_bin_path.exists():
-            os.symlink(lib_path, lib_bin_path)
-
-        # Get macOS version to handle version-specific dependencies
-        macos_version = platform.mac_ver()[0]
-        is_macos_15_or_newer = macos_version and int(macos_version.split(".")[0]) >= 15
-
-        # Add extra symlinks for macos-15+ which needs additional dependencies
-        if is_macos_15_or_newer:
-            # Link all dylib files from lib directory to bin directory
-            for lib_file in lib_dir.glob("*.dylib"):
-                target_path = bin_dir / lib_file.name
-                if not target_path.exists():
-                    os.symlink(lib_file, target_path)
-
-    return exiv2_bin()
-
-
-def exiv2_version_info():  # pragma: no cover
-    """Get exiv2 version info."""
-    try:
-        r = subprocess.run(
-            [exiv2_bin(), "--version"], stdout=subprocess.PIPE, stderr=subprocess.STDOUT
-        )
-        encoding = sys.stdout.encoding or "utf-8"
-        vi = r.stdout.decode(encoding)
-        return vi.splitlines()[0]
-    except FileNotFoundError:
-        return "exiv2 not installed"
-
-
-def run_exiv2(args: List[str]):
-    """Run exiv2 command with `args`. Install exiv2 if not found."""
-    cmd = [exiv2_bin()] + args
-    try:
-        result = subprocess.run(cmd, capture_output=True, check=True)
-    except FileNotFoundError:  # pragma: no cover
-        print("EXIV2 not found - installing ...")
-        exiv2_install()
         result = subprocess.run(cmd, capture_output=True, check=True)
     return result
 
