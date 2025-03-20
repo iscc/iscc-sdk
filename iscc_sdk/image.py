@@ -6,11 +6,8 @@ import pillow_avif
 import base64
 import io
 import shutil
-import sys
-import json
 import tempfile
 from typing import Sequence
-import jmespath
 from iscc_schema import IsccMeta
 from loguru import logger as log
 from PIL import Image, ImageEnhance, ImageChops, ImageOps
@@ -241,7 +238,7 @@ def image_meta_embed(fp, meta):
     with open(metafile, "wt", encoding="utf-8") as outf:
         outf.write(cmdf)
 
-    # Embed metaadata
+    # Embed metadata
     args = ["-m", metafile, imagefile]
     log.debug(f"Embedding {meta.dict(exclude_unset=True)} in {imagefile.name}")
     idk.run_exiv2(args)
