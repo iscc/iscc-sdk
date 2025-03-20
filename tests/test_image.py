@@ -159,6 +159,16 @@ def test_embed_metadata_non_uri(jpg_file):
     }
 
 
+def test_embed_identifier(jpg_file):
+    """Test embedding and extracting the identifier field."""
+    identifier = "ISCC:KACYPXW46UOGYH3C"
+    meta = IsccMeta.construct(identifier=identifier)
+    new_file = idk.image_meta_embed(jpg_file, meta)
+    extracted = idk.image_meta_extract(new_file)
+    assert extracted["identifier"] == identifier
+    os.remove(new_file)
+
+
 def test_clean_xmp_value():
     """Test the _clean_xmp_value function that processes XMP language qualifiers."""
     # Test with language qualifier
