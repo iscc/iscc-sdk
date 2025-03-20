@@ -206,42 +206,57 @@ def image_meta_embed(fp, meta):
     :return: Filepath to the new image file with updated metadata
     """
     fp = Path(fp)
-    cmdf = "reg iscc http://purl.org/iscc/schema\n"
-    cmdf += "reg dc http://purl.org/dc/elements/1.1/\n"
 
-    if meta.name:
-        cmdf += f"set Xmp.iscc.name {meta.name}\n"
-        cmdf += f"set Xmp.dc.title {meta.name}\n"
-    if meta.description:
-        cmdf += f"set Xmp.iscc.description {meta.description}\n"
-        cmdf += f"set Xmp.dc.description {meta.description}\n"
-    if meta.meta:
-        cmdf += f"set Xmp.iscc.meta {meta.meta}\n"
-    if meta.license:
-        cmdf += f"set Xmp.xmpRights.WebStatement {meta.license}\n"
-    if meta.acquire:
-        cmdf += f"set Xmp.plus.Licensor XmpText type=Bag\n"
-        cmdf += f"set Xmp.plus.Licensor[1]/plus:LicensorURL XmpText {meta.acquire}\n"
-    if meta.creator:
-        cmdf += f"set Xmp.dc.creator {meta.creator}\n"
-    if meta.rights:
-        cmdf += f"set Xmp.dc.rights {meta.rights}\n"
-    if meta.identifier:
-        cmdf += f"set Xmp.dc.identifier {meta.identifier}\n"
-
-    # Create temp filepaths
+    # Create temp directory and copy the image
     tempdir = Path(tempfile.mkdtemp())
-    metafile = tempdir / "meta.txt"
     imagefile = Path(shutil.copy(fp, tempdir))
 
-    # Store metadata
-    with open(metafile, "wt", encoding="utf-8") as outf:
-        outf.write(cmdf)
+    # Register XMP namespaces before opening image
+    exiv2.XmpProperties.registerNs("http://purl.org/iscc/schema/", "iscc")
+    exiv2.XmpProperties.registerNs("http://purl.org/dc/elements/1.1/", "dc")
+    exiv2.XmpProperties.registerNs("http://ns.useplus.org/", "plus")
+    exiv2.XmpProperties.registerNs("http://ns.adobe.com/xap/1.0/rights/", "xmpRights")
 
-    # Embed metadata
-    args = ["-m", metafile, imagefile]
+    # Open the copied image with exiv2
+    img_exiv = exiv2.ImageFactory.open(str(imagefile))
+    img_exiv.readMetadata()
+
+    # Get metadata collections
+    xmp_data = img_exiv.xmpData()
+
+    # Set simple metadata values
+    if meta.name:
+        xmp_data["Xmp.iscc.name"] = meta.name
+        xmp_data["Xmp.dc.title"] = meta.name
+    if meta.description:
+        xmp_data["Xmp.iscc.description"] = meta.description
+        xmp_data["Xmp.dc.description"] = meta.description
+    if meta.meta:
+        xmp_data["Xmp.iscc.meta"] = meta.meta
+    if meta.license:
+        xmp_data["Xmp.xmpRights.WebStatement"] = meta.license
+    if meta.creator:
+        xmp_data["Xmp.dc.creator"] = meta.creator
+    if meta.rights:
+        xmp_data["Xmp.dc.rights"] = meta.rights
+    if meta.identifier:
+        xmp_data["Xmp.dc.identifier"] = meta.identifier
+
+    # Set complex metadata values
+    if meta.acquire:
+        # Set the Licensor URL
+        # First create a bag value
+        licensor_bag = exiv2.XmpTextValue()
+        licensor_bag.setXmpArrayType(exiv2.XmpValue.XmpArrayType.xaBag)
+        xmp_data["Xmp.plus.Licensor"] = licensor_bag
+
+        # Then set the LicensorURL with the struct path
+        xmp_data["Xmp.plus.Licensor[1]/plus:LicensorURL"] = meta.acquire
+
+    # Write metadata back to the file
+    img_exiv.writeMetadata()
+
     log.debug(f"Embedding {meta.dict(exclude_unset=True)} in {imagefile.name}")
-    idk.run_exiv2(args)
     return imagefile
 
 
