@@ -184,6 +184,38 @@ def test_clean_xmp_value():
     assert idk.image._clean_xmp_value(value) == 'lang="x-default'
 
 
+def test_process_metadata_to_string():
+    """Test that non-string values with to_string method are properly converted."""
+
+    # Create a simple class that simulates an exiv2 metadata value with to_string method
+    class MockToString:
+        def to_string(self):
+            return "converted string value"
+
+    # Create a mock datum that simulates the exiv2 metadata datum structure
+    class MockDatum:
+        def __init__(self, key, value):
+            self._key = key
+            self._value = value
+
+        def key(self):
+            return self._key
+
+        @property
+        def value(self):
+            return self._value
+
+    # Create test data
+    mock_value = MockToString()
+    mock_datum = MockDatum("Test.Key", mock_value)
+
+    # Call the function with our mock data
+    result = idk.image._process_metadata([mock_datum])
+
+    # Verify the result
+    assert result["Test.Key"] == "converted string value"
+
+
 def test_code_image_nometa_nothumb(jpg_file):
     idk.sdk_opts.extract_metadata = False
     idk.sdk_opts.create_thumbnail = False
