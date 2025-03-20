@@ -134,6 +134,38 @@ def _clean_xmp_value(value):
     return value
 
 
+def _process_metadata(metadata, is_xmp=False):
+    # type: (object, bool) -> dict
+    """
+    Process metadata from exiv2 data collections.
+
+    :param metadata: exiv2 metadata collection (exifData, xmpData, or iptcData)
+    :param is_xmp: Whether the metadata is XMP (for special processing)
+    :return: Dictionary of processed metadata
+    """
+    result = {}
+    for datum in metadata:
+        key = datum.key()
+        raw_value = datum.value
+        value = raw_value() if callable(raw_value) else raw_value
+
+        if not isinstance(value, str):
+            if hasattr(value, "to_string"):
+                value = value.to_string()
+            else:
+                value = str(value)
+
+        value = value.strip()
+
+        # Clean XMP values from language qualifiers
+        if is_xmp:
+            value = _clean_xmp_value(value)
+
+        result[key] = value
+
+    return result
+
+
 def image_meta_extract(fp):
     # type: (str|Path) -> dict
     """
@@ -142,69 +174,28 @@ def image_meta_extract(fp):
     :param fp: Filepath to image file.
     :return: Metadata mapped to IsccMeta schema
     """
-
     fp = Path(fp)
     img_exiv = exiv2.ImageFactory.open(str(fp))
     img_exiv.readMetadata()
 
-    # Read all metadata types: EXIF, XMP, IPTC
-    exif_data = img_exiv.exifData()
-    xmp_data = img_exiv.xmpData()
-    iptc_data = img_exiv.iptcData()
-
+    # Read and process all metadata types: EXIF, XMP, IPTC
     meta_dict = {}
+    meta_dict.update(_process_metadata(img_exiv.exifData()))
+    meta_dict.update(_process_metadata(img_exiv.xmpData(), is_xmp=True))
+    meta_dict.update(_process_metadata(img_exiv.iptcData()))
 
-    # Process EXIF data
-    for datum in exif_data:
-        key = datum.key()
-        raw_value = datum.value
-        value = raw_value() if callable(raw_value) else raw_value
-        if not isinstance(value, str):
-            if hasattr(value, "to_string"):
-                value = value.to_string()
-            else:
-                value = str(value)
-        value = value.strip()
-        meta_dict[key] = value
-
-    # Process XMP data
-    for datum in xmp_data:
-        key = datum.key()
-        raw_value = datum.value
-        value = raw_value() if callable(raw_value) else raw_value
-        if not isinstance(value, str):
-            if hasattr(value, "to_string"):
-                value = value.to_string()
-            else:
-                value = str(value)
-        value = value.strip()
-        # Clean XMP values from language qualifiers
-        value = _clean_xmp_value(value)
-        meta_dict[key] = value
-
-    # Process IPTC data
-    for datum in iptc_data:
-        key = datum.key()
-        raw_value = datum.value
-        value = raw_value() if callable(raw_value) else raw_value
-        if not isinstance(value, str):
-            if hasattr(value, "to_string"):
-                value = value.to_string()
-            else:
-                value = str(value)
-        value = value.strip()
-        meta_dict[key] = value
-
+    # Map metadata to schema fields
     mapped = {}
     for tag, mapped_field in IMAGE_META_MAP.items():
         if mapped_field in mapped:
             continue
         if tag in meta_dict and meta_dict[tag]:
             mapped[mapped_field] = meta_dict[tag]
-    from PIL import Image as PIL_Image
 
-    with PIL_Image.open(fp) as img:
+    # Add image dimensions
+    with Image.open(fp) as img:
         mapped["width"], mapped["height"] = img.size
+
     return mapped
 
 

@@ -26,6 +26,7 @@ with clarity but will not simplify your response or be ambiguous.
 - We use pytest for testing.
 - Avoid mocking and monkeypatching in tests at all costs.
 - If testing is not possible without mocking/monkeypatching suggest a coderefactor.
+- Don´t make python import within function instead make imports at the module level
 
 ### Python Example
 
