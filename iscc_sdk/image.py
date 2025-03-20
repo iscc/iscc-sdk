@@ -1,7 +1,7 @@
 """*Image handling module*."""
 
 from pathlib import Path
-
+import exiv2
 import pillow_avif
 import base64
 import io
@@ -118,44 +118,93 @@ def image_trim_border(img):
     return img
 
 
+def _clean_xmp_value(value):
+    # type: (str) -> str
+    """
+    Clean XMP value by removing language qualifiers.
+
+    :param value: XMP value string that might contain language qualifier
+    :return: Cleaned value string
+    """
+    # Remove language qualifier like 'lang="x-default" '
+    if value.startswith('lang="') and '"' in value[6:]:
+        lang_end = value.find('"', 6)
+        if lang_end > 0 and len(value) > lang_end + 2:
+            return value[lang_end + 2 :].strip()
+    return value
+
+
 def image_meta_extract(fp):
     # type: (str|Path) -> dict
     """
-    Extract metadata from image.
+    Extract metadata from image using native exiv2 bindings.
 
     :param fp: Filepath to image file.
     :return: Metadata mapped to IsccMeta schema
     """
+
     fp = Path(fp)
-    args = ["--all", fp]
-    result = idk.run_exiv2json(args)
-    encoding = sys.stdout.encoding or "utf-8"
-    text = result.stdout.decode(encoding, errors="ignore")
+    img_exiv = exiv2.ImageFactory.open(str(fp))
+    img_exiv.readMetadata()
 
-    # We may get all sorts of crazy control-chars, delete them.
-    mpa = dict.fromkeys(range(32))
-    clean = text.translate(mpa)
+    # Read all metadata types: EXIF, XMP, IPTC
+    exif_data = img_exiv.exifData()
+    xmp_data = img_exiv.xmpData()
+    iptc_data = img_exiv.iptcData()
 
-    meta = json.loads(clean)
-    mapped = dict()
-    done = set()
+    meta_dict = {}
+
+    # Process EXIF data
+    for datum in exif_data:
+        key = datum.key()
+        raw_value = datum.value
+        value = raw_value() if callable(raw_value) else raw_value
+        if not isinstance(value, str):
+            if hasattr(value, "to_string"):
+                value = value.to_string()
+            else:
+                value = str(value)
+        value = value.strip()
+        meta_dict[key] = value
+
+    # Process XMP data
+    for datum in xmp_data:
+        key = datum.key()
+        raw_value = datum.value
+        value = raw_value() if callable(raw_value) else raw_value
+        if not isinstance(value, str):
+            if hasattr(value, "to_string"):
+                value = value.to_string()
+            else:
+                value = str(value)
+        value = value.strip()
+        # Clean XMP values from language qualifiers
+        value = _clean_xmp_value(value)
+        meta_dict[key] = value
+
+    # Process IPTC data
+    for datum in iptc_data:
+        key = datum.key()
+        raw_value = datum.value
+        value = raw_value() if callable(raw_value) else raw_value
+        if not isinstance(value, str):
+            if hasattr(value, "to_string"):
+                value = value.to_string()
+            else:
+                value = str(value)
+        value = value.strip()
+        meta_dict[key] = value
+
+    mapped = {}
     for tag, mapped_field in IMAGE_META_MAP.items():
-        if mapped_field in done:
+        if mapped_field in mapped:
             continue
-        value = jmespath.search(tag, meta)
-        if value:
-            if isinstance(value, dict):
-                value = jmespath.search('lang."x-default"', value)
-                if not value:  # pragma: no cover
-                    log.critical(f"Structured image metdata skipped: {value}")
-                    continue
-            log.debug(f"Mapping image metadata: {tag} -> {mapped_field} -> {value}")
-            mapped[mapped_field] = value
-            done.add(mapped_field)
+        if tag in meta_dict and meta_dict[tag]:
+            mapped[mapped_field] = meta_dict[tag]
+    from PIL import Image as PIL_Image
 
-    with Image.open(fp) as img:
+    with PIL_Image.open(fp) as img:
         mapped["width"], mapped["height"] = img.size
-
     return mapped
 
 
@@ -274,6 +323,7 @@ IMAGE_META_MAP = {
     "Exif.Image.Artist": "creator",
     "Xmp.xmpRights.WebStatement": "license",
     "Xmp.plus.Licensor[0].plus.LicensorURL": "acquire",
+    "Xmp.plus.Licensor[1]/plus:LicensorURL": "acquire",  # Added this line to match what we set
     "Xmp.dc.rights": "rights",
     "Xmp.dc.identifier": "identifier",
     "Xmp.xmp.Identifier": "identifier",

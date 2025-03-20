@@ -300,7 +300,9 @@ def exiv2_install():  # pragma: no cover
 def exiv2_version_info():  # pragma: no cover
     """Get exiv2 version info."""
     try:
-        r = subprocess.run([exiv2_bin(), "--version"], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        r = subprocess.run(
+            [exiv2_bin(), "--version"], stdout=subprocess.PIPE, stderr=subprocess.STDOUT
+        )
         encoding = sys.stdout.encoding or "utf-8"
         vi = r.stdout.decode(encoding)
         return vi.splitlines()[0]
@@ -468,7 +470,14 @@ def ffprobe_version_info():  # pragma: no cover
     """Get ffprobe version"""
     try:
         r = subprocess.run([ffprobe_bin(), "-version"], stdout=subprocess.PIPE)
-        return r.stdout.decode("utf-8").strip().splitlines()[0].split()[2].rstrip("-static").rstrip("-tessu")
+        return (
+            r.stdout.decode("utf-8")
+            .strip()
+            .splitlines()[0]
+            .split()[2]
+            .rstrip("-static")
+            .rstrip("-tessu")
+        )
     except FileNotFoundError:
         return "ffprobe not installed"
 
@@ -535,7 +544,14 @@ def ffmpeg_version_info():  # pragma: no cover
     """Get ffmpeg version."""
     try:
         r = subprocess.run([ffmpeg_bin(), "-version"], stdout=subprocess.PIPE)
-        return r.stdout.decode("utf-8").strip().splitlines()[0].split()[2].rstrip("-static").rstrip("-tessu")
+        return (
+            r.stdout.decode("utf-8")
+            .strip()
+            .splitlines()[0]
+            .split()[2]
+            .rstrip("-static")
+            .rstrip("-tessu")
+        )
     except FileNotFoundError:
         return "ffmpeg not installed"
 
