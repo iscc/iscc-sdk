@@ -1,6 +1,7 @@
 ## Changelog
 
 ## 0.7.0 - Unreleased
+- Added Python 3.13 support
 - Added support for scene based granular video code processing
 - Added ffprobe video metadata extraction (duration, fps, width, height, language)
 - Added support str and Path objects for all file inpunts

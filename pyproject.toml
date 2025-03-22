@@ -20,6 +20,7 @@ classifiers=[
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "Topic :: Multimedia",
     "Topic :: Multimedia :: Graphics",
     "Topic :: Multimedia :: Sound/Audio",
@@ -61,7 +62,7 @@ typer = "*"
 pillow-avif-plugin = "*"
 pillow-heif = "*"
 langcodes = "*"
-exiv2 = "^0.17.3"
+exiv2 = "*"
 
 
 [tool.poetry.group.dev.dependencies]

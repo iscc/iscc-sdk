@@ -45,8 +45,3 @@ def tokenize_chunks(chunks, max_len=None):
     pass
 ```
 
-## Tech Stack:
-
-- python `fsspec` for storage abstraction
-- python `typer` for cli implementation
-- python `loguru` for logging
