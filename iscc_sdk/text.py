@@ -59,11 +59,9 @@ def text_meta_extract(fp):
     :return: Metadata mapped to IsccMeta schema
     """
     fp = Path(fp)
-    args = ["--metadata", "-j", "--encoding=UTF-8", fp]
-
-    result = idk.run_tika(args)
-    encoding = sys.stdout.encoding or "utf-8"
-    meta = json.loads(result.stdout.decode(encoding, errors="ignore"))
+    extractor = Extractor()
+    extractor = extractor.set_extract_string_max_length(16000)
+    result, meta = extractor.extract_file_to_string(fp.as_posix())
     mapped = dict()
     done = set()
     for tag, mapped_field in TEXT_META_MAP.items():
