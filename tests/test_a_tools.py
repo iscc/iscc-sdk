@@ -35,24 +35,6 @@ def test_ffmpeg_bin():
     assert "ffmpeg" in tools.ffmpeg_bin()
 
 
-def test_tika_download_url():
-    assert "tika" in tools.tika_download_url()
-
-
-def test_tika_bin():
-    assert "tika" in tools.tika_bin()
-
-
-def test_java_version_info():
-    vi = tools.java_version_info().lower()
-    assert "java" in vi or "openjdk" in vi
-    assert len(vi.splitlines()) == 1
-
-
-def test_tika_version_info():
-    assert tools.TIKA_VERSION in tools.tika_version_info()
-
-
 def test_ffprobe_version_info():
     assert tools.FFPROBE_VERSION in tools.ffprobe_version_info()
 

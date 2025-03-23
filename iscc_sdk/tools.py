@@ -26,7 +26,6 @@ __all__ = [
     "run_ffmpeg",
     "run_fpcalc",
     "run_ipfs",
-    "run_tika",
 ]
 
 BASE_VERSION = "1.0.0"
@@ -80,11 +79,6 @@ FPCALC_CHECKSUMS = {
     "darwin-64": "afea164b0bc9b91e5205d126f96a21836a91ea2d24200e1b7612a7304ea3b4f1",
 }
 
-TIKA_VERSION = "2.9.1"
-TIKA_URL = f"{BASE_URL}/tika-app-{TIKA_VERSION}.jar"
-TIKA_CHECKSUM = "11b52a16d853fdf2f9c0fd292fc1e1fc3c29e40e81959c06b2c55722fe4399d1"
-TIKA_INSTALL_ATTEMPTS = 0
-
 
 def install():
     """Install binary tools for content extraction and metadata handling."""
@@ -92,7 +86,6 @@ def install():
         p.submit(fpcalc_install)
         p.submit(ffprobe_install)
         p.submit(ffmpeg_install)
-        p.submit(tika_install)
         p.submit(ipfs_install)
     return True
 
@@ -428,129 +421,6 @@ def run_ffmpeg(args: List[str]):
     except FileNotFoundError:  # pragma: no cover
         print("FFMPEG not found - installing ...")
         ffmpeg_install()
-        result = subprocess.run(cmd, capture_output=True, check=True)
-    return result
-
-
-########################################################################################
-# Java                                                                                 #
-########################################################################################
-
-
-def java_bin():  # pragma: no cover
-    java_path = shutil.which("java")
-    if not java_path:
-        java_path = java_custom_path()
-    return java_path
-
-
-def java_custom_path():  # pragma: no cover
-    if system() == "Windows":
-        java_path = os.path.join(idk.dirs.user_data_dir, "jdk-16.0.2+7-jre", "bin", "java.exe")
-    else:
-        java_path = os.path.join(idk.dirs.user_data_dir, "jdk-16.0.2+7-jre", "bin", "java")
-    return java_path
-
-
-def java_is_installed():  # pragma: no cover
-    return bool(shutil.which("java")) or is_installed(java_custom_path())
-
-
-def java_install():  # pragma: no cover
-    if java_is_installed():
-        log.debug("java already installed")
-        return java_bin()
-    log.critical("installing java")
-    return jdk.install("16", impl="openj9", jre=True, path=idk.dirs.user_data_dir)
-
-
-def java_version_info():  # pragma: no cover
-    try:
-        r = subprocess.run([java_bin(), "-version"], stderr=subprocess.PIPE)
-        encoding = sys.stdout.encoding or "utf-8"
-        return r.stderr.decode(encoding).splitlines()[0]
-    except subprocess.CalledProcessError:
-        return "JAVA not installed"
-
-
-########################################################################################
-# Apache Tika                                                                          #
-########################################################################################
-
-
-def tika_download_url():
-    # type: () -> str
-    """Return tika download url."""
-    return TIKA_URL
-
-
-def tika_bin():
-    # type: () -> str
-    """Returns path to java tika app call."""
-    return os.path.join(idk.dirs.user_data_dir, f"tika-app-{TIKA_VERSION}.jar")
-
-
-def tika_is_installed():  # pragma: no cover
-    # type: () -> bool
-    """Check if tika is installed."""
-    return os.path.exists(tika_bin())
-
-
-def tika_download():  # pragma: no cover
-    # type: () -> str
-    """Download tika-app.jar and return local path."""
-    return download_file(tika_download_url(), checksum=TIKA_CHECKSUM)
-
-
-def tika_install():  # pragma: no cover
-    # type: () -> str
-    """Install tika-app.jar if not installed yet."""
-    # Ensure JAVA is installed
-    java_install()
-
-    if tika_is_installed():
-        log.debug("Tika is already installed")
-        return tika_bin()
-    else:
-        global TIKA_INSTALL_ATTEMPTS
-        if TIKA_INSTALL_ATTEMPTS == 0:
-            log.critical("Installing Tika")
-            path = tika_download()
-            st = os.stat(tika_bin())
-            os.chmod(tika_bin(), st.st_mode | stat.S_IEXEC)
-            TIKA_INSTALL_ATTEMPTS += 1
-            return path
-        else:
-            log.critical("Allready installed tika in this session not attemting a second time!")
-            log.critical("Check your environment (internet access / java setup)")
-            sys.exit(1)
-
-
-def tika_version_info():  # pragma: no cover
-    # type: () -> str
-    """
-    Check tika-app version.
-
-    :return: Tika version info string
-    :rtype: str
-    """
-    try:
-        r = subprocess.run([java_bin(), "-jar", tika_bin(), "--version"], stdout=subprocess.PIPE)
-        encoding = sys.stdout.encoding or "utf-8"
-        return r.stdout.decode(encoding).strip()
-    except subprocess.CalledProcessError:
-        return "Tika not installed"
-
-
-def run_tika(args: List[str]):
-    """Run tika command with `args`. Install tika if not found."""
-    cmd = [java_bin(), "-jar", tika_bin()] + args
-    try:
-        result = subprocess.run(cmd, capture_output=True, check=True)
-    except Exception as e:  # pragma: no cover
-        print(f"TIKA error - {e}")
-        print(f"Re-Installing TIKA ...")
-        tika_install()
         result = subprocess.run(cmd, capture_output=True, check=True)
     return result
 

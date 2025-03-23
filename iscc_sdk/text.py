@@ -1,7 +1,5 @@
 """*Text handling functions*."""
 
-import json
-import sys
 from os.path import basename, splitext
 from pathlib import Path
 from typing import Generator, Optional, Union
