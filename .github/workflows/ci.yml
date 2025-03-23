@@ -18,7 +18,7 @@ jobs:
       - name: Install Poetry
         uses: abatilo/actions-poetry@v3
         with:
-          poetry-version: 2.0.1
+          poetry-version: 2.1.1
 
       - name: Install Dependencies
         run: poetry install
