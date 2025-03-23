@@ -695,6 +695,25 @@ files = [
 ]
 
 [[package]]
+name = "extractous"
+version = "0.3.0"
+description = "Extractous Python Binding"
+optional = false
+python-versions = "<3.14,>=3.8"
+groups = ["main"]
+files = [
+    {file = "extractous-0.3.0-cp38-abi3-macosx_10_12_x86_64.whl", hash = "sha256:9f513d8da78b74ab655e659c64e287ddd653009f5af011cef0d2c8467a931e38"},
+    {file = "extractous-0.3.0-cp38-abi3-macosx_11_0_arm64.whl", hash = "sha256:6e43d9dee26e7cb322b6f9059f3e3565252f444b80d2f4ff2007a002fdd00727"},
+    {file = "extractous-0.3.0-cp38-abi3-manylinux_2_28_x86_64.whl", hash = "sha256:01ef136a5901aed0e813f747989bbeaff60e4777cc77b933bef8f10de80b7dfd"},
+    {file = "extractous-0.3.0-cp38-abi3-win_amd64.whl", hash = "sha256:d86754320beba736f33c10227a641cce473cfb690c9e2d5ae823c917110c98ab"},
+    {file = "extractous-0.3.0.tar.gz", hash = "sha256:ebccc7778137d6be7680660f1e880e8a1898dedca7f64ab4b354a68d22359e84"},
+]
+
+[package.extras]
+docs = ["pdoc"]
+test = ["pytest", "scikit-learn"]
+
+[[package]]
 name = "ghp-import"
 version = "2.1.0"
 description = "Copy your docs directly to the gh-pages branch."
@@ -3075,5 +3094,5 @@ type = ["pytest-mypy"]
 
 [metadata]
 lock-version = "2.1"
-python-versions = ">=3.9,<4.0"
-content-hash = "0b8809a60e5aeaa42cffe49d28e9efcfd932c2bf10f3f59d2da52bfc140289e8"
+python-versions = ">=3.9,<3.14"
+content-hash = "97fc888d613bafc53b265425e0171e01d0dbbf1ab8dd62222ffeda07c31afb6e"

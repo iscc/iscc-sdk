@@ -44,7 +44,7 @@ idk = 'iscc_sdk.cli:app'
 
 
 [tool.poetry.dependencies]
-python = ">=3.9,<4.0"
+python = ">=3.9,<3.14"
 cython = "*"
 iscc-core = "*"
 iscc-schema = "*"
@@ -63,6 +63,7 @@ pillow-avif-plugin = "*"
 pillow-heif = "*"
 langcodes = "*"
 exiv2 = "*"
+extractous = "*"
 
 
 [tool.poetry.group.dev.dependencies]
