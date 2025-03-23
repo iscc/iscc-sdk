@@ -6,6 +6,8 @@ from os.path import basename, splitext
 from pathlib import Path
 from typing import Generator, Optional, Union
 from urllib.parse import urlparse
+
+from extractous import Extractor
 from iscc_schema import IsccMeta
 from PIL import Image
 import xxhash
@@ -105,12 +107,12 @@ def text_extract(fp):
     :return: Extracted plaintext
     """
     fp = Path(fp)
-    args = ["--text", "--encoding=UTF-8", fp]
-    result = idk.run_tika(args)
-    text = result.stdout.decode(encoding="UTF-8").strip()
+    extractor = Extractor()
+    result, metadata = extractor.extract_file_to_string(fp.as_posix())
+    text = result.strip()
     if not text:
         raise idk.IsccExtractionError(f"No text extracted from {fp.name}")
-    return result.stdout.decode(encoding="UTF-8")
+    return result
 
 
 def text_features(text):
