@@ -10,24 +10,9 @@
 A comprehensive Python toolkit for creating and managing [ISCC](https://core.iscc.codes)
 (*International Standard Content Code*) identifiers for digital media assets.
 
-## Table of Contents
-
-- [Overview](#overview)
-  - [What is an ISCC?](#what-is-an-iscc)
-  - [What is iscc-sdk?](#what-is-iscc-sdk)
-- [Features](#features)
-- [Requirements](#requirements)
-- [Installation](#installation)
-- [Usage](#usage)
-  - [Python API](#python-api)
-  - [Command Line Interface](#command-line-interface)
-- [Documentation](#documentation)
-- [Troubleshooting](#troubleshooting)
-- [Project Status](#project-status)
-- [Contributing](#contributing)
-- [License](#license)
-
 ## Overview
+
+![ISCC Architecture](docs/images/iscc-overview.svg)
 
 ### What is an ISCC?
 
@@ -44,23 +29,11 @@ Digital content is dynamic - continuously re-encoded, resized, and re-compressed
 through complex networks. The ISCC remains robust across these transformations while preserving
 estimates of data, content, and metadata similarity.
 
-![ISCC Architecture](docs/images/iscc-overview.svg)
-
 The component-based structure of ISCC identifies content at multiple levels of abstraction, creating
-a multi-layered fingerprint:
-
-- **Meta-Code** - Encodes syntactic/lexical **metadata** similarity
-- **Semantic-Code** - Encodes semantic/conceptual **content** similarity (reserved in ISO 24138:2024
-  but algorithms not yet defined)
-- **Content-Codes** - Type-specific codes (Text, Image, Audio, Video) that encode
-  perceptual/syntactic/structural **content** similarity
-- **Data-Code** - Encodes raw **data** similarity, preserving similarity across different encodings
-- **Instance-Code** - Identifies exact **data** like a checksum or cryptographic hash, detecting
-  even minimal changes
-
-These components work together to create a robust, similarity-preserving identifier that remains
-stable despite modifications to the underlying digital asset. With this multi-layered approach, the
-ISCC can track content throughout its lifecycle, even as it's re-encoded, resized, or re-compressed.
+a multi-layered fingerprint. These components work together to create a robust,
+similarity-preserving identifier that remains stable despite modifications to the underlying digital
+asset. With this multi-layered approach, the ISCC can track content throughout its lifecycle, even
+as it's re-encoded, resized, or re-compressed.
 
 Each component is self-describing, modular, and can be used separately or together, enabling ISCCs
 to support numerous digital asset management use-cases across all domains concerned with producing,
