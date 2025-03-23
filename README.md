@@ -12,7 +12,7 @@ A comprehensive Python toolkit for creating and managing [ISCC](https://core.isc
 
 ## Overview
 
-![ISCC Architecture](docs/images/iscc-overview.svg)
+![ISCC Architecture](https://raw.githubusercontent.com/iscc/iscc-sdk/refs/heads/main/docs/images/iscc-overview.svg)
 
 ### What is an ISCC?
 
