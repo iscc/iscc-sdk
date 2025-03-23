@@ -15,7 +15,6 @@ from urllib.request import urlretrieve
 from blake3 import blake3
 from loguru import logger as log
 import stat
-import jdk
 import iscc_sdk as idk
 from concurrent.futures import ThreadPoolExecutor
 
