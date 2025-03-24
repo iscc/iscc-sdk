@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "iscc-sdk"
-version = "0.7.0"
+version = "0.8.0"
 description = "SDK for creating ISCCs (International Standard Content Codes)"
 authors = ["Titusz <tp@py7.de>"]
 license = "Apache-2.0"
@@ -53,7 +53,7 @@ platformdirs = "*"
 jmespath = "*"
 Pillow = "*"
 pytaglib = "*"
-numpy = "*"
+numpy = "<2.0.0"
 pymupdf = "*"
 ebookmeta = "*"
 python-docx = "*"

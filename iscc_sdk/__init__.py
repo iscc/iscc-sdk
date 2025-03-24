@@ -1,9 +1,10 @@
 """ISCC - Software Development Kit."""
-
 import os
+from importlib import metadata
 from platformdirs import PlatformDirs
 
-__version__ = "0.7.0"
+
+__version__ = metadata.version("iscc-sdk")
 APP_NAME = "iscc-sdk"
 APP_AUTHOR = "iscc"
 dirs = PlatformDirs(appname=APP_NAME, appauthor=APP_AUTHOR)
