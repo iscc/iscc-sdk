@@ -1,5 +1,7 @@
 ## Changelog
 
+## 0.8.0 - Unreleased
+
 ## 0.7.0 - 2025-03-23
 
 - Added Python 3.13 support

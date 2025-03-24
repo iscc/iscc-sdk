@@ -1,4 +1,5 @@
 """ISCC - Software Development Kit."""
+
 import os
 from importlib import metadata
 from platformdirs import PlatformDirs
