@@ -61,7 +61,7 @@ def epub_meta_embed(fp, meta):
     return tempepub
 
 
-def epub_cover(fp):
+def epub_cover(fp):  # pragma: no cover
     # type: (str|Path) -> bytes
     """
     Extract the cover image bytes from an EPUB file.
