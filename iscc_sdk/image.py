@@ -115,54 +115,6 @@ def image_trim_border(img):
     return img
 
 
-def _clean_xmp_value(value):
-    # type: (str) -> str
-    """
-    Clean XMP value by removing language qualifiers.
-
-    :param value: XMP value string that might contain language qualifier
-    :return: Cleaned value string
-    """
-    # Remove language qualifier like 'lang="x-default" '
-    if value.startswith('lang="') and '"' in value[6:]:
-        lang_end = value.find('"', 6)
-        if lang_end > 0 and len(value) > lang_end + 2:
-            return value[lang_end + 2 :].strip()
-    return value
-
-
-def _process_metadata(metadata, is_xmp=False):
-    # type: (object, bool) -> dict
-    """
-    Process metadata from exiv2 data collections.
-
-    :param metadata: exiv2 metadata collection (exifData, xmpData, or iptcData)
-    :param is_xmp: Whether the metadata is XMP (for special processing)
-    :return: Dictionary of processed metadata
-    """
-    result = {}
-    for datum in metadata:
-        key = datum.key()
-        raw_value = datum.value
-        value = raw_value() if callable(raw_value) else raw_value
-
-        if not isinstance(value, str):
-            if hasattr(value, "to_string"):
-                value = value.to_string()
-            else:
-                value = str(value)
-
-        value = value.strip()
-
-        # Clean XMP values from language qualifiers
-        if is_xmp:
-            value = _clean_xmp_value(value)
-
-        result[key] = value
-
-    return result
-
-
 def image_meta_extract(fp):
     # type: (str|Path) -> dict
     """
@@ -301,6 +253,20 @@ def image_thumbnail(fp):
     return ImageEnhance.Sharpness(img).enhance(1.4)
 
 
+def image_strip_metadata(img):
+    # type: (Image.Image) -> Image.Image
+    """
+    Strip all metadata from Pillow Image object.
+
+    :param img: PIL Image object to strip metadata from.
+    :return: Image.Image
+    """
+    data = list(img.getdata())
+    new_img = Image.new(img.mode, img.size)
+    new_img.putdata(data)
+    return new_img
+
+
 def image_to_data_url(img):
     # type: (Image.Image) -> str
     """
@@ -309,12 +275,62 @@ def image_to_data_url(img):
     :param img: PIL Image object to encode as WebP Data-URL.
     :return: Data-URL string
     """
+    format_ = idk.sdk_opts.image_thumbnail_format
     quality = idk.sdk_opts.image_thumbnail_quality
+    img = image_strip_metadata(img)
     raw = io.BytesIO()
-    img.save(raw, format="WEBP", lossless=False, quality=quality, method=6)
+    img.save(raw, format=format_, quality=quality)
     raw.seek(0)
     enc = base64.b64encode(raw.read()).decode("ascii")
-    return "data:image/webp;base64," + enc
+    return f"data:image/{format_.lower()};base64," + enc
+
+
+def _clean_xmp_value(value):
+    # type: (str) -> str
+    """
+    Clean XMP value by removing language qualifiers.
+
+    :param value: XMP value string that might contain language qualifier
+    :return: Cleaned value string
+    """
+    # Remove language qualifier like 'lang="x-default" '
+    if value.startswith('lang="') and '"' in value[6:]:
+        lang_end = value.find('"', 6)
+        if lang_end > 0 and len(value) > lang_end + 2:
+            return value[lang_end + 2 :].strip()
+    return value
+
+
+def _process_metadata(metadata, is_xmp=False):
+    # type: (object, bool) -> dict
+    """
+    Process metadata from exiv2 data collections.
+
+    :param metadata: exiv2 metadata collection (exifData, xmpData, or iptcData)
+    :param is_xmp: Whether the metadata is XMP (for special processing)
+    :return: Dictionary of processed metadata
+    """
+    result = {}
+    for datum in metadata:
+        key = datum.key()
+        raw_value = datum.value
+        value = raw_value() if callable(raw_value) else raw_value
+
+        if not isinstance(value, str):
+            if hasattr(value, "to_string"):
+                value = value.to_string()
+            else:
+                value = str(value)
+
+        value = value.strip()
+
+        # Clean XMP values from language qualifiers
+        if is_xmp:
+            value = _clean_xmp_value(value)
+
+        result[key] = value
+
+    return result
 
 
 IMAGE_META_MAP = {
@@ -336,7 +352,7 @@ IMAGE_META_MAP = {
     "Exif.Image.Artist": "creator",
     "Xmp.xmpRights.WebStatement": "license",
     "Xmp.plus.Licensor[0].plus.LicensorURL": "acquire",
-    "Xmp.plus.Licensor[1]/plus:LicensorURL": "acquire",  # Added this line to match what we set
+    "Xmp.plus.Licensor[1]/plus:LicensorURL": "acquire",
     "Xmp.dc.rights": "rights",
     "Xmp.dc.identifier": "identifier",
     "Xmp.xmp.Identifier": "identifier",

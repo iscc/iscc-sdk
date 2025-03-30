@@ -16,7 +16,7 @@ class-atributes on the `SdkOptions` instance.
 
 """
 
-from typing import Optional
+from typing import Optional, Literal
 import copy
 
 try:
@@ -78,8 +78,13 @@ class SdkOptions(BaseSettings):
     )
 
     image_thumbnail_quality: int = Field(
-        default=60,
+        default=30,
         description="ISCC_SDK_IMAGE_THUMBNAIL_QUALITY - Thumbnail image compression setting (0-100)",
+    )
+
+    image_thumbnail_format: Literal["JPEG", "WEBP", "AVIF"] = Field(
+        default="AVIF",
+        description="ISCC_SDK_IMAGE_THUMBNAIL_FORMAT - Format for thumbnail images (JPEG, WEBP, or AVIF)",
     )
 
     image_max_pixels: Optional[int] = Field(

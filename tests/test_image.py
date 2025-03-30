@@ -121,8 +121,8 @@ def test_image_thumbnail():
 def test_image_to_data_url():
     img = idk.image_thumbnail(fp)
     durl = idk.image_to_data_url(img)
-    assert durl.startswith("data:image/webp;base64,UklGRvAHAABXRUJQVlA4IOQHAABQJQCdASqAAFUAPrVMnku")
-    assert durl.endswith("XUVIqfr+x9Igy/FehT0vBRAhNP+u6v9LEZRqfbxADwwWRSEk6Io4VSGX5LpRVqMLCG+eYAAA")
+    assert durl.startswith("data:image/avif;base64,AAAAIGZ0eXBhdmlmAAAAAGF2aWZtaWYxbWlhZk1BMUIAAAD")
+    assert durl.endswith("uII27xMrtGP/NK1v9iac5xQqwFvgIMbSxjYG6ULWWyI4BvABd6W5HSnsm/Zj/ly13N1MQA==")
 
 
 def test_embed_rights_and_creator(jpg_file):
