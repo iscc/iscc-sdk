@@ -121,6 +121,7 @@ def code_meta(fp):
     name = ic.text_trim(name, ic.core_opts.meta_trim_name)
     if not name:
         meta["name"] = idk.text_name_from_uri(fp)
+        log.debug(f"Acquired Meta-Code `name` from filename: {meta['name']}")
 
     metacode = ic.gen_meta_code_v0(
         name=meta.get("name"),
