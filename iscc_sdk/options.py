@@ -83,7 +83,7 @@ class SdkOptions(BaseSettings):
     )
 
     image_thumbnail_format: Literal["JPEG", "WEBP", "AVIF"] = Field(
-        default="AVIF",
+        default="WEBP",
         description="ISCC_SDK_IMAGE_THUMBNAIL_FORMAT - Format for thumbnail images (JPEG, WEBP, or AVIF)",
     )
 
