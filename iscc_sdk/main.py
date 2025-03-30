@@ -113,7 +113,13 @@ def code_meta(fp):
 
     meta = idk.extract_metadata(fp).dict()
 
-    if not meta.get("name"):
+    # Pre-Check if we have a name after normalization, else use filename.
+    name = meta.get("name")
+    name = "" if name is None else name
+    name = ic.text_clean(name)
+    name = ic.text_remove_newlines(name)
+    name = ic.text_trim(name, ic.core_opts.meta_trim_name)
+    if not name:
         meta["name"] = idk.text_name_from_uri(fp)
 
     metacode = ic.gen_meta_code_v0(
