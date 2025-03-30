@@ -104,3 +104,33 @@ def test_cli_selftest():
 def test_cli_install():
     result = runner.invoke(app, ["install"])
     assert result.exit_code == 0
+
+
+def test_cli_extract_no_arg():
+    result = runner.invoke(app, ["extract"])
+    assert result.exit_code == 2
+    assert "Missing argument 'FILE'" in result.stdout
+
+
+def test_cli_extract_not_file():
+    result = runner.invoke(app, ["extract", "not-a-file"])
+    assert result.exit_code == 1
+    assert "Invalid file path" in result.stdout
+
+
+def test_cli_extract():
+    result = runner.invoke(app, ["extract", iss.texts()[0].as_posix()])
+    assert result.exit_code == 0
+    assert "lorem ipsum" in result.stdout.lower()
+
+
+def test_cli_extract_error(monkeypatch):
+    def mock_text_extract(*args, **kwargs):
+        raise Exception("Test extraction error")
+
+    monkeypatch.setattr("iscc_sdk.text_extract", mock_text_extract)
+
+    # Use a real file that exists but will trigger our mocked exception
+    result = runner.invoke(app, ["extract", iss.texts()[0].as_posix()])
+    assert result.exit_code == 1
+    assert "Error extracting text: Test extraction error" in result.stdout

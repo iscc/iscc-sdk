@@ -2415,21 +2415,6 @@ files = [
 ]
 
 [[package]]
-name = "pymupdf4llm"
-version = "0.0.18"
-description = "PyMuPDF Utilities for LLM/RAG"
-optional = false
-python-versions = "*"
-groups = ["main"]
-files = [
-    {file = "pymupdf4llm-0.0.18-py3-none-any.whl", hash = "sha256:4817fc7b6b00eed93c5bf2edf7766534a821fc5eba09f6408e412e6b11699f4e"},
-    {file = "pymupdf4llm-0.0.18.tar.gz", hash = "sha256:1f905ec97c70cac14549df526568122cdf21d0431bd56ec494ac49d2676a0a29"},
-]
-
-[package.dependencies]
-pymupdf = ">=1.25.4"
-
-[[package]]
 name = "pytaglib"
 version = "3.0.1"
 description = "cross-platform, Python audio metadata (\"tagging\") library based on TagLib"
@@ -2677,14 +2662,14 @@ use-chardet-on-py3 = ["chardet (>=3.0.2,<6)"]
 
 [[package]]
 name = "rich"
-version = "13.9.4"
+version = "14.0.0"
 description = "Render rich text, tables, progress bars, syntax highlighting, markdown and more to the terminal"
 optional = false
 python-versions = ">=3.8.0"
 groups = ["main"]
 files = [
-    {file = "rich-13.9.4-py3-none-any.whl", hash = "sha256:6049d5e6ec054bf2779ab3358186963bac2ea89175919d699e378b99738c2a90"},
-    {file = "rich-13.9.4.tar.gz", hash = "sha256:439594978a49a09530cff7ebc4b5c7103ef57baf48d5ea3184f21d9a2befa098"},
+    {file = "rich-14.0.0-py3-none-any.whl", hash = "sha256:1c9491e1951aac09caffd42f448ee3d04e58923ffe14993f6e83068dc395d7e0"},
+    {file = "rich-14.0.0.tar.gz", hash = "sha256:82f1bc23a6a21ebca4ae0c45af9bdbc492ed20231dcb63f297d6d1021a9d5725"},
 ]
 
 [package.dependencies]
@@ -3114,4 +3099,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.9,<3.14"
-content-hash = "0157ec58860b4b06e1528471e24e9431bebd382833016a2bb628e8b0019c0813"
+content-hash = "ce6f31666e5cb40c9aee9a9ace19d406948eb993a3a7c014e9ae39945f1b136c"

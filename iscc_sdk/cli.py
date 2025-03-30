@@ -162,5 +162,21 @@ def selftest():
     ic.conformance_selftest()
 
 
+@app.command()
+def extract(file: Path):
+    """Extract text from FILE and print to console."""
+    log.remove()
+    if file.is_file() and file.exists():
+        try:
+            text = idk.text_extract(file.as_posix())
+            typer.echo(ic.text_clean(text))
+        except Exception as e:
+            typer.echo(f"Error extracting text: {e}")
+            raise typer.Exit(code=1)
+    else:
+        typer.echo(f"Invalid file path {file}")
+        raise typer.Exit(code=1)
+
+
 if __name__ == "__main__":  # pragma: no cover
     app()

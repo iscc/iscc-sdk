@@ -63,7 +63,6 @@ pillow-heif = "*"
 langcodes = "*"
 exiv2 = "*"
 extractous = "*"
-pymupdf4llm = "^0.0.18"
 
 
 [tool.poetry.group.dev.dependencies]

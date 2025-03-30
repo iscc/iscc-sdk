@@ -2,7 +2,7 @@
 
 from os.path import basename, splitext
 from pathlib import Path
-from typing import Generator, Optional, Union
+from typing import Generator, Union
 from urllib.parse import urlparse
 
 from extractous import Extractor
