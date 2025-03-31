@@ -59,6 +59,30 @@ def test_code_iscc_with_units(jpg_file):
     }
 
 
+def test_code_iscc_with_units_256_bits(jpg_file):
+    assert idk.code_iscc(jpg_file, add_units=True, bits=256).dict(exclude={"generator"}) == {
+        "@type": "ImageObject",
+        "creator": "Some Cat Lover",
+        "datahash": "1e2055529bfae5bdb3d530c52f44d13ccd6a7c710f63620dc2db1c43c5592ae2dc97",
+        "filename": "img.jpg",
+        "filesize": 35393,
+        "height": 133,
+        "iscc": "ISCC:KECWRY3VY6R5SNV4YNBTBHR4T2HGP3HKVFO7TYUP2BKVFG724W63HVI",
+        "mediatype": "image/jpeg",
+        "metahash": "1e209ce5052a03004657d8657167f53812718e9426d85b4cdd5106ef3d87412e6f64",
+        "mode": "image",
+        "name": "Concentrated Cat",
+        "thumbnail": "data:image/webp;base64,UklGRsoFAABXRUJQVlA4IL4FAADwIQCdASqAAFUAPxF2sFKsJyQnrVjKkYAiCWdq5lv09vPSNmmbj7iZk4N2TVzS3f28KvARwIDCCFvYB08Zj/OGDuXd6KbVZ1elL5+Thy+MASDkNoK3zhL9GbtOVulvlPZi02n55mWY9CqrpVB2wKfvipBFcBcC4Sg/5PoOp3eoPKOGSJH9HC5mdxEVBgI3Xb4UZBcKL4vaPglyyNsiyi2oQL6V8mqn4B45E4s7LciIC8MzbBI0PZPpw8pGu6fDYdxfBVryj3U7OLzuFgWbs0fyKFGyMlUFwI0LpOM3ZWQwQzvHD51lUxY/LTrpg4KugjrBaGL9iZQ31+p4BMvrPtIBTfdfqtJjlR3HdBxz5kR2DLWg+3sVrYIAAP73G07RB5tivGcYPEKMrM9JwYUPlKYGNDGfaHbgcX/2Pskovgagq4KXbe9za0j8khE+6veHlb0RAbLm6BCJNwz/vveUdZlnuOzoVmWWfOZd8Ie8y1XXzwi86aoQ04eUKBPxKdP9F0d1UVZRF/IgMtdRAWJyoesBmm8PP0E1f5LBVPvTdD2sgmUpyp+71BDzGxIVwCyYFaAWL0qbna5qyWKa6IBXSiD3JA4aOBOaJTN6/dJ4ipXCu1Vorx8oq1gfhZZoYMeRT5V+dNiseCFF8tKV4sywXdAQmQ8kDczrpLG4r7M1D1nMPFerm9eaJVUIPr8nW4kYYcuByz4W1xbH6AXgkoCdWeDyu+bx25+3/uFp3Iaj+WtU2WRZBwo0BcwOb2LrKeppY8pX8m75I+DWB+rVkr9vFpqddnR/y/pQSoQVtQ/V+ay0u3Pm+zH9otaUo9c9hLA9Ovh2O39BRB4Y1TzJl9/7AFanErXAGacEZ8FL609EWBBG80R93ngrpuodAAOM3tKd1Rx95Tzh33LJ9YyxVZPzCwEQoqvWrEo7PDmTVTPk3dMJRrkMtZKO51agOkic1/PCjlwYpHi7W46pEIe9zBvTBDaZmtWlG6rjNYGmjH0tuDM/5cpfUXCACEBsfHQ87HxUDbXCUmtp5dyq7CyzkReQ3TZ2PRmdd54AF2SDnb0j+gThNhKymJWBjhbjBgeiKC+OZArkHP5pB/mEezzI1WjlBXEPrcY2BZItNI2RpJNSLUQl1N1YeiG0Q3aOvXkIBOh9ABUOlwpyT6+dSxz9+nxN3SfVRNTp98VfJ7qnPuFABXSPkNQIo2ki6QvVKUpBxFf3l1TducABMqiWzynRl6Ezrq7uJMVhUO8kEww6oGjGgxYPsXKUb53DHE2+ZxEUMKhq09qW2N7G8lsdpYSjLDCJ1oYVzqopUBD9coQMEeWvtD/cYK4Ktb54gkKJa/t+2ItBXw6wFdoL38sverCYjBbYTh6hqL1RD9Op++Kphe77COHhZmxqk8o56QOeJLUnVQxN+NzJ81LbU/sw+1t5lfwlXZ5xOdjRV5Qv12UY2jMjlRNhpeO7AdIx3KKz2l1r+R2pfFk3OdY2Gp+/kmGncrOopGVZjCrldoW+6Y8tShnhKZN8+U43VZv2NdPIPcmEyHPtqE20dC0ZGpdNLdMXAySTLlHbCg07FmxbkBDJRxQLdLiY5wLBmLYplJjZTM8eVYqjQnkPts5chrj9SCizfwTC2TWqkCsUVrI/k2aQi8QcXfaulPqKLDy86JJYmk+bKOnio/z+cxXq3PvzISKGJFji8mtMoaZTi3Np0M5c2DE0a6XT3CKifk8J/uDHDicJmW3wRjvpynimvfeG527ysulnf/R4HtIbFeM4HrGNeI1PO8gJOc+W/lC0xgNDDABv6p9fVq0sXthbhuM9OXq/zdDf6e+TRtB5rFsCW1jUDq4+iiuzx1dSY7wOs9K7PiflWrD8HQamEqVUSlE3KCTuWoDbdtrX9fRdmj+IDIHoxU3Eppp+QWTuxIjyrtX9jAJ291BqVHal2uIWHrq+0eOdK6VkY3O8kJXEmExFcSYmqiJZwAA=",
+        "units": [
+            "ISCC:AADWRY3VY6R5SNV4NUAGFYLVSJ3I7KX37VO6PYLC22DFONVH2GVZIPY",
+            "ISCC:EED4GQZQTY6J5DTHQ2DWCPDZHQOM6QZQTY6J5DTFZ2DWCPDZHQOMXDI",
+            "ISCC:GAD6Z2VJLX46FD6QVSSCW3BOUAIV5GRINTAHISA6UQIHPLWH3YBGAHQ",
+            "ISCC:IADVKUU37LS33M6VGDCS6RGRHTGWU7DRB5RWEDOC3MOEHRKZFLRNZFY",
+        ],
+        "width": 200,
+    }
+
+
 def test_code_iscc_audio(mp3_file):
     assert idk.code_iscc(mp3_file).dict(exclude={"generator"}) == {
         "@type": "AudioObject",
