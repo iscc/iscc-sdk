@@ -47,9 +47,9 @@ def code_iscc(fp, **options):
 
     :param fp: str or Path object representing the filepath of the file to process.
     :param options: Custom processing options for overriding global options
-    :key fallback: Whether to process unsupported media types instead of raising an exception.
-    :key add_units: Whether to include ISCC-UNITS in the metadata (in 'units' property).
-    :key wide: Whether to support wide mode for ISCC-SUM with Data & Instance codes only.
+    :key fallback: Whether to process unsupported media types instead of raising an exception. Default: False
+    :key add_units: Whether to include ISCC-UNITS in the metadata (in 'units' property). Default: False
+    :key wide: Whether to support wide mode for ISCC-SUM with Data & Instance codes only. Default: False
     :return: IsccMeta object with complete ISCC-CODE and merged metadata from all ISCC-UNITs.
     :raises idk.IsccUnsupportedMediatype:
         If the media type is not supported. By default, the function will raise this exception for
@@ -115,7 +115,7 @@ def code_meta(fp, **options):
     If no name is found in metadata, the filename will be used instead.
 
     :param fp: Filepath used for Meta-Code creation.
-    :key bits: Bit-length of the generated Meta-Code UNIT.
+    :key bits: Bit-length of the generated Meta-Code UNIT. Default: 64
     :return: ISCC metadata including Meta-Code and extracted metadata fields.
     """
     fp = Path(fp)
@@ -153,8 +153,8 @@ def code_content(fp, **options):
     appropriate specialized function (code_text, code_image, code_audio, or code_video).
 
     :param fp: Filepath
-    :key extract_meta: Whether to extract metadata.
-    :key create_thumb: Whether to create a thumbnail.
+    :key extract_meta: Whether to extract metadata. Default: True
+    :key create_thumb: Whether to create a thumbnail. Default: True
     :return: Content-Code wrapped in ISCC metadata.
     :raises idk.IsccUnsupportedMediatype: If the media type is not supported.
     """
@@ -195,10 +195,10 @@ def code_text(fp, **options):
     Can optionally extract metadata and create a thumbnail representation of the text.
 
     :param fp: Filepath used for Text-Code creation.
-    :key extract_meta: Whether to extract metadata.
-    :key create_thumb: Whether to create a thumbnail.
-    :key bits: Bit-length of the generated Text-Code UNIT.
-    :key granular: Whether to generate additional granular fingerprints.
+    :key extract_meta: Whether to extract metadata. Default: True
+    :key create_thumb: Whether to create a thumbnail. Default: True
+    :key bits: Bit-length of the generated Text-Code UNIT. Default: 64
+    :key granular: Whether to generate additional granular fingerprints. Default: False
     :return: ISCC metadata including Text-Code.
     """
     fp = Path(fp)
@@ -232,9 +232,9 @@ def code_image(fp, **options):
     The image is normalized according to the SDK options (transparency handling, border trimming, etc).
 
     :param fp: Filepath used for Image-Code creation.
-    :key extract_meta: Whether to extract metadata.
-    :key create_thumb: Whether to create a thumbnail.
-    :key bits: Bit-length of the generated Image-Code UNIT.
+    :key extract_meta: Whether to extract metadata. Default: True
+    :key create_thumb: Whether to create a thumbnail. Default: True
+    :key bits: Bit-length of the generated Image-Code UNIT. Default: 64
     :return: ISCC metadata including Image-Code.
     """
     fp = Path(fp)
@@ -264,9 +264,9 @@ def code_audio(fp, **options):
     Uses chromaprint/fpcalc to generate audio features for similarity matching.
 
     :param fp: Filepath used for Audio-Code creation.
-    :key extract_meta: Whether to extract metadata.
-    :key create_thumb: Whether to create a thumbnail.
-    :key bits: Bit-length of the generated Audio-Code UNIT.
+    :key extract_meta: Whether to extract metadata. Default: True
+    :key create_thumb: Whether to create a thumbnail. Default: True
+    :key bits: Bit-length of the generated Audio-Code UNIT. Default: 64
     :return: ISCC metadata including Audio-Code.
     """
     fp = Path(fp)
@@ -297,11 +297,11 @@ def code_video(fp, **options):
     Uses MPEG-7 signature tools to extract frame-based features and optionally detect scene changes.
 
     :param fp: Filepath used for Video-Code creation.
-    :key extract_meta: Whether to extract metadata.
-    :key create_thumb: Whether to create a thumbnail.
-    :key granular: Whether to generate additional granular fingerprints based on scene detection.
-    :key video_store_mp7sig: Whether to store extracted MP7 Video signature file.
-    :key bits: Bit-length of the generated Video-Code UNIT.
+    :key extract_meta: Whether to extract metadata. Default: True
+    :key create_thumb: Whether to create a thumbnail. Default: True
+    :key granular: Whether to generate additional granular fingerprints based on scene detection. Default: False
+    :key video_store_mp7sig: Whether to store extracted MP7 Video signature file. Default: False
+    :key bits: Bit-length of the generated Video-Code UNIT. Default: 64
     :return: ISCC metadata including Video-Code.
     """
     fp = Path(fp)
@@ -350,7 +350,7 @@ def code_data(fp, **options):
     detection of similar binary data regardless of file format or metadata differences.
 
     :param fp: Filepath used for Data-Code creation.
-    :key bits: Bit-length of the generated Data-Code UNIT.
+    :key bits: Bit-length of the generated Data-Code UNIT. Default: 64
     :return: ISCC metadata including Data-Code.
     """
     fp = Path(fp)
@@ -372,7 +372,7 @@ def code_instance(fp, **options):
     checking, a full 256-bit multihash is provided with the `datahash` field.
 
     :param fp: Filepath used for Instance-Code creation.
-    :key bits: Bit-length of the generated Instance-Code UNIT.
+    :key bits: Bit-length of the generated Instance-Code UNIT. Default: 64
     :return: ISCC metadata including Instance-Code, datahash and filesize.
     """
     fp = Path(fp)
