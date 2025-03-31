@@ -2,6 +2,15 @@
 
 ## 0.8.0 - Unreleased
 
+- Added support for optional ISCC-UNITS and configurable bit size (256-bit).
+- Added `extract` command to CLI for text extraction with error handling.
+- Added AVIF thumbnail format support and metadata stripping for thumbnails.
+- Added robust EPUB cover image extraction with multiple fallback strategies.
+- Updated text features generation to use 256-bit MinHash algorithm.
+- Simplified media processing functions by removing redundant optional parameters.
+- Refactored text feature extraction process for clarity.
+- Updated dependencies.
+
 ## 0.7.0 - 2025-03-23
 
 - Added Python 3.13 support
