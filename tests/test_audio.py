@@ -220,7 +220,7 @@ def test_audio_embed_title(mp3_cover):
 
 
 def test_code_audio_metadata_meta_thumb_disabled(mp3_cover, monkeypatch):
-    monkeypatch.setattr(idk.sdk_opts, "extract_metadata", False)
-    monkeypatch.setattr(idk.sdk_opts, "create_thumbnail", False)
+    monkeypatch.setattr(idk.sdk_opts, "extract_meta", False)
+    monkeypatch.setattr(idk.sdk_opts, "create_thumb", False)
     meta = idk.code_audio(mp3_cover)
     assert meta.dict() == {"iscc": "ISCC:EIAWUJFCEZZOJYVD"}

@@ -77,7 +77,7 @@ def code_iscc(fp, **options):
             log.warning(f"Processing {fp.name} - media type: {mime} - processing mode: sum")
         else:
             # Process content and meta for supported media types
-            content_future = executor.submit(code_content, fp, False, None, **options)
+            content_future = executor.submit(code_content, fp, **options)
             meta_future = executor.submit(code_meta, fp, **options)
 
             content = content_future.result()
@@ -137,8 +137,8 @@ def code_meta(fp, **options):
     return idk.IsccMeta.construct(**meta)
 
 
-def code_content(fp, extract_meta=None, create_thumb=None, **options):
-    # type: (str|Path, bool|None, bool|None, Any) -> idk.IsccMeta
+def code_content(fp, **options):
+    # type: (str|Path, Any) -> idk.IsccMeta
     """
     Detect mediatype and create corresponding Content-Code.
 
@@ -158,13 +158,13 @@ def code_content(fp, extract_meta=None, create_thumb=None, **options):
     mediatype, mode = idk.mediatype_and_mode(fp)
 
     if mode == "image":
-        cc = code_image(fp, extract_meta, create_thumb, **options)
+        cc = code_image(fp, **options)
     elif mode == "audio":
-        cc = code_audio(fp, extract_meta, create_thumb, **options)
+        cc = code_audio(fp, **options)
     elif mode == "video":
-        cc = code_video(fp, extract_meta, create_thumb, **options)
+        cc = code_video(fp, **options)
     elif mode == "text":
-        cc = code_text(fp, extract_meta, create_thumb, **options)
+        cc = code_text(fp, **options)
     else:  # pragma nocover
         raise idk.IsccUnsupportedMediatype(mediatype)
 
@@ -175,8 +175,8 @@ def code_content(fp, extract_meta=None, create_thumb=None, **options):
     return cc
 
 
-def code_text(fp, extract_meta=None, create_thumb=None, **options):
-    # type: (str|Path, bool|None, bool|None, Any) -> idk.IsccMeta
+def code_text(fp, **options):
+    # type: (str|Path, Any) -> idk.IsccMeta
     """
     Generate Content-Code Text.
 
@@ -189,15 +189,10 @@ def code_text(fp, extract_meta=None, create_thumb=None, **options):
     opts = idk.sdk_opts.override(options)
     meta = dict()
 
-    if extract_meta is None:
-        extract_meta = idk.sdk_opts.extract_metadata
-    if create_thumb is None:
-        create_thumb = idk.sdk_opts.create_thumbnail
-
-    if extract_meta:
+    if opts.extract_meta:
         meta = idk.text_meta_extract(fp)
 
-    if create_thumb:
+    if opts.create_thumb:
         thumbnail_img = idk.text_thumbnail(fp)
         if thumbnail_img:
             thumbnail_durl = idk.image_to_data_url(thumbnail_img)
@@ -206,14 +201,14 @@ def code_text(fp, extract_meta=None, create_thumb=None, **options):
     text = idk.text_extract(fp)
     code = ic.gen_text_code_v0(text, bits=opts.bits)
     meta.update(code)
-    if idk.sdk_opts.granular:
+    if opts.granular:
         features = idk.text_features(ic.text_clean(text))
         meta["features"] = [features]
     return idk.IsccMeta.construct(**meta)
 
 
-def code_image(fp, extract_meta=None, create_thumb=None, **options):
-    # type: (str|Path, bool|None, bool|None, Any) -> idk.IsccMeta
+def code_image(fp, **options):
+    # type: (str|Path, Any) -> idk.IsccMeta
     """
     Generate Content-Code Image.
 
@@ -226,14 +221,9 @@ def code_image(fp, extract_meta=None, create_thumb=None, **options):
     opts = idk.sdk_opts.override(options)
     meta = dict()
 
-    if extract_meta is None:
-        extract_meta = idk.sdk_opts.extract_metadata
-    if create_thumb is None:
-        create_thumb = idk.sdk_opts.create_thumbnail
-
-    if extract_meta:
+    if opts.extract_meta:
         meta = idk.image_meta_extract(fp)
-    if create_thumb:
+    if opts.create_thumb:
         thumbnail_img = idk.image_thumbnail(fp)
         thumbnail_durl = idk.image_to_data_url(thumbnail_img)
         meta["thumbnail"] = thumbnail_durl
@@ -245,8 +235,8 @@ def code_image(fp, extract_meta=None, create_thumb=None, **options):
     return idk.IsccMeta.construct(**meta)
 
 
-def code_audio(fp, extract_meta=None, create_thumb=None, **options):
-    # type: (str|Path, bool|None, bool|None, Any) -> idk.IsccMeta
+def code_audio(fp, **options):
+    # type: (str|Path, Any) -> idk.IsccMeta
     """
     Generate Content-Code Audio.
 
@@ -259,14 +249,9 @@ def code_audio(fp, extract_meta=None, create_thumb=None, **options):
     opts = idk.sdk_opts.override(options)
     meta = dict()
 
-    if extract_meta is None:
-        extract_meta = idk.sdk_opts.extract_metadata
-    if create_thumb is None:
-        create_thumb = idk.sdk_opts.create_thumbnail
-
-    if extract_meta:
+    if opts.extract_meta:
         meta = idk.audio_meta_extract(fp)
-    if create_thumb:
+    if opts.create_thumb:
         thumbnail_img = idk.audio_thumbnail(fp)
         if thumbnail_img:
             thumbnail_durl = idk.image_to_data_url(thumbnail_img)
@@ -279,8 +264,8 @@ def code_audio(fp, extract_meta=None, create_thumb=None, **options):
     return idk.IsccMeta.construct(**meta)
 
 
-def code_video(fp, extract_meta=None, create_thumb=None, **options):
-    # type: (str|Path, bool, bool, Any) -> idk.IsccMeta
+def code_video(fp, **options):
+    # type: (str|Path, Any) -> idk.IsccMeta
     """
     Generate Content-Code Video.
 
@@ -293,27 +278,22 @@ def code_video(fp, extract_meta=None, create_thumb=None, **options):
     opts = idk.sdk_opts.override(options)
     meta = dict()
 
-    if extract_meta is None:
-        extract_meta = idk.sdk_opts.extract_metadata
-    if create_thumb is None:
-        create_thumb = idk.sdk_opts.create_thumbnail
-
-    if extract_meta:
+    if opts.extract_meta:
         meta = idk.video_meta_extract(fp)
 
-    if create_thumb:
+    if opts.create_thumb:
         thumbnail_image = idk.video_thumbnail(fp)
         if thumbnail_image is not None:
             thumbnail_durl = idk.image_to_data_url(thumbnail_image)
             meta["thumbnail"] = thumbnail_durl
 
     sig, scenes = None, []
-    if idk.sdk_opts.granular:
+    if opts.granular:
         sig, scenes = idk.video_mp7sig_extract_scenes(fp)
     else:
         sig = idk.video_mp7sig_extract(fp)
 
-    if idk.sdk_opts.video_store_mp7sig:
+    if opts.video_store_mp7sig:
         outp = fp.with_suffix(".iscc.mp7sig")
         with open(outp, "wb") as outf:
             outf.write(sig)
@@ -324,7 +304,7 @@ def code_video(fp, extract_meta=None, create_thumb=None, **options):
     code_obj = ic.gen_video_code_v0(features, bits=opts.bits)
     meta.update(code_obj)
 
-    if idk.sdk_opts.granular:
+    if opts.granular:
         granular = idk.video_compute_granular(frames, scenes)
         meta["features"] = granular
 

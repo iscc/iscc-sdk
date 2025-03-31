@@ -136,8 +136,8 @@ def test_video_features_extract_store(mp4_file, monkeypatch):
 
 
 def test_code_video_nometa_nothumb(mp4_file, monkeypatch):
-    monkeypatch.setattr(idk.sdk_opts, "extract_metadata", False)
-    monkeypatch.setattr(idk.sdk_opts, "create_thumbnail", False)
+    monkeypatch.setattr(idk.sdk_opts, "extract_meta", False)
+    monkeypatch.setattr(idk.sdk_opts, "create_thumb", False)
     meta = idk.code_video(mp4_file)
     assert meta.dict() == {"iscc": "ISCC:EMAV4DUD6QORW4X4"}
 
@@ -145,8 +145,8 @@ def test_code_video_nometa_nothumb(mp4_file, monkeypatch):
 def test_code_video_granular_scenes(mp4_file, monkeypatch):
     monkeypatch.setattr(idk.sdk_opts, "granular", True)
     monkeypatch.setattr(idk.sdk_opts, "video_scene_limit", 0.2)
-    monkeypatch.setattr(idk.sdk_opts, "create_thumbnail", False)
-    monkeypatch.setattr(idk.sdk_opts, "extract_metadata", True)
+    monkeypatch.setattr(idk.sdk_opts, "create_thumb", False)
+    monkeypatch.setattr(idk.sdk_opts, "extract_meta", True)
     result = idk.code_video(mp4_file).dict()
     assert result == {
         "duration": 60.14,
@@ -176,8 +176,8 @@ def test_code_video_granular_scenes(mp4_file, monkeypatch):
 def test_code_iscc_video_granular(mp4_file, monkeypatch):
     monkeypatch.setattr(idk.sdk_opts, "granular", True)
     monkeypatch.setattr(idk.sdk_opts, "video_scene_limit", 0.2)
-    monkeypatch.setattr(idk.sdk_opts, "create_thumbnail", False)
-    monkeypatch.setattr(idk.sdk_opts, "extract_metadata", True)
+    monkeypatch.setattr(idk.sdk_opts, "create_thumb", False)
+    monkeypatch.setattr(idk.sdk_opts, "extract_meta", True)
     result = idk.code_iscc(mp4_file).dict(exclude={"generator"})
     assert result == {
         "@type": "VideoObject",
@@ -214,8 +214,8 @@ def test_code_iscc_video_granular(mp4_file, monkeypatch):
 def test_code_iscc_video_granular_no_scenes(mp4_file, monkeypatch):
     monkeypatch.setattr(idk.sdk_opts, "granular", True)
     monkeypatch.setattr(idk.sdk_opts, "video_scene_limit", 0.8)
-    monkeypatch.setattr(idk.sdk_opts, "create_thumbnail", False)
-    monkeypatch.setattr(idk.sdk_opts, "extract_metadata", True)
+    monkeypatch.setattr(idk.sdk_opts, "create_thumb", False)
+    monkeypatch.setattr(idk.sdk_opts, "extract_meta", True)
     result = idk.code_iscc(mp4_file).dict(exclude={"generator"})
     assert result == {
         "@type": "VideoObject",

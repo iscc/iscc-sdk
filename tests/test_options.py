@@ -23,17 +23,17 @@ def test_image_max_pixels_None(monkeypatch):
 def test_sdk_options_default():
     assert isinstance(idk.sdk_opts, idk.SdkOptions)
     assert idk.sdk_opts.granular is False
-    assert idk.sdk_opts.extract_metadata is True
-    assert idk.sdk_opts.create_thumbnail is True
+    assert idk.sdk_opts.extract_meta is True
+    assert idk.sdk_opts.create_thumb is True
 
 
 def test_sdk_options_override():
-    new_opts = idk.sdk_opts.override({"granular": True, "extract_metadata": False})
+    new_opts = idk.sdk_opts.override({"granular": True, "extract_meta": False})
     assert new_opts.granular is True
-    assert new_opts.extract_metadata is False
-    assert new_opts.create_thumbnail is True  # Unchanged
+    assert new_opts.extract_meta is False
+    assert new_opts.create_thumb is True  # Unchanged
     assert idk.sdk_opts.granular is False  # Original instance unchanged
-    assert idk.sdk_opts.extract_metadata is True  # Original instance unchanged
+    assert idk.sdk_opts.extract_meta is True  # Original instance unchanged
 
 
 def test_sdk_options_override_invalid_field():
@@ -54,22 +54,22 @@ def test_sdk_options_image_max_pixels():
 def test_sdk_options_override_empty():
     new_opts = idk.sdk_opts.override()
     assert new_opts.granular == idk.sdk_opts.granular
-    assert new_opts.extract_metadata == idk.sdk_opts.extract_metadata
-    assert new_opts.create_thumbnail == idk.sdk_opts.create_thumbnail
+    assert new_opts.extract_meta == idk.sdk_opts.extract_meta
+    assert new_opts.create_thumb == idk.sdk_opts.create_thumb
 
 
 def test_sdk_options_override_multiple_fields():
     new_opts = idk.sdk_opts.override(
         {
             "granular": True,
-            "extract_metadata": False,
-            "create_thumbnail": False,
+            "extract_meta": False,
+            "create_thumb": False,
             "image_max_pixels": 500000,
         }
     )
     assert new_opts.granular is True
-    assert new_opts.extract_metadata is False
-    assert new_opts.create_thumbnail is False
+    assert new_opts.extract_meta is False
+    assert new_opts.create_thumb is False
     assert new_opts.image_max_pixels == 500000
     assert Image.MAX_IMAGE_PIXELS == 500000
 

@@ -63,12 +63,12 @@ class SdkOptions(BaseSettings):
         description="ISCC_SDK_WIDE - For ISCC-SUM with Data & Instance codes only support wide mode",
     )
 
-    extract_metadata: bool = Field(
+    extract_meta: bool = Field(
         default=True,
         description="ISCC_EXTRACT_METADATA - Extract metadata from digital assets (defaut: True)",
     )
 
-    create_thumbnail: bool = Field(
+    create_thumb: bool = Field(
         default=True,
         description="ISCC_CREATE_THUMBNAIL - Create thumbail for digital assets (defaut: True)",
     )
