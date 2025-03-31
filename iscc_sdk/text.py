@@ -69,7 +69,7 @@ def text_meta_extract(fp):
         if value:
             if isinstance(value, list):
                 value = ", ".join(value)
-            log.debug(f"Mapping text metadata: {tag} -> {mapped_field} -> {value}")
+            log.debug(f"Mapping text metadata: {tag} -> {mapped_field} -> {value:50} ...")
             mapped[mapped_field] = value
             done.add(mapped_field)
     return mapped
