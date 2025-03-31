@@ -129,7 +129,7 @@ def text_features(text):
             for chars in ic.sliding_window(ic.text_collapse(chunk), idk.core_opts.text_ngram_size)
         )
         features = [xxhash.xxh32_intdigest(s.encode("utf-8")) for s in ngrams]
-        minimum_hash_digest = ic.alg_minhash_64(features)
+        minimum_hash_digest = ic.alg_minhash_256(features)
         sizes.append(len(chunk))
         feats.append(ic.encode_base64(minimum_hash_digest))
     return dict(kind="text", version=0, features=feats, sizes=sizes)

@@ -147,7 +147,7 @@ def test_code_text_granular(docx_file, monkeypatch):
             {
                 "kind": "text",
                 "version": 0,
-                "features": ["BgSYgX3O_G8"],
+                "features": ["BgSYgX3O_G8MfT7_3-wUI8wTBI_JwN0KQID6I4Hs1_g"],
                 "sizes": [6069],
             }
         ],
