@@ -129,27 +129,24 @@ def test_video_features_extract(mp4_file):
     assert features[0][:20] == (0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0)
 
 
-def test_video_features_extract_store(mp4_file):
-    idk.sdk_opts.video_store_mp7sig = True
+def test_video_features_extract_store(mp4_file, monkeypatch):
+    monkeypatch.setattr(idk.sdk_opts, "video_store_mp7sig", True)
     idk.video_features_extract(mp4_file)
     assert Path(mp4_file + ".iscc.mp7sig").exists()
-    idk.sdk_opts.video_store_mp7sig = True
 
 
-def test_code_video_nometa_nothumb(mp4_file):
-    idk.sdk_opts.extract_metadata = False
-    idk.sdk_opts.create_thumbnail = False
+def test_code_video_nometa_nothumb(mp4_file, monkeypatch):
+    monkeypatch.setattr(idk.sdk_opts, "extract_metadata", False)
+    monkeypatch.setattr(idk.sdk_opts, "create_thumbnail", False)
     meta = idk.code_video(mp4_file)
     assert meta.dict() == {"iscc": "ISCC:EMAV4DUD6QORW4X4"}
-    idk.sdk_opts.extract_metadata = True
-    idk.sdk_opts.create_thumbnail = True
 
 
-def test_code_video_granular_scenes(mp4_file):
-    idk.sdk_opts.granular = True
-    idk.sdk_opts.video_scene_limit = 0.2
-    idk.sdk_opts.create_thumbnail = False
-    idk.sdk_opts.extract_metadata = True
+def test_code_video_granular_scenes(mp4_file, monkeypatch):
+    monkeypatch.setattr(idk.sdk_opts, "granular", True)
+    monkeypatch.setattr(idk.sdk_opts, "video_scene_limit", 0.2)
+    monkeypatch.setattr(idk.sdk_opts, "create_thumbnail", False)
+    monkeypatch.setattr(idk.sdk_opts, "extract_metadata", True)
     result = idk.code_video(mp4_file).dict()
     assert result == {
         "duration": 60.14,
@@ -176,11 +173,11 @@ def test_code_video_granular_scenes(mp4_file):
     }
 
 
-def test_code_iscc_video_granular(mp4_file):
-    idk.sdk_opts.granular = True
-    idk.sdk_opts.video_scene_limit = 0.2
-    idk.sdk_opts.create_thumbnail = False
-    idk.sdk_opts.extract_metadata = True
+def test_code_iscc_video_granular(mp4_file, monkeypatch):
+    monkeypatch.setattr(idk.sdk_opts, "granular", True)
+    monkeypatch.setattr(idk.sdk_opts, "video_scene_limit", 0.2)
+    monkeypatch.setattr(idk.sdk_opts, "create_thumbnail", False)
+    monkeypatch.setattr(idk.sdk_opts, "extract_metadata", True)
     result = idk.code_iscc(mp4_file).dict(exclude={"generator"})
     assert result == {
         "@type": "VideoObject",
@@ -214,11 +211,11 @@ def test_code_iscc_video_granular(mp4_file):
     }
 
 
-def test_code_iscc_video_granular_no_scenes(mp4_file):
-    idk.sdk_opts.granular = True
-    idk.sdk_opts.video_scene_limit = 0.8
-    idk.sdk_opts.create_thumbnail = False
-    idk.sdk_opts.extract_metadata = True
+def test_code_iscc_video_granular_no_scenes(mp4_file, monkeypatch):
+    monkeypatch.setattr(idk.sdk_opts, "granular", True)
+    monkeypatch.setattr(idk.sdk_opts, "video_scene_limit", 0.8)
+    monkeypatch.setattr(idk.sdk_opts, "create_thumbnail", False)
+    monkeypatch.setattr(idk.sdk_opts, "extract_metadata", True)
     result = idk.code_iscc(mp4_file).dict(exclude={"generator"})
     assert result == {
         "@type": "VideoObject",

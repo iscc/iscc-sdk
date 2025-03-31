@@ -215,10 +215,8 @@ def test_process_metadata_to_string():
     assert result["Test.Key"] == "converted string value"
 
 
-def test_code_image_nometa_nothumb(jpg_file):
-    idk.sdk_opts.extract_metadata = False
-    idk.sdk_opts.create_thumbnail = False
+def test_code_image_nometa_nothumb(jpg_file, monkeypatch):
+    monkeypatch.setattr(idk.sdk_opts, "extract_metadata", False)
+    monkeypatch.setattr(idk.sdk_opts, "create_thumbnail", False)
     meta = idk.code_image(jpg_file)
     assert meta.dict() == {"iscc": "ISCC:EEA4GQZQTY6J5DTH"}
-    idk.sdk_opts.extract_metadata = True
-    idk.sdk_opts.create_thumbnail = True

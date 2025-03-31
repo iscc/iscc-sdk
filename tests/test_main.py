@@ -136,8 +136,8 @@ def test_code_text(docx_file):
     }
 
 
-def test_code_text_granular(docx_file):
-    idk.sdk_opts.granular = True
+def test_code_text_granular(docx_file, monkeypatch):
+    monkeypatch.setattr(idk.sdk_opts, "granular", True)
     assert idk.code_text(docx_file).dict() == {
         "iscc": "ISCC:EAAQMBEYQF6457DP",
         "name": "title from metadata",
@@ -152,7 +152,6 @@ def test_code_text_granular(docx_file):
             }
         ],
     }
-    idk.sdk_opts.granular = False
 
 
 def test_code_image(jpg_file):
@@ -211,8 +210,8 @@ def test_code_iscc_non_uri_metadata(jpg_file):
     }
 
 
-def test_code_iscc_sum_fallback(svg_file):
-    idk.sdk_opts.fallback = True
+def test_code_iscc_sum_fallback(svg_file, monkeypatch):
+    monkeypatch.setattr(idk.sdk_opts, "fallback", True)
     result = idk.code_iscc(svg_file)
     assert result.dict(exclude={"generator"}) == {
         "datahash": "1e20344474d5a2ba3451baeba1565b3932f369980f32d705617020a11f7817bd56c9",
@@ -221,4 +220,3 @@ def test_code_iscc_sum_fallback(svg_file):
         "iscc": "ISCC:KUAPHHVHTGLKQFQ3GRCHJVNCXI2FC",
         "mediatype": "image/svg+xml",
     }
-    idk.sdk_opts.fallback = False

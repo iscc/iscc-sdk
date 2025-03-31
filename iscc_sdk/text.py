@@ -114,10 +114,10 @@ def text_extract(fp):
 def text_features(text):
     # type: (str) -> dict
     """
-    Create granular fingerprint for text (minhashes over ngrams from cdc-chunks).
-    Text should be normalized before extracting text features.
+    Create granular simprints for text (minhashes over ngrams from cdc-chunks).
+    Text should be normalized and cleaned before extracting text features.
 
-    :param text: Normalized plaintext.
+    :param text: Normalized  and cleaned plaintext.
     :returns dict: Dictionary with 'sizes' and 'features'.
     """
     clean_text = ic.text_clean(text)
