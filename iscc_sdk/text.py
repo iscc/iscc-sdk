@@ -120,8 +120,7 @@ def text_features(text):
     :param text: Normalized  and cleaned plaintext.
     :returns dict: Dictionary with 'sizes' and 'features'.
     """
-    clean_text = ic.text_clean(text)
-    chunks = text_chunks(clean_text, avg_size=idk.sdk_opts.text_avg_chunk_size)
+    chunks = text_chunks(text, avg_size=idk.sdk_opts.text_avg_chunk_size)
     sizes = []
     feats = []
     for chunk in chunks:

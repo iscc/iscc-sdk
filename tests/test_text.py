@@ -72,7 +72,7 @@ def test_text_chunks(docx_file):
 def test_text_features(docx_file):
     txt = idk.text_extract(docx_file)
     features = idk.text_features(txt)
-    assert features == {"kind": "text", "version": 0, "features": ["BgSYgX3O_G8"], "sizes": [6069]}
+    assert features == {"kind": "text", "version": 0, "features": ["BgSYgX3O_G8"], "sizes": [6070]}
 
 
 def test_text_features_stable(doc_file):

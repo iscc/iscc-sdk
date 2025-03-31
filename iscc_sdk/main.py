@@ -203,7 +203,7 @@ def code_text(fp, extract_meta=None, create_thumb=None):
     code = ic.gen_text_code_v0(text, bits=idk.core_opts.text_bits)
     meta.update(code)
     if idk.sdk_opts.granular:
-        features = idk.text_features(text)
+        features = idk.text_features(ic.text_clean(text))
         meta["features"] = [features]
     return idk.IsccMeta.construct(**meta)
 
