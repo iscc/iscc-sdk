@@ -111,6 +111,9 @@ def code_meta(fp, **options):
     """
     Generate Meta-Code from digital asset.
 
+    Creates an ISCC Meta-Code based on normalized metadata extracted from the file.
+    If no name is found in metadata, the filename will be used instead.
+
     :param fp: Filepath used for Meta-Code creation.
     :key bits: Bit-length of the generated Meta-Code UNIT.
     :return: ISCC metadata including Meta-Code and extracted metadata fields.
@@ -146,10 +149,14 @@ def code_content(fp, **options):
     """
     Detect mediatype and create corresponding Content-Code.
 
+    Analyzes the file to determine its media type and routes the processing to the
+    appropriate specialized function (code_text, code_image, code_audio, or code_video).
+
     :param fp: Filepath
     :key extract_meta: Whether to extract metadata.
     :key create_thumb: Whether to create a thumbnail.
     :return: Content-Code wrapped in ISCC metadata.
+    :raises idk.IsccUnsupportedMediatype: If the media type is not supported.
     """
     fp = Path(fp)
     schema_org_map = {
@@ -183,6 +190,9 @@ def code_text(fp, **options):
     # type: (str|Path, Any) -> idk.IsccMeta
     """
     Generate Content-Code Text.
+
+    Creates a Text-Code by extracting and processing text content from document files.
+    Can optionally extract metadata and create a thumbnail representation of the text.
 
     :param fp: Filepath used for Text-Code creation.
     :key extract_meta: Whether to extract metadata.
@@ -218,6 +228,9 @@ def code_image(fp, **options):
     """
     Generate Content-Code Image.
 
+    Creates an Image-Code by normalizing and processing the visual content of image files.
+    The image is normalized according to the SDK options (transparency handling, border trimming, etc).
+
     :param fp: Filepath used for Image-Code creation.
     :key extract_meta: Whether to extract metadata.
     :key create_thumb: Whether to create a thumbnail.
@@ -246,6 +259,9 @@ def code_audio(fp, **options):
     # type: (str|Path, Any) -> idk.IsccMeta
     """
     Generate Content-Code Audio.
+
+    Creates an Audio-Code by extracting acoustic fingerprints from audio files.
+    Uses chromaprint/fpcalc to generate audio features for similarity matching.
 
     :param fp: Filepath used for Audio-Code creation.
     :key extract_meta: Whether to extract metadata.
@@ -277,10 +293,13 @@ def code_video(fp, **options):
     """
     Generate Content-Code Video.
 
+    Creates a Video-Code by extracting and processing visual features from video frames.
+    Uses MPEG-7 signature tools to extract frame-based features and optionally detect scene changes.
+
     :param fp: Filepath used for Video-Code creation.
     :key extract_meta: Whether to extract metadata.
     :key create_thumb: Whether to create a thumbnail.
-    :key granular: Whether to generate additional granular fingerprints.
+    :key granular: Whether to generate additional granular fingerprints based on scene detection.
     :key video_store_mp7sig: Whether to store extracted MP7 Video signature file.
     :key bits: Bit-length of the generated Video-Code UNIT.
     :return: ISCC metadata including Video-Code.
@@ -327,7 +346,8 @@ def code_data(fp, **options):
     """
     Create ISCC Data-Code.
 
-    The Data-Code is a similarity preserving hash of the input data.
+    The Data-Code is a similarity preserving hash of the raw input data that allows for
+    detection of similar binary data regardless of file format or metadata differences.
 
     :param fp: Filepath used for Data-Code creation.
     :key bits: Bit-length of the generated Data-Code UNIT.
@@ -346,13 +366,13 @@ def code_instance(fp, **options):
     """
     Create ISCC Instance-Code.
 
-    The Instance-Code is prefix of a cryptographic hash (blake3) of the input data.
-    It´s purpose is to serve as a checksum that detects even minimal changes
-    to the data of the referenced media asset. For cryptographicaly secure integrity
-    checking a full 256-bit multihash is provided with the `datahash` field.
+    The Instance-Code is a cryptographic hash (blake3) of the input data.
+    Its purpose is to serve as a checksum that detects even minimal changes
+    to the data of the referenced media asset. For cryptographically secure integrity
+    checking, a full 256-bit multihash is provided with the `datahash` field.
 
     :param fp: Filepath used for Instance-Code creation.
-    :key bits: Bit-length of Ithe generated Instance-Code UNIT.
+    :key bits: Bit-length of the generated Instance-Code UNIT.
     :return: ISCC metadata including Instance-Code, datahash and filesize.
     """
     fp = Path(fp)
