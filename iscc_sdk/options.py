@@ -48,6 +48,21 @@ class SdkOptions(BaseSettings):
         description="ISCC_SDK_GRANULAR - Generate additional granular fingerprints for ISCC-CODES",
     )
 
+    add_units: bool = Field(
+        default=False,
+        description="ISCC_SDK_ADD_UNITS - Add ISCC-UNITS to ISCC metadata (in 'units' property)",
+    )
+
+    bits: int = Field(
+        default=64,
+        description="ISCC_SDK_BITS - Bit size of ISCC-UNITS in ISCC metadata (in 'units' property)",
+    )
+
+    wide: bool = Field(
+        default=False,
+        description="ISCC_SDK_WIDE - For ISCC-SUM with Data & Instance codes only support wide mode",
+    )
+
     extract_metadata: bool = Field(
         default=True,
         description="ISCC_EXTRACT_METADATA - Extract metadata from digital assets (defaut: True)",

@@ -65,8 +65,8 @@ def code_iscc(fp, **options):
 
     with ThreadPoolExecutor() as executor:
         # Always process instance and data
-        instance_future = executor.submit(code_instance, fp)
-        data_future = executor.submit(code_data, fp)
+        instance_future = executor.submit(code_instance, fp, **options)
+        data_future = executor.submit(code_data, fp, **options)
         try:
             mode = idk.mediatype_to_mode(mime)
             log.debug(f"Processing {fp.name} - media type: {mime} - processing mode: {mode}")
@@ -77,8 +77,8 @@ def code_iscc(fp, **options):
             log.warning(f"Processing {fp.name} - media type: {mime} - processing mode: sum")
         else:
             # Process content and meta for supported media types
-            content_future = executor.submit(code_content, fp, False, None)
-            meta_future = executor.submit(code_meta, fp)
+            content_future = executor.submit(code_content, fp, False, None, **options)
+            meta_future = executor.submit(code_meta, fp, **options)
 
             content = content_future.result()
             meta = meta_future.result()
@@ -93,16 +93,18 @@ def code_iscc(fp, **options):
             iscc_meta.update(instance.dict())
             iscc_meta.update(data.dict())
 
+    if opts.add_units:
+        iscc_meta["units"] = iscc_units
     # Compose ISCC-CODE
-    iscc_code = ic.gen_iscc_code_v0(iscc_units)
+    iscc_code = ic.gen_iscc_code_v0(iscc_units, wide=opts.wide)
     iscc_meta.update(iscc_code)
     iscc_meta["generator"] = f"iscc-sdk - v{idk.__version__}"
 
     return idk.IsccMeta.construct(**iscc_meta)
 
 
-def code_meta(fp):
-    # type: (str|Path) -> idk.IsccMeta
+def code_meta(fp, **options):
+    # type: (str|Path, Any) -> idk.IsccMeta
     """
     Generate Meta-Code from digital asset.
 
@@ -110,6 +112,7 @@ def code_meta(fp):
     :return: ISCC metadata including Meta-Code and extracted metadata fields.
     """
     fp = Path(fp)
+    opts = idk.sdk_opts.override(options)
 
     meta = idk.extract_metadata(fp).dict()
 
@@ -127,15 +130,15 @@ def code_meta(fp):
         name=meta.get("name"),
         description=meta.get("description"),
         meta=meta.get("meta"),
-        bits=idk.core_opts.meta_bits,
+        bits=opts.bits,
     )
 
     meta.update(metacode)
     return idk.IsccMeta.construct(**meta)
 
 
-def code_content(fp, extract_meta=None, create_thumb=None):
-    # type: (str|Path, bool|None, bool|None) -> idk.IsccMeta
+def code_content(fp, extract_meta=None, create_thumb=None, **options):
+    # type: (str|Path, bool|None, bool|None, Any) -> idk.IsccMeta
     """
     Detect mediatype and create corresponding Content-Code.
 
@@ -155,13 +158,13 @@ def code_content(fp, extract_meta=None, create_thumb=None):
     mediatype, mode = idk.mediatype_and_mode(fp)
 
     if mode == "image":
-        cc = code_image(fp, extract_meta, create_thumb)
+        cc = code_image(fp, extract_meta, create_thumb, **options)
     elif mode == "audio":
-        cc = code_audio(fp, extract_meta, create_thumb)
+        cc = code_audio(fp, extract_meta, create_thumb, **options)
     elif mode == "video":
-        cc = code_video(fp, extract_meta, create_thumb)
+        cc = code_video(fp, extract_meta, create_thumb, **options)
     elif mode == "text":
-        cc = code_text(fp, extract_meta, create_thumb)
+        cc = code_text(fp, extract_meta, create_thumb, **options)
     else:  # pragma nocover
         raise idk.IsccUnsupportedMediatype(mediatype)
 
@@ -172,8 +175,8 @@ def code_content(fp, extract_meta=None, create_thumb=None):
     return cc
 
 
-def code_text(fp, extract_meta=None, create_thumb=None):
-    # type: (str|Path, bool|None, bool|None) -> idk.IsccMeta
+def code_text(fp, extract_meta=None, create_thumb=None, **options):
+    # type: (str|Path, bool|None, bool|None, Any) -> idk.IsccMeta
     """
     Generate Content-Code Text.
 
@@ -183,6 +186,7 @@ def code_text(fp, extract_meta=None, create_thumb=None):
     :return: ISCC metadata including Text-Code.
     """
     fp = Path(fp)
+    opts = idk.sdk_opts.override(options)
     meta = dict()
 
     if extract_meta is None:
@@ -200,7 +204,7 @@ def code_text(fp, extract_meta=None, create_thumb=None):
             meta["thumbnail"] = thumbnail_durl
 
     text = idk.text_extract(fp)
-    code = ic.gen_text_code_v0(text, bits=idk.core_opts.text_bits)
+    code = ic.gen_text_code_v0(text, bits=opts.bits)
     meta.update(code)
     if idk.sdk_opts.granular:
         features = idk.text_features(ic.text_clean(text))
@@ -208,8 +212,8 @@ def code_text(fp, extract_meta=None, create_thumb=None):
     return idk.IsccMeta.construct(**meta)
 
 
-def code_image(fp, extract_meta=None, create_thumb=None):
-    # type: (str|Path, bool|None, bool|None) -> idk.IsccMeta
+def code_image(fp, extract_meta=None, create_thumb=None, **options):
+    # type: (str|Path, bool|None, bool|None, Any) -> idk.IsccMeta
     """
     Generate Content-Code Image.
 
@@ -219,6 +223,7 @@ def code_image(fp, extract_meta=None, create_thumb=None):
     :return: ISCC metadata including Image-Code.
     """
     fp = Path(fp)
+    opts = idk.sdk_opts.override(options)
     meta = dict()
 
     if extract_meta is None:
@@ -234,14 +239,14 @@ def code_image(fp, extract_meta=None, create_thumb=None):
         meta["thumbnail"] = thumbnail_durl
 
     pixels = idk.image_normalize(Image.open(fp))
-    code_obj = ic.gen_image_code_v0(pixels, bits=idk.core_opts.image_bits)
+    code_obj = ic.gen_image_code_v0(pixels, bits=opts.bits)
     meta.update(code_obj)
 
     return idk.IsccMeta.construct(**meta)
 
 
-def code_audio(fp, extract_meta=None, create_thumb=None):
-    # type: (str|Path, bool|None, bool|None) -> idk.IsccMeta
+def code_audio(fp, extract_meta=None, create_thumb=None, **options):
+    # type: (str|Path, bool|None, bool|None, Any) -> idk.IsccMeta
     """
     Generate Content-Code Audio.
 
@@ -251,6 +256,7 @@ def code_audio(fp, extract_meta=None, create_thumb=None):
     :return: ISCC metadata including Audio-Code.
     """
     fp = Path(fp)
+    opts = idk.sdk_opts.override(options)
     meta = dict()
 
     if extract_meta is None:
@@ -267,14 +273,14 @@ def code_audio(fp, extract_meta=None, create_thumb=None):
             meta["thumbnail"] = thumbnail_durl
 
     features = idk.audio_features_extract(fp)
-    code_obj = ic.gen_audio_code_v0(features["fingerprint"], bits=idk.core_opts.audio_bits)
+    code_obj = ic.gen_audio_code_v0(features["fingerprint"], bits=opts.bits)
     meta.update(code_obj)
 
     return idk.IsccMeta.construct(**meta)
 
 
-def code_video(fp, extract_meta=None, create_thumb=None):
-    # type: (str|Path) -> idk.IsccMeta
+def code_video(fp, extract_meta=None, create_thumb=None, **options):
+    # type: (str|Path, bool, bool, Any) -> idk.IsccMeta
     """
     Generate Content-Code Video.
 
@@ -284,6 +290,7 @@ def code_video(fp, extract_meta=None, create_thumb=None):
     :return: ISCC metadata including Image-Code.
     """
     fp = Path(fp)
+    opts = idk.sdk_opts.override(options)
     meta = dict()
 
     if extract_meta is None:
@@ -314,7 +321,7 @@ def code_video(fp, extract_meta=None, create_thumb=None):
     frames = idk.read_mp7_signature(sig)
     features = [tuple(frame.vector.tolist()) for frame in frames]
 
-    code_obj = ic.gen_video_code_v0(features, bits=idk.core_opts.video_bits)
+    code_obj = ic.gen_video_code_v0(features, bits=opts.bits)
     meta.update(code_obj)
 
     if idk.sdk_opts.granular:
@@ -324,8 +331,8 @@ def code_video(fp, extract_meta=None, create_thumb=None):
     return idk.IsccMeta.construct(**meta)
 
 
-def code_data(fp):
-    # type: (str|Path) -> idk.IsccMeta
+def code_data(fp, **options):
+    # type: (str|Path, Any) -> idk.IsccMeta
     """
     Create ISCC Data-Code.
 
@@ -335,14 +342,15 @@ def code_data(fp):
     :return: ISCC metadata including Data-Code.
     """
     fp = Path(fp)
+    opts = idk.sdk_opts.override(options)
     with open(fp, "rb") as stream:
-        meta = ic.gen_data_code_v0(stream, bits=idk.core_opts.data_bits)
+        meta = ic.gen_data_code_v0(stream, bits=opts.bits)
 
     return idk.IsccMeta.construct(**meta)
 
 
-def code_instance(fp):
-    # type: (str|Path) -> idk.IsccMeta
+def code_instance(fp, **options):
+    # type: (str|Path, Any) -> idk.IsccMeta
     """
     Create ISCC Instance-Code.
 
@@ -355,7 +363,8 @@ def code_instance(fp):
     :return: ISCC metadata including Instance-Code, datahash and filesize.
     """
     fp = Path(fp)
+    opts = idk.sdk_opts.override(options)
     with open(fp, "rb") as stream:
-        meta = ic.gen_instance_code_v0(stream, bits=idk.core_opts.instance_bits)
+        meta = ic.gen_instance_code_v0(stream, bits=opts.bits)
 
     return idk.IsccMeta.construct(**meta)
