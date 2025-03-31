@@ -4,6 +4,7 @@ from pathlib import Path
 import pytest
 
 import iscc_sdk as idk
+import iscc_core as ic
 
 
 def test_text_meta_extract_pdf(pdf_file):
@@ -101,6 +102,36 @@ def test_text_features_stable(doc_file):
     feat_b = idk.text_features(txt_b)["simprints"][0]
     assert feat_a == expected
     assert feat_b == expected
+
+
+def test_text_features_byte_offsets(docx_file):
+    """Verify that char offsets/sizes map to byte offsets/sizes with UTF-32BE."""
+    sample_text = idk.text_extract(docx_file)
+    features = idk.text_features(sample_text)
+    offsets = features["offsets"]
+    sizes = features["sizes"]
+
+    # Get the original chunks directly from text_chunks
+    chunks = list(idk.text_chunks(sample_text, avg_size=idk.sdk_opts.text_avg_chunk_size))
+
+    # Store the original text encoded as UTF-32BE (without BOM)
+    utf32be_data = sample_text.encode("utf-32-be")
+
+    assert len(offsets) == len(sizes) == len(chunks)
+
+    for char_offset, char_size, original_chunk in zip(offsets, sizes, chunks):
+        # Calculate expected byte offset and size
+        byte_offset = char_offset * 4
+        byte_size = char_size * 4
+
+        # Read the byte slice from the UTF-32BE data
+        retrieved_bytes = utf32be_data[byte_offset : byte_offset + byte_size]
+
+        # Decode the bytes back to string
+        decoded_chunk = retrieved_bytes.decode("utf-32-be")
+
+        # Verify that the decoded chunk matches the original chunk content
+        assert decoded_chunk == original_chunk
 
 
 def test_code_text_no_meta_extract(docx_file, monkeypatch):
