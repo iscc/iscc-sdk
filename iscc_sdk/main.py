@@ -299,7 +299,7 @@ def code_video(fp, **options):
     :param fp: Filepath used for Video-Code creation.
     :key extract_meta: Whether to extract metadata. Default: True
     :key create_thumb: Whether to create a thumbnail. Default: True
-    :key granular: Whether to generate additional granular fingerprints based on scene detection. Default: False
+    :key granular: Generate additional fingerprints based on scenes. Default: False
     :key video_store_mp7sig: Whether to store extracted MP7 Video signature file. Default: False
     :key bits: Bit-length of the generated Video-Code UNIT. Default: 64
     :return: ISCC metadata including Video-Code.
