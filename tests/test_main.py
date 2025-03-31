@@ -278,3 +278,28 @@ def test_code_iscc_sum_fallback(svg_file, monkeypatch):
         "iscc": "ISCC:KUAPHHVHTGLKQFQ3GRCHJVNCXI2FC",
         "mediatype": "image/svg+xml",
     }
+
+
+def test_code_iscc_sum_fallback_wide_global(svg_file, monkeypatch):
+    monkeypatch.setattr(idk.sdk_opts, "fallback", True)
+    monkeypatch.setattr(idk.sdk_opts, "bits", 256)
+    monkeypatch.setattr(idk.sdk_opts, "wide", True)
+    result = idk.code_iscc(svg_file)
+    assert result.dict(exclude={"generator"}) == {
+        "datahash": "1e20344474d5a2ba3451baeba1565b3932f369980f32d705617020a11f7817bd56c9",
+        "filename": "image.svg",
+        "filesize": 155,
+        "iscc": "ISCC:K4APHHVHTGLKQFQ3KFZE6YGUYHVMONCEOTK2FORUKG5OXIKWLM4TF4Y",
+        "mediatype": "image/svg+xml",
+    }
+
+
+def test_code_iscc_sum_fallback_wide_explicit(svg_file, monkeypatch):
+    result = idk.code_iscc(svg_file, bits=256, wide=True, fallback=True)
+    assert result.dict(exclude={"generator"}) == {
+        "datahash": "1e20344474d5a2ba3451baeba1565b3932f369980f32d705617020a11f7817bd56c9",
+        "filename": "image.svg",
+        "filesize": 155,
+        "iscc": "ISCC:K4APHHVHTGLKQFQ3KFZE6YGUYHVMONCEOTK2FORUKG5OXIKWLM4TF4Y",
+        "mediatype": "image/svg+xml",
+    }
