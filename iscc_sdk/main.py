@@ -47,9 +47,9 @@ def code_iscc(fp, **options):
 
     :param fp: str or Path object representing the filepath of the file to process.
     :param options: Custom processing options for overriding global options
-    :key fallback: Whether to process unsupported media types instead of raising an exception. Default: False
-    :key add_units: Whether to include ISCC-UNITS in the metadata (in 'units' property). Default: False
-    :key wide: Whether to support wide mode for ISCC-SUM with Data & Instance codes only. Default: False
+    :key fallback: Process unsupported media types. Default: False
+    :key add_units: Include ISCC-UNITS in metadata. Default: False
+    :key wide: Enable wide mode for ISCC-SUM with Data & Instance codes only. Default: False
     :return: IsccMeta object with complete ISCC-CODE and merged metadata from all ISCC-UNITs.
     :raises idk.IsccUnsupportedMediatype:
         If the media type is not supported. By default, the function will raise this exception for
@@ -229,7 +229,7 @@ def code_image(fp, **options):
     Generate Content-Code Image.
 
     Creates an Image-Code by normalizing and processing the visual content of image files.
-    The image is normalized according to the SDK options (transparency handling, border trimming, etc).
+    The image is normalized according to SDK options (transparency handling, border trimming, ...).
 
     :param fp: Filepath used for Image-Code creation.
     :key extract_meta: Whether to extract metadata. Default: True
