@@ -117,35 +117,48 @@ def text_features(text):
     Create granular simprints for text (minhashes over ngrams from cdc-chunks).
     Text should be normalized and cleaned before extracting text features.
 
-    :param text: Normalized  and cleaned plaintext.
-    :returns dict: Dictionary with 'sizes' and 'features'.
+    :param text: Normalized and cleaned plaintext.
+    :returns dict: Dictionary with 'sizes', 'features', 'offsets', and 'contents'.
     """
-    chunks = text_chunks(text, avg_size=idk.sdk_opts.text_avg_chunk_size)
     sizes = []
-    feats = []
-    for chunk in chunks:
+    simprints = []
+    offsets = []
+    current_offset = 0
+    for chunk in text_chunks(text, avg_size=idk.sdk_opts.text_avg_chunk_size):
+        offsets.append(current_offset)
         ngrams = (
             "".join(chars)
             for chars in ic.sliding_window(ic.text_collapse(chunk), idk.core_opts.text_ngram_size)
         )
         features = [xxhash.xxh32_intdigest(s.encode("utf-8")) for s in ngrams]
         minimum_hash_digest = ic.alg_minhash_256(features)
-        sizes.append(len(chunk))
-        feats.append(ic.encode_base64(minimum_hash_digest))
-    return dict(kind="text", version=0, features=feats, sizes=sizes)
+        chunk_len = len(chunk)
+        sizes.append(chunk_len)
+        simprints.append(ic.encode_base64(minimum_hash_digest))
+        current_offset += chunk_len
+    return dict(
+        maintype="content",
+        subtype="text",
+        version=0,
+        simprints=simprints,
+        offsets=offsets,
+        sizes=sizes,
+    )
 
 
 def text_chunks(text, avg_size=idk.sdk_opts.text_avg_chunk_size):
-    # type: (str, int) -> Generator[str]
+    # type: (str, int) -> Generator[str, None, None]
     """
-    Generates variable sized text chunks (without leading BOM)
+    Generates variable sized text chunks (without leading BOM).
+
     :param text: normalized plaintext
-    :param avg_size: Targeted average size of text chunks in bytes.
+    :param avg_size: Targeted average size of text chunks in characters.
+    :yields: Text chunks.
     """
     data = text.encode("utf-32-be")
-    avg_size *= 4  # 4 bytes per character
-    for chunk in ic.alg_cdc_chunks(data, utf32=True, avg_chunk_size=avg_size):
-        yield chunk.decode("utf-32-be")
+    avg_size_bytes = avg_size * 4  # 4 bytes per character in utf-32-be
+    for chunk_bytes in ic.alg_cdc_chunks(data, utf32=True, avg_chunk_size=avg_size_bytes):
+        yield chunk_bytes.decode("utf-32-be")
 
 
 def text_name_from_uri(uri):

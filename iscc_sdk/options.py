@@ -93,7 +93,7 @@ class SdkOptions(BaseSettings):
     )
 
     text_avg_chunk_size: int = Field(
-        default=1024,
+        default=512,
         description="ISCC_SDK_TEXT_AVG_CHUNK_SIZE - Avg number of characters per text chunk for granular fingerprints",
     )
 

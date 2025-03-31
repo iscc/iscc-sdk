@@ -73,10 +73,20 @@ def test_text_features(docx_file):
     txt = idk.text_extract(docx_file)
     features = idk.text_features(txt)
     assert features == {
-        "kind": "text",
+        "maintype": "content",
+        "offsets": [0, 997, 1454, 2123, 4942, 5399, 6068],
+        "simprints": [
+            "k5TpwXVE3j9N5IBxm36c4hkXP6fHOv8bkY2f68_8XSg",
+            "OERRAF2u5WWuLHZLZzgcCSoCoL9R0NYrBJD7s7A43t0",
+            "AARYEMzu5WEOfTZq5ixNLcoThJ5AgJYNRICysqEs3v0",
+            "lp6NgXnE_C1c6ij12-w04RwZN4XJyP0KgIrbKYX81yo",
+            "OERRAF2u5WWuLHZLZzgcCSoCoL9R0NYrBJD7s7A43t0",
+            "AARYEMzu5WEOfTZq5ixNLcoThJ5AgJYNRICysqEs3v0",
+            "JfC6tnH1BuHFMviS2deReiUuelIIMvWWOozU6afjErU",
+        ],
+        "sizes": [997, 457, 669, 2819, 457, 669, 2],
+        "subtype": "text",
         "version": 0,
-        "features": ["BgSYgX3O_G8MfT7_3-wUI8wTBI_JwN0KQID6I4Hs1_g"],
-        "sizes": [6070],
     }
 
 
@@ -87,8 +97,8 @@ def test_text_features_stable(doc_file):
     txt_a = "The ISCC is a similarity preserving fingerprint / identifier for digital media assets."
     txt_b = "The Iscc\n is a similärity preserving; fingerprint identifier for digital media assets"
 
-    feat_a = idk.text_features(txt_a)["features"][0]
-    feat_b = idk.text_features(txt_b)["features"][0]
+    feat_a = idk.text_features(txt_a)["simprints"][0]
+    feat_b = idk.text_features(txt_b)["simprints"][0]
     assert feat_a == expected
     assert feat_b == expected
 
