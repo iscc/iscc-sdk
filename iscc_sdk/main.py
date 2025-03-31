@@ -143,8 +143,8 @@ def code_content(fp, **options):
     Detect mediatype and create corresponding Content-Code.
 
     :param fp: Filepath
-    :param extract_meta: Whether to extract metadata.
-    :param create_thumb: Whether to create a thumbnail.
+    :key extract_meta: Whether to extract metadata.
+    :key create_thumb: Whether to create a thumbnail.
     :return: Content-Code wrapped in ISCC metadata.
     """
     fp = Path(fp)
