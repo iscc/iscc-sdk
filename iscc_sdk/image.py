@@ -2,7 +2,6 @@
 
 from pathlib import Path
 import exiv2
-import pillow_avif
 import base64
 import io
 import shutil
@@ -25,6 +24,7 @@ __all__ = [
     "image_meta_embed",
     "image_meta_extract",
     "image_meta_delete",
+    "image_strip_metadata",
     "image_thumbnail",
     "image_to_data_url",
 ]
