@@ -1,10 +1,13 @@
 """*Text handling functions*."""
 
+import re
+from html import unescape
 from os.path import basename, splitext
 from pathlib import Path
 from typing import Generator, Union
 from urllib.parse import urlparse
 
+import bleach
 from extractous import Extractor
 from iscc_schema import IsccMeta
 from PIL import Image
@@ -21,6 +24,7 @@ __all__ = [
     "text_chunks",
     "text_name_from_uri",
     "text_thumbnail",
+    "text_sanitize",
 ]
 
 
@@ -69,9 +73,11 @@ def text_meta_extract(fp):
         if value:
             if isinstance(value, list):
                 value = ", ".join(value)
-            log.debug(f"Mapping text metadata: {tag} -> {mapped_field} -> {value}")
-            mapped[mapped_field] = value
-            done.add(mapped_field)
+            value = idk.text_sanitize(value).strip()
+            if value:
+                log.debug(f"Mapping text metadata: {tag} -> {mapped_field} -> {value}")
+                mapped[mapped_field] = value
+                done.add(mapped_field)
     return mapped
 
 
@@ -195,3 +201,28 @@ def text_thumbnail(fp):
         return idk.pdf_thumbnail(fp)
     if mt == "application/epub+zip":
         return idk.epub_thumbnail(fp)
+
+
+def text_sanitize(text):
+    # type: (str) -> text
+    """Sanitize text from untrusted sources (e.g. metadata extracted from assets)"""
+    # Pre-process to remove script and style content
+    text = re.sub(r"<script[^>]*>.*?</script>", "", text, flags=re.DOTALL)
+    text = re.sub(r"<style[^>]*>.*?</style>", "", text, flags=re.DOTALL)
+
+    # Sanitize with bleach - remove all HTML tags
+    sanitized = bleach.clean(
+        text,
+        tags=[],  # Remove all tags
+        attributes={},
+        strip=True,
+        strip_comments=True,
+    )
+
+    # Decode HTML entities
+    clean_text = unescape(sanitized)
+
+    # Normalize whitespace
+    clean_text = re.sub(r"\s+", " ", clean_text).strip()
+
+    return clean_text

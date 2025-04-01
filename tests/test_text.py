@@ -138,3 +138,16 @@ def test_code_text_no_meta_extract(docx_file, monkeypatch):
     monkeypatch.setattr(idk.sdk_opts, "extract_meta", False)
     meta = idk.code_text(docx_file)
     assert meta.dict() == {"characters": 4951, "iscc": "ISCC:EAAQMBEYQF6457DP"}
+
+
+def test_text_sanitize():
+    sample_html = """
+        <div>This is a <b>book description</b> with some <script>alert('XSS');</script> and
+        <style>.hidden{display:none;}</style> elements.
+        <p>It has paragraphs &amp; special characters.</p>
+        <p>And multiple paragraphs.</p></div>
+        """
+    assert idk.text_sanitize(sample_html) == (
+        "This is a book description with some and elements. It has paragraphs & "
+        "special characters. And multiple paragraphs."
+    )

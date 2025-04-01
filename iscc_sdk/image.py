@@ -124,7 +124,7 @@ def image_meta_extract(fp):
     :return: Metadata mapped to IsccMeta schema
     """
     fp = Path(fp)
-    img_exiv = exiv2.ImageFactory.open(str(fp))
+    img_exiv = exiv2.ImageFactory.open(fp.as_posix())
     img_exiv.readMetadata()
 
     # Read and process all metadata types: EXIF, XMP, IPTC
@@ -139,7 +139,11 @@ def image_meta_extract(fp):
         if mapped_field in mapped:
             continue
         if tag in meta_dict and meta_dict[tag]:
-            mapped[mapped_field] = meta_dict[tag]
+            try:
+                mapped[mapped_field] = idk.text_sanitize(meta_dict[tag])
+            except Exception as e:  # pragma: no cover
+                log.error(f"Failed to sanitize {meta_dict[tag]}: {e}")
+                continue
 
     # Add image dimensions
     with Image.open(fp) as img:

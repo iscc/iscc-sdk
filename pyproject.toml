@@ -62,6 +62,7 @@ pillow-heif = "*"
 langcodes = "*"
 exiv2 = "*"
 extractous = "*"
+bleach = "^6.2.0"
 
 
 [tool.poetry.group.dev.dependencies]
