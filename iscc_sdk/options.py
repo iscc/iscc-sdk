@@ -7,10 +7,6 @@ class-atributes on the `SdkOptions` instance.
 
     # To access ISCC_SDK_VIDEO_FPS setting use
     fps: int = idk.sdk_opts.video_fps
-
-    # Configuration of the `iscc-core` dependency is also available
-    # To access ISCC_CORE_IMAGE_BITS use
-    image_bits: int = idk.core_opts.image_bits
     ```
 
 
@@ -65,7 +61,12 @@ class SdkOptions(BaseSettings):
 
     extract_meta: bool = Field(
         default=True,
-        description="ISCC_EXTRACT_METADATA - Extract metadata from digital assets (defaut: True)",
+        description="ISCC_EXTRACT_META - Extract metadata from digital assets (defaut: True)",
+    )
+
+    create_meta: bool = Field(
+        default=True,
+        description="ISCC_CREATE_META - Create Meta-Code from embedded metadata (defaut: True)",
     )
 
     create_thumb: bool = Field(

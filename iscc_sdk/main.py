@@ -81,13 +81,17 @@ def code_iscc(fp, **options):
         else:
             # Process content and meta for supported media types
             content_future = executor.submit(code_content, fp, **options)
-            meta_future = executor.submit(code_meta, fp, **options)
+            if opts.create_meta:
+                meta_future = executor.submit(code_meta, fp, **options)
+                meta = meta_future.result()
+                iscc_units.append(meta.iscc)
 
             content = content_future.result()
-            meta = meta_future.result()
-            iscc_units.extend([meta.iscc, content.iscc])
+            iscc_units.append(content.iscc)
             iscc_meta.update(content.dict())
-            iscc_meta.update(meta.dict())
+            if opts.create_meta:
+                iscc_meta.update(meta.dict())
+
         finally:
             # Wait for instance and data to complete
             instance = instance_future.result()
