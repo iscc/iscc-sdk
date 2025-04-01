@@ -4,6 +4,7 @@ import io
 import shutil
 import tempfile
 from pathlib import Path
+from typing import Any, List
 
 import ebookmeta
 from PIL import Image, ImageEnhance
@@ -198,7 +199,8 @@ def epub_process_container(fp, **options):
 def epub_extract_images(fp, output_dir):
     # type: (str|Path, str|Path) -> List[Path]
     """
-    Extract all images from EPUB file to output directory.
+    Extract images from EPUB file to output directory where both
+    width and height are >= min_image_size.
 
     :param fp: Filepath to EPUB file
     :param output_dir: Directory to extract images to
@@ -207,6 +209,7 @@ def epub_extract_images(fp, output_dir):
     fp = Path(fp)
     output_dir = Path(output_dir)
     extracted_images = []
+    min_size = idk.sdk_opts.min_image_size
 
     with zipfile.ZipFile(fp, "r") as archive:
         # Identify image files in the archive
@@ -214,14 +217,24 @@ def epub_extract_images(fp, output_dir):
             if item.lower().endswith((".jpg", ".jpeg", ".png", ".gif", ".webp")):
                 # Extract the image
                 img_data = archive.read(item)
-                img_filename = Path(item).name
-                img_path = output_dir / img_filename
 
-                # Write to temp file
-                with open(img_path, "wb") as img_file:
-                    img_file.write(img_data)
+                # Check image dimensions before extracting
+                try:
+                    img = Image.open(io.BytesIO(img_data))
+                    width, height = img.size
 
-                extracted_images.append(img_path)
+                    # Only extract if both dimensions are >= min_size
+                    if width >= min_size and height >= min_size:
+                        img_filename = Path(item).name
+                        img_path = output_dir / img_filename
+
+                        # Write to temp file
+                        with open(img_path, "wb") as img_file:
+                            img_file.write(img_data)
+
+                        extracted_images.append(img_path)
+                except Exception as e:  # pragma: no cover
+                    log.warning(f"Failed to process image {item} from EPUB: {e}")
 
     return extracted_images
 

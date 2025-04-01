@@ -49,6 +49,11 @@ class SdkOptions(BaseSettings):
         description="ISCC_SDK_PROCESS_CONTAINER - Process embedded elements in container formats",
     )
 
+    min_image_size: int = Field(
+        default=256,
+        description="ISCC_SDK_MIN_IMAGE_SIZE - Minimum image size in pixels for container processing",
+    )
+
     add_units: bool = Field(
         default=False,
         description="ISCC_SDK_ADD_UNITS - Add ISCC-UNITS to ISCC metadata (in 'units' property)",
