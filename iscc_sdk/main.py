@@ -46,9 +46,9 @@ def code_iscc(fp, **options):
       fallback mode instead of raising an exception.
 
     :param fp: str or Path object representing the filepath of the file to process.
-    :param options: Custom processing options for overriding global options
     :key fallback: Process unsupported media types. Default: False
     :key add_units: Include ISCC-UNITS in metadata. Default: False
+    :key create_meta: Create Meta-Code unit from embedded metadata. Default: True
     :key wide: Enable wide mode for ISCC-SUM with Data & Instance codes only. Default: False
     :return: IsccMeta object with complete ISCC-CODE and merged metadata from all ISCC-UNITs.
     :raises idk.IsccUnsupportedMediatype:
