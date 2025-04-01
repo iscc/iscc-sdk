@@ -172,6 +172,7 @@ def epub_process_container(fp, **options):
     # type: (str|Path, Any) -> List[idk.IsccMeta]
     """
     Extract and process images from EPUB file.
+    Skips processing for fixed layout EPUBs.
 
     :param fp: Filepath to EPUB file
     :param options: Processing options
@@ -179,6 +180,11 @@ def epub_process_container(fp, **options):
     """
     fp = Path(fp)
     parts = []
+
+    # Check if the EPUB is fixed layout
+    if is_fixed_layout_epub(fp):  # pragma: no cover
+        log.info(f"Skipping container processing for fixed layout EPUB: {fp.name}")
+        return parts
 
     with tempfile.TemporaryDirectory() as temp_dir:
         # Extract images from EPUB
@@ -237,6 +243,57 @@ def epub_extract_images(fp, output_dir):
                     log.warning(f"Failed to process image {item} from EPUB: {e}")
 
     return extracted_images
+
+
+def is_fixed_layout_epub(fp):  # pragma: no cover
+    # type: (str|Path) -> bool
+    """
+    Check if an EPUB is a fixed layout publication.
+
+    :param fp: Path to EPUB file
+    :return: True if the EPUB is fixed layout, False otherwise
+    """
+    fp = Path(fp)
+
+    try:
+        with zipfile.ZipFile(fp, "r") as archive:
+            # Find OPF file path from container.xml
+            container_path = "META-INF/container.xml"
+            if container_path not in archive.namelist():
+                log.warning(f"Missing {container_path} in {fp}")
+                return False
+
+            container_xml = archive.read(container_path)
+            container_root = lxml.etree.fromstring(container_xml)
+            opf_path = container_root.xpath(
+                "//o:rootfile/@full-path",
+                namespaces={"o": "urn:oasis:names:tc:opendocument:xmlns:container"},
+            )[0]
+
+            # Parse OPF file
+            opf_xml = archive.read(opf_path)
+            opf_root = lxml.etree.fromstring(opf_xml)
+
+            # Check for fixed layout indicators in metadata
+            # Method 1: EPUB 3.0 standard
+            fixed_layout = opf_root.xpath(
+                "//meta[@property='rendition:layout' and text()='pre-paginated']"
+            )
+            if fixed_layout:
+                return True
+
+            # Method 2: Alternative specification
+            fixed_layout = opf_root.xpath(
+                "//meta[@name='fixed-layout' and (@content='true' or @content='yes')]"
+            )
+            if fixed_layout:
+                return True
+
+            return False
+
+    except Exception as e:
+        log.warning(f"Error checking if EPUB is fixed layout: {e}")
+        return False
 
 
 # Register EPUB container processor
