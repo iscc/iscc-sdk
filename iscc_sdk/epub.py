@@ -274,15 +274,36 @@ def is_fixed_layout_epub(fp):  # pragma: no cover
             opf_xml = archive.read(opf_path)
             opf_root = lxml.etree.fromstring(opf_xml)
 
+            # Define necessary namespaces for XPath queries
+            namespaces = {
+                "opf": "http://www.idpf.org/2007/opf",
+                "dc": "http://purl.org/dc/elements/1.1/",
+            }
+
             # Check for fixed layout indicators in metadata
-            # Method 1: EPUB 3.0 standard
+            # Method 1: EPUB 3.0 standard - using namespaces
+            fixed_layout = opf_root.xpath(
+                "//opf:metadata/opf:meta[@property='rendition:layout' and text()='pre-paginated']",
+                namespaces=namespaces,
+            )
+            if fixed_layout:
+                return True
+
+            # Method 2: Alternative specification - using namespaces
+            fixed_layout = opf_root.xpath(
+                "//opf:metadata/opf:meta[@name='fixed-layout' and (@content='true' or @content='yes')]",
+                namespaces=namespaces,
+            )
+            if fixed_layout:
+                return True
+
+            # Method 3: Some EPUBs might use meta elements without explicit namespace
             fixed_layout = opf_root.xpath(
                 "//meta[@property='rendition:layout' and text()='pre-paginated']"
             )
             if fixed_layout:
                 return True
 
-            # Method 2: Alternative specification
             fixed_layout = opf_root.xpath(
                 "//meta[@name='fixed-layout' and (@content='true' or @content='yes')]"
             )
