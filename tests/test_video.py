@@ -150,20 +150,23 @@ def test_code_video_granular_scenes(mp4_file, monkeypatch):
     result = idk.code_video(mp4_file).dict()
     assert result == {
         "duration": 60.14,
-        "features": {
-            "features": [
-                "XxqT9x1acvw",
-                "HEqSawAW8oQ",
-                "VA7Q9A0esuw",
-                "Xg4H9H1S8vU",
-                "l06Qp9wbcow",
-                "UWAQkpxZMqg",
-                "HloAnYYVUqU",
-            ],
-            "kind": "video",
-            "sizes": [7.625, 2.5, 5.083, 20.792, 2.458, 1.5, 6.667],
-            "version": 0,
-        },
+        "features": [
+            {
+                "maintype": "content",
+                "simprints": [
+                    "XxqT9x1acvz855jGGVGIESzHPgeblztEEAyLjeH47wE",
+                    "HEqSawAW8oTwmpGyLhFn0Y_fJhKZR0Ggsojrvwio48E",
+                    "VA7Q9A0esuygtpjGf1NsIYYXILar7-2gkwjRXQL-69E",
+                    "Xg4H9H1S8vW84pjW2dHE8WgfelIeTxksMI1bieHQ_yU",
+                    "l06Qp9wbcoz0uxjHOFPpkQ_v6hKPH4CAsIgb_UHgawE",
+                    "UWAQkpxZMqg14xAHEhBx24G3JhGKD4oQEIgX4WCAK9E",
+                    "HloAnYYVUqXMk6jDGxHgQdsNZpecX5-gkozTwfL0qXE",
+                ],
+                "sizes": [7.625, 2.5, 5.083, 20.792, 2.458, 1.5, 6.667],
+                "subtype": "video",
+                "version": 0,
+            }
+        ],
         "fps": 24.0,
         "height": 144,
         "iscc": "ISCC:EMAV4DUD6QORW4X4",
@@ -183,20 +186,23 @@ def test_code_iscc_video_granular(mp4_file, monkeypatch):
         "@type": "VideoObject",
         "datahash": "1e209d412d76d9d516d07bb60f1ab3c1a5c1b176ed4f1cec94c96222a5d013ec3e38",
         "duration": 60.14,
-        "features": {
-            "features": [
-                "XxqT9x1acvw",
-                "HEqSawAW8oQ",
-                "VA7Q9A0esuw",
-                "Xg4H9H1S8vU",
-                "l06Qp9wbcow",
-                "UWAQkpxZMqg",
-                "HloAnYYVUqU",
-            ],
-            "kind": "video",
-            "sizes": [7.625, 2.5, 5.083, 20.792, 2.458, 1.5, 6.667],
-            "version": 0,
-        },
+        "features": [
+            {
+                "maintype": "content",
+                "simprints": [
+                    "XxqT9x1acvz855jGGVGIESzHPgeblztEEAyLjeH47wE",
+                    "HEqSawAW8oTwmpGyLhFn0Y_fJhKZR0Ggsojrvwio48E",
+                    "VA7Q9A0esuygtpjGf1NsIYYXILar7-2gkwjRXQL-69E",
+                    "Xg4H9H1S8vW84pjW2dHE8WgfelIeTxksMI1bieHQ_yU",
+                    "l06Qp9wbcoz0uxjHOFPpkQ_v6hKPH4CAsIgb_UHgawE",
+                    "UWAQkpxZMqg14xAHEhBx24G3JhGKD4oQEIgX4WCAK9E",
+                    "HloAnYYVUqXMk6jDGxHgQdsNZpecX5-gkozTwfL0qXE",
+                ],
+                "sizes": [7.625, 2.5, 5.083, 20.792, 2.458, 1.5, 6.667],
+                "subtype": "video",
+                "version": 0,
+            }
+        ],
         "filename": "video.mp4",
         "filesize": 2161914,
         "fps": 24.0,
@@ -221,7 +227,15 @@ def test_code_iscc_video_granular_no_scenes(mp4_file, monkeypatch):
         "@type": "VideoObject",
         "datahash": "1e209d412d76d9d516d07bb60f1ab3c1a5c1b176ed4f1cec94c96222a5d013ec3e38",
         "duration": 60.14,
-        "features": {"features": ["Xg6D9B0bcvw"], "kind": "video", "sizes": [59.8], "version": 0},
+        "features": [
+            {
+                "maintype": "content",
+                "simprints": ["Xg6D9B0bcvy08pjGW1FgkQsfYheeTxmkkoyb2eHw-wE"],
+                "sizes": [59.8],
+                "subtype": "video",
+                "version": 0,
+            }
+        ],
         "filename": "video.mp4",
         "filesize": 2161914,
         "fps": 24.0,

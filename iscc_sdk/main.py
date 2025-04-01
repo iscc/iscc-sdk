@@ -336,7 +336,7 @@ def code_video(fp, **options):
 
     if opts.granular:
         granular = idk.video_compute_granular(frames, scenes)
-        meta["features"] = granular
+        meta["features"] = [granular]
 
     return idk.IsccMeta.construct(**meta)
 
