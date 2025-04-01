@@ -44,6 +44,11 @@ class SdkOptions(BaseSettings):
         description="ISCC_SDK_GRANULAR - Generate additional granular fingerprints for ISCC-CODES",
     )
 
+    process_container: bool = Field(
+        default=False,
+        description="ISCC_SDK_PROCESS_CONTAINER - Process embedded elements in container formats",
+    )
+
     add_units: bool = Field(
         default=False,
         description="ISCC_SDK_ADD_UNITS - Add ISCC-UNITS to ISCC metadata (in 'units' property)",

@@ -2,7 +2,8 @@
 
 from loguru import logger as log
 from pathlib import Path
-from typing import Optional
+from typing import Optional, List, Dict, Any
+
 
 try:
     from pydantic.v1 import validator
@@ -68,7 +69,9 @@ def embed_metadata(fp, meta):
 
 
 class IsccMeta(iss.IsccMeta):
-    """Custom IsccMeta with text trimming support"""
+    """Custom IsccMeta with text trimming and recursive `parts` support"""
+
+    parts: Optional[List[Dict[str, Any]]] = None
 
     @validator("name", pre=True)
     def trim_name(cls, v):

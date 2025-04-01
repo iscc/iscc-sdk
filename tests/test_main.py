@@ -321,3 +321,46 @@ def test_code_iscc_sum_fallback_wide_explicit(svg_file, monkeypatch):
         "iscc": "ISCC:K4APHHVHTGLKQFQ3KFZE6YGUYHVMONCEOTK2FORUKG5OXIKWLM4TF4Y",
         "mediatype": "image/svg+xml",
     }
+
+
+def test_code_iscc_process_container(epub_file, monkeypatch):
+    monkeypatch.setattr(idk.sdk_opts, "process_container", True)
+    result = idk.code_iscc(epub_file, process_container=True)
+    assert result.dict(exclude={"generator"}) == {
+        "@type": "TextDigitalDocument",
+        "characters": 227605,
+        "creator": "Charles Madison Curry, Erle Elsworth Clippinger",
+        "datahash": "1e20a13465925de4ce7ede252ff8eca139b05dfecaa258f732037193dca805062ac8",
+        "filename": "text.epub",
+        "filesize": 161277,
+        "iscc": "ISCC:KAC7DLYOVLDK2ZPVHOLOZGPWRBQ7M5QA6IGEVCSHWSQTIZMSLXSM47Q",
+        "mediatype": "application/epub+zip",
+        "metahash": "1e20328a79032199fed141046a72d03a1b0e68302fb535a652bc5dea5e2c7f5b0030",
+        "mode": "text",
+        "name": "Children's Literature",
+        "parts": [
+            {
+                "@type": "ImageObject",
+                "datahash": "1e20a521198ab2e99fc33746f0a44803107aec9f42751766bf075cc7297b2bddca87",
+                "filename": "cover.png",
+                "filesize": 41134,
+                "generator": "iscc-sdk - v0.8.0",
+                "height": 714,
+                "iscc": "ISCC:KECRPB4ZT3YFBTJN4JUVS5QZ4RTJYPDZ5MOGA3JMVSSSCGMKWLUZ7QY",
+                "mediatype": "image/png",
+                "metahash": "1e201f6ae92f19ad0e552badb93965222b8b6e0fede1337eb34dd39a77d59d6ce78e",
+                "mode": "image",
+                "name": "cover",
+                "thumbnail": "data:image/webp;base64,UklGRuIDAABXRUJQVlA4INYDAAAQFQCdASpaAIAAPxGEuFWsKKUjJXgLAYAiCWkRQABvle0zV8Vo96MsC455U8z6TZyO/ONlh+677VcppST7EhWuY6/7bUgzGKGFZC024Ho3pdSziQonJnyH6Uy1Ky8dgN0LNq1RbwnYNXI0Rk9CGSDs8SXS3LtZIfmcQ9uiI/pJP5pHiEHyKA7dqJQY6pY7hcRbdEp4x26Lpl5caGMcYrzSLiw8OEIUCP4eYZ4o2SZqNAAA/vX5A3FnxSd/7XxvRLC+5HHICd0FtQMb5X5+y/K7lcHBUhZTuD/fIcsUs0FqeEJHyc+Uauy69I6lPbQGCFyDyvSN4qlMRGWpxrI6iDSQFKGXctftgATtEklTVXdBqo+GnL9LCMP3q1gj1fxUmcMmOllGfnZpRTSsc4+gh53L1KEC8dE76VrVhQImbfRqufNKXfuFMl3isHBiKqMi3Cfozcs8XnpxiXVTr9xFse1qYTvdpNWX2b0RXhQZBTMxeTB0nF427e+nAMZWPixXLkUUxDdnwtQVGnCSfGdIXrxMDy/QmhlGKw+lNhgkHy48tXgCRlKD2+3PFPQNrsyWuV+H6vTQannDEKhmt4MX7Osg2ga0MuiypTGTX04Qft1cT75Ne0HvdasXHJeMIhfa3iupElGfBcpweAJPWTnu8fK37BIsBDaT+d/Mtr0SjiQtwBnGGVTTSvXr8xVnT9Zjt3b4yF7FNT3U3nA08QwxbNpe/aZ0pHrugOCpaJ5FRZtxenjAIdAg2z9X/bhuLVVv1fMjOPPmPW4bKHkFPpJi2z+2GgOWgTTsQUgFFjFb3DEItCVz1/koRUfLQRWMhLLM4jvMRZCPM71MwwVa+sMBBfQPBPTlvRHtKh/x2oOK6zK8cQl1mvGqCeFuvpePYLCdKIvy6ett/upwvrtk9OZvCczumxaYia9tHzoSdPbszr9vwUlLi14O4/XbzEooMGHk9ctQ2UxNUJa3NHK2LtcNSQAO7G0BNxddbxinf6WoVvpqyJlI+PFYY42tvUJxwqtSE480c2fI952iOPI5/t78PxvD6gxBQo2mM219SAAa0f9uyiE7PR5DelVTVy0778hFXpM15GX+T6RMJx71X4imZ1NIU8bhJVrRtAN3rVf4EW71a5jsvW8VkQMMNIAE816mPAFjrIAkA9siHLq56AOD7jnZQVV+ZciCdtDMWNeZftEdpQjQKu6RtrkKz67dIgQ52i9QG2mahRD3xAEHyN7Jm7v5bQ4tBozoUuj7XyJ055MbRvL7JSg/2Sg5u3RLnvdpRRCLcipws34MAfMUMGiGPQLtP3E/IAAA",
+                "width": 500,
+            }
+        ],
+        "rights": "Public domain in the USA.",
+        "thumbnail": "data:image/webp;base64,UklGRgQEAABXRUJQVlA4IPgDAAAQFQCdASpaAIAAPxGCt1UsKKUjJXgLYYAiCWkRQAB0L2Zi7e0DqY7yZVnqng3Rq0njkWRncrb9z9QvpPFkwckj2jYHp5klqGNBO/VvkTL8O9Lk3me+PAOrxyrL18VYNE0bB+04WJRcsVzLGy95CAcyMtOTS0cO9lxDVjYOZg6yZvgdQgo0zmBKcFuCkhgpU/fYigBFM3JPMxi4OaRilEDNjrSXuTQMrUvKFx00DxPqGAAA/vFuL0PEgjjD2K+N61+t90/d67lYy8nogjIbifydvGCR9+LKws61x1hsLq+3FuWQ5sWhkf5Dzj/GK/Rf47GEJuZ3vu9964SUl38BDEyixaCnHG3tr9td8Ru9W+yvrN9flgjqlBunfJx8CpI1QrOebXgvhTlHzKSjQpijgjITebGtfEWfvmELnnTMgHzob/QurtuK+IxIEJaiwp40kjgKegSdgjWHhlv8mqOSHgSdmV1r1z7tQcasR29jvA+jP70l5xIccZ9+5YhIXGsXYwsHHBlY51LuOSvF//VAzv3FNEaF0TA0FC31VmWH/QzxMKDnwMV15yhBghJ804K4h804DYbIfAny1eajkWpjX+T8ahQC/vXCQuPlYc9bMsoEzjV+I1dYv39ZLlq9kLKtD6ZvHGrk0UdAIHscCJlAK3EjwkFvlLxaZ5wr/bfUJMuePq1kMJ+P2kw6s+8lMPgBimdAo8gklWNCGb08bqdkRDgVkm3Qrd5lkl9Q+ZmT5ju6llBgCsZW185/Ud7Fr1f/UfXdNHUYWkwQpwIr+Jbea5Y+v+bWOgkosQ1LZpNGELfRz4MBtkVXpm96B2qJE7DaPL2B5tLqP/JXUyKvuRZbHZQ69cC0VLS/oDZM+mUEeR4qHbSLthmBlkRC3V73qyEhrb8+YmW0YDQN09abgRqoXDEy8b1185i7d2/zaZUDTfQNMsKqjIM4/kmFEYdM7UNxXvWHqyZWLyz2m2J3yXs2PSrCs21YyKuaxXWjjwH/lJohdkHmcO8igAdro7tDFQSFVcg9juJG6NCxRiZOYDwuSlXi6mFiRJKP4iBjdcxD47FTkktGcugCZblg4V5vDxQyMx4OtPAAE31lYRXqDC4OBEmqnVepDDg1qlmyZ9JLT7MkArKDw50a2d12Hv6KIO7uj1xWGV+XrPV5v5/aQPCZZXEaqp3BXlh0uqJT3oClJ/PyBAgijtCx86VYmH1/ROi55TE3d+nbqj2ks/kTx0KExOniCdkYjRKiggZUNVWnYGjSrFO3bNcvlanIpaINirE/pGaYCxJ2XjDw6f7b6qUElaq9lKjBcTMgr+k+mDDlvzVBOo85QyuvHHjSn58SlJG1fx/CpvMtOUvAAA==",
+    }
+
+
+def test_mediatype_detection(epub_file):
+    mediatype, mode = idk.mediatype_and_mode(epub_file)
+    assert mediatype == "application/epub+zip"
+    assert mode == "text"

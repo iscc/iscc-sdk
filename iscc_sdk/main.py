@@ -107,7 +107,14 @@ def code_iscc(fp, **options):
     iscc_meta.update(iscc_code)
     iscc_meta["generator"] = f"iscc-sdk - v{idk.__version__}"
 
-    return idk.IsccMeta.construct(**iscc_meta)
+    result = idk.IsccMeta.construct(**iscc_meta)
+
+    if opts.process_container:
+        parts = idk.process_container(fp, **options)
+        if parts:
+            result.parts = parts
+
+    return result
 
 
 def code_meta(fp, **options):

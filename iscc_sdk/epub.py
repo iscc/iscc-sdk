@@ -29,7 +29,6 @@ def epub_thumbnail(fp):
     :return: Thumbnail image as PIL Image object
     """
     fp = Path(fp)
-    # meta = ebookmeta.get_metadata(fp.as_posix())
     data = epub_cover(fp)
     img = Image.open(io.BytesIO(data))
     size = idk.sdk_opts.image_thumbnail_size
@@ -166,3 +165,66 @@ def epub_cover(fp):  # pragma: no cover
         raise idk.IsccExtractionError(f"Failed to parse EPUB metadata for {fp}: {e}")
     except KeyError as e:
         raise idk.IsccExtractionError(f"Cover image file {e} not found within EPUB archive {fp}")
+
+
+def epub_process_container(fp, **options):
+    # type: (str|Path, Any) -> List[idk.IsccMeta]
+    """
+    Extract and process images from EPUB file.
+
+    :param fp: Filepath to EPUB file
+    :param options: Processing options
+    :return: List of IsccMeta objects for embedded images
+    """
+    fp = Path(fp)
+    parts = []
+
+    with tempfile.TemporaryDirectory() as temp_dir:
+        # Extract images from EPUB
+        images = epub_extract_images(fp, temp_dir)
+
+        # Process each image
+        for img_path in images:
+            try:
+                # Generate ISCC for each image
+                img_meta = idk.code_iscc(img_path, **options)
+                parts.append(img_meta.dict())
+            except Exception as e:  # pragma: no cover
+                log.warning(f"Failed to process embedded image {img_path.name}: {e}")
+
+    return parts
+
+
+def epub_extract_images(fp, output_dir):
+    # type: (str|Path, str|Path) -> List[Path]
+    """
+    Extract all images from EPUB file to output directory.
+
+    :param fp: Filepath to EPUB file
+    :param output_dir: Directory to extract images to
+    :return: List of paths to extracted images
+    """
+    fp = Path(fp)
+    output_dir = Path(output_dir)
+    extracted_images = []
+
+    with zipfile.ZipFile(fp, "r") as archive:
+        # Identify image files in the archive
+        for item in archive.namelist():
+            if item.lower().endswith((".jpg", ".jpeg", ".png", ".gif", ".webp")):
+                # Extract the image
+                img_data = archive.read(item)
+                img_filename = Path(item).name
+                img_path = output_dir / img_filename
+
+                # Write to temp file
+                with open(img_path, "wb") as img_file:
+                    img_file.write(img_data)
+
+                extracted_images.append(img_path)
+
+    return extracted_images
+
+
+# Register EPUB container processor
+idk.register_container_processor("application/epub+zip", epub_process_container)
