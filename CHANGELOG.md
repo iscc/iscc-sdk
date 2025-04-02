@@ -6,9 +6,16 @@
 - Added `extract` command to CLI for text extraction with error handling.
 - Added AVIF thumbnail format support and metadata stripping for thumbnails.
 - Added robust EPUB cover image extraction with multiple fallback strategies.
+- Added fixed layout EPUB detection with namespace support.
+- Added container processing support for embedded elements in epub files.
+- Added min_image_size option to filter images during EPUB processing.
+- Added text sanitization and HTML cleaning for metadata extraction.
+- Added image_strip_metadata function for thumbnail generation.
+- Added AVIF thumbnail format support.
+- Modified code_iscc to conditionally generate meta-code based on create_meta option.
 - Updated text features generation to use 256-bit MinHash algorithm.
+- Updated video feature extraction with improved hash bits and metadata structure.
 - Simplified media processing functions by removing redundant optional parameters.
-- Refactored text feature extraction process for clarity.
 - Updated dependencies.
 
 ## 0.7.0 - 2025-03-23
