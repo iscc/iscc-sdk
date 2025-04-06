@@ -344,7 +344,7 @@ def test_code_iscc_process_container(epub_file, monkeypatch):
                 "datahash": "1e20a521198ab2e99fc33746f0a44803107aec9f42751766bf075cc7297b2bddca87",
                 "filename": "cover.png",
                 "filesize": 41134,
-                "generator": "iscc-sdk - v0.8.0",
+                "generator": f"iscc-sdk - v{idk.__version__}",
                 "height": 714,
                 "iscc": "ISCC:KECRPB4ZT3YFBTJN4JUVS5QZ4RTJYPDZ5MOGA3JMVSSSCGMKWLUZ7QY",
                 "mediatype": "image/png",
