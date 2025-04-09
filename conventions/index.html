@@ -12,13 +12,9 @@
         <meta name="author" content="Titusz Pan">
       
       
-        <link rel="canonical" href="https://sdk.iscc.codes/metadata/">
+        <link rel="canonical" href="https://sdk.iscc.codes/conventions/">
       
       
-        <link rel="prev" href="../mediatype/">
-      
-      
-        <link rel="next" href="../text/">
       
       
       <link rel="icon" href="../images/iscc-logo-icon-black.svg">
@@ -26,7 +22,7 @@
     
     
       
-        <title>Metadata - ISCC - Software Development Kit</title>
+        <title>Coding Convetions - ISCC - Software Development Kit</title>
       
     
     
@@ -89,7 +85,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#iscc-metadata-handling" class="md-skip">
+        <a href="#coding-convetions" class="md-skip">
           Skip to content
         </a>
       
@@ -124,7 +120,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Metadata
+              Coding Convetions
             
           </span>
         </div>
@@ -284,11 +280,9 @@
   
   
   
-    
   
-  
-    <li class="md-tabs__item md-tabs__item--active">
-      <a href="./" class="md-tabs__link">
+    <li class="md-tabs__item">
+      <a href="../metadata/" class="md-tabs__link">
         
   
   
@@ -559,32 +553,10 @@
       
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    Metadata
-    
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../metadata/" class="md-nav__link">
         
   
   
@@ -595,53 +567,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#iscc_sdk.metadata.extract_metadata" class="md-nav__link">
-    <span class="md-ellipsis">
-      extract_metadata
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#iscc_sdk.metadata.embed_metadata" class="md-nav__link">
-    <span class="md-ellipsis">
-      embed_metadata
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#iscc_sdk.metadata.IsccMeta" class="md-nav__link">
-    <span class="md-ellipsis">
-      IsccMeta
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -949,247 +874,46 @@
   
 
 
-<h1 id="iscc-metadata-handling"><strong>ISCC</strong> - Metadata Handling<a class="headerlink" href="#iscc-metadata-handling" title="Permanent link">#</a></h1>
-
-
-<div class="doc doc-object doc-module">
-
-
-
-
-    <div class="doc doc-contents first">
-
-        <p><em>Metadata handling functions</em></p>
-
-
-
-
-
-
-
-
-
-  <div class="doc doc-children">
-
-
-
-
-
-
-
-<div class="doc doc-object doc-function">
-
-
-<h3 id="iscc_sdk.metadata.extract_metadata" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">extract_metadata</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span></code>
-
-<a href="#iscc_sdk.metadata.extract_metadata" class="headerlink" title="Permanent link">#</a></h3>
-
-
-    <div class="doc doc-contents ">
-
-        <p>Extract metadata from file.</p>
-
-
-<p><span class="doc-section-title">Parameters:</span></p>
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Type</th>
-          <th>Description</th>
-          <th>Default</th>
-        </tr>
-      </thead>
-      <tbody>
-          <tr class="doc-section-item">
-            <td>
-                <code>fp</code>
-            </td>
-            <td>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Filepath to media file.</p>
-              </div>
-            </td>
-            <td>
-                <em>required</em>
-            </td>
-          </tr>
-      </tbody>
-    </table>
-
-
-    <p><span class="doc-section-title">Returns:</span></p>
-    <table>
-      <thead>
-        <tr>
-          <th>Type</th>
-          <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-          <tr class="doc-section-item">
-            <td>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Metadata mapped to IsccMeta schema</p>
-              </div>
-            </td>
-          </tr>
-      </tbody>
-    </table>
-
-
-    </div>
-
-</div>
-
-
-
-
-
-
-<div class="doc doc-object doc-function">
-
-
-<h3 id="iscc_sdk.metadata.embed_metadata" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">embed_metadata</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="n">meta</span><span class="p">)</span></code>
-
-<a href="#iscc_sdk.metadata.embed_metadata" class="headerlink" title="Permanent link">#</a></h3>
-
-
-    <div class="doc doc-contents ">
-
-        <p>Embed metadata into a copy of the media file and return path to updated file.</p>
-
-
-<p><span class="doc-section-title">Parameters:</span></p>
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Type</th>
-          <th>Description</th>
-          <th>Default</th>
-        </tr>
-      </thead>
-      <tbody>
-          <tr class="doc-section-item">
-            <td>
-                <code>fp</code>
-            </td>
-            <td>
-                  <code>str</code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Filepath to source media file</p>
-              </div>
-            </td>
-            <td>
-                <em>required</em>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td>
-                <code>meta</code>
-            </td>
-            <td>
-                  <code>IsccMeta</code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Metadata to embed into media file</p>
-              </div>
-            </td>
-            <td>
-                <em>required</em>
-            </td>
-          </tr>
-      </tbody>
-    </table>
-
-
-    <p><span class="doc-section-title">Returns:</span></p>
-    <table>
-      <thead>
-        <tr>
-          <th>Type</th>
-          <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-          <tr class="doc-section-item">
-            <td>
-                  <code>str|None</code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Filepath to the new media file with embedded metadata (None if no embedding supported)</p>
-              </div>
-            </td>
-          </tr>
-      </tbody>
-    </table>
-
-
-    </div>
-
-</div>
-
-
-
-
-
-
-<div class="doc doc-object doc-class">
-
-
-
-<h3 id="iscc_sdk.metadata.IsccMeta" class="doc doc-heading">
-            <code>IsccMeta</code>
-
-
-<a href="#iscc_sdk.metadata.IsccMeta" class="headerlink" title="Permanent link">#</a></h3>
-
-
-    <div class="doc doc-contents ">
-
-
-        <p>Custom IsccMeta with text trimming and recursive <code>parts</code> support</p>
-
-
-
-
-
-
-
-
-
-
-  <div class="doc doc-children">
-
-
-
-
-
-  </div>
-
-    </div>
-
-</div>
-
-
-
-
-  </div>
-
-    </div>
-
-</div>
+<h1 id="coding-convetions">Coding Convetions<a class="headerlink" href="#coding-convetions" title="Permanent link">#</a></h1>
+<h2 id="general">General<a class="headerlink" href="#general" title="Permanent link">#</a></h2>
+<p><strong>Motto:</strong></p>
+<p>Complexity is not the problem, ambiguity is. Simplicity does not solve ambiguity, clarity does. You will respond
+with clarity but will not simplify your response or be ambiguous.</p>
+<ul>
+<li>Write pragmatic, easily testable, and performant code.</li>
+<li>Stick with YAGNI + SOLID + KISS + DRY principles.</li>
+<li>Prefer functional style code with short and pure functions when appropriate.</li>
+<li>Keep the number of function arguments as low as possible.</li>
+<li>Don´t create nested functions.</li>
+<li>Write concise and to-the-point docstrings for all functions.</li>
+<li>When in doubt, choose the most explicit approach that is easiest to reason about.</li>
+<li>When architecting a solution use First Principles Thinking.</li>
+</ul>
+<h2 id="python-code-style">Python Code Style<a class="headerlink" href="#python-code-style" title="Permanent link">#</a></h2>
+<ul>
+<li>Don´t use type annotations in python function signatures.</li>
+<li>Add PEP 484 style type comment as the first line after function definitions.</li>
+<li>Use built-in collection types as generic types for annotations (PEP 585).</li>
+<li>Use the | (pipe) operator for writing union types (PEP 604).</li>
+<li>Write code such that it can be tested without mocking or mokeypatching.</li>
+<li>We use pytest for testing.</li>
+<li>Avoid mocking and monkeypatching in tests at all costs.</li>
+<li>If testing is not possible without mocking/monkeypatching suggest a coderefactor.</li>
+<li>Don´t make python import within function instead make imports at the module level</li>
+</ul>
+<h3 id="python-example">Python Example<a class="headerlink" href="#python-example" title="Permanent link">#</a></h3>
+<p>Example function with PEP 484 style type comment and docstring:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">tokenize_chunks</span><span class="p">(</span><span class="n">chunks</span><span class="p">,</span> <span class="n">max_len</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="c1"># type: (list[str], int|None) -&gt; dict</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="sd">    Tokenize text chunks into model-compatible formats.</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="sd">    :param chunks: Text chunks to tokenize.</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="sd">    :param max_len: Truncates chunks above max_len characters</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="sd">    :return: Dictionary of tokenized data including input IDs, attention masks, and type IDs.</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>    <span class="k">pass</span>
+</code></pre></div>
 
 
 

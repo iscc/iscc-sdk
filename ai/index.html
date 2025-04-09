@@ -12,13 +12,9 @@
         <meta name="author" content="Titusz Pan">
       
       
-        <link rel="canonical" href="https://sdk.iscc.codes/metadata/">
+        <link rel="canonical" href="https://sdk.iscc.codes/ai/">
       
       
-        <link rel="prev" href="../mediatype/">
-      
-      
-        <link rel="next" href="../text/">
       
       
       <link rel="icon" href="../images/iscc-logo-icon-black.svg">
@@ -26,7 +22,7 @@
     
     
       
-        <title>Metadata - ISCC - Software Development Kit</title>
+        <title>Ai - ISCC - Software Development Kit</title>
       
     
     
@@ -88,11 +84,6 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
-        
-        <a href="#iscc-metadata-handling" class="md-skip">
-          Skip to content
-        </a>
-      
     </div>
     <div data-md-component="announce">
       
@@ -124,7 +115,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Metadata
+              Ai
             
           </span>
         </div>
@@ -284,11 +275,9 @@
   
   
   
-    
   
-  
-    <li class="md-tabs__item md-tabs__item--active">
-      <a href="./" class="md-tabs__link">
+    <li class="md-tabs__item">
+      <a href="../metadata/" class="md-tabs__link">
         
   
   
@@ -559,32 +548,10 @@
       
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    Metadata
-    
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../metadata/" class="md-nav__link">
         
   
   
@@ -595,53 +562,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#iscc_sdk.metadata.extract_metadata" class="md-nav__link">
-    <span class="md-ellipsis">
-      extract_metadata
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#iscc_sdk.metadata.embed_metadata" class="md-nav__link">
-    <span class="md-ellipsis">
-      embed_metadata
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#iscc_sdk.metadata.IsccMeta" class="md-nav__link">
-    <span class="md-ellipsis">
-      IsccMeta
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -949,247 +869,37 @@
   
 
 
-<h1 id="iscc-metadata-handling"><strong>ISCC</strong> - Metadata Handling<a class="headerlink" href="#iscc-metadata-handling" title="Permanent link">#</a></h1>
-
-
-<div class="doc doc-object doc-module">
-
-
-
-
-    <div class="doc doc-contents first">
-
-        <p><em>Metadata handling functions</em></p>
-
-
-
-
-
-
-
-
-
-  <div class="doc doc-children">
-
-
-
-
-
-
-
-<div class="doc doc-object doc-function">
-
-
-<h3 id="iscc_sdk.metadata.extract_metadata" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">extract_metadata</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span></code>
-
-<a href="#iscc_sdk.metadata.extract_metadata" class="headerlink" title="Permanent link">#</a></h3>
-
-
-    <div class="doc doc-contents ">
-
-        <p>Extract metadata from file.</p>
-
-
-<p><span class="doc-section-title">Parameters:</span></p>
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Type</th>
-          <th>Description</th>
-          <th>Default</th>
-        </tr>
-      </thead>
-      <tbody>
-          <tr class="doc-section-item">
-            <td>
-                <code>fp</code>
-            </td>
-            <td>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Filepath to media file.</p>
-              </div>
-            </td>
-            <td>
-                <em>required</em>
-            </td>
-          </tr>
-      </tbody>
-    </table>
-
-
-    <p><span class="doc-section-title">Returns:</span></p>
-    <table>
-      <thead>
-        <tr>
-          <th>Type</th>
-          <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-          <tr class="doc-section-item">
-            <td>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Metadata mapped to IsccMeta schema</p>
-              </div>
-            </td>
-          </tr>
-      </tbody>
-    </table>
-
-
-    </div>
-
-</div>
-
-
-
-
-
-
-<div class="doc doc-object doc-function">
-
-
-<h3 id="iscc_sdk.metadata.embed_metadata" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">embed_metadata</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="n">meta</span><span class="p">)</span></code>
-
-<a href="#iscc_sdk.metadata.embed_metadata" class="headerlink" title="Permanent link">#</a></h3>
-
-
-    <div class="doc doc-contents ">
-
-        <p>Embed metadata into a copy of the media file and return path to updated file.</p>
-
-
-<p><span class="doc-section-title">Parameters:</span></p>
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Type</th>
-          <th>Description</th>
-          <th>Default</th>
-        </tr>
-      </thead>
-      <tbody>
-          <tr class="doc-section-item">
-            <td>
-                <code>fp</code>
-            </td>
-            <td>
-                  <code>str</code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Filepath to source media file</p>
-              </div>
-            </td>
-            <td>
-                <em>required</em>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td>
-                <code>meta</code>
-            </td>
-            <td>
-                  <code>IsccMeta</code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Metadata to embed into media file</p>
-              </div>
-            </td>
-            <td>
-                <em>required</em>
-            </td>
-          </tr>
-      </tbody>
-    </table>
-
-
-    <p><span class="doc-section-title">Returns:</span></p>
-    <table>
-      <thead>
-        <tr>
-          <th>Type</th>
-          <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-          <tr class="doc-section-item">
-            <td>
-                  <code>str|None</code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Filepath to the new media file with embedded metadata (None if no embedding supported)</p>
-              </div>
-            </td>
-          </tr>
-      </tbody>
-    </table>
-
-
-    </div>
-
-</div>
-
-
-
-
-
-
-<div class="doc doc-object doc-class">
-
-
-
-<h3 id="iscc_sdk.metadata.IsccMeta" class="doc doc-heading">
-            <code>IsccMeta</code>
-
-
-<a href="#iscc_sdk.metadata.IsccMeta" class="headerlink" title="Permanent link">#</a></h3>
-
-
-    <div class="doc doc-contents ">
-
-
-        <p>Custom IsccMeta with text trimming and recursive <code>parts</code> support</p>
-
-
-
-
-
-
-
-
-
-
-  <div class="doc doc-children">
-
-
-
-
-
-  </div>
-
-    </div>
-
-</div>
-
-
-
-
-  </div>
-
-    </div>
-
-</div>
+  <h1>Ai</h1>
+
+<p>You are an expert software architect and senior developer. Your role is to provide clear, pragmatic,
+and detailed responses to user requests. You prioritize clarity over simplicity and are not afraid
+to address complex topics when necessary.</p>
+<p>Analyze the user's request carefully. If any part of it is unclear or ambiguous, you should ask for
+clarification before proceeding with your response. It's better to gather all necessary information
+upfront rather than making assumptions.</p>
+<p>When responding to the user:</p>
+<ol>
+<li>Provide a clear and concise answer that addresses all aspects of the request.</li>
+<li>Do not oversimplify your response. Embrace complexity when it's warranted, but always strive for
+   clarity.</li>
+<li>If the request involves code, provide pragmatic, easily testable, and performant solutions.</li>
+<li>Always consider and apply the following principles in your responses:</li>
+<li>YAGNI (You Aren't Gonna Need It)</li>
+<li>SOLID (Single Responsibility, Open-Closed, Liskov Substitution, Interface Segregation,
+     Dependency Inversion)</li>
+<li>KISS (Keep It Simple, Stupid)</li>
+<li>DRY (Don't Repeat Yourself)</li>
+</ol>
+<p>When writing code or discussing code structure:</p>
+<ol>
+<li>Prefer short and pure functions where possible.</li>
+<li>Keep the number of function arguments as low as possible.</li>
+<li>Avoid nested functions.</li>
+<li>Write concise and to-the-point docstrings for all functions and classes.</li>
+<li>Always use absolute imports.</li>
+</ol>
+<p>Remember to think through your response carefully and respond with confidence, drawing on your
+extensive knowledge and experience as an expert software architect and senior developer.</p>
 
 
 

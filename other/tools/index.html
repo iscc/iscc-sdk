@@ -22,7 +22,7 @@
       
       
       <link rel="icon" href="../../images/iscc-logo-icon-black.svg">
-      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.7">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.11">
     
     
       
@@ -30,7 +30,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.f2e4d321.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.4af4bdda.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
@@ -56,7 +56,7 @@
     
       <link rel="stylesheet" href="../../stylesheets/extra.css">
     
-    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
   
@@ -112,7 +112,7 @@
     </a>
     <label class="md-header__button md-icon" for="__drawer">
       
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
     </label>
     <div class="md-header__title" data-md-component="header-title">
       <div class="md-header__ellipsis">
@@ -140,7 +140,7 @@
     <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
     
       <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"/></svg>
       </label>
     
   
@@ -150,7 +150,7 @@
     <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
     
       <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6zm0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4zM7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"/></svg>
       </label>
     
   
@@ -158,36 +158,38 @@
       
     
     
-      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
     
     
     
-      <label class="md-header__button md-icon" for="__search">
-        
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
-      </label>
-      <div class="md-search" data-md-component="search" role="dialog">
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
   <label class="md-search__overlay" for="__search"></label>
   <div class="md-search__inner" role="search">
     <form class="md-search__form" name="search">
       <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
       <label class="md-search__icon md-icon" for="__search">
         
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
         
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
       </label>
       <nav class="md-search__options" aria-label="Search">
         
         <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
           
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
         </button>
       </nav>
       
     </form>
     <div class="md-search__output">
-      <div class="md-search__scrollwrap" data-md-scrollfix>
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
         <div class="md-search-result" data-md-component="search-result">
           <div class="md-search-result__meta">
             Initializing search
@@ -198,13 +200,14 @@
     </div>
   </div>
 </div>
+      
     
     
       <div class="md-header__source">
         <a href="https://github.com/iscc/iscc-sdk" title="Go to repository" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
   </div>
   <div class="md-source__repository">
     iscc/iscc-sdk
@@ -224,9 +227,11 @@
   
   
   
+  
     <li class="md-tabs__item">
       <a href="../.." class="md-tabs__link">
         
+  
   
     
   
@@ -241,9 +246,11 @@
   
   
   
+  
     <li class="md-tabs__item">
       <a href="../../main/" class="md-tabs__link">
         
+  
   
     
   
@@ -258,9 +265,11 @@
   
   
   
+  
     <li class="md-tabs__item">
       <a href="../../mediatype/" class="md-tabs__link">
         
+  
   
     
   
@@ -275,9 +284,11 @@
   
   
   
+  
     <li class="md-tabs__item">
       <a href="../../metadata/" class="md-tabs__link">
         
+  
   
     
   
@@ -292,9 +303,11 @@
   
   
   
+  
     <li class="md-tabs__item">
       <a href="../../text/" class="md-tabs__link">
         
+  
   
     
   
@@ -309,9 +322,11 @@
   
   
   
+  
     <li class="md-tabs__item">
       <a href="../../image/" class="md-tabs__link">
         
+  
   
     
   
@@ -326,9 +341,11 @@
   
   
   
+  
     <li class="md-tabs__item">
       <a href="../../audio/" class="md-tabs__link">
         
+  
   
     
   
@@ -343,9 +360,11 @@
   
   
   
+  
     <li class="md-tabs__item">
       <a href="../../video/" class="md-tabs__link">
         
+  
   
     
   
@@ -360,9 +379,11 @@
   
   
   
+  
     <li class="md-tabs__item">
       <a href="../../options/" class="md-tabs__link">
         
+  
   
     
   
@@ -376,6 +397,7 @@
         
   
   
+  
     
   
   
@@ -384,6 +406,7 @@
       <li class="md-tabs__item md-tabs__item--active">
         <a href="../epub/" class="md-tabs__link">
           
+  
   
     
   
@@ -399,9 +422,11 @@
   
   
   
+  
     <li class="md-tabs__item">
       <a href="../../changelog/" class="md-tabs__link">
         
+  
   
     
   
@@ -454,7 +479,7 @@
       <a href="https://github.com/iscc/iscc-sdk" title="Go to repository" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
   </div>
   <div class="md-source__repository">
     iscc/iscc-sdk
@@ -474,8 +499,10 @@
       <a href="../.." class="md-nav__link">
         
   
+  
   <span class="md-ellipsis">
     Overview
+    
   </span>
   
 
@@ -494,8 +521,10 @@
       <a href="../../main/" class="md-nav__link">
         
   
+  
   <span class="md-ellipsis">
     Main
+    
   </span>
   
 
@@ -514,8 +543,10 @@
       <a href="../../mediatype/" class="md-nav__link">
         
   
+  
   <span class="md-ellipsis">
     Mediatype
+    
   </span>
   
 
@@ -534,8 +565,10 @@
       <a href="../../metadata/" class="md-nav__link">
         
   
+  
   <span class="md-ellipsis">
     Metadata
+    
   </span>
   
 
@@ -554,8 +587,10 @@
       <a href="../../text/" class="md-nav__link">
         
   
+  
   <span class="md-ellipsis">
     Text
+    
   </span>
   
 
@@ -574,8 +609,10 @@
       <a href="../../image/" class="md-nav__link">
         
   
+  
   <span class="md-ellipsis">
     Image
+    
   </span>
   
 
@@ -594,8 +631,10 @@
       <a href="../../audio/" class="md-nav__link">
         
   
+  
   <span class="md-ellipsis">
     Audio
+    
   </span>
   
 
@@ -614,8 +653,10 @@
       <a href="../../video/" class="md-nav__link">
         
   
+  
   <span class="md-ellipsis">
     Video
+    
   </span>
   
 
@@ -634,8 +675,10 @@
       <a href="../../options/" class="md-nav__link">
         
   
+  
   <span class="md-ellipsis">
     Options
+    
   </span>
   
 
@@ -666,13 +709,15 @@
     
     
     
+      
+        
+        
+      
+      
     
-      
-      
     
     <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
-        
         
         
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" checked>
@@ -681,8 +726,10 @@
           <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="">
             
   
+  
   <span class="md-ellipsis">
     Other
+    
   </span>
   
 
@@ -706,8 +753,10 @@
       <a href="../epub/" class="md-nav__link">
         
   
+  
   <span class="md-ellipsis">
     EPUB
+    
   </span>
   
 
@@ -727,8 +776,10 @@
       <a href="../pdf/" class="md-nav__link">
         
   
+  
   <span class="md-ellipsis">
     PDF
+    
   </span>
   
 
@@ -748,8 +799,10 @@
       <a href="../ipfs/" class="md-nav__link">
         
   
+  
   <span class="md-ellipsis">
     IPFS
+    
   </span>
   
 
@@ -778,8 +831,10 @@
         <label class="md-nav__link md-nav__link--active" for="__toc">
           
   
+  
   <span class="md-ellipsis">
     Tools
+    
   </span>
   
 
@@ -789,8 +844,10 @@
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
+  
   <span class="md-ellipsis">
     Tools
+    
   </span>
   
 
@@ -814,7 +871,7 @@
         <li class="md-nav__item">
   <a href="#iscc_sdk.tools.install" class="md-nav__link">
     <span class="md-ellipsis">
-      install()
+      install
     </span>
   </a>
   
@@ -823,7 +880,7 @@
         <li class="md-nav__item">
   <a href="#iscc_sdk.tools.run_ffmpeg" class="md-nav__link">
     <span class="md-ellipsis">
-      run_ffmpeg()
+      run_ffmpeg
     </span>
   </a>
   
@@ -832,25 +889,7 @@
         <li class="md-nav__item">
   <a href="#iscc_sdk.tools.run_fpcalc" class="md-nav__link">
     <span class="md-ellipsis">
-      run_fpcalc()
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#iscc_sdk.tools.run_exiv2" class="md-nav__link">
-    <span class="md-ellipsis">
-      run_exiv2()
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#iscc_sdk.tools.run_exiv2json" class="md-nav__link">
-    <span class="md-ellipsis">
-      run_exiv2json()
+      run_fpcalc
     </span>
   </a>
   
@@ -859,16 +898,7 @@
         <li class="md-nav__item">
   <a href="#iscc_sdk.tools.run_ipfs" class="md-nav__link">
     <span class="md-ellipsis">
-      run_ipfs()
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#iscc_sdk.tools.run_tika" class="md-nav__link">
-    <span class="md-ellipsis">
-      run_tika()
+      run_ipfs
     </span>
   </a>
   
@@ -900,8 +930,10 @@
       <a href="../../changelog/" class="md-nav__link">
         
   
+  
   <span class="md-ellipsis">
     Changelog
+    
   </span>
   
 
@@ -924,6 +956,7 @@
                 
                   
 
+
   
   
 
@@ -935,11 +968,18 @@
 
 
 
-  <div class="doc doc-contents first">
-  
-      <p><em>Manage SDK binary media file handling tools</em>.</p>
 
-  
+    <div class="doc doc-contents first">
+
+        <p><em>Manage SDK binary media file handling tools</em>.</p>
+
+
+
+
+
+
+
+
 
   <div class="doc doc-children">
 
@@ -952,18 +992,18 @@
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="iscc_sdk.tools.install" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">install</span><span class="p">()</span></code>
+            <code class="highlight language-python"><span class="n">install</span><span class="p">()</span></code>
 
 <a href="#iscc_sdk.tools.install" class="headerlink" title="Permanent link">#</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
-      <p>Install binary tools for content extraction and metadata handling.</p>
+    <div class="doc doc-contents ">
 
-  </div>
+        <p>Install binary tools for content extraction and metadata handling.</p>
+
+
+    </div>
 
 </div>
 
@@ -975,18 +1015,18 @@
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="iscc_sdk.tools.run_ffmpeg" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">run_ffmpeg</span><span class="p">(</span><span class="n">args</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span></code>
+            <code class="highlight language-python"><span class="n">run_ffmpeg</span><span class="p">(</span><span class="n">args</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span></code>
 
 <a href="#iscc_sdk.tools.run_ffmpeg" class="headerlink" title="Permanent link">#</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
-      <p>Run ffmpeg command with <code>args</code>. Install ffmpeg if not found.</p>
+    <div class="doc doc-contents ">
 
-  </div>
+        <p>Run ffmpeg command with <code>args</code>. Install ffmpeg if not found.</p>
+
+
+    </div>
 
 </div>
 
@@ -998,41 +1038,18 @@
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="iscc_sdk.tools.run_fpcalc" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">run_fpcalc</span><span class="p">(</span><span class="n">args</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span></code>
+            <code class="highlight language-python"><span class="n">run_fpcalc</span><span class="p">(</span><span class="n">args</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span></code>
 
 <a href="#iscc_sdk.tools.run_fpcalc" class="headerlink" title="Permanent link">#</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
-      <p>Run fpcalc command with <code>args</code>. Installs fpcalc if not found.</p>
+    <div class="doc doc-contents ">
 
-  </div>
-
-</div>
+        <p>Run fpcalc command with <code>args</code>. Installs fpcalc if not found.</p>
 
 
-
-
-
-
-<div class="doc doc-object doc-function">
-
-
-
-<h3 id="iscc_sdk.tools.run_exiv2" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">run_exiv2</span><span class="p">(</span><span class="n">args</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span></code>
-
-<a href="#iscc_sdk.tools.run_exiv2" class="headerlink" title="Permanent link">#</a></h3>
-
-
-  <div class="doc doc-contents ">
-  
-      <p>Run exiv2 command with <code>args</code>. Install exiv2 if not found.</p>
-
-  </div>
+    </div>
 
 </div>
 
@@ -1042,66 +1059,20 @@
 
 
 <div class="doc doc-object doc-function">
-
-
-
-<h3 id="iscc_sdk.tools.run_exiv2json" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">run_exiv2json</span><span class="p">(</span><span class="n">args</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span></code>
-
-<a href="#iscc_sdk.tools.run_exiv2json" class="headerlink" title="Permanent link">#</a></h3>
-
-
-  <div class="doc doc-contents ">
-  
-      <p>Run exiv2json command with <code>args</code>. Install exiv2json if not found.</p>
-
-  </div>
-
-</div>
-
-
-
-
-
-
-<div class="doc doc-object doc-function">
-
 
 
 <h3 id="iscc_sdk.tools.run_ipfs" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">run_ipfs</span><span class="p">(</span><span class="n">args</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span></code>
+            <code class="highlight language-python"><span class="n">run_ipfs</span><span class="p">(</span><span class="n">args</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span></code>
 
 <a href="#iscc_sdk.tools.run_ipfs" class="headerlink" title="Permanent link">#</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
-      <p>Run ipfs command with <code>args</code>. Install ipfs if not found.</p>
+    <div class="doc doc-contents ">
 
-  </div>
-
-</div>
+        <p>Run ipfs command with <code>args</code>. Install ipfs if not found.</p>
 
 
-
-
-
-
-<div class="doc doc-object doc-function">
-
-
-
-<h3 id="iscc_sdk.tools.run_tika" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">run_tika</span><span class="p">(</span><span class="n">args</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span></code>
-
-<a href="#iscc_sdk.tools.run_tika" class="headerlink" title="Permanent link">#</a></h3>
-
-
-  <div class="doc doc-contents ">
-  
-      <p>Run tika command with <code>args</code>. Install tika if not found.</p>
-
-  </div>
+    </div>
 
 </div>
 
@@ -1110,7 +1081,7 @@
 
   </div>
 
-  </div>
+    </div>
 
 </div>
 
@@ -1165,10 +1136,12 @@
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "../..", "features": ["toc.integrate", "navigation.indexes", "navigation.tracking", "navigation.tabs", "navigation.tabs.sticky", "navigation.expand"], "search": "../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["toc.integrate", "navigation.indexes", "navigation.tracking", "navigation.tabs", "navigation.tabs.sticky", "navigation.expand"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../assets/javascripts/bundle.caa56a14.min.js"></script>
+      <script src="../../assets/javascripts/bundle.c8b220af.min.js"></script>
       
     
   </body>
