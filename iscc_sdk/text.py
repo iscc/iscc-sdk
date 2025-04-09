@@ -109,6 +109,8 @@ def text_extract(fp):
     :return: Extracted plaintext
     """
     fp = Path(fp)
+    if fp.suffix.lower() == ".pdf":
+        return idk.pdf_text_extract(fp)
     extractor = Extractor()
     result, metadata = extractor.extract_file_to_string(fp.as_posix())
     text = result.strip()

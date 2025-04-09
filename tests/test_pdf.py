@@ -17,6 +17,11 @@ meta = {
 }
 
 
+def test_pdf_text_extract(pdf_file):
+    result = idk.pdf_text_extract(pdf_file)
+    assert result.strip("Bitcoin: A Peer-to-Peer Electronic Cash System")
+
+
 def test_extract_metadata(pdf_file):
     assert idk.extract_metadata(pdf_file).dict() == {"name": "title from metadata"}
 

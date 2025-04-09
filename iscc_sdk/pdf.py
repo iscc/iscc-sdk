@@ -7,11 +7,21 @@ from pathlib import Path
 from PIL import Image, ImageEnhance
 import fitz
 import iscc_sdk as idk
+from pdftext.extraction import plain_text_output
+
 
 __all__ = [
     "pdf_thumbnail",
     "pdf_meta_embed",
+    "pdf_text_extract",
 ]
+
+
+def pdf_text_extract(fp):
+    # type: (str|Path) -> str
+    """Extract PDF text with pypdfium2 + reading order recunstruction and hyphen removal"""
+    fp = Path(fp)
+    return plain_text_output(fp.as_posix(), sort=True, hyphens=False)
 
 
 def pdf_thumbnail(fp):

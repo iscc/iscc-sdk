@@ -8,7 +8,7 @@ def test_code_iscc_text(pdf_file):
         "datahash": "1e207ad5c7dbf6a6538f15fd0439e0dc5ba03a043ea23f072aa4e2ba830811bdb5f0",
         "filename": "text.pdf",
         "filesize": 188280,
-        "iscc": "ISCC:KACV5NAQXBCHCWFWMNALVJHBLB7X7IFU4H2JIVUSWF5NLR6362TFHDY",
+        "iscc": "ISCC:KACV5NAQXBCHCWFWMNALXJHBLB7X7IFU4H2JIVUSWF5NLR6362TFHDY",
         "mediatype": "application/pdf",
         "metahash": "1e201da548c5285ed35f293c3e22c2f050e037643aae8cf9244b532a162ff5031f52",
         "mode": "text",

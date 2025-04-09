@@ -63,6 +63,7 @@ langcodes = "*"
 exiv2 = "*"
 extractous = "*"
 bleach = "^6.2.0"
+pdftext = "^0.6.2"
 
 
 [tool.poetry.group.dev.dependencies]
