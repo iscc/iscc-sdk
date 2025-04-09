@@ -12,8 +12,7 @@ from loguru import logger as log
 from PIL import Image, ImageEnhance, ImageChops, ImageOps
 import iscc_sdk as idk
 from pillow_heif import register_heif_opener
-
-register_heif_opener()
+import threading
 
 
 __all__ = [
@@ -28,6 +27,10 @@ __all__ = [
     "image_thumbnail",
     "image_to_data_url",
 ]
+
+
+register_heif_opener()
+_exiv2_lock = threading.Lock()
 
 
 Image.MAX_IMAGE_PIXELS = idk.sdk_opts.image_max_pixels
@@ -124,32 +127,33 @@ def image_meta_extract(fp):
     :return: Metadata mapped to IsccMeta schema
     """
     fp = Path(fp)
-    img_exiv = exiv2.ImageFactory.open(fp.as_posix())
-    img_exiv.readMetadata()
+    with _exiv2_lock:
+        img_exiv = exiv2.ImageFactory.open(fp.as_posix())
+        img_exiv.readMetadata()
 
-    # Read and process all metadata types: EXIF, XMP, IPTC
-    meta_dict = {}
-    meta_dict.update(_process_metadata(img_exiv.exifData()))
-    meta_dict.update(_process_metadata(img_exiv.xmpData(), is_xmp=True))
-    meta_dict.update(_process_metadata(img_exiv.iptcData()))
+        # Read and process all metadata types: EXIF, XMP, IPTC
+        meta_dict = {}
+        meta_dict.update(_process_metadata(img_exiv.exifData()))
+        meta_dict.update(_process_metadata(img_exiv.xmpData(), is_xmp=True))
+        meta_dict.update(_process_metadata(img_exiv.iptcData()))
 
-    # Map metadata to schema fields
-    mapped = {}
-    for tag, mapped_field in IMAGE_META_MAP.items():
-        if mapped_field in mapped:
-            continue
-        if tag in meta_dict and meta_dict[tag]:
-            try:
-                mapped[mapped_field] = idk.text_sanitize(meta_dict[tag])
-            except Exception as e:  # pragma: no cover
-                log.error(f"Failed to sanitize {meta_dict[tag]}: {e}")
+        # Map metadata to schema fields
+        mapped = {}
+        for tag, mapped_field in IMAGE_META_MAP.items():
+            if mapped_field in mapped:
                 continue
+            if tag in meta_dict and meta_dict[tag]:
+                try:
+                    mapped[mapped_field] = idk.text_sanitize(meta_dict[tag])
+                except Exception as e:  # pragma: no cover
+                    log.error(f"Failed to sanitize {meta_dict[tag]}: {e}")
+                    continue
 
-    # Add image dimensions
-    with Image.open(fp) as img:
-        mapped["width"], mapped["height"] = img.size
+        # Add image dimensions
+        with Image.open(fp) as img:
+            mapped["width"], mapped["height"] = img.size
 
-    return mapped
+        return mapped
 
 
 def image_meta_embed(fp, meta):
@@ -167,53 +171,54 @@ def image_meta_embed(fp, meta):
     tempdir = Path(tempfile.mkdtemp())
     imagefile = Path(shutil.copy(fp, tempdir))
 
-    # Register XMP namespaces before opening image
-    exiv2.XmpProperties.registerNs("http://purl.org/iscc/schema/", "iscc")
-    exiv2.XmpProperties.registerNs("http://purl.org/dc/elements/1.1/", "dc")
-    exiv2.XmpProperties.registerNs("http://ns.useplus.org/", "plus")
-    exiv2.XmpProperties.registerNs("http://ns.adobe.com/xap/1.0/rights/", "xmpRights")
+    with _exiv2_lock:
+        # Register XMP namespaces before opening image
+        exiv2.XmpProperties.registerNs("http://purl.org/iscc/schema/", "iscc")
+        exiv2.XmpProperties.registerNs("http://purl.org/dc/elements/1.1/", "dc")
+        exiv2.XmpProperties.registerNs("http://ns.useplus.org/", "plus")
+        exiv2.XmpProperties.registerNs("http://ns.adobe.com/xap/1.0/rights/", "xmpRights")
 
-    # Open the copied image with exiv2
-    img_exiv = exiv2.ImageFactory.open(str(imagefile))
-    img_exiv.readMetadata()
+        # Open the copied image with exiv2
+        img_exiv = exiv2.ImageFactory.open(str(imagefile))
+        img_exiv.readMetadata()
 
-    # Get metadata collections
-    xmp_data = img_exiv.xmpData()
+        # Get metadata collections
+        xmp_data = img_exiv.xmpData()
 
-    # Set simple metadata values
-    if meta.name:
-        xmp_data["Xmp.iscc.name"] = meta.name
-        xmp_data["Xmp.dc.title"] = meta.name
-    if meta.description:
-        xmp_data["Xmp.iscc.description"] = meta.description
-        xmp_data["Xmp.dc.description"] = meta.description
-    if meta.meta:
-        xmp_data["Xmp.iscc.meta"] = meta.meta
-    if meta.license:
-        xmp_data["Xmp.xmpRights.WebStatement"] = meta.license
-    if meta.creator:
-        xmp_data["Xmp.dc.creator"] = meta.creator
-    if meta.rights:
-        xmp_data["Xmp.dc.rights"] = meta.rights
-    if meta.identifier:
-        xmp_data["Xmp.dc.identifier"] = meta.identifier
+        # Set simple metadata values
+        if meta.name:
+            xmp_data["Xmp.iscc.name"] = meta.name
+            xmp_data["Xmp.dc.title"] = meta.name
+        if meta.description:
+            xmp_data["Xmp.iscc.description"] = meta.description
+            xmp_data["Xmp.dc.description"] = meta.description
+        if meta.meta:
+            xmp_data["Xmp.iscc.meta"] = meta.meta
+        if meta.license:
+            xmp_data["Xmp.xmpRights.WebStatement"] = meta.license
+        if meta.creator:
+            xmp_data["Xmp.dc.creator"] = meta.creator
+        if meta.rights:
+            xmp_data["Xmp.dc.rights"] = meta.rights
+        if meta.identifier:
+            xmp_data["Xmp.dc.identifier"] = meta.identifier
 
-    # Set complex metadata values
-    if meta.acquire:
-        # Set the Licensor URL
-        # First create a bag value
-        licensor_bag = exiv2.XmpTextValue()
-        licensor_bag.setXmpArrayType(exiv2.XmpValue.XmpArrayType.xaBag)
-        xmp_data["Xmp.plus.Licensor"] = licensor_bag
+        # Set complex metadata values
+        if meta.acquire:
+            # Set the Licensor URL
+            # First create a bag value
+            licensor_bag = exiv2.XmpTextValue()
+            licensor_bag.setXmpArrayType(exiv2.XmpValue.XmpArrayType.xaBag)
+            xmp_data["Xmp.plus.Licensor"] = licensor_bag
 
-        # Then set the LicensorURL with the struct path
-        xmp_data["Xmp.plus.Licensor[1]/plus:LicensorURL"] = meta.acquire
+            # Then set the LicensorURL with the struct path
+            xmp_data["Xmp.plus.Licensor[1]/plus:LicensorURL"] = meta.acquire
 
-    # Write metadata back to the file
-    img_exiv.writeMetadata()
+        # Write metadata back to the file
+        img_exiv.writeMetadata()
 
-    log.debug(f"Embedding {meta.dict(exclude_unset=True)} in {imagefile.name}")
-    return imagefile
+        log.debug(f"Embedding {meta.dict(exclude_unset=True)} in {imagefile.name}")
+        return imagefile
 
 
 def image_meta_delete(fp):
