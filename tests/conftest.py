@@ -7,66 +7,66 @@ import shutil
 from PIL import Image, ImageDraw
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="function")
 def jpg_file(tmp_path_factory) -> str:
     dst = tmp_path_factory.mktemp("data") / "img.jpg"
     shutil.copy(images("jpg")[0], dst)
     return dst.as_posix()
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="function")
 def png_file(tmp_path_factory) -> str:
     dst = tmp_path_factory.mktemp("data") / "img.png"
     shutil.copy(images("png")[0], dst)
     return dst.as_posix()
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="function")
 def bmp_file(tmp_path_factory) -> str:
     dst = tmp_path_factory.mktemp("data") / "img.bmp"
     shutil.copy(images("bmp")[0], dst)
     return dst.as_posix()
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="function")
 def mp3_file(tmp_path_factory) -> str:
     dst = tmp_path_factory.mktemp("data") / "audio.mp3"
     shutil.copy(audios("mp3")[0], dst)
     return dst.as_posix()
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="function")
 def mp3_cover(tmp_path_factory) -> str:
     dst = tmp_path_factory.mktemp("data") / "audio.mp3"
     shutil.copy(audios("mp3")[1], dst)
     return dst.as_posix()
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="function")
 def wav_file(tmp_path_factory) -> str:
     dst = tmp_path_factory.mktemp("data") / "audio.wav"
     shutil.copy(audios("wav")[0], dst)
     return dst.as_posix()
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="function")
 def doc_file(tmp_path_factory) -> str:
     dst = tmp_path_factory.mktemp("data") / "text.doc"
     shutil.copy(texts("doc")[0], dst)
     return dst.as_posix()
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="function")
 def jpg_obj(jpg_file):
     return Image.open(jpg_file)
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="function")
 def png_obj(png_file):
     return Image.open(png_file)
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="function")
 def png_obj_alpha(tmp_path_factory):
     img = Image.new("RGBA", (100, 100), (255, 0, 0, 0))
     draw = ImageDraw.Draw(img)
@@ -74,49 +74,49 @@ def png_obj_alpha(tmp_path_factory):
     return img
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="function")
 def mp4_file(tmp_path_factory):
     dst = tmp_path_factory.mktemp("data") / "video.mp4"
     shutil.copy(videos("mp4")[0], dst)
     return dst.as_posix()
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="function")
 def mov_file(tmp_path_factory):
     dst = tmp_path_factory.mktemp("data") / "video.mov"
     shutil.copy(videos("mov")[0], dst)
     return dst.as_posix()
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="function")
 def ogv_file(tmp_path_factory):
     dst = tmp_path_factory.mktemp("data") / "video.ogv"
     shutil.copy(videos("ogv")[0], dst)
     return dst.as_posix()
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="function")
 def docx_file(tmp_path_factory):
     dst = tmp_path_factory.mktemp("data") / "text.docx"
     shutil.copy(texts("docx")[0], dst)
     return dst.as_posix()
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="function")
 def pdf_file(tmp_path_factory):
     dst = tmp_path_factory.mktemp("data") / "text.pdf"
     shutil.copy(texts("pdf")[0], dst)
     return dst.as_posix()
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="function")
 def epub_file(tmp_path_factory):
     dst = tmp_path_factory.mktemp("data") / "text.epub"
     shutil.copy(texts("epub")[0], dst)
     return dst.as_posix()
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="function")
 def svg_file(tmp_path_factory) -> str:
     dst = tmp_path_factory.mktemp("data") / "image.svg"
     svg_content = dedent("""
@@ -128,7 +128,7 @@ def svg_file(tmp_path_factory) -> str:
     return dst.as_posix()
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="function")
 def asset_tree(tmp_path_factory):
     dst = Path(tmp_path_factory.mktemp("data"))
     for img_path in videos()[:3]:

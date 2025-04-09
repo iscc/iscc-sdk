@@ -89,6 +89,7 @@ def test_image_meta_embed_jpg(jpg_file):
     assert os.path.exists(new_file)
     assert idk.image_meta_extract(new_file) == {
         "acquire": "https://example.com/buy",
+        "creator": "Some Cat Lover",
         "description": "Wörld",
         "height": 133,
         "license": "https://example.com/license",
@@ -104,6 +105,7 @@ def test_image_meta_embed_png(png_file):
     assert os.path.exists(new_file)
     assert idk.image_meta_extract(new_file) == {
         "acquire": "https://example.com/buy",
+        "creator": "Another Cat Lover",
         "description": "Wörld",
         "height": 133,
         "license": "https://example.com/license",
@@ -132,8 +134,9 @@ def test_embed_rights_and_creator(jpg_file):
     )
     new_file = idk.image_meta_embed(jpg_file, meta)
     assert idk.image_meta_extract(new_file) == {
-        "creator": "Some Creatör Name",
+        "creator": "Some Cat Lover, Some Creatör Name",
         "height": 133,
+        "name": "Concentrated Cat",
         "rights": "Some Cäpyright notice",
         "width": 200,
     }
@@ -150,11 +153,18 @@ def test_extract_name_above_128(jpg_file):
 
 def test_embed_metadata_non_uri(jpg_file):
     meta = idk.image_meta_extract(jpg_file)
-    assert meta == {"height": 133, "width": 200}
+    assert meta == {
+        "creator": "Some Cat Lover",
+        "height": 133,
+        "name": "Concentrated Cat",
+        "width": 200,
+    }
     new_file = idk.image_meta_embed(jpg_file, IsccMeta.construct(license="Hello World"))
     assert idk.image_meta_extract(new_file) == {
+        "creator": "Some Cat Lover",
         "height": 133,
         "license": "Hello World",
+        "name": "Concentrated Cat",
         "width": 200,
     }
 
