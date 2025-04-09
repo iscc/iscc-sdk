@@ -12,8 +12,6 @@ def main():
     log.info(f"IPFS Version: {idk.tools.ipfs_version_info()}")
     log.info(f"FPCALC Version: {idk.tools.fpcalc_version_info()}")
     log.info(f"FFMPEG Version: {idk.tools.ffmpeg_version_info()}")
-    log.info(f"JAVA Version: {idk.tools.java_version_info()}")
-    log.info(f"TIKA Version: {idk.tools.tika_version_info()}")
 
     sys.exit(0)
 
