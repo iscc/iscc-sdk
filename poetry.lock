@@ -1347,23 +1347,22 @@ tomli = {version = ">=1.1.0", markers = "python_version < \"3.11\""}
 
 [[package]]
 name = "mdformat-admon"
-version = "2.0.6"
-description = "An mdformat plugin for admonitions."
+version = "2.1.1"
+description = "An mdformat plugin for `admonition`."
 optional = false
-python-versions = ">=3.8.5"
+python-versions = ">=3.9.0"
 groups = ["dev"]
 files = [
-    {file = "mdformat_admon-2.0.6-py3-none-any.whl", hash = "sha256:2fda60659d11210d6cb07ee0df11bf68bae84f75bbd471de8b786accdb674ede"},
-    {file = "mdformat_admon-2.0.6.tar.gz", hash = "sha256:009aa1c5e171cf03ee65588579e7f5310929a67712127020a0369a645339f0e8"},
+    {file = "mdformat_admon-2.1.1-py3-none-any.whl", hash = "sha256:f2efae84da6d4eaa453a7cf0eca7437dc1c1e347a0780abfa5eecfdda03630c2"},
+    {file = "mdformat_admon-2.1.1.tar.gz", hash = "sha256:605df53bec06eba63f0ad510f7f67cdead9c328ec807bca1db76026a66a68d9e"},
 ]
 
 [package.dependencies]
-mdformat = ">=0.7.17"
+mdformat = ">=0.7.19"
 mdit-py-plugins = ">=0.4.1"
 
 [package.extras]
-dev = ["pre-commit"]
-test = ["pytest (>=7.4.4)", "pytest-beartype (>=0.0.2)", "pytest-cov (>=4.1.0)"]
+test = ["pytest (>=8.3.4)", "pytest-beartype (>=0.1.1)", "pytest-cov (>=6.0.0)"]
 
 [[package]]
 name = "mdformat-tables"
