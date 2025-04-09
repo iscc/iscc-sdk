@@ -226,11 +226,14 @@ def code_text(fp, **options):
             meta["thumbnail"] = thumbnail_durl
 
     text = idk.text_extract(fp)
+    text = ic.text_clean(text)
     code = ic.gen_text_code_v0(text, bits=opts.bits)
     meta.update(code)
     if opts.granular:
-        features = idk.text_features(ic.text_clean(text))
+        features = idk.text_features(text)
         meta["features"] = [features]
+    if opts.text_keep:
+        meta["text"] = text
     return idk.IsccMeta.construct(**meta)
 
 

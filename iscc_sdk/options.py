@@ -118,9 +118,14 @@ class SdkOptions(BaseSettings):
         description="ISCC_SDK_IMAGE_MAX_PIXELS - Maximum number of pixels allowed for processing (default 128Mpx / 0.5GB RGB)",
     )
 
+    text_keep: bool = Field(
+        default=False,
+        description="ISCC_SDK_TEXT_KEEP - Keep extracted plainext on `IsccMata.text` property",
+    )
+
     text_avg_chunk_size: int = Field(
         default=512,
-        description="ISCC_SDK_TEXT_AVG_CHUNK_SIZE - Avg number of characters per text chunk for granular fingerprints",
+        description="ISCC_SDK_TEXT_AVG_CHUNK_SIZE - Avg number of characters per text chunk for Content-Code Text granular fingerprints",
     )
 
     video_fps: int = Field(

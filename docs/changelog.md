@@ -2,6 +2,8 @@
 
 ## 0.8.1 - Unreleased
 
+- Added `text_keep` option to store extracted text on `IsccMeta.text` property
+
 ## 0.8.0 - 2025-04-02
 
 - Added support for optional ISCC-UNITS and configurable bit size (256-bit).
