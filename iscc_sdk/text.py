@@ -62,7 +62,7 @@ def text_meta_extract(fp):
     """
     fp = Path(fp)
     extractor = Extractor()
-    extractor = extractor.set_extract_string_max_length(16000)
+    # extractor = extractor.set_extract_string_max_length()
     result, meta = extractor.extract_file_to_string(fp.as_posix())
     mapped = dict()
     done = set()
