@@ -64,6 +64,7 @@ exiv2 = "*"
 extractous = "*"
 bleach = "*"
 pdftext = "*"
+pikepdf = "^9.7.0"
 
 
 [tool.poetry.group.dev.dependencies]
