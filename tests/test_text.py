@@ -153,7 +153,16 @@ def test_text_sanitize():
     )
 
 
+def test_text_sanitize_case_insensitive():
+    sample_html = """
+        <div>Test with <SCRIPT>alert('XSS');</SCRIPT> and
+        <STYLE>.hidden{display:none;}</STYLE> elements.</div>
+        """
+    assert idk.text_sanitize(sample_html) == "Test with and elements."
+
+
 def test_text_keep(epub_file, monkeypatch):
     monkeypatch.setattr(idk.sdk_opts, "text_keep", True)
     meta = idk.code_text(epub_file)
     assert meta.text.startswith("THE CONTENTS")
+
