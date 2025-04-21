@@ -3,7 +3,8 @@
 ## 0.8.1 - 2025-04-09
 
 - Added `text_keep` option to store extracted text on `IsccMeta.text` property
-- Changed pdf text extraction to use pypdfium2 with reading order reconstruction
+- Changed PDF text extraction to use pypdfium2 with reading order reconstruction
+- Re-added pillow-avif-plugin (Pillow dropped bundling libavif)
 
 ## 0.8.0 - 2025-04-02
 

@@ -255,10 +255,6 @@ def test_thumbnail_data_url_webp(jpg_file, monkeypatch):
     )
 
 
-@pytest.mark.skipif(
-    version.parse(PILLOW_VERSION) < version.parse("11.2"),
-    reason="AVIF support requires Pillow 11.2 or higher",
-)
 def test_thumbnail_data_url_avif(jpg_file, monkeypatch):
     monkeypatch.setattr(idk.sdk_opts, "image_thumbnail_format", "AVIF")
     img = idk.thumbnail(jpg_file)

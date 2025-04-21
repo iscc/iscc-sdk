@@ -12,6 +12,7 @@ dirs = PlatformDirs(appname=APP_NAME, appauthor=APP_AUTHOR)
 os.makedirs(dirs.user_data_dir, exist_ok=True)
 os.environ["LOGURU_AUTOINIT"] = "False"
 
+import pillow_avif
 
 # Import full api to toplevel
 from iscc_sdk.monkeys import *

@@ -65,6 +65,7 @@ extractous = "*"
 bleach = "*"
 pdftext = "*"
 pikepdf = "^9.7.0"
+pillow-avif-plugin = "^1.5.1"
 
 
 [tool.poetry.group.dev.dependencies]
