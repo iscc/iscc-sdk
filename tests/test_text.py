@@ -165,4 +165,3 @@ def test_text_keep(epub_file, monkeypatch):
     monkeypatch.setattr(idk.sdk_opts, "text_keep", True)
     meta = idk.code_text(epub_file)
     assert meta.text.startswith("THE CONTENTS")
-

@@ -209,8 +209,8 @@ def text_sanitize(text):
     # type: (str) -> text
     """Sanitize text from untrusted sources (e.g. metadata extracted from assets)"""
     # Pre-process to remove script and style content
-    text = re.sub(r"<script[^>]*>.*?</script>", "", text, flags=re.DOTALL|re.IGNORECASE)
-    text = re.sub(r"<style[^>]*>.*?</style>", "", text, flags=re.DOTALL|re.IGNORECASE)
+    text = re.sub(r"<script[^>]*>.*?</script>", "", text, flags=re.DOTALL | re.IGNORECASE)
+    text = re.sub(r"<style[^>]*>.*?</style>", "", text, flags=re.DOTALL | re.IGNORECASE)
 
     # Sanitize with bleach - remove all HTML tags
     sanitized = bleach.clean(
