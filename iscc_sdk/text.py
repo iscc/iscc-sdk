@@ -26,7 +26,8 @@ __all__ = [
     "text_thumbnail",
     "text_sanitize",
 ]
-
+SCRIPT_RE = re.compile(r"<script[^>]*>.*?</script>", flags=re.DOTALL | re.IGNORECASE)
+STYLE_RE = re.compile(r"<style[^>]*>.*?</style>", flags=re.DOTALL | re.IGNORECASE)
 
 TEXT_META_MAP = {
     "iscc_name": "name",
@@ -206,11 +207,11 @@ def text_thumbnail(fp):
 
 
 def text_sanitize(text):
-    # type: (str) -> text
-    """Sanitize text from untrusted sources (e.g. metadata extracted from assets)"""
+    # type: (str) -> str
+    """Sanitize text from untrusted sources (metadata extracted from assets)"""
     # Pre-process to remove script and style content
-    text = re.sub(r"<script[^>]*>.*?</script>", "", text, flags=re.DOTALL | re.IGNORECASE)
-    text = re.sub(r"<style[^>]*>.*?</style>", "", text, flags=re.DOTALL | re.IGNORECASE)
+    text = SCRIPT_RE.sub("", text)
+    text = STYLE_RE.sub("", text)
 
     # Sanitize with bleach - remove all HTML tags
     sanitized = bleach.clean(
