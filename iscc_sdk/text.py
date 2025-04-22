@@ -216,7 +216,7 @@ def text_sanitize(text):
     # Sanitize with bleach - remove all HTML tags
     sanitized = bleach.clean(
         text,
-        tags=[],  # Remove all tags
+        tags={},
         attributes={},
         strip=True,
         strip_comments=True,
