@@ -99,6 +99,7 @@ def text_meta_embed(fp, meta):
         return idk.epub_meta_embed(fp, meta)
     if mt == "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
         return idk.docx_meta_embed(fp, meta)
+    return None
 
 
 def text_extract(fp):
@@ -158,9 +159,9 @@ def text_features(text):
 def text_chunks(text, avg_size=idk.sdk_opts.text_avg_chunk_size):
     # type: (str, int) -> Generator[str, None, None]
     """
-    Generates variable sized text chunks (without leading BOM).
+    Generates variable-sized text chunks (without leading BOM).
 
-    :param text: normalized plaintext
+    :param text: Normalized plaintext
     :param avg_size: Targeted average size of text chunks in characters.
     :yields: Text chunks.
     """
@@ -173,7 +174,7 @@ def text_chunks(text, avg_size=idk.sdk_opts.text_avg_chunk_size):
 def text_name_from_uri(uri):
     # type: (Union[str, Path]) -> str
     """
-    Extract `filename` part of an uri without file extension to be used as fallback title for an
+    Extract `filename` part of an uri without file extension to be used as a fallback title for an
     asset if no title information can be acquired.
 
     :param uri: Url or file path
