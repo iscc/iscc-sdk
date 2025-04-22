@@ -196,14 +196,15 @@ def text_thumbnail(fp):
     """
     Create a thumbnail for a text document.
 
-    :param fp: Filepath to text document.
-    :return: Thumbnail image as PIL Image object
+    :param fp: Filepath to a text document.
+    :return: Thumbnail image as a PIL Image object
     """
     mt, _ = idk.mediatype_and_mode(fp)
     if mt == "application/pdf":
         return idk.pdf_thumbnail(fp)
     if mt == "application/epub+zip":
         return idk.epub_thumbnail(fp)
+    return None
 
 
 def text_sanitize(text):
