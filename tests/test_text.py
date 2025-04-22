@@ -165,3 +165,40 @@ def test_text_keep(epub_file, monkeypatch):
     monkeypatch.setattr(idk.sdk_opts, "text_keep", True)
     meta = idk.code_text(epub_file)
     assert meta.text.startswith("THE CONTENTS")
+
+
+def test_text_sanitize_nested_script():
+    malicious_html = (
+        "Safe text <script>malicious <script>inner</script> content</script> remaining text."
+    )
+    expected = "Safe text content remaining text."
+    assert idk.text_sanitize(malicious_html) == expected
+
+
+def test_text_sanitize_large_input():
+    # Construct a large input with a script block inserted in between.
+    prefix = "A" * 1000
+    suffix = "B" * 1000
+    script_content = "X" * 5000
+    malicious_html = f"{prefix}<script>{script_content}</script>{suffix}"
+    # After removal, expect only the prefix and suffix concatenated (whitespace normalized).
+    expected = f"{prefix}{suffix}"
+    assert idk.text_sanitize(malicious_html) == expected
+
+
+def test_text_sanitize_large_input_style():
+    # Construct a large input with a style block inserted in between.
+    prefix = "hello"
+    suffix = "world"
+    style_content = ("body { background: red; } " * 1000).strip()
+    malicious_html = f"{prefix}<style>{style_content}</style>{suffix}"
+    expected = f"{prefix}{suffix}"
+    assert idk.text_sanitize(malicious_html) == expected
+
+
+def test_text_sanitize_img_event():
+    # Verify that tags with dangerous attributes are completely removed.
+    html = "<img src='nonexistent.jpg' onerror='alert(1)'> Some text"
+    # The img tag should be stripped entirely.
+    expected = "Some text"
+    assert idk.text_sanitize(html) == expected
