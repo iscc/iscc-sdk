@@ -44,6 +44,11 @@ class SdkOptions(BaseSettings):
         description="ISCC_SDK_GRANULAR - Generate additional granular fingerprints for ISCC-CODES",
     )
 
+    byte_offsets: bool = Field(
+        False,
+        description="ISCC_SDK_BYTE_OFFSETS - Use UTF-8 byte offsets instead of character offsets for granular fingerprints",
+    )
+
     process_container: bool = Field(
         default=False,
         description="ISCC_SDK_PROCESS_CONTAINER - Process embedded elements in container formats",
