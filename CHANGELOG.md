@@ -1,5 +1,9 @@
 ## Changelog
 
+## 0.8.2 - Unreleased
+
+- Updated dependencies
+
 ## 0.8.1 - 2025-04-09
 
 - Added `text_keep` option to store extracted text on `IsccMeta.text` property
