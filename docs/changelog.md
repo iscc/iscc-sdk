@@ -2,6 +2,7 @@
 
 ## 0.8.2 - Unreleased
 
+- Added `byte_offsets` option for to support UTF-8 byte positions in granular simprints
 - Updated dependencies
 
 ## 0.8.1 - 2025-04-09

@@ -144,7 +144,7 @@ def text_features(text, **options):
         )
         features = [xxhash.xxh32_intdigest(s.encode("utf-8")) for s in ngrams]
         minimum_hash_digest = ic.alg_minhash_256(features)
-        chunk_len = len(chunk)
+        chunk_len = len(chunk.encode("utf-8")) if opts.byte_offsets else len(chunk)
         sizes.append(chunk_len)
         simprints.append(ic.encode_base64(minimum_hash_digest))
         current_offset += chunk_len
@@ -152,6 +152,7 @@ def text_features(text, **options):
         maintype="content",
         subtype="text",
         version=0,
+        byte_offsets=opts.byte_offsets,
         simprints=simprints,
         offsets=offsets,
         sizes=sizes,

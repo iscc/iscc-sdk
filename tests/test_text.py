@@ -1,10 +1,7 @@
 # -*- coding: utf-8 -*-
 from pathlib import Path
-
 import pytest
-
 import iscc_sdk as idk
-import iscc_core as ic
 
 
 def test_text_meta_extract_pdf(pdf_file):
@@ -75,6 +72,9 @@ def test_text_features(docx_file):
     features = idk.text_features(txt)
     assert features == {
         "maintype": "content",
+        "subtype": "text",
+        "version": 0,
+        "byte_offsets": False,
         "offsets": [0, 997, 1454, 2123, 4942, 5399, 6068],
         "simprints": [
             "k5TpwXVE3j9N5IBxm36c4hkXP6fHOv8bkY2f68_8XSg",
@@ -86,8 +86,6 @@ def test_text_features(docx_file):
             "JfC6tnH1BuHFMviS2deReiUuelIIMvWWOozU6afjErU",
         ],
         "sizes": [997, 457, 669, 2819, 457, 669, 2],
-        "subtype": "text",
-        "version": 0,
     }
 
 
@@ -194,6 +192,33 @@ def test_text_sanitize_large_input_style():
     malicious_html = f"{prefix}<style>{style_content}</style>{suffix}"
     expected = f"{prefix}{suffix}"
     assert idk.text_sanitize(malicious_html) == expected
+
+
+def test_text_features_utf8_byte_offsets():
+    # Sample text with multi-byte characters
+    sample_text = "Hello, 世界!"  # Chinese characters require 3 bytes each in UTF-8
+
+    # First get features with character offsets (default)
+    char_features = idk.text_features(sample_text)
+
+    # Then get features with byte offsets
+    byte_features = idk.text_features(sample_text, byte_offsets=True)
+
+    # Verify the sizes are different - byte sizes should be larger due to multi-byte chars
+    assert byte_features["sizes"][0] > char_features["sizes"][0]
+
+    # Calculate expected byte size
+    expected_byte_size = len(sample_text.encode("utf-8"))
+    assert byte_features["sizes"][0] == expected_byte_size
+
+    # Verify the chunks can be correctly reconstructed using byte offsets
+    utf8_bytes = sample_text.encode("utf-8")
+    for i, (offset, size) in enumerate(zip(byte_features["offsets"], byte_features["sizes"])):
+        chunk_bytes = utf8_bytes[offset : offset + size]
+        decoded = chunk_bytes.decode("utf-8")
+        # With a single chunk, it should match the original text
+        if i == 0:
+            assert decoded == sample_text
 
 
 def test_text_sanitize_img_event():

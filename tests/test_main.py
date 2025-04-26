@@ -205,12 +205,16 @@ def test_code_text(docx_file):
 def test_code_text_granular(docx_file, monkeypatch):
     monkeypatch.setattr(idk.sdk_opts, "granular", True)
     assert idk.code_text(docx_file).dict() == {
+        "iscc": "ISCC:EAAQMBEYQF6457DP",
+        "name": "title from metadata",
         "characters": 4951,
         "creator": "titusz",
         "features": [
             {
                 "maintype": "content",
-                "offsets": [0, 997, 1454, 2123, 4942, 5399, 6068],
+                "subtype": "text",
+                "version": 0,
+                "byte_offsets": False,
                 "simprints": [
                     "k5TpwXVE3j9N5IBxm36c4hkXP6fHOv8bkY2f68_8XSg",
                     "OERRAF2u5WWuLHZLZzgcCSoCoL9R0NYrBJD7s7A43t0",
@@ -220,13 +224,10 @@ def test_code_text_granular(docx_file, monkeypatch):
                     "AARYEMzu5WEOfTZq5ixNLcoThJ5AgJYNRICysqEs3v0",
                     "JfC6tnH1BuHFMviS2deReiUuelIIMvWWOozU6afjErU",
                 ],
+                "offsets": [0, 997, 1454, 2123, 4942, 5399, 6068],
                 "sizes": [997, 457, 669, 2819, 457, 669, 1],
-                "subtype": "text",
-                "version": 0,
             }
         ],
-        "iscc": "ISCC:EAAQMBEYQF6457DP",
-        "name": "title from metadata",
     }
 
 
