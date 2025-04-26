@@ -121,15 +121,17 @@ def text_extract(fp):
     return result
 
 
-def text_features(text):
+def text_features(text, **options):
     # type: (str) -> dict
     """
     Create granular simprints for text (minhashes over ngrams from cdc-chunks).
     Text should be normalized and cleaned before extracting text features.
 
     :param text: Normalized and cleaned plaintext.
+    :key byte_offsets: Calculate offsets and sizes in UTF-8 bytes instead of chars. Default: False
     :returns dict: Dictionary with 'sizes', 'features', 'offsets', and 'contents'.
     """
+    opts = idk.sdk_opts.override(options)
     sizes = []
     simprints = []
     offsets = []
