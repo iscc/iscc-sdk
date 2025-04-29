@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 import os.path
-import pytest
-from packaging import version
-from PIL import Image, __version__ as PILLOW_VERSION
+from PIL import Image
 
 import iscc_sdk as idk
 from iscc_schema import IsccMeta
@@ -27,8 +25,8 @@ def test_image_normalize_png(png_obj):
 
 def test_image_normalize_png_alpha(png_obj_alpha):
     pixels = list(idk.image_normalize(png_obj_alpha))
-    assert pixels[:14] == [255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255]
-    assert pixels[-14:] == [255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255]
+    assert pixels[:14] == [255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 242, 203, 205, 141]
+    assert pixels[-14:] == [141, 205, 203, 242, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255]
 
 
 def test_image_normalize_jpg(jpg_obj):

@@ -88,14 +88,43 @@ def image_fill_transparency(img):
     Add white background to image if it has alpha transparency.
 
     :param img: Pillow Image Object
-    :return: Image with transparency replaced by white background
+    :return: RGB Image with transparency replaced by a white background
     """
-    if img.mode != "RGBA":
-        img = img.convert("RGBA")
-    bg = Image.new("RGBA", img.size, (255, 255, 255))
-    img = Image.alpha_composite(bg, img)
-    log.debug(f"Image transparency filled with white background")
-    return img
+    white = (255, 255, 255)
+
+    # If the image is already RGB, there's nothing to do.
+    if img.mode == "RGB":
+        log.debug("Image is already RGB, no transparency removal needed.")
+        return img
+
+    # Handle modes with explicit alpha channels
+    if img.mode in ("RGBA", "LA"):
+        log.debug(f"Whitening alpha transparency for mode {img.mode}")
+        background = Image.new("RGB", img.size, white)
+        # Paste using the alpha channel as a mask
+        background.paste(img, mask=img.getchannel("A"))
+        return background
+
+    # Handle Palette mode
+    elif img.mode == "P":
+        # Check if transparency info exists for the palette
+        if "transparency" in img.info:
+            log.debug("Whitening palette transparency")
+            # Convert to RGBA to handle palette transparency correctly
+            image_rgba = img.convert("RGBA")
+            background = Image.new("RGB", img.size, white)
+            # Paste the RGBA version onto the RGB background
+            background.paste(image_rgba, mask=image_rgba.getchannel("A"))
+            return background
+        else:
+            # Palette image without transparency, just convert to RGB
+            log.debug("Converting opaque P image to RGB")
+            return img.convert("RGB")
+
+    # Handle other modes (like L, CMYK, etc.) by converting to RGB
+    else:
+        log.debug(f"Converting image from mode {img.mode} to RGB")
+        return img.convert("RGB")
 
 
 def image_trim_border(img):
