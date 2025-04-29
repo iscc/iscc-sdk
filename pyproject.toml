@@ -63,8 +63,8 @@ exiv2 = "*"
 extractous = "*"
 bleach = "*"
 pdftext = "*"
-pikepdf = "^9.7.0"
-pillow-avif-plugin = "^1.5.1"
+pikepdf = "*"
+pillow-avif-plugin = "*"
 
 
 [tool.poetry.group.dev.dependencies]
