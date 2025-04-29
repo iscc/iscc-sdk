@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import os.path
-from PIL import Image
+from PIL import Image, ImageDraw
 
 import iscc_sdk as idk
 from iscc_schema import IsccMeta
@@ -40,9 +40,165 @@ def test_image_exif_transpose(png_obj):
     assert isinstance(result, Image.Image)
 
 
-def test_image_fill_transparency(png_obj_alpha):
+def test_image_fill_transparency_rgba(png_obj_alpha):
+    """Test filling transparency for RGBA mode image."""
+    # Verify input image has alpha channel
+    assert png_obj_alpha.mode == "RGBA"
+
+    # Process the image
     result = idk.image_fill_transparency(png_obj_alpha)
+
+    # Verify result is an Image and has RGB mode (no alpha)
     assert isinstance(result, Image.Image)
+    assert result.mode == "RGB"
+
+    # Verify the background is white where the original was transparent
+    # Get a pixel from a corner (which should be transparent in the original)
+    corner_pixel = result.getpixel((0, 0))
+    assert corner_pixel == (255, 255, 255), "Transparent areas should be filled with white"
+
+    # Verify the non-transparent content is preserved
+    # The center of the image should have the gray circle
+    center_pixel = result.getpixel((50, 50))
+    assert center_pixel != (255, 255, 255), "Non-transparent areas should preserve their color"
+
+
+def test_image_fill_transparency_rgb(jpg_obj):
+    """Test that RGB images are returned unchanged."""
+    # Verify input image is RGB
+    assert jpg_obj.mode == "RGB"
+
+    # Process the image
+    result = idk.image_fill_transparency(jpg_obj)
+
+    # Verify result is the same image (RGB mode, unchanged)
+    assert isinstance(result, Image.Image)
+    assert result.mode == "RGB"
+    assert result is jpg_obj, "RGB images should be returned unchanged"
+
+
+def test_image_fill_transparency_la():
+    """Test filling transparency for LA mode image (grayscale with alpha)."""
+    # Create an LA mode image (grayscale with alpha)
+    img = Image.new("LA", (50, 50), (0, 0))  # Fully transparent black
+    draw = ImageDraw.Draw(img)
+    draw.ellipse((10, 10, 40, 40), fill=(200, 255))  # Gray circle with full opacity
+
+    # Verify input image has LA mode
+    assert img.mode == "LA"
+
+    # Process the image
+    result = idk.image_fill_transparency(img)
+
+    # Verify result is an Image and has RGB mode
+    assert isinstance(result, Image.Image)
+    assert result.mode == "RGB"
+
+    # Verify the background is white where the original was transparent
+    corner_pixel = result.getpixel((0, 0))
+    assert corner_pixel == (255, 255, 255), "Transparent areas should be filled with white"
+
+    # Verify the non-transparent content is preserved
+    center_pixel = result.getpixel((25, 25))
+    # The gray value (200) should be preserved in all RGB channels
+    assert center_pixel == (200, 200, 200), (
+        "Non-transparent areas should preserve their grayscale value"
+    )
+
+
+def test_image_fill_transparency_p_with_transparency():
+    """Test filling transparency for P mode image with transparency."""
+    # Create a P mode image with transparency
+    # First create an RGBA image
+    img = Image.new("RGBA", (50, 50), (0, 0, 0, 0))  # Fully transparent
+    draw = ImageDraw.Draw(img)
+    draw.ellipse((10, 10, 40, 40), fill=(255, 0, 0, 255))  # Red circle with full opacity
+
+    # Convert to P mode with transparency
+    # We need to use quantize() to preserve transparency info
+    img = img.quantize(colors=255, method=2)
+
+    # If transparency info is still not present, we'll manually add it
+    # This is a workaround for testing purposes
+    if "transparency" not in img.info:
+        # Create a transparency mask from the alpha channel of the original RGBA image
+        alpha = img.convert("RGBA").getchannel("A")
+        # Find the palette index that corresponds to fully transparent pixels
+        transparent_index = 0  # Usually 0 for transparent pixels
+        img.info["transparency"] = transparent_index
+
+    # Verify the image has P mode
+    assert img.mode == "P"
+    # Verify the image has transparency
+    assert "transparency" in img.info
+
+    # Process the image
+    result = idk.image_fill_transparency(img)
+
+    # Verify result is an Image and has RGB mode
+    assert isinstance(result, Image.Image)
+    assert result.mode == "RGB"
+
+    # Verify the background is white where the original was transparent
+    corner_pixel = result.getpixel((0, 0))
+    assert corner_pixel == (255, 255, 255), "Transparent areas should be filled with white"
+
+    # Verify the non-transparent content is preserved
+    center_pixel = result.getpixel((25, 25))
+    # The red color should be preserved
+    r, g, b = center_pixel
+    assert r > 200 and g < 50 and b < 50, "Red color should be preserved"
+
+
+def test_image_fill_transparency_p_without_transparency():
+    """Test converting P mode image without transparency to RGB."""
+    # Create a P mode image without transparency
+    img = Image.new("P", (50, 50), 0)  # Black background
+    draw = ImageDraw.Draw(img)
+    draw.ellipse((10, 10, 40, 40), fill=1)  # Using palette index 1
+
+    # Verify the image has P mode
+    assert img.mode == "P"
+    # Verify the image has no transparency
+    assert "transparency" not in img.info
+
+    # Process the image
+    result = idk.image_fill_transparency(img)
+
+    # Verify result is an Image and has RGB mode
+    assert isinstance(result, Image.Image)
+    assert result.mode == "RGB"
+
+    # Since there's no transparency, the image should just be converted to RGB
+    # without any white filling
+    assert result.getpixel((0, 0)) != (255, 255, 255), (
+        "Non-transparent P mode should preserve background color"
+    )
+
+
+def test_image_fill_transparency_l_mode():
+    """Test converting L mode image (grayscale) to RGB."""
+    # Create an L mode image (grayscale)
+    img = Image.new("L", (50, 50), 0)  # Black background
+    draw = ImageDraw.Draw(img)
+    draw.ellipse((10, 10, 40, 40), fill=200)  # Gray circle
+
+    # Verify the image has L mode
+    assert img.mode == "L"
+
+    # Process the image
+    result = idk.image_fill_transparency(img)
+
+    # Verify result is an Image and has RGB mode
+    assert isinstance(result, Image.Image)
+    assert result.mode == "RGB"
+
+    # Verify the grayscale values are preserved in RGB
+    corner_pixel = result.getpixel((0, 0))
+    assert corner_pixel == (0, 0, 0), "Black should be preserved as (0,0,0)"
+
+    center_pixel = result.getpixel((25, 25))
+    assert center_pixel == (200, 200, 200), "Gray should be preserved across all channels"
 
 
 def test_image_trim_border(jpg_obj, png_obj_alpha):
