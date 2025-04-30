@@ -52,6 +52,7 @@ def code_iscc(fp, **options):
     :key add_units: Include ISCC-UNITS in metadata. Default: False
     :key create_meta: Create Meta-Code unit from embedded metadata. Default: True
     :key wide: Enable wide mode for ISCC-SUM with Data & Instance codes only. Default: False
+    :key experimental: Enable experimental semantic codes. Default: False
     :return: IsccMeta object with complete ISCC-CODE and merged metadata from all ISCC-UNITs.
     :raises idk.IsccUnsupportedMediatype:
         If the media type is not supported. By default, the function will raise this exception for
@@ -87,6 +88,19 @@ def code_iscc(fp, **options):
                 meta_future = executor.submit(code_meta, fp, **options)
                 meta = meta_future.result()
                 iscc_units.append(meta.iscc)
+
+            # Optional semantic codes
+            if mode == "image" and idk.is_installed("iscc_sci") and opts.experimental:
+                content_semantic_future = executor.submit(code_image_semantic, fp)
+            elif mode == "text" and idk.is_installed("iscc_sct") and opts.experimental:
+                content_semantic_future = executor.submit(code_text_semantic, fp)
+            else:
+                content_semantic_future = None
+
+            if content_semantic_future:
+                content_semantic = content_semantic_future.result()
+                iscc_units.append(content_semantic.iscc)
+                iscc_meta.update(content_semantic.dict())
 
             content = content_future.result()
             iscc_units.append(content.iscc)
