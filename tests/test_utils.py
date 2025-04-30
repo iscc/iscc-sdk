@@ -45,3 +45,11 @@ def test_timer_with_exception():
 def test_timer_real_timing():
     with idk.timer("Sleep test"):
         time.sleep(0.1)  # Sleep for 100ms
+
+
+def test_is_installed_true():
+    assert idk.is_installed("iscc_core") is True
+
+
+def test_is_installed_false():
+    assert idk.is_installed("non_existent_package") is False

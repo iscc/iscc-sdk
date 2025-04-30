@@ -54,6 +54,11 @@ class SdkOptions(BaseSettings):
         description="ISCC_SDK_PROCESS_CONTAINER - Process embedded elements in container formats",
     )
 
+    experimental: bool = Field(
+        default=False,
+        description="ISCC_SDK_EXPERIMENTAL - Enable experimental features like Semantic Code units",
+    )
+
     min_image_size: int = Field(
         default=256,
         description="ISCC_SDK_MIN_IMAGE_SIZE - Minimum image size in pixels for container processing",
