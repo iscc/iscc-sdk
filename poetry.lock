@@ -3324,7 +3324,11 @@ files = [
     {file = "xxhash-3.5.0.tar.gz", hash = "sha256:84f2caddf951c9cbf8dc2e22a89d4ccf5d86391ac6418fe81e3c67d0cf60b45f"},
 ]
 
+[extras]
+sci = []
+sct = []
+
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.10,<3.14"
-content-hash = "b9213e9c8b816c7b5f1c7a40f6a579123f4ca996d7e11c1b0af9be2f317aa0b2"
+content-hash = "db0477508c019437f46f45a72b9d9baf56948390d96e083feccd69cc612086eb"

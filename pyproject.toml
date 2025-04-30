@@ -67,6 +67,11 @@ pikepdf = "*"
 pillow-avif-plugin = "*"
 
 
+[tool.poetry.extras]
+sci = ["iscc-sci"]
+sct = ["iscc-sct"]
+
+
 [tool.poetry.group.dev.dependencies]
 pytest = "*"
 mypy = "*"

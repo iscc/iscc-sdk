@@ -11,3 +11,7 @@ class IsccExtractionError(IsccError):
 
 class IsccUnsupportedMediatype(IsccError):
     pass
+
+
+class EnvironmentError(IsccError):
+    pass

@@ -15,6 +15,7 @@ __all__ = [
     "code_meta",
     "code_content",
     "code_text",
+    "code_text_semantic",
     "code_image",
     "code_audio",
     "code_video",
@@ -235,6 +236,27 @@ def code_text(fp, **options):
     if opts.text_keep:
         meta["text"] = text
     return idk.IsccMeta.construct(**meta)
+
+
+def code_text_semantic(fp, **options):  # pragma: no cover
+    # type: (str|Path, Any) -> idk.IsccMeta
+    """
+    Generate Semantic-Code Text. (Requires iscc-sct to be installed)
+    :param fp: Filepath used for semantic Text-Code creation.
+    :raises idk.EnvironmentError: If iscc-sct is not installed.
+    """
+    if not idk.is_installed("iscc_sct"):
+        raise idk.EnvironmentError(
+            "Semantic-Code Text requires `iscc-sct` package to be installed."
+        )
+    import iscc_sct
+
+    fp = Path(fp)
+    opts = iscc_sct.sct_opts.override(options)
+    text = idk.text_extract(fp)
+    text = ic.text_clean(text)
+    result = iscc_sct.gen_text_code_semantic(text, **opts)
+    return idk.IsccMeta.construct(**result)
 
 
 def code_image(fp, **options):
