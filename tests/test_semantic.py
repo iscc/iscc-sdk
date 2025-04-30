@@ -15,4 +15,7 @@ def test_code_text_semantic_raises(doc_file):
 
 @pytest.mark.skipif(not sct_installed, reason="iscc-sct not installed")
 def test_code_text_semantic(doc_file):
-    assert idk.code_text_semantic(doc_file) == {}
+    assert idk.code_text_semantic(doc_file).dict() == {
+        "iscc": "ISCC:CAA7X3SMP7IQ4Z65",
+        "characters": 6068,
+    }

@@ -255,7 +255,7 @@ def code_text_semantic(fp, **options):  # pragma: no cover
     opts = iscc_sct.sct_opts.override(options)
     text = idk.text_extract(fp)
     text = ic.text_clean(text)
-    result = iscc_sct.gen_text_code_semantic(text, **opts)
+    result = iscc_sct.gen_text_code_semantic(text, **opts.model_dump())
     return idk.IsccMeta.construct(**result)
 
 

@@ -65,6 +65,8 @@ bleach = "*"
 pdftext = "*"
 pikepdf = "*"
 pillow-avif-plugin = "*"
+iscc-sci = {version = "*", optional = true}
+iscc-sct = {version = "*", optional = true}
 
 
 [tool.poetry.extras]
