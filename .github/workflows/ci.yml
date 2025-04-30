@@ -26,6 +26,12 @@ jobs:
       - name: Run Tests
         run: poetry run pytest --cov=iscc_sdk --cov-report=xml -v tests
 
+      - name: Install Optional Semantic Code Packages
+        run: poetry install --all-extras
+
+      - name: Run Semantic Code Tests
+        run: poetry run pytest --cov=iscc_sdk --cov-report=xml -v tests/test_semantic.py
+
       - name: Upload coverage to Codecov
         if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.11'
         uses: codecov/codecov-action@v4

@@ -17,6 +17,7 @@ __all__ = [
     "code_text",
     "code_text_semantic",
     "code_image",
+    "code_image_semantic",
     "code_audio",
     "code_video",
     "code_data",
@@ -288,6 +289,25 @@ def code_image(fp, **options):
     code_obj = ic.gen_image_code_v0(pixels, bits=opts.bits)
     meta.update(code_obj)
 
+    return idk.IsccMeta.construct(**meta)
+
+
+def code_image_semantic(fp, **options):  # pragma: no cover
+    # type: (str|Path, Any) -> idk.IsccMeta
+    """
+    Generate Semantic-Code Image. (Requires iscc-sci to be installed)
+    :param fp: Filepath used for semantic Image-Code creation.
+    :raises idk.EnvironmentError: If iscc-sci is not installed.
+    """
+    if not idk.is_installed("iscc_sci"):
+        raise idk.EnvironmentError(
+            "Semantic-Code Image requires `iscc-sci` package to be installed."
+        )
+    import iscc_sci
+
+    fp = Path(fp)
+    opts = iscc_sci.sci_opts.override(options)
+    meta = iscc_sci.code_image_semantic(fp, **opts.model_dump())
     return idk.IsccMeta.construct(**meta)
 
 
