@@ -37,17 +37,133 @@ def test_code_iscc_with_semantic_text(doc_file, monkeypatch):
     monkeypatch.setattr(idk.sdk_opts, "experimental", True)
     assert idk.code_iscc(doc_file).dict() == {
         "@type": "TextDigitalDocument",
+        "iscc": "ISCC:KADV5NAQXBCHCWFW7PXEY76RBZT52BQETCAX3TX4N6BSAWE3WOCUAC2G2HV5MT2RKNYQ",
+        "metahash": "1e201da548c5285ed35f293c3e22c2f050e037643aae8cf9244b532a162ff5031f52",
+        "datahash": "1e2046d1ebd64f515371c88d1df5bc0d43893b1fa1e58654b2c4244e491d06007a61",
+        "name": "title from metadata",
+        "filename": "text.doc",
+        "filesize": 40448,
+        "mode": "text",
+        "mediatype": "application/msword",
         "characters": 4951,
         "creator": "titusz",
+        "generator": "iscc-sdk - v0.8.2",
+    }
+
+
+@pytest.mark.skipif(not sct_installed, reason="iscc-sct not installed")
+def test_code_iscc_with_semantic_text_granular(doc_file, monkeypatch):
+    import iscc_sct as sct
+
+    monkeypatch.setattr(idk.sdk_opts, "experimental", True)
+    monkeypatch.setattr(idk.sdk_opts, "granular", True)
+    monkeypatch.setattr(sct.sct_opts, "bits", 256)
+    monkeypatch.setattr(sct.sct_opts, "bits_granular", 256)
+    monkeypatch.setattr(sct.sct_opts, "simprints", True)
+    monkeypatch.setattr(sct.sct_opts, "offsets", True)
+    monkeypatch.setattr(sct.sct_opts, "sizes", True)
+    monkeypatch.setattr(sct.sct_opts, "byte_offsets", True)
+    assert idk.code_iscc(doc_file).dict() == {
+        "@type": "TextDigitalDocument",
+        "iscc": "ISCC:KADV5NAQXBCHCWFW7PXEY76RBZT52BQETCAX3TX4N6BSAWE3WOCUAC2G2HV5MT2RKNYQ",
+        "metahash": "1e201da548c5285ed35f293c3e22c2f050e037643aae8cf9244b532a162ff5031f52",
         "datahash": "1e2046d1ebd64f515371c88d1df5bc0d43893b1fa1e58654b2c4244e491d06007a61",
+        "name": "title from metadata",
         "filename": "text.doc",
         "filesize": 40448,
         "generator": "iscc-sdk - v0.8.2",
-        "iscc": "ISCC:KADV5NAQXBCHCWFW7PXEY76RBZT52BQETCAX3TX4N6BSAWE3WOCUAC2G2HV5MT2RKNYQ",
         "mediatype": "application/msword",
-        "metahash": "1e201da548c5285ed35f293c3e22c2f050e037643aae8cf9244b532a162ff5031f52",
         "mode": "text",
-        "name": "title from metadata",
+        "characters": 4951,
+        "creator": "titusz",
+        "features": [
+            {
+                "maintype": "semantic",
+                "subtype": "text",
+                "version": 0,
+                "byte_offsets": True,
+                "simprints": [
+                    "XUj8aOg4CGm5Uosm-Ggxi7d9G9pa4NBMyBDDAhrkf00",
+                    "--5Of_EKZ90ywJCOFeXNmqGGhMpMTI9djU4WWlGN0dY",
+                    "--5Of_EKZ90ywJCOFeXNmqGGhMpMTI9djU4WWlGN0dY",
+                    "865-e3EKZ90ywBCONeXNmqGChMpMTI9dDU4eWlCL0dY",
+                    "--9K9-EeZ912CICDN3QLmrGG3s5NTIVdjy4fSliNk-I",
+                    "4-5I70E8Z90yNoiDlzULmmDG3s4NXodVjy4WWliMk0I",
+                    "8-9K_9E8Z91zaICCl3ULmzTG3u4MXoddjw4WWkGMkcY",
+                    "86pvUlEOZ90ywIDqH-WNiuGCxspNTI9cjU4WWlCP0VY",
+                    "c6p_VlEOZ90ywIDqH-SNiuGCxspNTI9cjU4WWlCP0VY",
+                    "82dsL9FKZ9wyyDGGlS2NuiGGhGpcbg9ZTU4eWkmN1dI",
+                    "-6pe_9EKZ90y4JCOFeWNmqGCxMpNTItdDU4eWlCP0dY",
+                    "--5Of_EKZ90ywJCOFeXNmqGGhMpMTI9djU4WWlGN0dY",
+                    "865-e3EKZ90yYBCOP-XNmqGChMpMTI9cDU4eWlGL0dY",
+                    "--5Of_EKZ90ywJCOFeXNmqGGhMpMTI9djU4WWlGN0dY",
+                    "--5Of_EKZ90ywJCOFeXNmqGGhMpMTI9djU4WWlGN0dY",
+                    "865-e3EKZ90ywBCONeXNmqGChMpMTI9dDU4eWlCL0dY",
+                    "--9K9-EeZ912CICDN3QLmrGG3s5NTIVdjy4fSliNk-I",
+                    "4-5I70E8Z90yNoiDlzULmmDG3s4NXodVjy4WWliMk0I",
+                    "8-9K_9E8Z91z4IGClH0LmjTG3u4MXoddjw4WWkGMkcY",
+                ],
+                "offsets": [
+                    0,
+                    19,
+                    315,
+                    611,
+                    907,
+                    1325,
+                    1726,
+                    2262,
+                    2558,
+                    2994,
+                    3133,
+                    3401,
+                    3697,
+                    3964,
+                    4260,
+                    4556,
+                    4852,
+                    5270,
+                    5671,
+                ],
+                "sizes": [
+                    19,
+                    452,
+                    452,
+                    298,
+                    420,
+                    403,
+                    536,
+                    436,
+                    436,
+                    139,
+                    424,
+                    452,
+                    267,
+                    452,
+                    452,
+                    298,
+                    420,
+                    403,
+                    397,
+                ],
+            },
+            {
+                "maintype": "content",
+                "subtype": "text",
+                "version": 0,
+                "byte_offsets": False,
+                "simprints": [
+                    "k5TpwXVE3j9N5IBxm36c4hkXP6fHOv8bkY2f68_8XSg",
+                    "OERRAF2u5WWuLHZLZzgcCSoCoL9R0NYrBJD7s7A43t0",
+                    "AARYEMzu5WEOfTZq5ixNLcoThJ5AgJYNRICysqEs3v0",
+                    "lp6NgXnE_C1c6ij12-w04RwZN4XJyP0KgIrbKYX81yo",
+                    "OERRAF2u5WWuLHZLZzgcCSoCoL9R0NYrBJD7s7A43t0",
+                    "AARYEMzu5WEOfTZq5ixNLcoThJ5AgJYNRICysqEs3v0",
+                    "JfC6tnH1BuHFMviS2deReiUuelIIMvWWOozU6afjErU",
+                ],
+                "offsets": [0, 996, 1453, 2122, 4941, 5398, 6067],
+                "sizes": [996, 457, 669, 2819, 457, 669, 1],
+            },
+        ],
     }
 
 

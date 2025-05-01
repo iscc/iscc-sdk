@@ -61,7 +61,10 @@ def code_iscc(fp, **options):
     fp = Path(fp)
     opts = idk.sdk_opts.override(options)
     iscc_meta = dict(filename=fp.name)
+
+    # Track list properties for custom merging
     iscc_units = []
+    iscc_features = []
 
     with open(fp, "rb") as infile:
         data = infile.read(4096)
@@ -100,11 +103,15 @@ def code_iscc(fp, **options):
             if content_semantic_future:
                 content_semantic = content_semantic_future.result()
                 iscc_units.append(content_semantic.iscc)
-                iscc_meta.update(content_semantic.dict())
+                if content_semantic.features:
+                    iscc_features.append(content_semantic.features[0])
+                iscc_meta.update(content_semantic.dict(exclude={"features"}))
 
             content = content_future.result()
             iscc_units.append(content.iscc)
-            iscc_meta.update(content.dict())
+            if content.features:
+                iscc_features.append(content.features[0])
+            iscc_meta.update(content.dict(exclude={"features"}))
             if opts.create_meta:
                 iscc_meta.update(meta.dict())
 
@@ -118,6 +125,9 @@ def code_iscc(fp, **options):
 
     if opts.add_units:
         iscc_meta["units"] = iscc_units
+    if iscc_features:
+        iscc_meta["features"] = iscc_features
+
     # Compose ISCC-CODE
     iscc_code = ic.gen_iscc_code_v0(iscc_units, wide=opts.wide)
     iscc_meta.update(iscc_code)
