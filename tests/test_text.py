@@ -132,7 +132,7 @@ def test_text_features_byte_offsets(docx_file):
         assert decoded_chunk == original_chunk
 
 
-def test_code_text_no_meta_extract(docx_file, monkeypatch):
+def test_code_text_extract_meta_false(docx_file, monkeypatch):
     monkeypatch.setattr(idk.sdk_opts, "extract_meta", False)
     meta = idk.code_text(docx_file)
     assert meta.dict() == {"characters": 4951, "iscc": "ISCC:EAAQMBEYQF6457DP"}
