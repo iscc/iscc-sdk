@@ -2,8 +2,11 @@
 
 ## 0.8.2 - Unreleased
 
-- Added `byte_offsets` option for to support UTF-8 byte positions in granular simprints
-- Updated dependencies
+- Added experimental semantic codes for text and image with optional iscc-sct and iscc-sci packages
+- Added `byte_offsets` option to support UTF-8 byte positions in granular simprints
+- Improved image transparency handling with more robust conversion logic
+- Improved text sanitization
+- Updated lock file dependencies
 
 ## 0.8.1 - 2025-04-09
 
