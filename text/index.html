@@ -22,7 +22,7 @@
       
       
       <link rel="icon" href="../images/iscc-logo-icon-black.svg">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.11">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.12">
     
     
       
@@ -30,7 +30,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.4af4bdda.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.2afb09e1.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
@@ -1266,7 +1266,7 @@
 
 
 <h3 id="iscc_sdk.text.text_features" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">text_features</span><span class="p">(</span><span class="n">text</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">text_features</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span></code>
 
 <a href="#iscc_sdk.text.text_features" class="headerlink" title="Permanent link">#</a></h3>
 
@@ -1297,6 +1297,21 @@ Text should be normalized and cleaned before extracting text features.</p>
             <td>
               <div class="doc-md-description">
                 <p>Normalized and cleaned plaintext.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>byte_offsets</code>
+            </td>
+            <td>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Calculate offsets and sizes in UTF-8 bytes instead of chars. Default: False</p>
               </div>
             </td>
             <td>
@@ -1349,7 +1364,7 @@ Text should be normalized and cleaned before extracting text features.</p>
 
     <div class="doc doc-contents ">
 
-        <p>Generates variable sized text chunks (without leading BOM).</p>
+        <p>Generates variable-sized text chunks (without leading BOM).</p>
 <p>:yields: Text chunks.</p>
 
 
@@ -1372,7 +1387,7 @@ Text should be normalized and cleaned before extracting text features.</p>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>normalized plaintext</p>
+                <p>Normalized plaintext</p>
               </div>
             </td>
             <td>
@@ -1418,7 +1433,7 @@ Text should be normalized and cleaned before extracting text features.</p>
 
     <div class="doc doc-contents ">
 
-        <p>Extract <code>filename</code> part of an uri without file extension to be used as fallback title for an
+        <p>Extract <code>filename</code> part of an uri without file extension to be used as a fallback title for an
 asset if no title information can be acquired.</p>
 
 
@@ -1516,7 +1531,7 @@ asset if no title information can be acquired.</p>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>Filepath to text document.</p>
+                <p>Filepath to a text document.</p>
               </div>
             </td>
             <td>
@@ -1541,7 +1556,7 @@ asset if no title information can be acquired.</p>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>Thumbnail image as PIL Image object</p>
+                <p>Thumbnail image as a PIL Image object</p>
               </div>
             </td>
           </tr>
@@ -1569,7 +1584,7 @@ asset if no title information can be acquired.</p>
 
     <div class="doc doc-contents ">
 
-        <p>Sanitize text from untrusted sources (e.g. metadata extracted from assets)</p>
+        <p>Sanitize text from untrusted sources (metadata extracted from assets)</p>
 
 
     </div>

@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../images/iscc-logo-icon-black.svg">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.11">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.12">
     
     
       
@@ -28,7 +28,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.4af4bdda.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.2afb09e1.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
@@ -899,6 +899,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#082-2025-05-02" class="md-nav__link">
+    <span class="md-ellipsis">
+      0.8.2 - 2025-05-02
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#081-2025-04-09" class="md-nav__link">
     <span class="md-ellipsis">
       0.8.1 - 2025-04-09
@@ -1189,10 +1198,19 @@
   <h1>Changelog</h1>
 
 <h2 id="changelog">Changelog<a class="headerlink" href="#changelog" title="Permanent link">#</a></h2>
+<h2 id="082-2025-05-02">0.8.2 - 2025-05-02<a class="headerlink" href="#082-2025-05-02" title="Permanent link">#</a></h2>
+<ul>
+<li>Added experimental semantic codes for text and image with optional iscc-sct and iscc-sci packages</li>
+<li>Added <code>byte_offsets</code> option to support UTF-8 byte positions in granular simprints</li>
+<li>Improved image transparency handling with more robust conversion logic</li>
+<li>Improved text sanitization</li>
+<li>Updated lock file dependencies</li>
+</ul>
 <h2 id="081-2025-04-09">0.8.1 - 2025-04-09<a class="headerlink" href="#081-2025-04-09" title="Permanent link">#</a></h2>
 <ul>
 <li>Added <code>text_keep</code> option to store extracted text on <code>IsccMeta.text</code> property</li>
-<li>Changed pdf text extraction to use pypdfium2 with reading order reconstruction</li>
+<li>Changed PDF text extraction to use pypdfium2 with reading order reconstruction</li>
+<li>Re-added pillow-avif-plugin (Pillow dropped bundling libavif)</li>
 </ul>
 <h2 id="080-2025-04-02">0.8.0 - 2025-04-02<a class="headerlink" href="#080-2025-04-02" title="Permanent link">#</a></h2>
 <ul>

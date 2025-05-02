@@ -22,7 +22,7 @@
       
       
       <link rel="icon" href="../images/iscc-logo-icon-black.svg">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.11">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.12">
     
     
       
@@ -30,7 +30,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.4af4bdda.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.2afb09e1.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
@@ -604,9 +604,27 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#iscc_sdk.main.code_text_semantic" class="md-nav__link">
+    <span class="md-ellipsis">
+      code_text_semantic
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#iscc_sdk.main.code_image" class="md-nav__link">
     <span class="md-ellipsis">
       code_image
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#iscc_sdk.main.code_image_semantic" class="md-nav__link">
+    <span class="md-ellipsis">
+      code_image_semantic
     </span>
   </a>
   
@@ -1146,6 +1164,21 @@ It automatically detects the media type and processes the file accordingly.</p>
                 <em>required</em>
             </td>
           </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>experimental</code>
+            </td>
+            <td>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Enable experimental semantic codes. Default: False</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
       </tbody>
     </table>
 
@@ -1566,6 +1599,82 @@ Can optionally extract metadata and create a thumbnail representation of the tex
 <div class="doc doc-object doc-function">
 
 
+<h3 id="iscc_sdk.main.code_text_semantic" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">code_text_semantic</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span></code>
+
+<a href="#iscc_sdk.main.code_text_semantic" class="headerlink" title="Permanent link">#</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Generate Semantic-Code Text. (Requires iscc-sct to be installed)</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>fp</code>
+            </td>
+            <td>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Filepath used for semantic Text-Code creation.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<p><span class="doc-section-title">Raises:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code>idk.EnvironmentError</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>If iscc-sct is not installed.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    </div>
+
+</div>
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
 <h3 id="iscc_sdk.main.code_image" class="doc doc-heading">
             <code class="highlight language-python"><span class="n">code_image</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span></code>
 
@@ -1669,6 +1778,82 @@ The image is normalized according to SDK options (transparency handling, border 
             <td>
               <div class="doc-md-description">
                 <p>ISCC metadata including Image-Code.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    </div>
+
+</div>
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="iscc_sdk.main.code_image_semantic" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">code_image_semantic</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span></code>
+
+<a href="#iscc_sdk.main.code_image_semantic" class="headerlink" title="Permanent link">#</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Generate Semantic-Code Image. (Requires iscc-sci to be installed)</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>fp</code>
+            </td>
+            <td>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Filepath used for semantic Image-Code creation.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<p><span class="doc-section-title">Raises:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code>idk.EnvironmentError</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>If iscc-sci is not installed.</p>
               </div>
             </td>
           </tr>
