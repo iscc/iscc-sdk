@@ -1,6 +1,6 @@
 ## Changelog
 
-## 0.8.2 - Unreleased
+## 0.8.2 - 2025-05-02
 
 - Added experimental semantic codes for text and image with optional iscc-sct and iscc-sci packages
 - Added `byte_offsets` option to support UTF-8 byte positions in granular simprints
