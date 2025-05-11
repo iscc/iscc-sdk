@@ -2,6 +2,8 @@
 
 ## 0.8.3 - Unreleased
 
+- Added `code_sum` function for efficient combined Data-Code and Instance-Code generation
+
 ## 0.8.2 - 2025-05-02
 
 - Added experimental semantic codes for text and image with optional iscc-sct and iscc-sci packages

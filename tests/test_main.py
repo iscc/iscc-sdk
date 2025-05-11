@@ -365,3 +365,25 @@ def test_mediatype_detection(epub_file):
     mediatype, mode = idk.mediatype_and_mode(epub_file)
     assert mediatype == "application/epub+zip"
     assert mode == "text"
+
+
+def test_code_sum_default(pdf_file):
+    result = idk.code_sum(pdf_file)
+    assert result.dict(exclude={"generator"}) == {
+        "iscc": "ISCC:KUAKBNHB6SKFNEVRPLK4PW7WUZJY6",
+        "datahash": "1e207ad5c7dbf6a6538f15fd0439e0dc5ba03a043ea23f072aa4e2ba830811bdb5f0",
+        "filesize": 188280,
+    }
+
+
+def test_code_sum_wide_units(pdf_file):
+    result = idk.code_sum(pdf_file, wide=True, add_units=True)
+    assert result.dict(exclude={"generator"}) == {
+        "iscc": "ISCC:K4AKBNHB6SKFNEVRSJWIEF2WYV7RE6WVY7N7NJSTR4K72BBZ4DOFXIA",
+        "datahash": "1e207ad5c7dbf6a6538f15fd0439e0dc5ba03a043ea23f072aa4e2ba830811bdb5f0",
+        "filesize": 188280,
+        "units": [
+            "ISCC:GAD2BNHB6SKFNEVRSJWIEF2WYV7RFUXUJQFVALZDWVF7OXQLMTS5XKA",
+            "ISCC:IADXVVOH3P3KMU4PCX6QIOPA3RN2AOQEH2RD6BZKUTRLVAYICG63L4A",
+        ],
+    }

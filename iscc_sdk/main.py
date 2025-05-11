@@ -22,6 +22,7 @@ __all__ = [
     "code_video",
     "code_data",
     "code_instance",
+    "code_sum",
 ]
 
 
@@ -498,6 +499,6 @@ def code_sum(fp, **options):
     )
 
     if opts.add_units:
-        result["units"] = [data_code, instance_code]
+        result["units"] = [f"ISCC:{data_code}", f"ISCC:{instance_code}"]
 
     return idk.IsccMeta.construct(**result)
