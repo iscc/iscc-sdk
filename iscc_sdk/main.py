@@ -73,18 +73,20 @@ def code_iscc(fp, **options):
     mime = idk.mediatype_guess(data, file_name=fp.name)
     iscc_meta["mediatype"] = mime
 
+    try:
+        mode = idk.mediatype_to_mode(mime)
+        log.debug(f"Processing {fp.name} - media type: {mime} - processing mode: {mode}")
+    except idk.IsccUnsupportedMediatype:
+        if not opts.fallback:
+            raise
+        mode = None
+        log.warning(f"Processing {fp.name} - media type: {mime} - processing mode: {mode}")
+
     with ThreadPoolExecutor() as executor:
         # Always process instance and data-codes first
         sum_future = executor.submit(code_sum, fp, **options)
-        try:
-            mode = idk.mediatype_to_mode(mime)
-            log.debug(f"Processing {fp.name} - media type: {mime} - processing mode: {mode}")
 
-        except idk.IsccUnsupportedMediatype:
-            if not opts.fallback:
-                raise
-            log.warning(f"Processing {fp.name} - media type: {mime} - processing mode: sum")
-        else:
+        if mode is not None:
             # Process content and meta for supported media types
             content_future = executor.submit(code_content, fp, **options)
             if opts.create_meta:
@@ -115,14 +117,13 @@ def code_iscc(fp, **options):
             if opts.create_meta:
                 iscc_meta.update(meta.dict())
 
-        finally:
-            # Wait for instance and data to complete
-            sum_result = sum_future.result()
-            if hasattr(sum_result, "units"):
-                iscc_units.extend(sum_result.units)
-            else:
-                iscc_units.extend(ic.iscc_decompose(sum_result.iscc))
-            iscc_meta.update(sum_result.dict())
+        # Wait for instance and data to complete
+        sum_result = sum_future.result()
+        if hasattr(sum_result, "units"):
+            iscc_units.extend(sum_result.units)
+        else:
+            iscc_units.extend(ic.iscc_decompose(sum_result.iscc))
+        iscc_meta.update(sum_result.dict())
 
     if opts.add_units:
         iscc_meta["units"] = iscc_units
