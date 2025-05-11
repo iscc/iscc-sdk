@@ -3,7 +3,8 @@
 ## 0.8.3 - Unreleased
 
 - Added `code_sum` function for efficient combined Data-Code and Instance-Code generation
-- Changed `code_iscc` to compute Data & Instance Code in one go and process data sequentially
+- Updated `code_iscc` & `code_meta` to accept custom metadata and optionally skip file metadata extraction
+- Updated `code_iscc` to compute Data & Instance Code in one go and process data sequentially
 - Added separate `code_iscc_mt` for multihreaded processing
 - Updated dependenciies
 

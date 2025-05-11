@@ -26,8 +26,8 @@ __all__ = [
 ]
 
 
-def code_iscc(fp, **options):
-    # type: (str|Path, Any) -> idk.IsccMeta
+def code_iscc(fp, name=None, description=None, meta=None, **options):
+    # type: (str | Path, str | None, str | None, str | dict | None, Any) -> idk.IsccMeta
     """
     Generate a complete ISCC-CODE for the given file.
 
@@ -39,9 +39,13 @@ def code_iscc(fp, **options):
       fallback mode instead of raising an exception.
 
     :param fp: Path object or str representing the filepath of the file to process.
+    :param name: Optional name to override extracted metadata.
+    :param description: Optional description to override extracted metadata.
+    :param meta: Optional metadata (Data-URL as sting or dict) to override extracted metadata.
+    :key extract_meta: Whether to extract metadata. Default: True
     :key fallback: Process unsupported media types. Default: False
     :key add_units: Include ISCC-UNITS in metadata. Default: False
-    :key create_meta: Create Meta-Code unit from embedded metadata. Default: True
+    :key create_meta: Create Meta-Code. Default: True
     :key wide: Enable wide mode for ISCC-SUM with Data & Instance codes only. Default: False
     :key experimental: Enable experimental semantic codes. Default: False
     :return: IsccMeta object with complete ISCC-CODE and merged metadata from all ISCC-UNITs.
@@ -105,7 +109,7 @@ def code_iscc(fp, **options):
             cs = code_text_semantic(fp, text, **options)
 
     # Generate Meta-Code
-    meta = code_meta(fp, **options) if opts.create_meta and mode else None
+    meta = code_meta(fp, name, description, meta, **options) if opts.create_meta and mode else None
 
     # Collect Metadata
     iscc_meta.update(iscc_sum.dict())
@@ -276,42 +280,57 @@ def code_iscc_mt(fp, **options):  # pragma: no cover
     return result
 
 
-def code_meta(fp, **options):
-    # type: (str|Path, Any) -> idk.IsccMeta
+def code_meta(fp, name=None, description=None, meta=None, **options):
+    # type: (str|Path, str|None, str|None, str|dict|None, Any) -> idk.IsccMeta
     """
-    Generate Meta-Code from digital asset.
+    Generate Meta-Code for digital asset.
 
     Creates an ISCC Meta-Code based on normalized metadata extracted from the file.
     If no name is found in metadata, the filename will be used instead.
 
     :param fp: Filepath used for Meta-Code creation.
+    :param name: Optional name to override extracted metadata.
+    :param description: Optional description to override extracted metadata.
+    :param meta: Optional metadata (Data-URL as sting or dict) to override extracted metadata.
+    :key extract_meta: Whether to extract metadata. Default: True
     :key bits: Bit-length of the generated Meta-Code UNIT. Default: 64
     :return: ISCC metadata including Meta-Code and extracted metadata fields.
     """
     fp = Path(fp)
     opts = idk.sdk_opts.override(options)
 
-    meta = idk.extract_metadata(fp).dict()
+    meta_dict = dict()
+
+    if opts.extract_meta:
+        meta_dict = idk.extract_metadata(fp).dict()
+
+    # Override with provided parameters if they exist
+    if name is not None:
+        meta_dict["name"] = name
+    if description is not None:
+        meta_dict["description"] = description
+    if meta is not None:
+        meta_dict["meta"] = meta
 
     # Pre-Check if we have a name after normalization, else use filename.
-    name = meta.get("name")
-    name = "" if name is None else name
-    name = ic.text_clean(name)
-    name = ic.text_remove_newlines(name)
-    name = ic.text_trim(name, ic.core_opts.meta_trim_name)
-    if not name:
-        meta["name"] = idk.text_name_from_uri(fp)
-        log.warning(f"Acquired Meta-Code `name` from filename: {meta['name']}")
+    name_val = meta_dict.get("name")
+    name_val = "" if name_val is None else name_val
+    name_val = ic.text_clean(name_val)
+    name_val = ic.text_remove_newlines(name_val)
+    name_val = ic.text_trim(name_val, ic.core_opts.meta_trim_name)
+    if not name_val:
+        meta_dict["name"] = idk.text_name_from_uri(fp)
+        log.warning(f"Acquired Meta-Code `name` from filename: {meta_dict['name']}")
 
     metacode = ic.gen_meta_code_v0(
-        name=meta.get("name"),
-        description=meta.get("description"),
-        meta=meta.get("meta"),
+        name=meta_dict.get("name"),
+        description=meta_dict.get("description"),
+        meta=meta_dict.get("meta"),
         bits=opts.bits,
     )
 
-    meta.update(metacode)
-    return idk.IsccMeta.construct(**meta)
+    meta_dict.update(metacode)
+    return idk.IsccMeta.construct(**meta_dict)
 
 
 def code_content(fp, **options):

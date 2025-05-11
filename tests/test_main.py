@@ -179,6 +179,39 @@ def test_code_meta_image_no_meta(bmp_file):
     }
 
 
+def test_code_meta_extract_meta_false(jpg_file):
+    """Test that when extract_meta=False, metadata extraction is skipped."""
+    result = idk.code_meta(jpg_file, extract_meta=False).dict()
+    # Only name from filename and generated iscc/metahash should be present
+    assert "creator" not in result
+    assert "width" not in result
+    assert "height" not in result
+    # When extract_meta=False, name is derived from filename
+    assert result["name"] == "img"
+    assert "iscc" in result
+    assert "metahash" in result
+
+
+def test_code_meta_override_params(jpg_file):
+    """Test that provided parameters override extracted metadata."""
+    custom_name = "Custom Name"
+    custom_desc = "Custom Description"
+    custom_meta = {"custom": "metadata"}
+
+    result = idk.code_meta(
+        jpg_file, name=custom_name, description=custom_desc, meta=custom_meta
+    ).dict()
+
+    assert result["name"] == custom_name
+    assert result["description"] == custom_desc
+    # The meta field is encoded, so just check that it exists
+    assert "meta" in result
+    # Original metadata should still be present
+    assert "creator" in result
+    assert "width" in result
+    assert "height" in result
+
+
 def test_code_content_with_image(jpg_file):
     assert idk.code_content(jpg_file).dict() == {
         "@type": "ImageObject",
