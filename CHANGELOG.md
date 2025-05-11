@@ -1,5 +1,7 @@
 ## Changelog
 
+## 0.8.3 - Unreleased
+
 ## 0.8.2 - 2025-05-02
 
 - Added experimental semantic codes for text and image with optional iscc-sct and iscc-sci packages
