@@ -453,7 +453,7 @@ def code_instance(fp, **options):
 
     :param fp: Filepath used for Instance-Code creation.
     :key bits: Bit-length of the generated Instance-Code UNIT. Default: 64
-    :return: ISCC metadata including Instance-Code, datahash and filesize.
+    :return: ISCC metadata including Instance-Code, datahash, and filesize.
     """
     fp = Path(fp)
     opts = idk.sdk_opts.override(options)
@@ -461,3 +461,43 @@ def code_instance(fp, **options):
         meta = ic.gen_instance_code_v0(stream, bits=opts.bits)
 
     return idk.IsccMeta.construct(**meta)
+
+
+def code_sum(fp, **options):
+    # type: (str|Path, Any) -> idk.IsccMeta
+    """
+    Create and ISCC-CODE with Data- and Instance-Code UNITs
+
+    Reads file data only once and creates both Data-Code and Instance-Code in one go.
+
+    :param fp: Filepath used for ISCC-CODE Sum creation.
+    :key wide: Whether to use wide or narrow ISCC-CODE (64-bit or 128-bit UNITs)
+    :return: ISCC metadata.
+    """
+    fp = Path(fp)
+    opts = idk.sdk_opts.override(options)
+
+    dh = ic.DataHasher()
+    ih = ic.InstanceHasher()
+
+    with open(fp, "rb") as stream:
+        data = stream.read(ic.core_opts.io_read_size)
+        while data:
+            dh.push(data)
+            ih.push(data)
+            data = stream.read(ic.core_opts.io_read_size)
+
+    data_code = dh.code(bits=256)
+    instance_code = ih.code(bits=256)
+    iscc_code = ic.gen_iscc_code_v0([data_code, instance_code], wide=opts.wide)["iscc"]
+
+    result = dict(
+        iscc=iscc_code,
+        datahash=ih.multihash(),
+        filesize=ih.filesize,
+    )
+
+    if opts.add_units:
+        result["units"] = [data_code, instance_code]
+
+    return idk.IsccMeta.construct(**result)

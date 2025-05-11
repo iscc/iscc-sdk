@@ -35,7 +35,7 @@ def test_code_text_semantic(doc_file):
 @pytest.mark.skipif(not sct_installed, reason="iscc-sct not installed")
 def test_code_iscc_with_semantic_text(doc_file, monkeypatch):
     monkeypatch.setattr(idk.sdk_opts, "experimental", True)
-    assert idk.code_iscc(doc_file).dict() == {
+    assert idk.code_iscc(doc_file).dict(exclude={"generator"}) == {
         "@type": "TextDigitalDocument",
         "iscc": "ISCC:KADV5NAQXBCHCWFW7PXEY76RBZT52BQETCAX3TX4N6BSAWE3WOCUAC2G2HV5MT2RKNYQ",
         "metahash": "1e201da548c5285ed35f293c3e22c2f050e037643aae8cf9244b532a162ff5031f52",
@@ -47,7 +47,6 @@ def test_code_iscc_with_semantic_text(doc_file, monkeypatch):
         "mediatype": "application/msword",
         "characters": 4951,
         "creator": "titusz",
-        "generator": "iscc-sdk - v0.8.2",
     }
 
 
@@ -63,7 +62,7 @@ def test_code_iscc_with_semantic_text_granular(doc_file, monkeypatch):
     monkeypatch.setattr(sct.sct_opts, "offsets", True)
     monkeypatch.setattr(sct.sct_opts, "sizes", True)
     monkeypatch.setattr(sct.sct_opts, "byte_offsets", True)
-    assert idk.code_iscc(doc_file).dict() == {
+    assert idk.code_iscc(doc_file).dict(exclude={"generator"}) == {
         "@type": "TextDigitalDocument",
         "iscc": "ISCC:KADV5NAQXBCHCWFW7PXEY76RBZT52BQETCAX3TX4N6BSAWE3WOCUAC2G2HV5MT2RKNYQ",
         "metahash": "1e201da548c5285ed35f293c3e22c2f050e037643aae8cf9244b532a162ff5031f52",
@@ -71,7 +70,6 @@ def test_code_iscc_with_semantic_text_granular(doc_file, monkeypatch):
         "name": "title from metadata",
         "filename": "text.doc",
         "filesize": 40448,
-        "generator": "iscc-sdk - v0.8.2",
         "mediatype": "application/msword",
         "mode": "text",
         "characters": 4951,
@@ -170,13 +168,12 @@ def test_code_iscc_with_semantic_text_granular(doc_file, monkeypatch):
 @pytest.mark.skipif(not sci_installed, reason="iscc-sci not installed")
 def test_code_iscc_with_semantic_image(png_file, monkeypatch):
     monkeypatch.setattr(idk.sdk_opts, "experimental", True)
-    assert idk.code_iscc(png_file).dict() == {
+    assert idk.code_iscc(png_file).dict(exclude={"generator"}) == {
         "@type": "ImageObject",
         "creator": "Another Cat Lover",
         "datahash": "1e20feb85f1709f51ebf31c2feab2092a61826da36cc79eddc4cb04800b47db146a6",
         "filename": "img.png",
         "filesize": 54595,
-        "generator": "iscc-sdk - v0.8.2",
         "height": 133,
         "iscc": "ISCC:KEDSR5352MR7TNV4BVNG6VVB7TGVZQ2DGCPDZHUOM55CG2YTPY75IZH6XBPROCPVD27Q",
         "mediatype": "image/png",

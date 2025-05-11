@@ -64,6 +64,7 @@ extractous = "*"
 bleach = "*"
 pdftext = "*"
 pikepdf = "*"
+click = "<=8.1.8"
 pillow-avif-plugin = "*"
 iscc-sci = {version = "*", optional = true}
 iscc-sct = {version = "*", optional = true}
