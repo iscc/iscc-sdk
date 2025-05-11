@@ -179,8 +179,7 @@ def image_meta_extract(fp):
                     continue
 
         # Add image dimensions
-        with Image.open(fp) as img:
-            mapped["width"], mapped["height"] = img.size
+        mapped["width"], mapped["height"] = img_exiv.pixelWidth(), img_exiv.pixelHeight()
 
         return mapped
 
