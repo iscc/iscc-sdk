@@ -3,7 +3,9 @@
 ## 0.8.3 - Unreleased
 
 - Added `code_sum` function for efficient combined Data-Code and Instance-Code generation
-- Changed `code_iscc` to compute Data & Instance Code in one go
+- Changed `code_iscc` to compute Data & Instance Code in one go and process data sequentially
+- Added separate `code_iscc_mt` for multihreaded processing
+- Updated dependenciies
 
 ## 0.8.2 - 2025-05-02
 
