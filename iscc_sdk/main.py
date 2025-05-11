@@ -74,9 +74,8 @@ def code_iscc(fp, **options):
     iscc_meta["mediatype"] = mime
 
     with ThreadPoolExecutor() as executor:
-        # Always process instance and data
-        instance_future = executor.submit(code_instance, fp, **options)
-        data_future = executor.submit(code_data, fp, **options)
+        # Always process instance and data-codes first
+        sum_future = executor.submit(code_sum, fp, **options)
         try:
             mode = idk.mediatype_to_mode(mime)
             log.debug(f"Processing {fp.name} - media type: {mime} - processing mode: {mode}")
@@ -118,11 +117,12 @@ def code_iscc(fp, **options):
 
         finally:
             # Wait for instance and data to complete
-            instance = instance_future.result()
-            data = data_future.result()
-            iscc_units.extend([data.iscc, instance.iscc])
-            iscc_meta.update(instance.dict())
-            iscc_meta.update(data.dict())
+            sum_result = sum_future.result()
+            if hasattr(sum_result, "units"):
+                iscc_units.extend(sum_result.units)
+            else:
+                iscc_units.extend(ic.iscc_decompose(sum_result.iscc))
+            iscc_meta.update(sum_result.dict())
 
     if opts.add_units:
         iscc_meta["units"] = iscc_units
@@ -488,8 +488,9 @@ def code_sum(fp, **options):
             ih.push(data)
             data = stream.read(ic.core_opts.io_read_size)
 
-    data_code = dh.code(bits=256)
-    instance_code = ih.code(bits=256)
+    bits = max(128 if opts.wide else opts.bits, opts.bits)
+    data_code = dh.code(bits=bits)
+    instance_code = ih.code(bits=bits)
     iscc_code = ic.gen_iscc_code_v0([data_code, instance_code], wide=opts.wide)["iscc"]
 
     result = dict(

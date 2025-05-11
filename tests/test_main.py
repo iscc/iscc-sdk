@@ -377,7 +377,7 @@ def test_code_sum_default(pdf_file):
 
 
 def test_code_sum_wide_units(pdf_file):
-    result = idk.code_sum(pdf_file, wide=True, add_units=True)
+    result = idk.code_sum(pdf_file, wide=True, add_units=True, bits=256)
     assert result.dict(exclude={"generator"}) == {
         "iscc": "ISCC:K4AKBNHB6SKFNEVRSJWIEF2WYV7RE6WVY7N7NJSTR4K72BBZ4DOFXIA",
         "datahash": "1e207ad5c7dbf6a6538f15fd0439e0dc5ba03a043ea23f072aa4e2ba830811bdb5f0",
