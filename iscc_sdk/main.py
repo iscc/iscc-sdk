@@ -224,8 +224,8 @@ def code_content(fp, **options):
     return cc
 
 
-def code_text(fp, **options):
-    # type: (str|Path, Any) -> idk.IsccMeta
+def code_text(fp, text=None, **options):
+    # type: (str|Path, str|None, Any) -> idk.IsccMeta
     """
     Generate Content-Code Text.
 
@@ -233,6 +233,7 @@ def code_text(fp, **options):
     Can optionally extract metadata and create a thumbnail representation of the text.
 
     :param fp: Filepath used for Text-Code creation.
+    :param text: Optional cleaned text. If provided, the function will skip text extraction.
     :key extract_meta: Whether to extract metadata. Default: True
     :key create_thumb: Whether to create a thumbnail. Default: True
     :key bits: Bit-length of the generated Text-Code UNIT. Default: 64
@@ -252,8 +253,10 @@ def code_text(fp, **options):
             thumbnail_durl = idk.image_to_data_url(thumbnail_img)
             meta["thumbnail"] = thumbnail_durl
 
-    text = idk.text_extract(fp)
-    text = ic.text_clean(text)
+    if text is None:
+        text = idk.text_extract(fp)
+        text = ic.text_clean(text)
+
     code = ic.gen_text_code_v0(text, bits=opts.bits)
     meta.update(code)
     if opts.granular:
@@ -264,11 +267,12 @@ def code_text(fp, **options):
     return idk.IsccMeta.construct(**meta)
 
 
-def code_text_semantic(fp, **options):  # pragma: no cover
+def code_text_semantic(fp, text=None, **options):  # pragma: no cover
     # type: (str|Path, Any) -> idk.IsccMeta
     """
     Generate Semantic-Code Text. (Requires iscc-sct to be installed)
     :param fp: Filepath used for semantic Text-Code creation.
+    :param text: Optional cleaned text. If provided, the function will skip text extraction.
     :raises idk.EnvironmentError: If iscc-sct is not installed.
     """
     if not idk.is_installed("iscc_sct"):
@@ -279,8 +283,11 @@ def code_text_semantic(fp, **options):  # pragma: no cover
 
     fp = Path(fp)
     opts = iscc_sct.sct_opts.override(options)
-    text = idk.text_extract(fp)
-    text = ic.text_clean(text)
+
+    if text is None:
+        text = idk.text_extract(fp)
+        text = ic.text_clean(text)
+
     result = iscc_sct.gen_text_code_semantic(text, **opts.model_dump())
     return idk.IsccMeta.construct(**result)
 
