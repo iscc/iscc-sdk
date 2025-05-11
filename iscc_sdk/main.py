@@ -31,6 +31,137 @@ def code_iscc(fp, **options):
     """
     Generate a complete ISCC-CODE for the given file.
 
+    Automatically detects the media type and processes the file accordingly.
+
+    Note:
+    - The behavior can be customized through the `sdk_opts` settings. For example, setting
+      `fallback` to True will allow processing of unsupported media types in a
+      fallback mode instead of raising an exception.
+
+    :param fp: Path object or str representing the filepath of the file to process.
+    :key fallback: Process unsupported media types. Default: False
+    :key add_units: Include ISCC-UNITS in metadata. Default: False
+    :key create_meta: Create Meta-Code unit from embedded metadata. Default: True
+    :key wide: Enable wide mode for ISCC-SUM with Data & Instance codes only. Default: False
+    :key experimental: Enable experimental semantic codes. Default: False
+    :return: IsccMeta object with complete ISCC-CODE and merged metadata from all ISCC-UNITs.
+    :raises idk.IsccUnsupportedMediatype:
+        If the media type is not supported. By default, the function will raise this exception for
+        unsupported media types, as sdk_opts.fallback is False by default.
+    """
+    fp = Path(fp)
+    opts = idk.sdk_opts.override(options)
+
+    # Initialize collectors
+    iscc_meta = dict(filename=fp.name)
+
+    with open(fp, "rb") as infile:
+        data = infile.read(4096)
+
+    mediatype = idk.mediatype_guess(data, file_name=fp.name)
+    iscc_meta["mediatype"] = mediatype
+
+    try:
+        mode = idk.mediatype_to_mode(mediatype)
+        log.debug(f"Processing {fp.name} - media type: {mediatype} - processing mode: {mode}")
+    except idk.IsccUnsupportedMediatype:
+        if not opts.fallback:
+            raise
+        mode = None
+        log.warning(f"Processing {fp.name} - media type: {mediatype} - processing mode: {mode}")
+
+    iscc_meta["mediatype"] = mediatype
+    if mode:
+        schema_org_map = {
+            "text": "TextDigitalDocument",
+            "image": "ImageObject",
+            "audio": "AudioObject",
+            "video": "VideoObject",
+        }
+        type_ = schema_org_map.get(mode)
+        if type_:
+            iscc_meta["@type"] = type_
+        iscc_meta["mode"] = mode
+
+    # Generate Data & Instance Codes
+    iscc_sum = code_sum(fp, **options)
+
+    # Generate Content & optional Semantic Codes
+    cc = None
+    cs = None
+    if mode == "image":
+        cc = code_image(fp, **options)
+        if idk.is_installed("iscc_sci") and opts.experimental:
+            cs = code_image_semantic(fp)
+    elif mode == "audio":
+        cc = code_audio(fp, **options)
+    elif mode == "video":
+        cc = code_video(fp, **options)
+    elif mode == "text":
+        text = idk.text_extract(fp)
+        text = ic.text_clean(text)
+        cc = code_text(fp, text, **options)
+        if idk.is_installed("iscc_sct") and opts.experimental:
+            cs = code_text_semantic(fp, text, **options)
+
+    # Generate Meta-Code
+    meta = code_meta(fp, **options) if opts.create_meta and mode else None
+
+    # Collect Metadata
+    iscc_meta.update(iscc_sum.dict())
+    if cs:
+        iscc_meta.update(cs.dict())
+    if cc:
+        iscc_meta.update(cc.dict())
+    if meta:
+        iscc_meta.update(meta.dict())
+
+    # Add ISCC-UNITS
+    iscc_units = []
+    if meta:
+        iscc_units.append(meta.iscc)
+    if cs:
+        iscc_units.append(cs.iscc)
+    if cc:
+        iscc_units.append(cc.iscc)
+
+    if hasattr(iscc_sum, "units"):
+        iscc_units.extend(iscc_sum.units)
+    else:
+        iscc_units.extend(ic.iscc_decompose(iscc_sum.iscc))
+
+    if opts.add_units:
+        iscc_meta["units"] = iscc_units
+
+    # Add granular features
+    if opts.granular:
+        features = []
+        if hasattr(cs, "features"):
+            features.append(cs.features[0])
+        if hasattr(cc, "features"):
+            features.append(cc.features[0])
+        iscc_meta["features"] = features
+
+    # Compose ISCC-CODE
+    iscc_code = ic.gen_iscc_code_v0(iscc_units, wide=opts.wide)
+    iscc_meta.update(iscc_code)
+    iscc_meta["generator"] = f"iscc-sdk - v{idk.__version__}"
+
+    result = idk.IsccMeta.construct(**iscc_meta)
+
+    if opts.process_container:
+        parts = idk.process_container(fp, **options)
+        if parts:
+            result.parts = parts
+
+    return result
+
+
+def code_iscc_mt(fp, **options):  # pragma: no cover
+    # type: (str|Path, Any) -> idk.IsccMeta
+    """
+    Generate a complete ISCC-CODE for the given file.
+
     This function creates a full ISCC-CODE by combining Meta, Content, Data, and Instance Codes.
     It automatically detects the media type and processes the file accordingly.
 
@@ -170,7 +301,7 @@ def code_meta(fp, **options):
     name = ic.text_trim(name, ic.core_opts.meta_trim_name)
     if not name:
         meta["name"] = idk.text_name_from_uri(fp)
-        log.debug(f"Acquired Meta-Code `name` from filename: {meta['name']}")
+        log.warning(f"Acquired Meta-Code `name` from filename: {meta['name']}")
 
     metacode = ic.gen_meta_code_v0(
         name=meta.get("name"),

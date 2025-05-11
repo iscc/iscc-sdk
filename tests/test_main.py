@@ -179,17 +179,56 @@ def test_code_meta_image_no_meta(bmp_file):
     }
 
 
-def test_code_content(jpg_file):
+def test_code_content_with_image(jpg_file):
     assert idk.code_content(jpg_file).dict() == {
         "@type": "ImageObject",
+        "iscc": "ISCC:EEA4GQZQTY6J5DTH",
+        "name": "Concentrated Cat",
         "creator": "Some Cat Lover",
         "height": 133,
-        "iscc": "ISCC:EEA4GQZQTY6J5DTH",
         "mediatype": "image/jpeg",
         "mode": "image",
-        "name": "Concentrated Cat",
         "thumbnail": "data:image/webp;base64,UklGRsoFAABXRUJQVlA4IL4FAADwIQCdASqAAFUAPxF2sFKsJyQnrVjKkYAiCWdq5lv09vPSNmmbj7iZk4N2TVzS3f28KvARwIDCCFvYB08Zj/OGDuXd6KbVZ1elL5+Thy+MASDkNoK3zhL9GbtOVulvlPZi02n55mWY9CqrpVB2wKfvipBFcBcC4Sg/5PoOp3eoPKOGSJH9HC5mdxEVBgI3Xb4UZBcKL4vaPglyyNsiyi2oQL6V8mqn4B45E4s7LciIC8MzbBI0PZPpw8pGu6fDYdxfBVryj3U7OLzuFgWbs0fyKFGyMlUFwI0LpOM3ZWQwQzvHD51lUxY/LTrpg4KugjrBaGL9iZQ31+p4BMvrPtIBTfdfqtJjlR3HdBxz5kR2DLWg+3sVrYIAAP73G07RB5tivGcYPEKMrM9JwYUPlKYGNDGfaHbgcX/2Pskovgagq4KXbe9za0j8khE+6veHlb0RAbLm6BCJNwz/vveUdZlnuOzoVmWWfOZd8Ie8y1XXzwi86aoQ04eUKBPxKdP9F0d1UVZRF/IgMtdRAWJyoesBmm8PP0E1f5LBVPvTdD2sgmUpyp+71BDzGxIVwCyYFaAWL0qbna5qyWKa6IBXSiD3JA4aOBOaJTN6/dJ4ipXCu1Vorx8oq1gfhZZoYMeRT5V+dNiseCFF8tKV4sywXdAQmQ8kDczrpLG4r7M1D1nMPFerm9eaJVUIPr8nW4kYYcuByz4W1xbH6AXgkoCdWeDyu+bx25+3/uFp3Iaj+WtU2WRZBwo0BcwOb2LrKeppY8pX8m75I+DWB+rVkr9vFpqddnR/y/pQSoQVtQ/V+ay0u3Pm+zH9otaUo9c9hLA9Ovh2O39BRB4Y1TzJl9/7AFanErXAGacEZ8FL609EWBBG80R93ngrpuodAAOM3tKd1Rx95Tzh33LJ9YyxVZPzCwEQoqvWrEo7PDmTVTPk3dMJRrkMtZKO51agOkic1/PCjlwYpHi7W46pEIe9zBvTBDaZmtWlG6rjNYGmjH0tuDM/5cpfUXCACEBsfHQ87HxUDbXCUmtp5dyq7CyzkReQ3TZ2PRmdd54AF2SDnb0j+gThNhKymJWBjhbjBgeiKC+OZArkHP5pB/mEezzI1WjlBXEPrcY2BZItNI2RpJNSLUQl1N1YeiG0Q3aOvXkIBOh9ABUOlwpyT6+dSxz9+nxN3SfVRNTp98VfJ7qnPuFABXSPkNQIo2ki6QvVKUpBxFf3l1TducABMqiWzynRl6Ezrq7uJMVhUO8kEww6oGjGgxYPsXKUb53DHE2+ZxEUMKhq09qW2N7G8lsdpYSjLDCJ1oYVzqopUBD9coQMEeWvtD/cYK4Ktb54gkKJa/t+2ItBXw6wFdoL38sverCYjBbYTh6hqL1RD9Op++Kphe77COHhZmxqk8o56QOeJLUnVQxN+NzJ81LbU/sw+1t5lfwlXZ5xOdjRV5Qv12UY2jMjlRNhpeO7AdIx3KKz2l1r+R2pfFk3OdY2Gp+/kmGncrOopGVZjCrldoW+6Y8tShnhKZN8+U43VZv2NdPIPcmEyHPtqE20dC0ZGpdNLdMXAySTLlHbCg07FmxbkBDJRxQLdLiY5wLBmLYplJjZTM8eVYqjQnkPts5chrj9SCizfwTC2TWqkCsUVrI/k2aQi8QcXfaulPqKLDy86JJYmk+bKOnio/z+cxXq3PvzISKGJFji8mtMoaZTi3Np0M5c2DE0a6XT3CKifk8J/uDHDicJmW3wRjvpynimvfeG527ysulnf/R4HtIbFeM4HrGNeI1PO8gJOc+W/lC0xgNDDABv6p9fVq0sXthbhuM9OXq/zdDf6e+TRtB5rFsCW1jUDq4+iiuzx1dSY7wOs9K7PiflWrD8HQamEqVUSlE3KCTuWoDbdtrX9fRdmj+IDIHoxU3Eppp+QWTuxIjyrtX9jAJ291BqVHal2uIWHrq+0eOdK6VkY3O8kJXEmExFcSYmqiJZwAA=",
         "width": 200,
+    }
+
+
+def test_code_content_with_audio(mp3_file):
+    assert idk.code_content(mp3_file).dict() == {
+        "@type": "AudioObject",
+        "iscc": "ISCC:EIAWUJFCEZZOJYVD",
+        "name": "Belly Button",
+        "mediatype": "audio/mpeg",
+        "mode": "audio",
+        "duration": 15.543,
+    }
+
+
+def test_code_content_with_video(mp4_file):
+    assert idk.code_content(mp4_file).dict() == {
+        "@type": "VideoObject",
+        "duration": 60.14,
+        "fps": 24.0,
+        "height": 144,
+        "iscc": "ISCC:EMAV4DUD6QORW4X4",
+        "language": "en",
+        "mediatype": "video/mp4",
+        "mode": "video",
+        "name": "Kali by Anokato - Spiral Sessions 2019",
+        "thumbnail": "data:image/webp;base64,UklGRtoDAABXRUJQVlA4IM4DAADwEgCdASqAAGkAPxGCtVUsKL+jJds7o/AiCUAZxC/zSVryP9F5Wd4MpYyh31Oop3Y1gW+FUMLF+LH50r/j5ektgrr1PhBZy2lHUxe8+j3fLIkk3vEgo4XeUcOHki+nHkQKHGj5abzYzMffF3kH7eD7WVSlP9sdBVmH36ki52xuj8Tk7TEMq1cJgUI72s4iUWvXE39Rx9IcYSWg4avx6FxgAP7zJTKAANvYY6Iw1uv7ee7/vvndS/7h+OCS0L1oJhmJLVuUfE0V9cJlj4uTf3yAlsbKN2mzv7sCNYAVC8Ttl/gV6o1g6EcCV1l7gSkInYzwpJ4ABnOFk6RcmbZF3DUwOtdwsDkuBgt3QIWsiGX0ZTNwmI7TUHrdLCUzJrLwt0FNQKEwY1KRt4C3BwSIFBVQvjLGpPyVk9pjvlkqOq7PqLbsffEJgg56cKlVkm8Zql5Gg+0kH99bXXXR35537NfxxOeWnf+82PPohNE4LngSygQEgXRyQ4E4GI94UZpn1N56npj/kI+XE5NOyP5gOHpxrYu/KoVT7tMJHvP4rOUku85WEhNrm7iyxPsk5dOMVKEd0QntCmXLob62Qxq635euCrZC9g5wrD0y/W9xCF4rqkNvPgdZn85cXFuolbCqIidgX2GS6HBzTRNQ9yhQ88o/IwEfc34bpx+c/onylwkEsEvqqLmUVO0sN7+nMHlZWhxwaV4rWervpFRDvbsXJz/o1XFFqkraQ5MPrD12P8mDsjDPiKlXExY7aa1NDNLfsZi/XbaBf9Ju0W2n0JVJGwJuoFzAhReTE4jHzbpeCo3/ZvC7/ISLeiPoN8F0KAXTLIy31YaAvPlB8+AYsSEvcMZJQL/7mxoCBetvf/eEcMPPpfWzabWJfCwXEtjVQBmahu2qlJZD5MdXAlA0NgNbeJwZYBtHM29vKBHHoVBE/liCWVaDmgFUdEk+jF6pPFPH5eVd22zxDEIqzRpN0Xzl/5HI656sCzWOb9T1uQN5kw21KOci1ulRYNBplfqlQFoUEiuSE26ub7ezJUM4R7dEzIW9RbM4Yweacq54M+nLnfhaD/R9yjqtIzvpZz8PFjVwPKbZzHX3PmraHLrKET/2IzadluRfJRSUnMInZpWTAUgyAoV7h1ULtK1PcivZKBoCz54G9XrroBgsNKn6N/QLdJWvwzC/RrSSTmXTw5gCJT7wD+ZxcwUAFrA7U+j1icfQj2w+pUIPHv+bmki4y7GxH6Y2HzeRVTnSQQS5JP2uwM8blPWX3WH5lqhngyLP46HTbAQH7o7KUzF6v8cyp+gAAA==",
+        "width": 176,
+    }
+
+
+def test_code_content_with_text(docx_file):
+    assert idk.code_content(docx_file).dict() == {
+        "@type": "TextDigitalDocument",
+        "characters": 4951,
+        "creator": "titusz",
+        "iscc": "ISCC:EAAQMBEYQF6457DP",
+        "mediatype": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        "mode": "text",
+        "name": "title from metadata",
     }
 
 
