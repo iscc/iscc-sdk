@@ -1,6 +1,6 @@
 ## Changelog
 
-## 0.8.3 - Unreleased
+## 0.8.3 - 2025-05-12
 
 - Added `code_sum` function for efficient combined Data-Code and Instance-Code generation
 - Updated `code_iscc` & `code_meta` to accept custom metadata and optionally skip file metadata extraction
