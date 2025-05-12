@@ -116,7 +116,7 @@ def code_iscc(fp, name=None, description=None, meta=None, **options):
     cs = None
     if mode == "image":
         cc = code_image(fp, **options)
-        if idk.is_installed("iscc_sci") and opts.experimental:
+        if idk.is_installed("iscc_sci") and opts.experimental:  # pragma: nocover
             cs = code_image_semantic(fp)
     elif mode == "audio":
         cc = code_audio(fp, **options)
@@ -126,7 +126,7 @@ def code_iscc(fp, name=None, description=None, meta=None, **options):
         text = idk.text_extract(fp)
         text = ic.text_clean(text)
         cc = code_text(fp, text, **options)
-        if idk.is_installed("iscc_sct") and opts.experimental:
+        if idk.is_installed("iscc_sct") and opts.experimental:  # pragma: nocover
             cs = code_text_semantic(fp, text)  # Don´t pass incopatible options here!
 
     # Generate Meta-Code
@@ -134,7 +134,7 @@ def code_iscc(fp, name=None, description=None, meta=None, **options):
 
     # Collect Metadata
     iscc_meta.update(iscc_sum.dict())
-    if cs:
+    if cs:  # pragma: nocover
         iscc_meta.update(cs.dict())
     if cc:
         iscc_meta.update(cc.dict())
@@ -145,7 +145,7 @@ def code_iscc(fp, name=None, description=None, meta=None, **options):
     iscc_units = []
     if meta:
         iscc_units.append(meta.iscc)
-    if cs:
+    if cs:  # pragma: nocover
         iscc_units.append(cs.iscc)
     if cc:
         iscc_units.append(cc.iscc)
@@ -161,7 +161,7 @@ def code_iscc(fp, name=None, description=None, meta=None, **options):
     # Add granular features
     if opts.granular:
         features = []
-        if hasattr(cs, "features") and cs.features:
+        if hasattr(cs, "features") and cs.features:  # pragma: nocover
             features.append(cs.features[0])
         if hasattr(cc, "features") and cc.features:
             features.append(cc.features[0])
@@ -451,15 +451,16 @@ def code_text_semantic(fp, text=None, **options):
         raise idk.EnvironmentError(
             "Semantic-Code Text requires `iscc-sct` package to be installed."
         )
-    import iscc_sct
+    else:  # pragma: nocover
+        import iscc_sct
 
-    fp = Path(fp)
-    if text is None:
-        text = idk.text_extract(fp)
-        text = ic.text_clean(text)
+        fp = Path(fp)
+        if text is None:
+            text = idk.text_extract(fp)
+            text = ic.text_clean(text)
 
-    result = iscc_sct.gen_text_code_semantic(text, **options)
-    return idk.IsccMeta.construct(**result)
+        result = iscc_sct.gen_text_code_semantic(text, **options)
+        return idk.IsccMeta.construct(**result)
 
 
 def code_image(fp, **options):
@@ -505,11 +506,12 @@ def code_image_semantic(fp, **options):
         raise idk.EnvironmentError(
             "Semantic-Code Image requires `iscc-sci` package to be installed."
         )
-    import iscc_sci
+    else:  # pragma: nocover
+        import iscc_sci
 
-    fp = Path(fp)
-    meta = iscc_sci.code_image_semantic(fp, **options)
-    return idk.IsccMeta.construct(**meta)
+        fp = Path(fp)
+        meta = iscc_sci.code_image_semantic(fp, **options)
+        return idk.IsccMeta.construct(**meta)
 
 
 def code_audio(fp, **options):

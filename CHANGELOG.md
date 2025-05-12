@@ -1,5 +1,8 @@
 ## Changelog
 
+## 0.8.6 - Unreleased
+
+
 ## 0.8.5 - 2025-05-12
 
 - Fixed TypeError with Semantic-Code image in granular processing mode.
