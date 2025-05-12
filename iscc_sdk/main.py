@@ -127,7 +127,7 @@ def code_iscc(fp, name=None, description=None, meta=None, **options):
         text = ic.text_clean(text)
         cc = code_text(fp, text, **options)
         if idk.is_installed("iscc_sct") and opts.experimental:
-            cs = code_text_semantic(fp, text, **options)
+            cs = code_text_semantic(fp, text)  # Don´t pass incopatible options here!
 
     # Generate Meta-Code
     meta = code_meta(fp, name, description, meta, **options) if opts.create_meta and mode else None
@@ -439,7 +439,7 @@ def code_text(fp, text=None, **options):
     return idk.IsccMeta.construct(**meta)
 
 
-def code_text_semantic(fp, text=None, **options):  # pragma: no cover
+def code_text_semantic(fp, text=None, **options):
     # type: (str|Path, Any) -> idk.IsccMeta
     """
     Generate Semantic-Code Text. (Requires iscc-sct to be installed)
@@ -454,13 +454,11 @@ def code_text_semantic(fp, text=None, **options):  # pragma: no cover
     import iscc_sct
 
     fp = Path(fp)
-    opts = iscc_sct.sct_opts.override(options)
-
     if text is None:
         text = idk.text_extract(fp)
         text = ic.text_clean(text)
 
-    result = iscc_sct.gen_text_code_semantic(text, **opts.model_dump())
+    result = iscc_sct.gen_text_code_semantic(text, **options)
     return idk.IsccMeta.construct(**result)
 
 
@@ -496,7 +494,7 @@ def code_image(fp, **options):
     return idk.IsccMeta.construct(**meta)
 
 
-def code_image_semantic(fp, **options):  # pragma: no cover
+def code_image_semantic(fp, **options):
     # type: (str|Path, Any) -> idk.IsccMeta
     """
     Generate Semantic-Code Image. (Requires iscc-sci to be installed)
@@ -510,8 +508,7 @@ def code_image_semantic(fp, **options):  # pragma: no cover
     import iscc_sci
 
     fp = Path(fp)
-    opts = iscc_sci.sci_opts.override(options)
-    meta = iscc_sci.code_image_semantic(fp, **opts.model_dump())
+    meta = iscc_sci.code_image_semantic(fp, **options)
     return idk.IsccMeta.construct(**meta)
 
 

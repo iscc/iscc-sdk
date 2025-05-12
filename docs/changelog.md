@@ -2,6 +2,8 @@
 
 ## 0.8.4 - Unreleased
 
+- Fixed issue with passing incompatible options to iscc-sct in experimental mode
+- Improved test coverage
 
 ## 0.8.3 - 2025-05-12
 
