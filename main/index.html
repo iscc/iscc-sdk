@@ -22,7 +22,7 @@
       
       
       <link rel="icon" href="../images/iscc-logo-icon-black.svg">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.12">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.13">
     
     
       
@@ -30,7 +30,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.2afb09e1.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.342714a4.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
@@ -666,6 +666,15 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#iscc_sdk.main.code_sum" class="md-nav__link">
+    <span class="md-ellipsis">
+      code_sum
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1053,7 +1062,7 @@
 
 
 <h3 id="iscc_sdk.main.code_iscc" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">code_iscc</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">code_iscc</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">meta</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span></code>
 
 <a href="#iscc_sdk.main.code_iscc" class="headerlink" title="Permanent link">#</a></h3>
 
@@ -1064,18 +1073,25 @@
 <p>This function creates a full ISCC-CODE by combining Meta, Content, Data, and Instance Codes.
 It automatically detects the media type and processes the file accordingly.</p>
 <p>The function performs the following steps:
-1. Reads the file and determines its MIME type.
-2. Generates Instance and Data Codes for all file types.
-3. For supported media types, generates Content and Meta Codes.
-4. Combines all generated codes into a single ISCC-CODE.
-5. Merges metadata from all ISCC units.</p>
-<p>Note:</p>
-<ul>
-<li>This function uses multithreading to improve performance.</li>
-<li>The behavior can be customized through the <code>sdk_opts</code> settings. For example, setting
+1. Reads the file and determines its media type.
+2. Generates Data &amp; Instance Codes for all file types using the <code>code_sum</code> function.
+3. For supported media types, generates Content Code and optional Semantic Code.
+4. If enabled, generates Meta-Code from embedded or provided metadata.
+5. Combines all generated code units into a single ISCC-CODE.
+6. Merges metadata from all ISCC units.</p>
+<p>ISCC-CODE is a composite identifier that consists of multiple ISCC-UNITs, each serving a
+specific purpose:
+- Meta-Code: Based on normalized metadata (title, description)
+- Semantic-Code: Based on semantic features (experimental, requires additional packages)
+- Content-Code: Based on the content features (text, image, audio, video)
+- Data-Code: Based on the raw binary data (similarity preserving hash)
+- Instance-Code: Based on the exact binary data (cryptographic hash)</p>
+<p>Note:
+- The behavior can be customized through the <code>sdk_opts</code> settings. For example, setting
   <code>fallback</code> to True will allow processing of unsupported media types in a
-  fallback mode instead of raising an exception.</li>
-</ul>
+  fallback mode instead of raising an exception.
+- For processing container files (like EPUB with embedded files), set <code>process_container</code>
+  to True to extract and process contained files.</p>
 
 
 <p><span class="doc-section-title">Parameters:</span></p>
@@ -1097,7 +1113,67 @@ It automatically detects the media type and processes the file accordingly.</p>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>str or Path object representing the filepath of the file to process.</p>
+                <p>Path object or str representing the filepath of the file to process.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>name</code>
+            </td>
+            <td>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Optional name to override extracted metadata.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>description</code>
+            </td>
+            <td>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Optional description to override extracted metadata.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>meta</code>
+            </td>
+            <td>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Optional metadata (dict or Data-URL as string) to override extracted metadata.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>extract_meta</code>
+            </td>
+            <td>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Whether to extract metadata. Default: True</p>
               </div>
             </td>
             <td>
@@ -1142,7 +1218,7 @@ It automatically detects the media type and processes the file accordingly.</p>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>Create Meta-Code unit from embedded metadata. Default: True</p>
+                <p>Create Meta-Code. Default: True</p>
               </div>
             </td>
             <td>
@@ -1173,6 +1249,36 @@ It automatically detects the media type and processes the file accordingly.</p>
             <td>
               <div class="doc-md-description">
                 <p>Enable experimental semantic codes. Default: False</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>process_container</code>
+            </td>
+            <td>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Process container files and extract contained files. Default: False</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>granular</code>
+            </td>
+            <td>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Generate additional granular fingerprints. Default: False</p>
               </div>
             </td>
             <td>
@@ -1237,18 +1343,22 @@ It automatically detects the media type and processes the file accordingly.</p>
 
 
 
+
+
+
+
 <div class="doc doc-object doc-function">
 
 
 <h3 id="iscc_sdk.main.code_meta" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">code_meta</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">code_meta</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">meta</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span></code>
 
 <a href="#iscc_sdk.main.code_meta" class="headerlink" title="Permanent link">#</a></h3>
 
 
     <div class="doc doc-contents ">
 
-        <p>Generate Meta-Code from digital asset.</p>
+        <p>Generate Meta-Code for digital asset.</p>
 <p>Creates an ISCC Meta-Code based on normalized metadata extracted from the file.
 If no name is found in metadata, the filename will be used instead.</p>
 
@@ -1273,6 +1383,66 @@ If no name is found in metadata, the filename will be used instead.</p>
             <td>
               <div class="doc-md-description">
                 <p>Filepath used for Meta-Code creation.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>name</code>
+            </td>
+            <td>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Optional name to override extracted metadata.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>description</code>
+            </td>
+            <td>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Optional description to override extracted metadata.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>meta</code>
+            </td>
+            <td>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Optional metadata (Data-URL as sting or dict) to override extracted metadata.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>extract_meta</code>
+            </td>
+            <td>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Whether to extract metadata. Default: True</p>
               </div>
             </td>
             <td>
@@ -1463,7 +1633,7 @@ appropriate specialized function (code_text, code_image, code_audio, or code_vid
 
 
 <h3 id="iscc_sdk.main.code_text" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">code_text</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">code_text</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span></code>
 
 <a href="#iscc_sdk.main.code_text" class="headerlink" title="Permanent link">#</a></h3>
 
@@ -1499,6 +1669,21 @@ Can optionally extract metadata and create a thumbnail representation of the tex
             </td>
             <td>
                 <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>text</code>
+            </td>
+            <td>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Optional cleaned text. If provided, the function will skip text extraction.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
             </td>
           </tr>
           <tr class="doc-section-item">
@@ -1600,7 +1785,7 @@ Can optionally extract metadata and create a thumbnail representation of the tex
 
 
 <h3 id="iscc_sdk.main.code_text_semantic" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">code_text_semantic</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">code_text_semantic</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span></code>
 
 <a href="#iscc_sdk.main.code_text_semantic" class="headerlink" title="Permanent link">#</a></h3>
 
@@ -1634,6 +1819,21 @@ Can optionally extract metadata and create a thumbnail representation of the tex
             </td>
             <td>
                 <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>text</code>
+            </td>
+            <td>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Optional cleaned text. If provided, the function will skip text extraction.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
             </td>
           </tr>
       </tbody>
@@ -2313,7 +2513,98 @@ checking, a full 256-bit multihash is provided with the <code>datahash</code> fi
             </td>
             <td>
               <div class="doc-md-description">
-                <p>ISCC metadata including Instance-Code, datahash and filesize.</p>
+                <p>ISCC metadata including Instance-Code, datahash, and filesize.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    </div>
+
+</div>
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="iscc_sdk.main.code_sum" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">code_sum</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span></code>
+
+<a href="#iscc_sdk.main.code_sum" class="headerlink" title="Permanent link">#</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Create and ISCC-CODE with Data- and Instance-Code UNITs</p>
+<p>Reads file data only once and creates both Data-Code and Instance-Code in one go.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>fp</code>
+            </td>
+            <td>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Filepath used for ISCC-CODE Sum creation.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>wide</code>
+            </td>
+            <td>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Whether to use wide or narrow ISCC-CODE (64-bit or 128-bit UNITs)</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>ISCC metadata.</p>
               </div>
             </td>
           </tr>
@@ -2387,10 +2678,10 @@ checking, a full 256-bit multihash is provided with the <code>datahash</code> fi
     
     
       
-      <script id="__config" type="application/json">{"base": "..", "features": ["toc.integrate", "navigation.indexes", "navigation.tracking", "navigation.tabs", "navigation.tabs.sticky", "navigation.expand"], "search": "../assets/javascripts/workers/search.f8cc74c7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"base": "..", "features": ["toc.integrate", "navigation.indexes", "navigation.tracking", "navigation.tabs", "navigation.tabs.sticky", "navigation.expand"], "search": "../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.c8b220af.min.js"></script>
+      <script src="../assets/javascripts/bundle.13a4f30d.min.js"></script>
       
     
   </body>
