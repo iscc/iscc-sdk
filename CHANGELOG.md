@@ -6,7 +6,7 @@
 - Updated `code_iscc` & `code_meta` to accept custom metadata and optionally skip file metadata extraction
 - Updated `code_iscc` to compute Data & Instance Code in one go and process data sequentially
 - Added separate `code_iscc_mt` for multihreaded processing
-- Updated dependenciies
+- Updated dependencies
 
 ## 0.8.2 - 2025-05-02
 

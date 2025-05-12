@@ -31,23 +31,44 @@ def code_iscc(fp, name=None, description=None, meta=None, **options):
     """
     Generate a complete ISCC-CODE for the given file.
 
-    Automatically detects the media type and processes the file accordingly.
+    This function creates a full ISCC-CODE by combining Meta, Content, Data, and Instance Codes.
+    It automatically detects the media type and processes the file accordingly.
+
+    The function performs the following steps:
+    1. Reads the file and determines its media type.
+    2. Generates Data & Instance Codes for all file types using the `code_sum` function.
+    3. For supported media types, generates Content Code and optional Semantic Code.
+    4. If enabled, generates Meta-Code from embedded or provided metadata.
+    5. Combines all generated code units into a single ISCC-CODE.
+    6. Merges metadata from all ISCC units.
+
+    ISCC-CODE is a composite identifier that consists of multiple ISCC-UNITs, each serving a
+    specific purpose:
+    - Meta-Code: Based on normalized metadata (title, description)
+    - Semantic-Code: Based on semantic features (experimental, requires additional packages)
+    - Content-Code: Based on the content features (text, image, audio, video)
+    - Data-Code: Based on the raw binary data (similarity preserving hash)
+    - Instance-Code: Based on the exact binary data (cryptographic hash)
 
     Note:
     - The behavior can be customized through the `sdk_opts` settings. For example, setting
       `fallback` to True will allow processing of unsupported media types in a
       fallback mode instead of raising an exception.
+    - For processing container files (like EPUB with embedded files), set `process_container`
+      to True to extract and process contained files.
 
     :param fp: Path object or str representing the filepath of the file to process.
     :param name: Optional name to override extracted metadata.
     :param description: Optional description to override extracted metadata.
-    :param meta: Optional metadata (Data-URL as sting or dict) to override extracted metadata.
+    :param meta: Optional metadata (dict or Data-URL as string) to override extracted metadata.
     :key extract_meta: Whether to extract metadata. Default: True
     :key fallback: Process unsupported media types. Default: False
     :key add_units: Include ISCC-UNITS in metadata. Default: False
     :key create_meta: Create Meta-Code. Default: True
     :key wide: Enable wide mode for ISCC-SUM with Data & Instance codes only. Default: False
     :key experimental: Enable experimental semantic codes. Default: False
+    :key process_container: Process container files and extract contained files. Default: False
+    :key granular: Generate additional granular fingerprints. Default: False
     :return: IsccMeta object with complete ISCC-CODE and merged metadata from all ISCC-UNITs.
     :raises idk.IsccUnsupportedMediatype:
         If the media type is not supported. By default, the function will raise this exception for
