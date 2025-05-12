@@ -204,3 +204,15 @@ def test_code_semantic_text_raises(pdf_file):
     with patch("iscc_sdk.is_installed", return_value=False):
         with pytest.raises(idk.EnvironmentError):
             idk.code_text_semantic(pdf_file)
+
+
+@pytest.mark.skipif(not sci_installed, reason="iscc-sci not installed")
+def test_code_iscc_experimental_granular(jpg_file, monkeypatch):
+    # Semantic-Code Image has no granular features unless we process with embedding=True
+    result = idk.code_iscc(jpg_file, experimental=True, granular=True)
+    assert not result.features
+    import iscc_sci
+
+    monkeypatch.setattr(iscc_sci.sci_opts, "embedding", True)
+    result = idk.code_iscc(jpg_file, experimental=True, granular=True)
+    assert len(result.features) == 1

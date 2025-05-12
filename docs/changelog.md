@@ -1,5 +1,9 @@
 ## Changelog
 
+## 0.8.5 - Unreleased
+
+- Fixed TypeError with Semantic-Code image in granular processing mode.
+
 ## 0.8.4 - 2025-05-12
 
 - Fixed issue with passing incompatible options to iscc-sct in experimental mode

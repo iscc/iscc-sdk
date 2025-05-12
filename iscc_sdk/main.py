@@ -161,9 +161,9 @@ def code_iscc(fp, name=None, description=None, meta=None, **options):
     # Add granular features
     if opts.granular:
         features = []
-        if hasattr(cs, "features"):
+        if hasattr(cs, "features") and cs.features:
             features.append(cs.features[0])
-        if hasattr(cc, "features"):
+        if hasattr(cc, "features") and cc.features:
             features.append(cc.features[0])
         iscc_meta["features"] = features
 
