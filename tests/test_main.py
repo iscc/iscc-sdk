@@ -101,6 +101,38 @@ def test_code_iscc_with_units_256_bits(jpg_file):
     }
 
 
+def test_code_iscc_with_units_128_bits(jpg_file):
+    import iscc_core as ic
+
+    result = idk.code_iscc(jpg_file, add_units=True, bits=128)
+    # Ensure we have the expected unit types including Meta and Content
+    assert "units" in result.dict()
+    units = result.units
+    assert len(units) == 4
+
+    # Decode units to check their types properly
+    # This test ensures that the code path for re-encoding units with different bit lengths
+    # is executed, particularly the branch at line 750 that keeps non-Data/Instance units as-is
+    for i, unit in enumerate(units):
+        unit_code = unit.replace("ISCC:", "")
+        maintype, subtype, version, length_idx, digest = ic.iscc_decode(unit_code)
+
+        if i == 0:
+            assert maintype == ic.MT.META
+        elif i == 1:
+            assert maintype == ic.MT.CONTENT
+        elif i == 2:
+            assert maintype == ic.MT.DATA
+        elif i == 3:
+            assert maintype == ic.MT.INSTANCE
+
+    # Verify the ISCC code itself remains the same
+    assert result.iscc == "ISCC:KECWRY3VY6R5SNV4YNBTBHR4T2HGP3HKVFO7TYUP2BKVFG724W63HVI"
+
+    # Verify we got units back
+    assert all(unit.startswith("ISCC:") for unit in units)
+
+
 def test_code_iscc_audio(mp3_file):
     assert idk.code_iscc(mp3_file).dict(exclude={"generator"}) == {
         "@type": "AudioObject",

@@ -9,3 +9,7 @@ coverage.xml
 
 .aider*
 .aider.conf.yml
+
+.claude
+CLAUDE.local.md
+.mcp.json
