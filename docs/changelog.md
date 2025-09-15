@@ -2,6 +2,11 @@
 
 ## 0.8.6 - Unreleased
 
+- Integrated iscc-sum library for optimized ISCC generation
+- Updated `code_sum`, `code_data`, and `code_instance` functions to use high-performance iscc-sum processors
+- Improved performance for Data-Code and Instance-Code generation while maintaining backward compatibility
+- Updated dependencies
+
 
 ## 0.8.5 - 2025-05-12
 
