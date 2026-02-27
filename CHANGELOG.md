@@ -5,6 +5,7 @@
 - Integrated iscc-sum library for optimized ISCC generation
 - Updated `code_sum`, `code_data`, and `code_instance` functions to use high-performance iscc-sum processors
 - Improved performance for Data-Code and Instance-Code generation while maintaining backward compatibility
+- Migrated from Poetry to uv for dependency management and build backend
 - Updated dependencies
 
 

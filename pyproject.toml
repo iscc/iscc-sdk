@@ -1,14 +1,19 @@
-[tool.poetry]
+[project]
 name = "iscc-sdk"
 version = "0.8.6"
 description = "SDK for creating ISCCs (International Standard Content Codes)"
-authors = ["Titusz <tp@py7.de>"]
-license = "Apache-2.0"
+authors = [{ name = "Titusz", email = "tp@py7.de" }]
+requires-python = ">=3.10,<3.14"
 readme = "README.md"
-homepage = "https://sdk.iscc.codes"
-repository = "https://github.com/iscc/iscc-sdk"
-keywords=["iscc", "identifier", "media", "content", "similarity"]
-classifiers=[
+license = "Apache-2.0"
+keywords = [
+    "iscc",
+    "identifier",
+    "media",
+    "content",
+    "similarity",
+]
+classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
     "Intended Audience :: Science/Research",
@@ -28,69 +33,82 @@ classifiers=[
     "Topic :: Scientific/Engineering :: Information Analysis",
     "Topic :: Software Development :: Libraries :: Python Modules",
     "Topic :: Text Processing :: Indexing",
+    "Programming Language :: Python :: 3",
+]
+dependencies = [
+    "cython",
+    "iscc-core",
+    "iscc-schema",
+    "python-magic-pure",
+    "platformdirs",
+    "jmespath",
+    "Pillow",
+    "pytaglib",
+    "numpy",
+    "pymupdf",
+    "ebookmeta",
+    "python-docx",
+    "typer",
+    "pillow-heif",
+    "langcodes",
+    "exiv2",
+    "extractous",
+    "bleach",
+    "pdftext",
+    "pikepdf",
+    "click<=8.1.8",
+    "pillow-avif-plugin",
+    "iscc-sum>=0.1.0,<0.2",
 ]
 
-[tool.poetry.urls]
-"Changelog" = "https://sdk.iscc.codes/changelog"
-"Coverage" = "https://app.codecov.io/gh/iscc/iscc-sdk"
+[project.optional-dependencies]
+sci = [
+    "iscc-sci",
+    "onnxruntime<1.22.0",
+]
+sct = [
+    "iscc-sct",
+    "onnxruntime<1.22.0",
+]
+
+[project.urls]
+Homepage = "https://sdk.iscc.codes"
+Repository = "https://github.com/iscc/iscc-sdk"
+Changelog = "https://sdk.iscc.codes/changelog"
+Coverage = "https://app.codecov.io/gh/iscc/iscc-sdk"
 "Bug Tracker" = "https://github.com/iscc/iscc-sdk/issues"
-"Twitter" = "https://twitter.com/iscc_foundation"
-"Donate" = "https://iscc.foundation/support"
+Twitter = "https://twitter.com/iscc_foundation"
+Donate = "https://iscc.foundation/support"
 
+[project.scripts]
+idk = "iscc_sdk.cli:app"
 
-[tool.poetry.scripts]
-idk = 'iscc_sdk.cli:app'
+[dependency-groups]
+dev = [
+    "pytest",
+    "mypy",
+    "ruff",
+    "coverage",
+    "pytest-cov",
+    "poethepoet",
+    "mkdocs-material",
+    "mkdocstrings[python]",
+    "iscc-samples",
+    "codetiming",
+    "mdformat",
+    "mdformat_admon",
+    "mdformat_tables",
+]
 
+[tool.uv]
+default-groups = "all"
 
-[tool.poetry.dependencies]
-python = ">=3.10,<3.14"
-cython = "*"
-iscc-core = "*"
-iscc-schema = "*"
-python-magic-pure = "*"
-platformdirs = "*"
-jmespath = "*"
-Pillow = "*"
-pytaglib = "*"
-numpy = "*"
-pymupdf = "*"
-ebookmeta = "*"
-python-docx = "*"
-typer = "*"
-pillow-heif = "*"
-langcodes = "*"
-exiv2 = "*"
-extractous = "*"
-bleach = "*"
-pdftext = "*"
-pikepdf = "*"
-click = "<=8.1.8"
-pillow-avif-plugin = "*"
-iscc-sci = {version = "*", optional = true}
-iscc-sct = {version = "*", optional = true}
-onnxruntime = {version = "<1.22.0", optional = true}
-iscc-sum = "^0.1.0"
+[build-system]
+requires = ["uv_build>=0.10.3,<0.11.0"]
+build-backend = "uv_build"
 
-
-[tool.poetry.extras]
-sci = ["iscc-sci", "onnxruntime"]
-sct = ["iscc-sct", "onnxruntime"]
-
-
-[tool.poetry.group.dev.dependencies]
-pytest = "*"
-mypy = "*"
-ruff = "*"
-coverage = "*"
-pytest-cov = "*"
-poethepoet = "*"
-mkdocs-material = "*"
-mkdocstrings = {extras = ["python"], version = "*"}
-iscc-samples = "*"
-codetiming = "*"
-mdformat = "*"
-mdformat_admon = "*"
-mdformat_tables = "*"
+[tool.uv.build-backend]
+module-root = ""
 
 [tool.ruff]
 line-length = 100
@@ -99,13 +117,9 @@ line-length = 100
 omit = ["iscc_sdk/install.py"]
 
 [tool.poe.tasks]
-build-docs = { cmd = "poetry run python -m devtools.build_docs", help = "Copy README.md to /docs" }
-format-code = { cmd = "poetry run ruff format", help = "Code style formating with ruff" }
-format-md = { cmd = "poetry run mdformat --wrap 100 README.md", help = "Markdown formating with mdformat" }
-lf = { cmd = "poetry run python -m devtools.lf", help = "Convert line endings to lf"}
-test = { cmd = "poetry run pytest --cov=iscc_sdk --cov-fail-under=100 -p no:warnings", help = "Run tests with coverage" }
+build-docs = { cmd = "uv run python -m devtools.build_docs", help = "Copy README.md to /docs" }
+format-code = { cmd = "uv run ruff format", help = "Code style formating with ruff" }
+format-md = { cmd = "uv run mdformat --wrap 100 README.md", help = "Markdown formating with mdformat" }
+lf = { cmd = "uv run python -m devtools.lf", help = "Convert line endings to lf"}
+test = { cmd = "uv run pytest --cov=iscc_sdk --cov-fail-under=100 -p no:warnings", help = "Run tests with coverage" }
 all = ["format-md", "build-docs", "lf", "format-code", "test"]
-
-[build-system]
-requires = ["poetry-core>=1.0.0", "Cython", "setuptools>=69.0.2", "wheel"]
-build-backend = "poetry.core.masonry.api"

@@ -80,10 +80,10 @@ workflows in Python applications.
 pip install iscc-sdk
 ```
 
-### Using Poetry
+### Using uv
 
 ```bash
-poetry add iscc-sdk
+uv add iscc-sdk
 ```
 
 ## Usage
@@ -182,9 +182,9 @@ Contributions are welcome! Here's how you can help:
 
 1. **Issues:** Report bugs or suggest features via the
    [issue tracker](https://github.com/iscc/iscc-sdk/issues)
-2. **Pull Requests:** Submit PRs for bug fixes or new features
-3. **Discussion:** For significant changes, please open an issue first to discuss your plans
-4. **Testing:** Please make sure to update tests as appropriate
+1. **Pull Requests:** Submit PRs for bug fixes or new features
+1. **Discussion:** For significant changes, please open an issue first to discuss your plans
+1. **Testing:** Please make sure to update tests as appropriate
 
 Join our developer chat on Telegram at [https://t.me/iscc_dev](https://t.me/iscc_dev).
 
