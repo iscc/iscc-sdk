@@ -20,7 +20,7 @@ try:
 except ImportError:  # pragma: no cover
     from pydantic import Field, validator, BaseSettings
 from PIL import Image
-import iscc_core
+import iscc_lib
 
 
 __all__ = [
@@ -180,4 +180,4 @@ class SdkOptions(BaseSettings):
 
 
 sdk_opts = SdkOptions()
-core_opts = iscc_core.core_opts
+core_opts = iscc_lib.core_opts

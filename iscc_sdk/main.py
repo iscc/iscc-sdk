@@ -6,7 +6,7 @@ from loguru import logger as log
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from PIL import Image
-import iscc_core as ic
+import iscc_lib as il
 import iscc_sum as isum
 import iscc_sdk as idk
 
@@ -125,7 +125,7 @@ def code_iscc(fp, name=None, description=None, meta=None, **options):
         cc = code_video(fp, **options)
     elif mode == "text":
         text = idk.text_extract(fp)
-        text = ic.text_clean(text)
+        text = il.text_clean(text)
         cc = code_text(fp, text, **options)
         if idk.is_installed("iscc_sct") and opts.experimental:  # pragma: nocover
             cs = code_text_semantic(fp, text)  # Don´t pass incopatible options here!
@@ -154,7 +154,7 @@ def code_iscc(fp, name=None, description=None, meta=None, **options):
     if hasattr(iscc_sum, "units"):
         iscc_units.extend(iscc_sum.units)
     else:
-        iscc_units.extend(ic.iscc_decompose(iscc_sum.iscc))
+        iscc_units.extend(il.iscc_decompose(iscc_sum.iscc))
 
     if opts.add_units:
         iscc_meta["units"] = iscc_units
@@ -169,7 +169,7 @@ def code_iscc(fp, name=None, description=None, meta=None, **options):
         iscc_meta["features"] = features
 
     # Compose ISCC-CODE
-    iscc_code = ic.gen_iscc_code_v0(iscc_units, wide=opts.wide)
+    iscc_code = il.gen_iscc_code_v0(iscc_units, wide=opts.wide)
     iscc_meta.update(iscc_code)
     iscc_meta["generator"] = f"iscc-sdk - v{idk.__version__}"
 
@@ -279,7 +279,7 @@ def code_iscc_mt(fp, **options):  # pragma: no cover
         if hasattr(sum_result, "units"):
             iscc_units.extend(sum_result.units)
         else:
-            iscc_units.extend(ic.iscc_decompose(sum_result.iscc))
+            iscc_units.extend(il.iscc_decompose(sum_result.iscc))
         iscc_meta.update(sum_result.dict())
 
     if opts.add_units:
@@ -288,7 +288,7 @@ def code_iscc_mt(fp, **options):  # pragma: no cover
         iscc_meta["features"] = iscc_features
 
     # Compose ISCC-CODE
-    iscc_code = ic.gen_iscc_code_v0(iscc_units, wide=opts.wide)
+    iscc_code = il.gen_iscc_code_v0(iscc_units, wide=opts.wide)
     iscc_meta.update(iscc_code)
     iscc_meta["generator"] = f"iscc-sdk - v{idk.__version__}"
 
@@ -337,14 +337,14 @@ def code_meta(fp, name=None, description=None, meta=None, **options):
     # Pre-Check if we have a name after normalization, else use filename.
     name_val = meta_dict.get("name")
     name_val = "" if name_val is None else name_val
-    name_val = ic.text_clean(name_val)
-    name_val = ic.text_remove_newlines(name_val)
-    name_val = ic.text_trim(name_val, ic.core_opts.meta_trim_name)
+    name_val = il.text_clean(name_val)
+    name_val = il.text_remove_newlines(name_val)
+    name_val = il.text_trim(name_val, il.core_opts.meta_trim_name)
     if not name_val:
         meta_dict["name"] = idk.text_name_from_uri(fp)
         log.warning(f"Acquired Meta-Code `name` from filename: {meta_dict['name']}")
 
-    metacode = ic.gen_meta_code_v0(
+    metacode = il.gen_meta_code_v0(
         name=meta_dict.get("name"),
         description=meta_dict.get("description"),
         meta=meta_dict.get("meta"),
@@ -428,9 +428,9 @@ def code_text(fp, text=None, **options):
 
     if text is None:
         text = idk.text_extract(fp)
-        text = ic.text_clean(text)
+        text = il.text_clean(text)
 
-    code = ic.gen_text_code_v0(text, bits=opts.bits)
+    code = il.gen_text_code_v0(text, bits=opts.bits)
     meta.update(code)
     if opts.granular:
         features = idk.text_features(text)
@@ -458,7 +458,7 @@ def code_text_semantic(fp, text=None, **options):
         fp = Path(fp)
         if text is None:
             text = idk.text_extract(fp)
-            text = ic.text_clean(text)
+            text = il.text_clean(text)
 
         result = iscc_sct.gen_text_code_semantic(text, **options)
         return idk.IsccMeta.construct(**result)
@@ -490,7 +490,7 @@ def code_image(fp, **options):
         meta["thumbnail"] = thumbnail_durl
 
     pixels = idk.image_normalize(Image.open(fp))
-    code_obj = ic.gen_image_code_v0(pixels, bits=opts.bits)
+    code_obj = il.gen_image_code_v0(pixels, bits=opts.bits)
     meta.update(code_obj)
 
     return idk.IsccMeta.construct(**meta)
@@ -542,7 +542,7 @@ def code_audio(fp, **options):
             meta["thumbnail"] = thumbnail_durl
 
     features = idk.audio_features_extract(fp)
-    code_obj = ic.gen_audio_code_v0(features["fingerprint"], bits=opts.bits)
+    code_obj = il.gen_audio_code_v0(features["fingerprint"], bits=opts.bits)
     meta.update(code_obj)
 
     return idk.IsccMeta.construct(**meta)
@@ -591,7 +591,7 @@ def code_video(fp, **options):
     frames = idk.read_mp7_signature(sig)
     features = [tuple(frame.vector.tolist()) for frame in frames]
 
-    code_obj = ic.gen_video_code_v0(features, bits=opts.bits)
+    code_obj = il.gen_video_code_v0(features, bits=opts.bits)
     meta.update(code_obj)
 
     if opts.granular:
@@ -620,18 +620,17 @@ def code_data(fp, **options):
     processor = isum.DataCodeProcessor()
 
     with open(fp, "rb") as stream:
-        data = stream.read(ic.core_opts.io_read_size)
+        data = stream.read(il.core_opts.io_read_size)
         while data:
             processor.update(data)
-            data = stream.read(ic.core_opts.io_read_size)
+            data = stream.read(il.core_opts.io_read_size)
 
     result = processor.result()
     bits = opts.bits
     digest = result["digest"]
 
-    # Generate the Data-Code using iscc_core's encoding
-    data_code = ic.encode_component(
-        mtype=ic.MT.DATA, stype=ic.ST.NONE, version=ic.VS.V0, bit_length=bits, digest=digest
+    data_code = il.encode_component(
+        mtype=il.MT.DATA, stype=il.ST.NONE, version=il.VS.V0, bit_length=bits, digest=digest
     )
 
     meta = {"iscc": f"ISCC:{data_code}"}
@@ -660,10 +659,10 @@ def code_instance(fp, **options):
     processor = isum.InstanceCodeProcessor()
 
     with open(fp, "rb") as stream:
-        data = stream.read(ic.core_opts.io_read_size)
+        data = stream.read(il.core_opts.io_read_size)
         while data:
             processor.update(data)
-            data = stream.read(ic.core_opts.io_read_size)
+            data = stream.read(il.core_opts.io_read_size)
 
     result = processor.result()
     bits = opts.bits
@@ -671,9 +670,8 @@ def code_instance(fp, **options):
     multihash = result["multihash"]
     filesize = result["filesize"]
 
-    # Generate the Instance-Code using iscc_core's encoding
-    instance_code = ic.encode_component(
-        mtype=ic.MT.INSTANCE, stype=ic.ST.NONE, version=ic.VS.V0, bit_length=bits, digest=digest
+    instance_code = il.encode_component(
+        mtype=il.MT.INSTANCE, stype=il.ST.NONE, version=il.VS.V0, bit_length=bits, digest=digest
     )
 
     meta = {"iscc": f"ISCC:{instance_code}", "datahash": multihash, "filesize": filesize}
@@ -718,30 +716,28 @@ def code_sum(fp, **options):
                 # Remove ISCC: prefix if present
                 unit_code = unit.replace("ISCC:", "")
                 # Decode the unit to get its components
-                maintype, subtype, version, length, digest_full = ic.iscc_decode(unit_code)
+                maintype, subtype, version, length, digest_full = il.iscc_decode(unit_code)
 
                 # Re-encode with the target bit-length
                 # iscc-sum only returns DATA and INSTANCE units
-                if maintype == ic.MT.DATA:
+                if maintype == il.MT.DATA:
                     # Truncate the digest to the target bit-length
                     digest_truncated = digest_full[: bits // 8]
-                    # Re-encode with the correct bit-length
-                    data_code = ic.encode_component(
-                        mtype=ic.MT.DATA,
-                        stype=ic.ST.NONE,
-                        version=ic.VS.V0,
+                    data_code = il.encode_component(
+                        mtype=il.MT.DATA,
+                        stype=il.ST.NONE,
+                        version=il.VS.V0,
                         bit_length=bits,
                         digest=digest_truncated,
                     )
                     units.append(f"ISCC:{data_code}")
-                else:  # maintype == ic.MT.INSTANCE
+                else:  # maintype == il.MT.INSTANCE
                     # Truncate the digest to the target bit-length
                     digest_truncated = digest_full[: bits // 8]
-                    # Re-encode with the correct bit-length
-                    instance_code = ic.encode_component(
-                        mtype=ic.MT.INSTANCE,
-                        stype=ic.ST.NONE,
-                        version=ic.VS.V0,
+                    instance_code = il.encode_component(
+                        mtype=il.MT.INSTANCE,
+                        stype=il.ST.NONE,
+                        version=il.VS.V0,
                         bit_length=bits,
                         digest=digest_truncated,
                     )

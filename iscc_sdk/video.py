@@ -15,7 +15,7 @@ from secrets import token_hex
 from PIL import Image, ImageEnhance
 import jmespath
 import iscc_sdk as idk
-import iscc_core as ic
+import iscc_lib as il
 
 
 __all__ = [
@@ -446,7 +446,7 @@ def video_compute_granular(frames, scenes):
             frame_t = tuple(frame.vector.tolist())
             segment.append(frame_t)
             if frame.elapsed >= cutpoint:
-                features.append(ic.encode_base64(ic.soft_hash_video_v0(segment, 256)))
+                features.append(il.encode_base64(il.soft_hash_video_v0(segment, 256)))
                 segment = []
                 prev_cutpoint = 0 if cidx == 0 else scenes[cidx - 1]
                 duration = round(cutpoint - prev_cutpoint, 3)
@@ -456,7 +456,7 @@ def video_compute_granular(frames, scenes):
     if not features:
         log.info("No scenes detected. Use all frames")
         segment = [tuple(frame.vector.tolist()) for frame in frames]
-        features = [ic.encode_base64(ic.soft_hash_video_v0(segment, bits=256))]
+        features = [il.encode_base64(il.soft_hash_video_v0(segment, bits=256))]
         sizes = [round(float(frames[-1].elapsed), 3)]
 
     return dict(maintype="content", subtype="video", version=0, simprints=features, sizes=sizes)

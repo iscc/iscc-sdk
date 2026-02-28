@@ -11,7 +11,7 @@ except ImportError:  # pragma: no cover
     from pydantic import validator
 
 import iscc_sdk as idk
-import iscc_core as ic
+import iscc_lib as il
 import iscc_schema as iss
 
 __all__ = [
@@ -75,8 +75,8 @@ class IsccMeta(iss.IsccMeta):
 
     @validator("name", pre=True)
     def trim_name(cls, v):
-        return ic.text_trim(v, idk.core_opts.meta_trim_name)
+        return il.text_trim(v, idk.core_opts.meta_trim_name)
 
     @validator("description", pre=True)
     def trim_description(cls, v):
-        return ic.text_trim(v, idk.core_opts.meta_trim_description)
+        return il.text_trim(v, idk.core_opts.meta_trim_description)

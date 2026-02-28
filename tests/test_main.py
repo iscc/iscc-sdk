@@ -102,7 +102,7 @@ def test_code_iscc_with_units_256_bits(jpg_file):
 
 
 def test_code_iscc_with_units_128_bits(jpg_file):
-    import iscc_core as ic
+    import iscc_lib as ic
 
     result = idk.code_iscc(jpg_file, add_units=True, bits=128)
     # Ensure we have the expected unit types including Meta and Content

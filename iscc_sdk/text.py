@@ -14,7 +14,7 @@ from PIL import Image
 import xxhash
 from loguru import logger as log
 import iscc_sdk as idk
-import iscc_core as ic
+import iscc_lib as il
 
 __all__ = [
     "text_meta_extract",
@@ -140,13 +140,13 @@ def text_features(text, **options):
         offsets.append(current_offset)
         ngrams = (
             "".join(chars)
-            for chars in ic.sliding_window(ic.text_collapse(chunk), idk.core_opts.text_ngram_size)
+            for chars in il.sliding_window(il.text_collapse(chunk), idk.core_opts.text_ngram_size)
         )
         features = [xxhash.xxh32_intdigest(s.encode("utf-8")) for s in ngrams]
-        minimum_hash_digest = ic.alg_minhash_256(features)
+        minimum_hash_digest = il.alg_minhash_256(features)
         chunk_len = len(chunk.encode("utf-8")) if opts.byte_offsets else len(chunk)
         sizes.append(chunk_len)
-        simprints.append(ic.encode_base64(minimum_hash_digest))
+        simprints.append(il.encode_base64(minimum_hash_digest))
         current_offset += chunk_len
     return dict(
         maintype="content",
@@ -170,7 +170,7 @@ def text_chunks(text, avg_size=idk.sdk_opts.text_avg_chunk_size):
     """
     data = text.encode("utf-32-be")
     avg_size_bytes = avg_size * 4  # 4 bytes per character in utf-32-be
-    for chunk_bytes in ic.alg_cdc_chunks(data, utf32=True, avg_chunk_size=avg_size_bytes):
+    for chunk_bytes in il.alg_cdc_chunks(data, utf32=True, avg_chunk_size=avg_size_bytes):
         yield chunk_bytes.decode("utf-32-be")
 
 

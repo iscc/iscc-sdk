@@ -4,7 +4,7 @@ from typing import Iterator, Optional, Tuple
 from loguru import logger as log
 import typer
 from pathlib import Path
-import iscc_core as ic
+import iscc_lib as il
 import iscc_sdk as idk
 from rich.console import Console
 from rich.progress import (
@@ -159,7 +159,7 @@ def install():
 @app.command()
 def selftest():
     """Run conformance tests."""
-    ic.conformance_selftest()
+    il.conformance_selftest()
 
 
 @app.command()
@@ -169,7 +169,7 @@ def extract(file: Path):
     if file.is_file() and file.exists():
         try:
             text = idk.text_extract(file.as_posix())
-            typer.echo(ic.text_clean(text))
+            typer.echo(il.text_clean(text))
         except Exception as e:
             typer.echo(f"Error extracting text: {e}")
             raise typer.Exit(code=1)

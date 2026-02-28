@@ -59,6 +59,7 @@ dependencies = [
     "click<=8.1.8",
     "pillow-avif-plugin",
     "iscc-sum>=0.1.0,<0.2",
+    "iscc-lib>=0.0.2",
 ]
 
 [project.optional-dependencies]
