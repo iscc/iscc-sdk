@@ -64,7 +64,7 @@ def image_normalize(img):
     im = img.resize((32, 32), idk.BICUBIC)
 
     # A flattened sequence of grayscale pixel values (1024 pixels)
-    pixels = im.getdata()
+    pixels = im.get_flattened_data() if hasattr(im, "get_flattened_data") else im.getdata()
 
     return pixels
 
@@ -298,7 +298,7 @@ def image_strip_metadata(img):
     :param img: PIL Image object to strip metadata from.
     :return: Image.Image
     """
-    data = list(img.getdata())
+    data = list(img.get_flattened_data() if hasattr(img, "get_flattened_data") else img.getdata())
     new_img = Image.new(img.mode, img.size)
     new_img.putdata(data)
     return new_img
