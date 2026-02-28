@@ -10,6 +10,7 @@
 - Added support for passing `dict` as metadata to `embed_metadata`
 - Fixed `code_iscc_mt` to accept `name`, `description`, and `meta` parameters like `code_iscc`
 - Migrated from Poetry to uv for dependency management and build backend
+- Updated CI GitHub Actions to latest versions
 - Updated dependencies
 
 
