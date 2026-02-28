@@ -183,10 +183,10 @@ def code_iscc(fp, name=None, description=None, meta=None, **options):
     return result
 
 
-def code_iscc_mt(fp, **options):  # pragma: no cover
-    # type: (str|Path, Any) -> idk.IsccMeta
+def code_iscc_mt(fp, name=None, description=None, meta=None, **options):  # pragma: no cover
+    # type: (str|Path, str|None, str|None, str|dict|None, Any) -> idk.IsccMeta
     """
-    Generate a complete ISCC-CODE for the given file.
+    Generate a complete ISCC-CODE for the given file using multithreading.
 
     This function creates a full ISCC-CODE by combining Meta, Content, Data, and Instance Codes.
     It automatically detects the media type and processes the file accordingly.
@@ -206,6 +206,9 @@ def code_iscc_mt(fp, **options):  # pragma: no cover
       fallback mode instead of raising an exception.
 
     :param fp: str or Path object representing the filepath of the file to process.
+    :param name: Optional name to override extracted metadata.
+    :param description: Optional description to override extracted metadata.
+    :param meta: Optional metadata (dict or Data-URL as string) to override extracted metadata.
     :key fallback: Process unsupported media types. Default: False
     :key add_units: Include ISCC-UNITS in metadata. Default: False
     :key create_meta: Create Meta-Code unit from embedded metadata. Default: True
@@ -247,7 +250,7 @@ def code_iscc_mt(fp, **options):  # pragma: no cover
             # Process content and meta for supported media types
             content_future = executor.submit(code_content, fp, **options)
             if opts.create_meta:
-                meta_future = executor.submit(code_meta, fp, **options)
+                meta_future = executor.submit(code_meta, fp, name, description, meta, **options)
                 meta = meta_future.result()
                 iscc_units.append(meta.iscc)
 
