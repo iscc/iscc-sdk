@@ -21,6 +21,18 @@ jobs:
       - name: Install Dependencies
         run: uv sync
 
+      - name: Cache binary tools
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.local/share/iscc-sdk
+            ~/Library/Application Support/iscc-sdk
+            ~/AppData/Local/iscc/iscc-sdk
+          key: iscc-tools-${{ runner.os }}-${{ hashFiles('iscc_sdk/tools.py') }}
+
+      - name: Install binary tools
+        run: uv run idk install
+
       - name: Run Tests
         run: uv run pytest --cov=iscc_sdk --cov-report=xml -v tests
 
