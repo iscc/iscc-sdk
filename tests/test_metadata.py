@@ -69,6 +69,33 @@ def test_metadata_identifier_field_image(jpg_file):
 #     }
 
 
+def test_embed_metadata_with_outpath(jpg_file, tmp_path):
+    meta = idk.IsccMeta(name="Some Title", description="Some Description")
+    outpath = tmp_path / "subdir" / "output.jpg"
+    new_file = idk.embed_metadata(jpg_file, meta, outpath=outpath)
+    assert new_file == str(outpath)
+    assert outpath.exists()
+    assert idk.extract_metadata(new_file).dict() == {
+        "name": "Some Title",
+        "description": "Some Description",
+        "creator": "Some Cat Lover",
+        "height": 133,
+        "width": 200,
+    }
+
+
+def test_embed_metadata_with_dict(jpg_file):
+    meta = {"name": "Dict Title", "description": "Dict Description"}
+    new_file = idk.embed_metadata(jpg_file, meta)
+    assert idk.extract_metadata(new_file).dict() == {
+        "name": "Dict Title",
+        "description": "Dict Description",
+        "creator": "Some Cat Lover",
+        "height": 133,
+        "width": 200,
+    }
+
+
 def test_embed_metadata_unsupported(doc_file):
     meta = idk.IsccMeta(name="Some Title", description="Some Description")
     new_file = idk.embed_metadata(doc_file, meta)

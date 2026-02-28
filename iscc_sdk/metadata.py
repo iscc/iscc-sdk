@@ -1,5 +1,7 @@
 """*Metadata handling functions*"""
 
+import shutil
+
 from loguru import logger as log
 from pathlib import Path
 from typing import Optional, List, Dict, Any
@@ -51,20 +53,28 @@ def extract_metadata(fp):
         return idk.IsccMeta.construct(**metadata)
 
 
-def embed_metadata(fp, meta):
-    # type: (str, iss.IsccMeta) -> Optional[str]
+def embed_metadata(fp, meta, outpath=None):
+    # type: (str, iss.IsccMeta|dict, Optional[str|Path]) -> Optional[str]
     """
     Embed metadata into a copy of the media file and return path to updated file.
 
     :param str fp: Filepath to source media file
-    :param IsccMeta meta: Metadata to embed into media file
+    :param meta: Metadata to embed (IsccMeta or dict)
+    :param outpath: Optional output filepath. If None, creates a temp file.
     :return: Filepath to the new media file with embedded metadata (None if no embedding supported)
     :rtype: str|None
     """
+    if isinstance(meta, dict):
+        meta = idk.IsccMeta.construct(**meta)
     mime, mode = idk.mediatype_and_mode(fp)
     embedder = EMBEDDERS.get(mode)
     if embedder:
         new_file_path = embedder(fp, meta)
+        if new_file_path and outpath:
+            outpath = Path(outpath)
+            outpath.parent.mkdir(parents=True, exist_ok=True)
+            shutil.move(str(new_file_path), str(outpath))
+            return str(outpath)
         return new_file_path
 
 
