@@ -6,6 +6,7 @@
 [![Quality](https://app.codacy.com/project/badge/Grade/aa791abf9d824f6aa65a8f86b9222c90)](https://www.codacy.com/gh/iscc/iscc-sdk/dashboard)
 [![Downloads](https://pepy.tech/badge/iscc-sdk)](https://pepy.tech/project/iscc-sdk)
 [![License](https://img.shields.io/github/license/iscc/iscc-sdk)](https://github.com/iscc/iscc-sdk/blob/main/LICENSE)
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/iscc/iscc-sdk)
 
 A comprehensive Python toolkit for creating and managing [ISCC](https://core.iscc.codes)
 (*International Standard Content Code*) identifiers for digital media assets.
