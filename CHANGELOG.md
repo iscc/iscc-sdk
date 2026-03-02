@@ -2,9 +2,9 @@
 
 ## 0.8.6 - Unreleased
 
-- Integrated iscc-sum library for optimized ISCC generation
-- Updated `code_sum`, `code_data`, and `code_instance` functions to use high-performance iscc-sum processors
-- Improved performance for Data-Code and Instance-Code generation while maintaining backward compatibility
+- Replaced iscc-sum with iscc-lib for Data/Instance/Sum code generation
+- Simplified `code_data`, `code_instance`, and `code_sum` using iscc-lib's optimized generators
+- Removed iscc-sum dependency
 - Migrated from iscc-core to iscc-lib for core ISCC algorithms
 - Added optional `outpath` parameter to `embed_metadata` for custom output file paths (closes #71)
 - Added support for passing `dict` as metadata to `embed_metadata`
