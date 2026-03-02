@@ -7,7 +7,6 @@ from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from PIL import Image
 import iscc_lib as il
-import iscc_sum as isum
 import iscc_sdk as idk
 
 
@@ -151,10 +150,10 @@ def code_iscc(fp, name=None, description=None, meta=None, **options):
     if cc:
         iscc_units.append(cc.iscc)
 
-    if hasattr(iscc_sum, "units"):
+    if hasattr(iscc_sum, "units") and iscc_sum.units:
         iscc_units.extend(iscc_sum.units)
     else:
-        iscc_units.extend(il.iscc_decompose(iscc_sum.iscc))
+        iscc_units.extend(f"ISCC:{u}" for u in il.iscc_decompose(iscc_sum.iscc))
 
     if opts.add_units:
         iscc_meta["units"] = iscc_units
@@ -243,7 +242,7 @@ def code_iscc_mt(fp, name=None, description=None, meta=None, **options):  # prag
         log.warning(f"Processing {fp.name} - media type: {mime} - processing mode: {mode}")
 
     with ThreadPoolExecutor() as executor:
-        # Always process instance and data-codes first using iscc-sum
+        # Always process instance and data-codes first
         sum_future = executor.submit(code_sum, fp, **options)
 
         if mode is not None:
@@ -279,10 +278,10 @@ def code_iscc_mt(fp, name=None, description=None, meta=None, **options):  # prag
 
         # Wait for instance and data to complete
         sum_result = sum_future.result()
-        if hasattr(sum_result, "units"):
+        if hasattr(sum_result, "units") and sum_result.units:
             iscc_units.extend(sum_result.units)
         else:
-            iscc_units.extend(il.iscc_decompose(sum_result.iscc))
+            iscc_units.extend(f"ISCC:{u}" for u in il.iscc_decompose(sum_result.iscc))
         iscc_meta.update(sum_result.dict())
 
     if opts.add_units:
@@ -619,26 +618,10 @@ def code_data(fp, **options):
     fp = Path(fp)
     opts = idk.sdk_opts.override(options)
 
-    # Use iscc-sum for optimized Data-Code generation
-    processor = isum.DataCodeProcessor()
-
     with open(fp, "rb") as stream:
-        data = stream.read(il.core_opts.io_read_size)
-        while data:
-            processor.update(data)
-            data = stream.read(il.core_opts.io_read_size)
+        result = il.gen_data_code_v0(stream, bits=opts.bits)
 
-    result = processor.result()
-    bits = opts.bits
-    digest = result["digest"]
-
-    data_code = il.encode_component(
-        mtype=il.MT.DATA, stype=il.ST.NONE, version=il.VS.V0, bit_length=bits, digest=digest
-    )
-
-    meta = {"iscc": f"ISCC:{data_code}"}
-
-    return idk.IsccMeta.construct(**meta)
+    return idk.IsccMeta.construct(**result)
 
 
 def code_instance(fp, **options):
@@ -658,96 +641,47 @@ def code_instance(fp, **options):
     fp = Path(fp)
     opts = idk.sdk_opts.override(options)
 
-    # Use iscc-sum for optimized Instance-Code generation
-    processor = isum.InstanceCodeProcessor()
-
     with open(fp, "rb") as stream:
-        data = stream.read(il.core_opts.io_read_size)
-        while data:
-            processor.update(data)
-            data = stream.read(il.core_opts.io_read_size)
+        result = il.gen_instance_code_v0(stream, bits=opts.bits)
 
-    result = processor.result()
-    bits = opts.bits
-    digest = result["digest"]
-    multihash = result["multihash"]
-    filesize = result["filesize"]
-
-    instance_code = il.encode_component(
-        mtype=il.MT.INSTANCE, stype=il.ST.NONE, version=il.VS.V0, bit_length=bits, digest=digest
-    )
-
-    meta = {"iscc": f"ISCC:{instance_code}", "datahash": multihash, "filesize": filesize}
-
-    return idk.IsccMeta.construct(**meta)
+    return idk.IsccMeta.construct(**result)
 
 
 def code_sum(fp, **options):
     # type: (str|Path, Any) -> idk.IsccMeta
     """
-    Create and ISCC-CODE with Data- and Instance-Code UNITs
-
-    Reads file data only once and creates both Data-Code and Instance-Code in one go.
+    Create an ISCC-CODE with Data- and Instance-Code UNITs in a single pass.
 
     :param fp: Filepath used for ISCC-CODE Sum creation.
+    :key bits: Bit-length for Data-Code body. Default: 64
     :key wide: Whether to use wide or narrow ISCC-CODE (64-bit or 128-bit UNITs)
+    :key add_units: Include individual ISCC-UNITs in result. Default: False
     :return: ISCC metadata.
     """
     fp = Path(fp)
     opts = idk.sdk_opts.override(options)
 
-    # Use iscc-sum for optimized ISCC-SUM generation
-    result = isum.code_iscc_sum(str(fp), wide=opts.wide, add_units=opts.add_units)
-
-    # Convert to IsccMeta format
-    meta = {
-        "iscc": result.iscc,
-        "datahash": result.datahash,
-        "filesize": result.filesize,
-    }
-
-    if opts.add_units and result.units:
-        # Determine the target bit-length for units
-        bits = max(128 if opts.wide else opts.bits, opts.bits)
-
-        # iscc-sum always returns 256-bit units when add_units=True
-        # We need to re-encode them if the target bit-length is not 256
-        if bits < 256:
-            # Re-encode the units with the correct bit-length
-            units = []
-            for unit in result.units:
-                # Remove ISCC: prefix if present
-                unit_code = unit.replace("ISCC:", "")
-                # Decode the unit to get its components
-                maintype, subtype, version, length, digest_full = il.iscc_decode(unit_code)
-
-                # Re-encode with the target bit-length
-                # iscc-sum only returns DATA and INSTANCE units
-                if maintype == il.MT.DATA:
-                    # Truncate the digest to the target bit-length
-                    digest_truncated = digest_full[: bits // 8]
-                    data_code = il.encode_component(
-                        mtype=il.MT.DATA,
-                        stype=il.ST.NONE,
-                        version=il.VS.V0,
-                        bit_length=bits,
-                        digest=digest_truncated,
-                    )
-                    units.append(f"ISCC:{data_code}")
-                else:  # maintype == il.MT.INSTANCE
-                    # Truncate the digest to the target bit-length
-                    digest_truncated = digest_full[: bits // 8]
-                    instance_code = il.encode_component(
-                        mtype=il.MT.INSTANCE,
-                        stype=il.ST.NONE,
-                        version=il.VS.V0,
-                        bit_length=bits,
-                        digest=digest_truncated,
-                    )
-                    units.append(f"ISCC:{instance_code}")
-            meta["units"] = units
-        else:
-            # Keep the wide units as-is
-            meta["units"] = result.units
+    if opts.add_units:
+        # TODO: Replace with single-pass gen_sum_code_v0 once it supports returning units
+        # See: https://github.com/iscc/iscc-lib/issues/21
+        with open(fp, "rb") as f:
+            dc = il.gen_data_code_v0(f, bits=opts.bits)
+        with open(fp, "rb") as f:
+            ic = il.gen_instance_code_v0(f, bits=opts.bits)
+        units = [dc["iscc"], ic["iscc"]]
+        iscc_code = il.gen_iscc_code_v0(units, wide=opts.wide)
+        meta = {
+            "iscc": iscc_code["iscc"],
+            "datahash": ic["datahash"],
+            "filesize": ic["filesize"],
+            "units": units,
+        }
+    else:
+        result = il.gen_sum_code_v0(fp, bits=opts.bits, wide=opts.wide)
+        meta = {
+            "iscc": result["iscc"],
+            "datahash": result["datahash"],
+            "filesize": result["filesize"],
+        }
 
     return idk.IsccMeta.construct(**meta)
