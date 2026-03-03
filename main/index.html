@@ -1290,122 +1290,25 @@ specific purpose:
           </tr>
           <tr class="doc-section-item">
             <td>
-                <code>extract_meta</code>
+                <code>options</code>
             </td>
             <td>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>Whether to extract metadata. Default: True</p>
+                <p>Keyword arguments forwarded to <code>sdk_opts</code>:
+<strong>extract_meta</strong> - Whether to extract metadata. Default: True;
+<strong>fallback</strong> - Process unsupported media types. Default: False;
+<strong>add_units</strong> - Include ISCC-UNITS in metadata. Default: False;
+<strong>create_meta</strong> - Create Meta-Code. Default: True;
+<strong>wide</strong> - Enable wide mode for ISCC-SUM with Data &amp; Instance codes only. Default: False;
+<strong>experimental</strong> - Enable experimental semantic codes. Default: False;
+<strong>process_container</strong> - Process container files and extract contained files. Default: False;
+<strong>granular</strong> - Generate additional granular fingerprints. Default: False</p>
               </div>
             </td>
             <td>
-                <em>required</em>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td>
-                <code>fallback</code>
-            </td>
-            <td>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Process unsupported media types. Default: False</p>
-              </div>
-            </td>
-            <td>
-                <em>required</em>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td>
-                <code>add_units</code>
-            </td>
-            <td>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Include ISCC-UNITS in metadata. Default: False</p>
-              </div>
-            </td>
-            <td>
-                <em>required</em>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td>
-                <code>create_meta</code>
-            </td>
-            <td>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Create Meta-Code. Default: True</p>
-              </div>
-            </td>
-            <td>
-                <em>required</em>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td>
-                <code>wide</code>
-            </td>
-            <td>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Enable wide mode for ISCC-SUM with Data &amp; Instance codes only. Default: False</p>
-              </div>
-            </td>
-            <td>
-                <em>required</em>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td>
-                <code>experimental</code>
-            </td>
-            <td>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Enable experimental semantic codes. Default: False</p>
-              </div>
-            </td>
-            <td>
-                <em>required</em>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td>
-                <code>process_container</code>
-            </td>
-            <td>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Process container files and extract contained files. Default: False</p>
-              </div>
-            </td>
-            <td>
-                <em>required</em>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td>
-                <code>granular</code>
-            </td>
-            <td>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Generate additional granular fingerprints. Default: False</p>
-              </div>
-            </td>
-            <td>
-                <em>required</em>
+                  <code>{}</code>
             </td>
           </tr>
       </tbody>
@@ -1569,77 +1472,22 @@ It automatically detects the media type and processes the file accordingly.</p>
           </tr>
           <tr class="doc-section-item">
             <td>
-                <code>fallback</code>
+                <code>options</code>
             </td>
             <td>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>Process unsupported media types. Default: False</p>
+                <p>Keyword arguments forwarded to <code>sdk_opts</code>:
+<strong>fallback</strong> - Process unsupported media types. Default: False;
+<strong>add_units</strong> - Include ISCC-UNITS in metadata. Default: False;
+<strong>create_meta</strong> - Create Meta-Code unit from embedded metadata. Default: True;
+<strong>wide</strong> - Enable wide mode for ISCC-SUM with Data &amp; Instance codes only. Default: False;
+<strong>experimental</strong> - Enable experimental semantic codes. Default: False</p>
               </div>
             </td>
             <td>
-                <em>required</em>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td>
-                <code>add_units</code>
-            </td>
-            <td>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Include ISCC-UNITS in metadata. Default: False</p>
-              </div>
-            </td>
-            <td>
-                <em>required</em>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td>
-                <code>create_meta</code>
-            </td>
-            <td>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Create Meta-Code unit from embedded metadata. Default: True</p>
-              </div>
-            </td>
-            <td>
-                <em>required</em>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td>
-                <code>wide</code>
-            </td>
-            <td>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Enable wide mode for ISCC-SUM with Data &amp; Instance codes only. Default: False</p>
-              </div>
-            </td>
-            <td>
-                <em>required</em>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td>
-                <code>experimental</code>
-            </td>
-            <td>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Enable experimental semantic codes. Default: False</p>
-              </div>
-            </td>
-            <td>
-                <em>required</em>
+                  <code>{}</code>
             </td>
           </tr>
       </tbody>
@@ -1781,7 +1629,7 @@ If no name is found in metadata, the filename will be used instead.</p>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>Optional metadata (Data-URL as sting or dict) to override extracted metadata.</p>
+                <p>Optional metadata (Data-URL as string or dict) to override extracted metadata.</p>
               </div>
             </td>
             <td>
@@ -1790,32 +1638,19 @@ If no name is found in metadata, the filename will be used instead.</p>
           </tr>
           <tr class="doc-section-item">
             <td>
-                <code>extract_meta</code>
+                <code>options</code>
             </td>
             <td>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>Whether to extract metadata. Default: True</p>
+                <p>Keyword arguments forwarded to <code>sdk_opts</code>:
+<strong>extract_meta</strong> - Whether to extract metadata. Default: True;
+<strong>bits</strong> - Bit-length of the generated Meta-Code UNIT. Default: 64</p>
               </div>
             </td>
             <td>
-                <em>required</em>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td>
-                <code>bits</code>
-            </td>
-            <td>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Bit-length of the generated Meta-Code UNIT. Default: 64</p>
-              </div>
-            </td>
-            <td>
-                <em>required</em>
+                  <code>{}</code>
             </td>
           </tr>
       </tbody>
@@ -1897,32 +1732,19 @@ appropriate specialized function (code_text, code_image, code_audio, or code_vid
           </tr>
           <tr class="doc-section-item">
             <td>
-                <code>extract_meta</code>
+                <code>options</code>
             </td>
             <td>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>Whether to extract metadata. Default: True</p>
+                <p>Keyword arguments forwarded to <code>sdk_opts</code>:
+<strong>extract_meta</strong> - Whether to extract metadata. Default: True;
+<strong>create_thumb</strong> - Whether to create a thumbnail. Default: True</p>
               </div>
             </td>
             <td>
-                <em>required</em>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td>
-                <code>create_thumb</code>
-            </td>
-            <td>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Whether to create a thumbnail. Default: True</p>
-              </div>
-            </td>
-            <td>
-                <em>required</em>
+                  <code>{}</code>
             </td>
           </tr>
       </tbody>
@@ -2042,62 +1864,21 @@ Can optionally extract metadata and create a thumbnail representation of the tex
           </tr>
           <tr class="doc-section-item">
             <td>
-                <code>extract_meta</code>
+                <code>options</code>
             </td>
             <td>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>Whether to extract metadata. Default: True</p>
+                <p>Keyword arguments forwarded to <code>sdk_opts</code>:
+<strong>extract_meta</strong> - Whether to extract metadata. Default: True;
+<strong>create_thumb</strong> - Whether to create a thumbnail. Default: True;
+<strong>bits</strong> - Bit-length of the generated Text-Code UNIT. Default: 64;
+<strong>granular</strong> - Whether to generate additional granular fingerprints. Default: False</p>
               </div>
             </td>
             <td>
-                <em>required</em>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td>
-                <code>create_thumb</code>
-            </td>
-            <td>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Whether to create a thumbnail. Default: True</p>
-              </div>
-            </td>
-            <td>
-                <em>required</em>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td>
-                <code>bits</code>
-            </td>
-            <td>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Bit-length of the generated Text-Code UNIT. Default: 64</p>
-              </div>
-            </td>
-            <td>
-                <em>required</em>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td>
-                <code>granular</code>
-            </td>
-            <td>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Whether to generate additional granular fingerprints. Default: False</p>
-              </div>
-            </td>
-            <td>
-                <em>required</em>
+                  <code>{}</code>
             </td>
           </tr>
       </tbody>
@@ -2270,47 +2051,20 @@ The image is normalized according to SDK options (transparency handling, border 
           </tr>
           <tr class="doc-section-item">
             <td>
-                <code>extract_meta</code>
+                <code>options</code>
             </td>
             <td>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>Whether to extract metadata. Default: True</p>
+                <p>Keyword arguments forwarded to <code>sdk_opts</code>:
+<strong>extract_meta</strong> - Whether to extract metadata. Default: True;
+<strong>create_thumb</strong> - Whether to create a thumbnail. Default: True;
+<strong>bits</strong> - Bit-length of the generated Image-Code UNIT. Default: 64</p>
               </div>
             </td>
             <td>
-                <em>required</em>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td>
-                <code>create_thumb</code>
-            </td>
-            <td>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Whether to create a thumbnail. Default: True</p>
-              </div>
-            </td>
-            <td>
-                <em>required</em>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td>
-                <code>bits</code>
-            </td>
-            <td>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Bit-length of the generated Image-Code UNIT. Default: 64</p>
-              </div>
-            </td>
-            <td>
-                <em>required</em>
+                  <code>{}</code>
             </td>
           </tr>
       </tbody>
@@ -2468,47 +2222,20 @@ Uses chromaprint/fpcalc to generate audio features for similarity matching.</p>
           </tr>
           <tr class="doc-section-item">
             <td>
-                <code>extract_meta</code>
+                <code>options</code>
             </td>
             <td>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>Whether to extract metadata. Default: True</p>
+                <p>Keyword arguments forwarded to <code>sdk_opts</code>:
+<strong>extract_meta</strong> - Whether to extract metadata. Default: True;
+<strong>create_thumb</strong> - Whether to create a thumbnail. Default: True;
+<strong>bits</strong> - Bit-length of the generated Audio-Code UNIT. Default: 64</p>
               </div>
             </td>
             <td>
-                <em>required</em>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td>
-                <code>create_thumb</code>
-            </td>
-            <td>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Whether to create a thumbnail. Default: True</p>
-              </div>
-            </td>
-            <td>
-                <em>required</em>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td>
-                <code>bits</code>
-            </td>
-            <td>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Bit-length of the generated Audio-Code UNIT. Default: 64</p>
-              </div>
-            </td>
-            <td>
-                <em>required</em>
+                  <code>{}</code>
             </td>
           </tr>
       </tbody>
@@ -2590,77 +2317,22 @@ Uses MPEG-7 signature tools to extract frame-based features and optionally detec
           </tr>
           <tr class="doc-section-item">
             <td>
-                <code>extract_meta</code>
+                <code>options</code>
             </td>
             <td>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>Whether to extract metadata. Default: True</p>
+                <p>Keyword arguments forwarded to <code>sdk_opts</code>:
+<strong>extract_meta</strong> - Whether to extract metadata. Default: True;
+<strong>create_thumb</strong> - Whether to create a thumbnail. Default: True;
+<strong>granular</strong> - Generate additional fingerprints based on scenes. Default: False;
+<strong>video_store_mp7sig</strong> - Whether to store extracted MP7 Video signature file. Default: False;
+<strong>bits</strong> - Bit-length of the generated Video-Code UNIT. Default: 64</p>
               </div>
             </td>
             <td>
-                <em>required</em>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td>
-                <code>create_thumb</code>
-            </td>
-            <td>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Whether to create a thumbnail. Default: True</p>
-              </div>
-            </td>
-            <td>
-                <em>required</em>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td>
-                <code>granular</code>
-            </td>
-            <td>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Generate additional fingerprints based on scenes. Default: False</p>
-              </div>
-            </td>
-            <td>
-                <em>required</em>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td>
-                <code>video_store_mp7sig</code>
-            </td>
-            <td>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Whether to store extracted MP7 Video signature file. Default: False</p>
-              </div>
-            </td>
-            <td>
-                <em>required</em>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td>
-                <code>bits</code>
-            </td>
-            <td>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Bit-length of the generated Video-Code UNIT. Default: 64</p>
-              </div>
-            </td>
-            <td>
-                <em>required</em>
+                  <code>{}</code>
             </td>
           </tr>
       </tbody>
@@ -2742,17 +2414,18 @@ detection of similar binary data regardless of file format or metadata differenc
           </tr>
           <tr class="doc-section-item">
             <td>
-                <code>bits</code>
+                <code>options</code>
             </td>
             <td>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>Bit-length of the generated Data-Code UNIT. Default: 64</p>
+                <p>Keyword arguments forwarded to <code>sdk_opts</code>:
+<strong>bits</strong> - Bit-length of the generated Data-Code UNIT. Default: 64</p>
               </div>
             </td>
             <td>
-                <em>required</em>
+                  <code>{}</code>
             </td>
           </tr>
       </tbody>
@@ -2836,17 +2509,18 @@ checking, a full 256-bit multihash is provided with the <code>datahash</code> fi
           </tr>
           <tr class="doc-section-item">
             <td>
-                <code>bits</code>
+                <code>options</code>
             </td>
             <td>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>Bit-length of the generated Instance-Code UNIT. Default: 64</p>
+                <p>Keyword arguments forwarded to <code>sdk_opts</code>:
+<strong>bits</strong> - Bit-length of the generated Instance-Code UNIT. Default: 64</p>
               </div>
             </td>
             <td>
-                <em>required</em>
+                  <code>{}</code>
             </td>
           </tr>
       </tbody>
@@ -2926,47 +2600,20 @@ checking, a full 256-bit multihash is provided with the <code>datahash</code> fi
           </tr>
           <tr class="doc-section-item">
             <td>
-                <code>bits</code>
+                <code>options</code>
             </td>
             <td>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>Bit-length for Data-Code body. Default: 64</p>
+                <p>Keyword arguments forwarded to <code>sdk_opts</code>:
+<strong>bits</strong> - Bit-length for Data-Code body. Default: 64;
+<strong>wide</strong> - Whether to use wide or narrow ISCC-CODE (64-bit or 128-bit UNITs);
+<strong>add_units</strong> - Include individual ISCC-UNITs in result. Default: False</p>
               </div>
             </td>
             <td>
-                <em>required</em>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td>
-                <code>wide</code>
-            </td>
-            <td>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Whether to use wide or narrow ISCC-CODE (64-bit or 128-bit UNITs)</p>
-              </div>
-            </td>
-            <td>
-                <em>required</em>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td>
-                <code>add_units</code>
-            </td>
-            <td>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Include individual ISCC-UNITs in result. Default: False</p>
-              </div>
-            </td>
-            <td>
-                <em>required</em>
+                  <code>{}</code>
             </td>
           </tr>
       </tbody>
