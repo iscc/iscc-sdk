@@ -1,5 +1,5 @@
 name: CI
-on: [push, pull_request]
+on: [push, pull_request, workflow_call]
 
 jobs:
   tests:
@@ -22,7 +22,7 @@ jobs:
         run: uv sync
 
       - name: Cache binary tools
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             ~/.local/share/iscc-sdk
@@ -47,6 +47,32 @@ jobs:
 
       - name: Run Semantic Code Tests
         run: uv run pytest --cov=iscc_sdk --cov-report=xml -v tests/test_semantic.py
+
+  smoke-test:
+    needs: tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+
+      - name: Build package
+        run: uv build
+
+      - name: Install wheel in clean venv
+        run: |
+          python -m venv .venv-smoke
+          .venv-smoke/bin/pip install dist/*.whl
+
+      - name: Verify import
+        run: .venv-smoke/bin/python -c "import iscc_sdk; print(iscc_sdk.__version__)"
+
+      - name: Run selftest
+        run: .venv-smoke/bin/idk selftest
 
   analyze:
     name: Analyze
