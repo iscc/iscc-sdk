@@ -45,6 +45,18 @@ jobs:
       - name: Install Optional Semantic Code Packages
         run: uv sync --all-extras
 
+      - name: Cache ONNX models
+        uses: actions/cache@v5
+        with:
+          path: |
+            ~/.local/share/iscc-sct
+            ~/.local/share/iscc-sci
+            ~/Library/Application Support/iscc-sct
+            ~/Library/Application Support/iscc-sci
+            ~/AppData/Local/iscc/iscc-sct
+            ~/AppData/Local/iscc/iscc-sci
+          key: iscc-models-${{ runner.os }}-${{ hashFiles('uv.lock') }}
+
       - name: Run Semantic Code Tests
         run: uv run pytest --cov=iscc_sdk --cov-report=xml -v tests/test_semantic.py
 
