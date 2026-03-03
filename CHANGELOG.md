@@ -11,6 +11,9 @@
 - Added support for passing `dict` as metadata to `embed_metadata`
 - Fixed `code_iscc_mt` to accept `name`, `description`, and `meta` parameters like `code_iscc`
 - Migrated from Poetry to uv for dependency management and build backend
+- Replaced IPFS binary tool with pure Python CIDv1 computation (no external dependency)
+- Fixed installer script referencing removed IPFS tool functions
+- Fixed memory usage in IPFS CID computation for large files (stream-hash per chunk)
 - Updated CI GitHub Actions to latest versions
 - Updated dependencies
 

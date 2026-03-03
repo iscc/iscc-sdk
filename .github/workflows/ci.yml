@@ -28,7 +28,6 @@ jobs:
             ~/.local/share/iscc-sdk
             ~/Library/Application Support/iscc-sdk
             ~/AppData/Local/iscc/iscc-sdk
-            ~/.ipfs
           key: iscc-tools-${{ runner.os }}-${{ hashFiles('iscc_sdk/tools.py') }}
 
       - name: Install binary tools
