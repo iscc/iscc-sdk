@@ -5,7 +5,6 @@ try:
     from pydantic.v1 import ValidationError
 except ImportError:
     from pydantic import ValidationError
-import iscc_core as ic
 import iscc_sdk as idk
 
 
@@ -48,5 +47,7 @@ def test_IsccMeta_jcs():
 
 
 def test_IsccMeta_iscc_obj():
+    """Test iscc_obj raises ImportError when iscc-core is not installed."""
     im = idk.IsccMeta(iscc="ISCC:MEAJU5AXCPOIOYFL")
-    assert isinstance(im.iscc_obj, ic.Code)
+    with pytest.raises(ImportError, match="iscc-core"):
+        im.iscc_obj

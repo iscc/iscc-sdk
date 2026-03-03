@@ -48,7 +48,7 @@ def test_timer_real_timing():
 
 
 def test_is_installed_true():
-    assert idk.is_installed("iscc_core") is True
+    assert idk.is_installed("iscc_schema") is True
 
 
 def test_is_installed_false():

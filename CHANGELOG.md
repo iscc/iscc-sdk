@@ -6,6 +6,7 @@
 - Simplified `code_data`, `code_instance`, and `code_sum` using iscc-lib's optimized generators
 - Removed iscc-sum dependency
 - Migrated from iscc-core to iscc-lib for core ISCC algorithms
+- Removed iscc-core from dependencies (blake3, loguru, bitarray, xxhash now explicit)
 - Added optional `outpath` parameter to `embed_metadata` for custom output file paths (closes #71)
 - Added support for passing `dict` as metadata to `embed_metadata`
 - Fixed `code_iscc_mt` to accept `name`, `description`, and `meta` parameters like `code_iscc`

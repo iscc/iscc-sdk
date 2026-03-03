@@ -2,14 +2,16 @@
 
 ## 0.8.6 - Unreleased
 
-- Integrated iscc-sum library for optimized ISCC generation
-- Updated `code_sum`, `code_data`, and `code_instance` functions to use high-performance iscc-sum processors
-- Improved performance for Data-Code and Instance-Code generation while maintaining backward compatibility
+- Replaced iscc-sum with iscc-lib for Data/Instance/Sum code generation
+- Simplified `code_data`, `code_instance`, and `code_sum` using iscc-lib's optimized generators
+- Removed iscc-sum dependency
 - Migrated from iscc-core to iscc-lib for core ISCC algorithms
+- Removed iscc-core from dependencies (blake3, loguru, bitarray, xxhash now explicit)
 - Added optional `outpath` parameter to `embed_metadata` for custom output file paths (closes #71)
 - Added support for passing `dict` as metadata to `embed_metadata`
 - Fixed `code_iscc_mt` to accept `name`, `description`, and `meta` parameters like `code_iscc`
 - Migrated from Poetry to uv for dependency management and build backend
+- Updated CI GitHub Actions to latest versions
 - Updated dependencies
 
 

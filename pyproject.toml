@@ -37,7 +37,10 @@ classifiers = [
 ]
 dependencies = [
     "cython",
-    "iscc-core",
+    "blake3",
+    "loguru",
+    "bitarray",
+    "xxhash",
     "iscc-schema",
     "python-magic-pure",
     "platformdirs",
