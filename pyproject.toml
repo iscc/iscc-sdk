@@ -20,7 +20,6 @@ classifiers = [
     "License :: OSI Approved :: Apache Software License",
     "Natural Language :: English",
     "Operating System :: OS Independent",
-    "Programming Language :: Cython",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
@@ -36,7 +35,6 @@ classifiers = [
     "Programming Language :: Python :: 3",
 ]
 dependencies = [
-    "cython",
     "blake3",
     "loguru",
     "bitarray",
@@ -58,7 +56,6 @@ dependencies = [
     "extractous",
     "bleach",
     "pdftext",
-    "pikepdf",
     "click<=8.1.8",
     "pillow-avif-plugin",
     "iscc-lib>=0.1.0",
