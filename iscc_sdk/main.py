@@ -661,27 +661,13 @@ def code_sum(fp, **options):
     fp = Path(fp)
     opts = idk.sdk_opts.override(options)
 
-    if opts.add_units:
-        # TODO: Replace with single-pass gen_sum_code_v0 once it supports returning units
-        # See: https://github.com/iscc/iscc-lib/issues/21
-        with open(fp, "rb") as f:
-            dc = il.gen_data_code_v0(f, bits=opts.bits)
-        with open(fp, "rb") as f:
-            ic = il.gen_instance_code_v0(f, bits=opts.bits)
-        units = [dc["iscc"], ic["iscc"]]
-        iscc_code = il.gen_iscc_code_v0(units, wide=opts.wide)
-        meta = {
-            "iscc": iscc_code["iscc"],
-            "datahash": ic["datahash"],
-            "filesize": ic["filesize"],
-            "units": units,
-        }
-    else:
-        result = il.gen_sum_code_v0(fp, bits=opts.bits, wide=opts.wide)
-        meta = {
-            "iscc": result["iscc"],
-            "datahash": result["datahash"],
-            "filesize": result["filesize"],
-        }
+    result = il.gen_sum_code_v0(fp, bits=opts.bits, wide=opts.wide, add_units=opts.add_units)
+    meta = {
+        "iscc": result["iscc"],
+        "datahash": result["datahash"],
+        "filesize": result["filesize"],
+    }
+    if result.get("units"):
+        meta["units"] = result["units"]
 
     return idk.IsccMeta.construct(**meta)
