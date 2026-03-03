@@ -178,7 +178,7 @@ def mediatype_to_mode(mime_type):
     """Get perceptual processing mode from mimetype.
 
     :param mime_type: RFC-6838 mediatype string
-    :return Processing mode ("text", "image", "audio", "video")
+    :return: Processing mode ("text", "image", "audio", "video")
     :raise IsccUnsupportedMediatype: if no matching processing mode was found.
     """
 

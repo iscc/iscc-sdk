@@ -128,7 +128,8 @@ def text_features(text, **options):
     Text should be normalized and cleaned before extracting text features.
 
     :param text: Normalized and cleaned plaintext.
-    :key byte_offsets: Calculate offsets and sizes in UTF-8 bytes instead of chars. Default: False
+    :param options: Keyword arguments forwarded to ``sdk_opts``:
+        **byte_offsets** - Calculate offsets and sizes in UTF-8 bytes instead of chars. Default: False
     :returns dict: Dictionary with 'sizes', 'features', 'offsets', and 'contents'.
     """
     opts = idk.sdk_opts.override(options)

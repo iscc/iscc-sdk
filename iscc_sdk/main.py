@@ -61,14 +61,15 @@ def code_iscc(fp, name=None, description=None, meta=None, **options):
     :param name: Optional name to override extracted metadata.
     :param description: Optional description to override extracted metadata.
     :param meta: Optional metadata (dict or Data-URL as string) to override extracted metadata.
-    :key extract_meta: Whether to extract metadata. Default: True
-    :key fallback: Process unsupported media types. Default: False
-    :key add_units: Include ISCC-UNITS in metadata. Default: False
-    :key create_meta: Create Meta-Code. Default: True
-    :key wide: Enable wide mode for ISCC-SUM with Data & Instance codes only. Default: False
-    :key experimental: Enable experimental semantic codes. Default: False
-    :key process_container: Process container files and extract contained files. Default: False
-    :key granular: Generate additional granular fingerprints. Default: False
+    :param options: Keyword arguments forwarded to ``sdk_opts``:
+        **extract_meta** - Whether to extract metadata. Default: True;
+        **fallback** - Process unsupported media types. Default: False;
+        **add_units** - Include ISCC-UNITS in metadata. Default: False;
+        **create_meta** - Create Meta-Code. Default: True;
+        **wide** - Enable wide mode for ISCC-SUM with Data & Instance codes only. Default: False;
+        **experimental** - Enable experimental semantic codes. Default: False;
+        **process_container** - Process container files and extract contained files. Default: False;
+        **granular** - Generate additional granular fingerprints. Default: False
     :return: IsccMeta object with complete ISCC-CODE and merged metadata from all ISCC-UNITs.
     :raises idk.IsccUnsupportedMediatype:
         If the media type is not supported. By default, the function will raise this exception for
@@ -208,11 +209,12 @@ def code_iscc_mt(fp, name=None, description=None, meta=None, **options):  # prag
     :param name: Optional name to override extracted metadata.
     :param description: Optional description to override extracted metadata.
     :param meta: Optional metadata (dict or Data-URL as string) to override extracted metadata.
-    :key fallback: Process unsupported media types. Default: False
-    :key add_units: Include ISCC-UNITS in metadata. Default: False
-    :key create_meta: Create Meta-Code unit from embedded metadata. Default: True
-    :key wide: Enable wide mode for ISCC-SUM with Data & Instance codes only. Default: False
-    :key experimental: Enable experimental semantic codes. Default: False
+    :param options: Keyword arguments forwarded to ``sdk_opts``:
+        **fallback** - Process unsupported media types. Default: False;
+        **add_units** - Include ISCC-UNITS in metadata. Default: False;
+        **create_meta** - Create Meta-Code unit from embedded metadata. Default: True;
+        **wide** - Enable wide mode for ISCC-SUM with Data & Instance codes only. Default: False;
+        **experimental** - Enable experimental semantic codes. Default: False
     :return: IsccMeta object with complete ISCC-CODE and merged metadata from all ISCC-UNITs.
     :raises idk.IsccUnsupportedMediatype:
         If the media type is not supported. By default, the function will raise this exception for
@@ -315,9 +317,10 @@ def code_meta(fp, name=None, description=None, meta=None, **options):
     :param fp: Filepath used for Meta-Code creation.
     :param name: Optional name to override extracted metadata.
     :param description: Optional description to override extracted metadata.
-    :param meta: Optional metadata (Data-URL as sting or dict) to override extracted metadata.
-    :key extract_meta: Whether to extract metadata. Default: True
-    :key bits: Bit-length of the generated Meta-Code UNIT. Default: 64
+    :param meta: Optional metadata (Data-URL as string or dict) to override extracted metadata.
+    :param options: Keyword arguments forwarded to ``sdk_opts``:
+        **extract_meta** - Whether to extract metadata. Default: True;
+        **bits** - Bit-length of the generated Meta-Code UNIT. Default: 64
     :return: ISCC metadata including Meta-Code and extracted metadata fields.
     """
     fp = Path(fp)
@@ -366,8 +369,9 @@ def code_content(fp, **options):
     appropriate specialized function (code_text, code_image, code_audio, or code_video).
 
     :param fp: Filepath
-    :key extract_meta: Whether to extract metadata. Default: True
-    :key create_thumb: Whether to create a thumbnail. Default: True
+    :param options: Keyword arguments forwarded to ``sdk_opts``:
+        **extract_meta** - Whether to extract metadata. Default: True;
+        **create_thumb** - Whether to create a thumbnail. Default: True
     :return: Content-Code wrapped in ISCC metadata.
     :raises idk.IsccUnsupportedMediatype: If the media type is not supported.
     """
@@ -409,10 +413,11 @@ def code_text(fp, text=None, **options):
 
     :param fp: Filepath used for Text-Code creation.
     :param text: Optional cleaned text. If provided, the function will skip text extraction.
-    :key extract_meta: Whether to extract metadata. Default: True
-    :key create_thumb: Whether to create a thumbnail. Default: True
-    :key bits: Bit-length of the generated Text-Code UNIT. Default: 64
-    :key granular: Whether to generate additional granular fingerprints. Default: False
+    :param options: Keyword arguments forwarded to ``sdk_opts``:
+        **extract_meta** - Whether to extract metadata. Default: True;
+        **create_thumb** - Whether to create a thumbnail. Default: True;
+        **bits** - Bit-length of the generated Text-Code UNIT. Default: 64;
+        **granular** - Whether to generate additional granular fingerprints. Default: False
     :return: ISCC metadata including Text-Code.
     """
     fp = Path(fp)
@@ -475,9 +480,10 @@ def code_image(fp, **options):
     The image is normalized according to SDK options (transparency handling, border trimming, ...).
 
     :param fp: Filepath used for Image-Code creation.
-    :key extract_meta: Whether to extract metadata. Default: True
-    :key create_thumb: Whether to create a thumbnail. Default: True
-    :key bits: Bit-length of the generated Image-Code UNIT. Default: 64
+    :param options: Keyword arguments forwarded to ``sdk_opts``:
+        **extract_meta** - Whether to extract metadata. Default: True;
+        **create_thumb** - Whether to create a thumbnail. Default: True;
+        **bits** - Bit-length of the generated Image-Code UNIT. Default: 64
     :return: ISCC metadata including Image-Code.
     """
     fp = Path(fp)
@@ -526,9 +532,10 @@ def code_audio(fp, **options):
     Uses chromaprint/fpcalc to generate audio features for similarity matching.
 
     :param fp: Filepath used for Audio-Code creation.
-    :key extract_meta: Whether to extract metadata. Default: True
-    :key create_thumb: Whether to create a thumbnail. Default: True
-    :key bits: Bit-length of the generated Audio-Code UNIT. Default: 64
+    :param options: Keyword arguments forwarded to ``sdk_opts``:
+        **extract_meta** - Whether to extract metadata. Default: True;
+        **create_thumb** - Whether to create a thumbnail. Default: True;
+        **bits** - Bit-length of the generated Audio-Code UNIT. Default: 64
     :return: ISCC metadata including Audio-Code.
     """
     fp = Path(fp)
@@ -559,11 +566,12 @@ def code_video(fp, **options):
     Uses MPEG-7 signature tools to extract frame-based features and optionally detect scene changes.
 
     :param fp: Filepath used for Video-Code creation.
-    :key extract_meta: Whether to extract metadata. Default: True
-    :key create_thumb: Whether to create a thumbnail. Default: True
-    :key granular: Generate additional fingerprints based on scenes. Default: False
-    :key video_store_mp7sig: Whether to store extracted MP7 Video signature file. Default: False
-    :key bits: Bit-length of the generated Video-Code UNIT. Default: 64
+    :param options: Keyword arguments forwarded to ``sdk_opts``:
+        **extract_meta** - Whether to extract metadata. Default: True;
+        **create_thumb** - Whether to create a thumbnail. Default: True;
+        **granular** - Generate additional fingerprints based on scenes. Default: False;
+        **video_store_mp7sig** - Whether to store extracted MP7 Video signature file. Default: False;
+        **bits** - Bit-length of the generated Video-Code UNIT. Default: 64
     :return: ISCC metadata including Video-Code.
     """
     fp = Path(fp)
@@ -612,7 +620,8 @@ def code_data(fp, **options):
     detection of similar binary data regardless of file format or metadata differences.
 
     :param fp: Filepath used for Data-Code creation.
-    :key bits: Bit-length of the generated Data-Code UNIT. Default: 64
+    :param options: Keyword arguments forwarded to ``sdk_opts``:
+        **bits** - Bit-length of the generated Data-Code UNIT. Default: 64
     :return: ISCC metadata including Data-Code.
     """
     fp = Path(fp)
@@ -635,7 +644,8 @@ def code_instance(fp, **options):
     checking, a full 256-bit multihash is provided with the `datahash` field.
 
     :param fp: Filepath used for Instance-Code creation.
-    :key bits: Bit-length of the generated Instance-Code UNIT. Default: 64
+    :param options: Keyword arguments forwarded to ``sdk_opts``:
+        **bits** - Bit-length of the generated Instance-Code UNIT. Default: 64
     :return: ISCC metadata including Instance-Code, datahash, and filesize.
     """
     fp = Path(fp)
@@ -653,9 +663,10 @@ def code_sum(fp, **options):
     Create an ISCC-CODE with Data- and Instance-Code UNITs in a single pass.
 
     :param fp: Filepath used for ISCC-CODE Sum creation.
-    :key bits: Bit-length for Data-Code body. Default: 64
-    :key wide: Whether to use wide or narrow ISCC-CODE (64-bit or 128-bit UNITs)
-    :key add_units: Include individual ISCC-UNITs in result. Default: False
+    :param options: Keyword arguments forwarded to ``sdk_opts``:
+        **bits** - Bit-length for Data-Code body. Default: 64;
+        **wide** - Whether to use wide or narrow ISCC-CODE (64-bit or 128-bit UNITs);
+        **add_units** - Include individual ISCC-UNITs in result. Default: False
     :return: ISCC metadata.
     """
     fp = Path(fp)

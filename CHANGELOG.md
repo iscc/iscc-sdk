@@ -1,6 +1,6 @@
 ## Changelog
 
-## 0.8.6 - Unreleased
+## 0.8.6 - 2026-03-03
 
 - Replaced iscc-sum with iscc-lib for Data/Instance/Sum code generation
 - Simplified `code_data`, `code_instance`, and `code_sum` using iscc-lib's optimized generators
