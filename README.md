@@ -137,30 +137,30 @@ new_file = idk.embed_metadata("/path/to/mediafile.jpg", custom_meta)
 
 ### Command Line Interface
 
-The SDK includes a command-line interface called `idk`.
+The SDK includes a command-line interface called `iscc-sdk`.
 
 #### Create an ISCC code for a single file:
 
 ```shell
-idk create /path/to/mediafile.jpg
+iscc-sdk create /path/to/mediafile.jpg
 ```
 
 #### Process multiple files in a directory:
 
 ```shell
-idk batch /folder_with_media_files
+iscc-sdk batch /folder_with_media_files
 ```
 
 #### Install required binaries:
 
 ```shell
-idk install
+iscc-sdk install
 ```
 
 #### Run self-tests:
 
 ```shell
-idk selftest
+iscc-sdk selftest
 ```
 
 ## Documentation

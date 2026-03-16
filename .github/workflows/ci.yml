@@ -31,7 +31,7 @@ jobs:
           key: iscc-tools-${{ runner.os }}-${{ hashFiles('iscc_sdk/tools.py') }}
 
       - name: Install binary tools
-        run: uv run idk install
+        run: uv run iscc-sdk install
 
       - name: Run Tests
         run: uv run pytest --cov=iscc_sdk --cov-report=xml -v tests

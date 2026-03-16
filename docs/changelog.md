@@ -1,6 +1,13 @@
 ## Changelog
 
-## 0.8.6 - Unreleased
+## 0.8.7 - unreleased
+
+- Replaced pdftext with pdf-oxide for PDF text extraction (~150x faster)
+- Renamed CLI command from `idk` to `iscc-sdk`
+- Fixed CLI tests for Typer 0.24.x (error messages moved to stderr, exit code changes)
+- Updated dependencies
+
+## 0.8.6 - 2026-03-03
 
 - Replaced iscc-sum with iscc-lib for Data/Instance/Sum code generation
 - Simplified `code_data`, `code_instance`, and `code_sum` using iscc-lib's optimized generators

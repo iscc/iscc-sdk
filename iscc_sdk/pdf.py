@@ -7,7 +7,7 @@ from pathlib import Path
 from PIL import Image, ImageEnhance
 import fitz
 import iscc_sdk as idk
-from pdftext.extraction import plain_text_output
+from pdf_oxide import PdfDocument
 
 
 __all__ = [
@@ -19,9 +19,13 @@ __all__ = [
 
 def pdf_text_extract(fp):
     # type: (str|Path) -> str
-    """Extract PDF text with pypdfium2 + reading order recunstruction and hyphen removal"""
+    """Extract PDF text with reading order reconstruction via XY-Cut algorithm."""
     fp = Path(fp)
-    return plain_text_output(fp.as_posix(), sort=True, hyphens=False)
+    return PdfDocument(str(fp)).to_plain_text_all(
+        preserve_layout=True,
+        detect_headings=True,
+        include_images=False,
+    )
 
 
 def pdf_thumbnail(fp):

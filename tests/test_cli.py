@@ -33,14 +33,14 @@ def test_process_file_error():
 
 def test_cli_no_arg():
     result = runner.invoke(app)
-    assert result.exit_code == 0
+    assert result.exit_code == 2
     assert "Usage" in result.stdout
 
 
 def test_cli_create_no_arg():
     result = runner.invoke(app, ["create"])
     assert result.exit_code == 2
-    assert "Missing argument 'FILE'" in result.stdout
+    assert "Missing argument 'FILE'" in result.stderr
 
 
 def test_cli_create_not_file():
@@ -80,7 +80,7 @@ def test_cli_create_unsupported(svg_file):
 def test_cli_batch_no_arg():
     result = runner.invoke(app, ["batch"])
     assert result.exit_code == 2
-    assert "Missing argument 'FOLDER'" in result.stdout
+    assert "Missing argument 'FOLDER'" in result.stderr
 
 
 def test_cli_batch_not_a_folder():
@@ -109,7 +109,7 @@ def test_cli_install():
 def test_cli_extract_no_arg():
     result = runner.invoke(app, ["extract"])
     assert result.exit_code == 2
-    assert "Missing argument 'FILE'" in result.stdout
+    assert "Missing argument 'FILE'" in result.stderr
 
 
 def test_cli_extract_not_file():

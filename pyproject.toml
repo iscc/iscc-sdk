@@ -55,10 +55,10 @@ dependencies = [
     "exiv2",
     "extractous",
     "bleach",
-    "pdftext",
-    "click<=8.1.8",
+    "click",
     "pillow-avif-plugin",
-    "iscc-lib>=0.1.0",
+    "iscc-lib",
+    "pdf-oxide",
 ]
 
 [project.optional-dependencies]
@@ -81,7 +81,7 @@ Twitter = "https://twitter.com/iscc_foundation"
 Donate = "https://iscc.foundation/support"
 
 [project.scripts]
-idk = "iscc_sdk.cli:app"
+iscc-sdk = "iscc_sdk.cli:app"
 
 [dependency-groups]
 dev = [
