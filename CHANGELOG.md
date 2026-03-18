@@ -1,6 +1,6 @@
 ## Changelog
 
-## 0.8.7 - unreleased
+## 0.8.7 - 2026-03-18
 
 - Migrated from Pydantic v1 compatibility layer to native Pydantic v2 API
 - Replaced pdftext with pdf-oxide for PDF text extraction (~150x faster)
