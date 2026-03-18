@@ -39,6 +39,8 @@ jobs:
       - name: Upload coverage to Codecov
         if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.11'
         uses: codecov/codecov-action@v5
+        env:
+          FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
 
@@ -84,7 +86,7 @@ jobs:
         run: .venv-smoke/bin/python -c "import iscc_sdk; print(iscc_sdk.__version__)"
 
       - name: Run selftest
-        run: .venv-smoke/bin/idk selftest
+        run: .venv-smoke/bin/iscc-sdk selftest
 
   analyze:
     name: Analyze
