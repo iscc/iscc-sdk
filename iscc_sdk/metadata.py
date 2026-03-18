@@ -7,10 +7,7 @@ from pathlib import Path
 from typing import Optional, List, Dict, Any
 
 
-try:
-    from pydantic.v1 import validator
-except ImportError:  # pragma: no cover
-    from pydantic import validator
+from pydantic import field_validator
 
 import iscc_sdk as idk
 import iscc_lib as il
@@ -50,7 +47,7 @@ def extract_metadata(fp):
     extractor = EXTRACTORS.get(mode)
     if extractor:
         metadata = extractor(fp)
-        return idk.IsccMeta.construct(**metadata)
+        return idk.IsccMeta.model_construct(**metadata)
 
 
 def embed_metadata(fp, meta, outpath=None):
@@ -65,7 +62,7 @@ def embed_metadata(fp, meta, outpath=None):
     :rtype: str|None
     """
     if isinstance(meta, dict):
-        meta = idk.IsccMeta.construct(**meta)
+        meta = idk.IsccMeta.model_construct(**meta)
     mime, mode = idk.mediatype_and_mode(fp)
     embedder = EMBEDDERS.get(mode)
     if embedder:
@@ -83,10 +80,12 @@ class IsccMeta(iss.IsccMeta):
 
     parts: Optional[List[Dict[str, Any]]] = None
 
-    @validator("name", pre=True)
+    @field_validator("name", mode="before")
+    @classmethod
     def trim_name(cls, v):
         return il.text_trim(v, idk.core_opts.meta_trim_name)
 
-    @validator("description", pre=True)
+    @field_validator("description", mode="before")
+    @classmethod
     def trim_description(cls, v):
         return il.text_trim(v, idk.core_opts.meta_trim_description)

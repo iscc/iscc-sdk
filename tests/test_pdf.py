@@ -28,7 +28,7 @@ def test_extract_metadata(pdf_file):
 
 def test_embed_metadata(pdf_file):
     new_file = idk.pdf_meta_embed(pdf_file, idk.IsccMeta(**meta))
-    assert idk.extract_metadata(new_file) == meta
+    assert idk.extract_metadata(new_file).dict() == meta
 
 
 def test_embed_metadata_retains_existing(pdf_file):

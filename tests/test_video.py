@@ -19,7 +19,7 @@ meta = idk.IsccMeta(
 
 def test_video_metadata_extract_mp4(mp4_file):
     assert idk.video_meta_extract(mp4_file) == {
-        "duration": 60.14,
+        "duration": 60,
         "fps": 24.0,
         "height": 144,
         "language": "en",
@@ -34,7 +34,7 @@ def test_video_metadata_embed_mp4(mp4_file):
         "acquire": "https://example.com/buy",
         "creator": "The Creator",
         "description": "Wörld",
-        "duration": 60.14,
+        "duration": 60,
         "fps": 24.0,
         "height": 144,
         "language": "en",
@@ -49,7 +49,7 @@ def test_video_metadata_embed_mp4(mp4_file):
 
 def test_video_metadata_extract_mov(mov_file):
     assert idk.video_meta_extract(mov_file) == {
-        "duration": 60.14,
+        "duration": 60,
         "fps": 24.0,
         "height": 144,
         "language": "en",
@@ -64,7 +64,7 @@ def test_video_metadata_embed_mov(mov_file):
         "acquire": "https://example.com/buy",
         "creator": "The Creator",
         "description": "Wörld",
-        "duration": 60.14,
+        "duration": 60,
         "fps": 24.0,
         "height": 144,
         "language": "en",
@@ -85,7 +85,7 @@ def test_video_metadata_escaping(mp4_file):
     new_file = idk.video_meta_embed(mp4_file, meta)
     assert idk.video_meta_extract(new_file) == {
         "description": "Multi\nLine\n\nDescription with ; and other = crazy characters",
-        "duration": 60.14,
+        "duration": 60,
         "fps": 24.0,
         "height": 144,
         "language": "en",
@@ -149,7 +149,7 @@ def test_code_video_granular_scenes(mp4_file, monkeypatch):
     monkeypatch.setattr(idk.sdk_opts, "extract_meta", True)
     result = idk.code_video(mp4_file).dict()
     assert result == {
-        "duration": 60.14,
+        "duration": 60,
         "features": [
             {
                 "maintype": "content",
@@ -185,7 +185,7 @@ def test_code_iscc_video_granular(mp4_file, monkeypatch):
     assert result == {
         "@type": "VideoObject",
         "datahash": "1e209d412d76d9d516d07bb60f1ab3c1a5c1b176ed4f1cec94c96222a5d013ec3e38",
-        "duration": 60.14,
+        "duration": 60,
         "features": [
             {
                 "maintype": "content",
@@ -226,7 +226,7 @@ def test_code_iscc_video_granular_no_scenes(mp4_file, monkeypatch):
     assert result == {
         "@type": "VideoObject",
         "datahash": "1e209d412d76d9d516d07bb60f1ab3c1a5c1b176ed4f1cec94c96222a5d013ec3e38",
-        "duration": 60.14,
+        "duration": 60,
         "features": [
             {
                 "maintype": "content",

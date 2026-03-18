@@ -8,7 +8,7 @@ from iscc_samples import images
 
 
 fp = images("jpg")[0].as_posix()
-meta = IsccMeta.construct(
+meta = IsccMeta.model_construct(
     name="Hello",
     description="Wörld",
     meta="somestring",
@@ -282,7 +282,7 @@ def test_image_to_data_url():
 
 
 def test_embed_rights_and_creator(jpg_file):
-    meta = IsccMeta.construct(
+    meta = IsccMeta.model_construct(
         creator="Some Creatör Name",
         rights="Some Cäpyright notice",
     )
@@ -299,7 +299,7 @@ def test_embed_rights_and_creator(jpg_file):
 
 def test_extract_name_above_128(jpg_file):
     long_name = "a" * 130
-    meta = IsccMeta.construct(name=long_name)
+    meta = IsccMeta.model_construct(name=long_name)
     new_file = idk.image_meta_embed(jpg_file, meta)
     assert idk.image_meta_extract(new_file)["name"] == long_name
     assert idk.code_iscc(new_file).name == long_name[:128]
@@ -313,7 +313,7 @@ def test_embed_metadata_non_uri(jpg_file):
         "name": "Concentrated Cat",
         "width": 200,
     }
-    new_file = idk.image_meta_embed(jpg_file, IsccMeta.construct(license="Hello World"))
+    new_file = idk.image_meta_embed(jpg_file, IsccMeta.model_construct(license="Hello World"))
     assert idk.image_meta_extract(new_file) == {
         "creator": "Some Cat Lover",
         "height": 133,
@@ -326,7 +326,7 @@ def test_embed_metadata_non_uri(jpg_file):
 def test_embed_identifier(jpg_file):
     """Test embedding and extracting the identifier field."""
     identifier = "ISCC:KACYPXW46UOGYH3C"
-    meta = IsccMeta.construct(identifier=identifier)
+    meta = IsccMeta.model_construct(identifier=identifier)
     new_file = idk.image_meta_embed(jpg_file, meta)
     extracted = idk.image_meta_extract(new_file)
     assert extracted["identifier"] == identifier

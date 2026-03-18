@@ -173,7 +173,7 @@ def code_iscc(fp, name=None, description=None, meta=None, **options):
     iscc_meta.update(iscc_code)
     iscc_meta["generator"] = f"iscc-sdk - v{idk.__version__}"
 
-    result = idk.IsccMeta.construct(**iscc_meta)
+    result = idk.IsccMeta.model_construct(**iscc_meta)
 
     if opts.process_container:
         parts = idk.process_container(fp, **options)
@@ -296,7 +296,7 @@ def code_iscc_mt(fp, name=None, description=None, meta=None, **options):  # prag
     iscc_meta.update(iscc_code)
     iscc_meta["generator"] = f"iscc-sdk - v{idk.__version__}"
 
-    result = idk.IsccMeta.construct(**iscc_meta)
+    result = idk.IsccMeta.model_construct(**iscc_meta)
 
     if opts.process_container:
         parts = idk.process_container(fp, **options)
@@ -357,7 +357,7 @@ def code_meta(fp, name=None, description=None, meta=None, **options):
     )
 
     meta_dict.update(metacode)
-    return idk.IsccMeta.construct(**meta_dict)
+    return idk.IsccMeta.model_construct(**meta_dict)
 
 
 def code_content(fp, **options):
@@ -444,7 +444,7 @@ def code_text(fp, text=None, **options):
         meta["features"] = [features]
     if opts.text_keep:
         meta["text"] = text
-    return idk.IsccMeta.construct(**meta)
+    return idk.IsccMeta.model_construct(**meta)
 
 
 def code_text_semantic(fp, text=None, **options):
@@ -468,7 +468,7 @@ def code_text_semantic(fp, text=None, **options):
             text = il.text_clean(text)
 
         result = iscc_sct.gen_text_code_semantic(text, **options)
-        return idk.IsccMeta.construct(**result)
+        return idk.IsccMeta.model_construct(**result)
 
 
 def code_image(fp, **options):
@@ -501,7 +501,7 @@ def code_image(fp, **options):
     code_obj = il.gen_image_code_v0(pixels, bits=opts.bits)
     meta.update(code_obj)
 
-    return idk.IsccMeta.construct(**meta)
+    return idk.IsccMeta.model_construct(**meta)
 
 
 def code_image_semantic(fp, **options):
@@ -520,7 +520,7 @@ def code_image_semantic(fp, **options):
 
         fp = Path(fp)
         meta = iscc_sci.code_image_semantic(fp, **options)
-        return idk.IsccMeta.construct(**meta)
+        return idk.IsccMeta.model_construct(**meta)
 
 
 def code_audio(fp, **options):
@@ -554,7 +554,7 @@ def code_audio(fp, **options):
     code_obj = il.gen_audio_code_v0(features["fingerprint"], bits=opts.bits)
     meta.update(code_obj)
 
-    return idk.IsccMeta.construct(**meta)
+    return idk.IsccMeta.model_construct(**meta)
 
 
 def code_video(fp, **options):
@@ -608,7 +608,7 @@ def code_video(fp, **options):
         granular = idk.video_compute_granular(frames, scenes)
         meta["features"] = [granular]
 
-    return idk.IsccMeta.construct(**meta)
+    return idk.IsccMeta.model_construct(**meta)
 
 
 def code_data(fp, **options):
@@ -630,7 +630,7 @@ def code_data(fp, **options):
     with open(fp, "rb") as stream:
         result = il.gen_data_code_v0(stream, bits=opts.bits)
 
-    return idk.IsccMeta.construct(**result)
+    return idk.IsccMeta.model_construct(**result)
 
 
 def code_instance(fp, **options):
@@ -654,7 +654,7 @@ def code_instance(fp, **options):
     with open(fp, "rb") as stream:
         result = il.gen_instance_code_v0(stream, bits=opts.bits)
 
-    return idk.IsccMeta.construct(**result)
+    return idk.IsccMeta.model_construct(**result)
 
 
 def code_sum(fp, **options):
@@ -681,4 +681,4 @@ def code_sum(fp, **options):
     if result.get("units"):
         meta["units"] = result["units"]
 
-    return idk.IsccMeta.construct(**meta)
+    return idk.IsccMeta.model_construct(**meta)

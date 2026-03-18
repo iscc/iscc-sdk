@@ -2,9 +2,12 @@
 
 ## 0.8.7 - unreleased
 
+- Migrated from Pydantic v1 compatibility layer to native Pydantic v2 API
 - Replaced pdftext with pdf-oxide for PDF text extraction (~150x faster)
 - Renamed CLI command from `idk` to `iscc-sdk`
+- Rounded audio and video duration to integer seconds
 - Fixed CLI tests for Typer 0.24.x (error messages moved to stderr, exit code changes)
+- Dropped Python 3.10 support, added Python 3.14
 - Updated dependencies
 
 ## 0.8.6 - 2026-03-03

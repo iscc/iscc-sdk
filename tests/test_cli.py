@@ -56,8 +56,8 @@ def test_cli_create():
     assert "iscc-sdk" in data["generator"]
     del data["generator"]
     assert data == {
-        "@context": "http://purl.org/iscc/context",
-        "$schema": "http://purl.org/iscc/schema",
+        "@context": "http://purl.org/iscc/context/0.5.0.jsonld",
+        "$schema": "http://purl.org/iscc/schema/0.5.0.json",
         "@type": "AudioObject",
         "iscc": "ISCC:KIC2JKSX7OH5PBIENISKEJTS4TRKHYJBCZDNLQXYILWJHQAP3N3KPTQ",
         "name": "Belly Button",
@@ -65,7 +65,7 @@ def test_cli_create():
         "filename": "demo.mp3",
         "filesize": 225707,
         "mediatype": "audio/mpeg",
-        "duration": 15.543,
+        "duration": 16,
         "metahash": "1e20c4933dc8c03ea58568159a1cbfb04132c7db93b6b4cd025ffd4db37f52a4756f",
         "datahash": "1e20ec93c00fdb76a7cec587e4a2bddfa8d0a0bac8110d0c7130c351ea07c366d626",
     }

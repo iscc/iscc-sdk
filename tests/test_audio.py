@@ -5,7 +5,7 @@ import iscc_sdk as idk
 import iscc_samples as iss
 
 
-meta = idk.IsccMeta.construct(
+meta = idk.IsccMeta.model_construct(
     name="Hello",
     description="Wörld",
     meta="somestring",
@@ -17,7 +17,7 @@ meta = idk.IsccMeta.construct(
 def test_audio_meta_extract(mp3_file):
     assert idk.audio_meta_extract(mp3_file) == {
         "name": "Belly Button",
-        "duration": 15.543,
+        "duration": 16,
     }
 
 
@@ -26,7 +26,7 @@ def test_audio_meta_extract_concurrent(mp3_file):
         data = infile.read(64)
         assert idk.audio_meta_extract(mp3_file) == {
             "name": "Belly Button",
-            "duration": 15.543,
+            "duration": 16,
         }
 
 
@@ -42,7 +42,7 @@ def test_audio_meta_embed_mp3(mp3_file):
     assert idk.audio_meta_extract(new_file) == {
         "acquire": "https://example.com/buy",
         "description": "Wörld",
-        "duration": 15.543,
+        "duration": 16,
         "license": "https://example.com/license",
         "meta": "somestring",
         "name": "Hello",
@@ -56,7 +56,7 @@ def test_audio_meta_embed_wav(wav_file):
     assert idk.audio_meta_extract(new_file) == {
         "acquire": "https://example.com/buy",
         "description": "Wörld",
-        "duration": 15.503,
+        "duration": 16,
         "license": "https://example.com/license",
         "meta": "somestring",
         "name": "Hello",
@@ -178,7 +178,7 @@ def test_audio_extract_features(mp3_file):
 
 def test_code_audio_mp3(mp3_file):
     assert idk.code_audio(mp3_file).dict() == {
-        "duration": 15.543,
+        "duration": 16,
         "iscc": "ISCC:EIAWUJFCEZZOJYVD",
         "name": "Belly Button",
     }
@@ -186,7 +186,7 @@ def test_code_audio_mp3(mp3_file):
 
 def test_code_audio_wav(wav_file):
     assert idk.code_audio(wav_file).dict() == {
-        "duration": 15.503,
+        "duration": 16,
         "iscc": "ISCC:EIAWUJFCEZZOJYVD",
         "name": "Belly Button!",
     }
@@ -206,7 +206,7 @@ def test_audio_thumbnail_via_code_audio(mp3_cover):
     meta = idk.code_audio(mp3_cover).dict()
     assert meta == {
         "creator": "Test Artist",
-        "duration": 15.543,
+        "duration": 16,
         "iscc": "ISCC:EIAWUJFCEZZOJYVD",
         "name": "Belly Button",
         "thumbnail": "data:image/webp;base64,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",
@@ -216,7 +216,7 @@ def test_audio_thumbnail_via_code_audio(mp3_cover):
 def test_audio_embed_title(mp3_cover):
     new_file = idk.embed_metadata(mp3_cover, idk.IsccMeta(name="Embedded Title"))
     meta = idk.extract_metadata(new_file)
-    assert meta.dict() == {"creator": "Test Artist", "duration": 15.543, "name": "Embedded Title"}
+    assert meta.dict() == {"creator": "Test Artist", "duration": 16, "name": "Embedded Title"}
 
 
 def test_code_audio_metadata_meta_thumb_disabled(mp3_cover, monkeypatch):

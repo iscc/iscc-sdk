@@ -111,7 +111,7 @@ def video_meta_extract_ffprobe(fp):
     duration_streams = jmespath.search("streams[?codec_type=='video'].duration", metadata)
     durations = [duration_format] + duration_streams if duration_format else duration_streams
     if durations:
-        duration = max(round(float(d), 3) for d in durations)
+        duration = round(max(float(d) for d in durations))
         meta["duration"] = duration
     else:  # pragma: no cover
         log.warning("failed to extract duration")

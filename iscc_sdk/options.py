@@ -15,10 +15,8 @@ class-atributes on the `SdkOptions` instance.
 from typing import Optional, Literal
 import copy
 
-try:
-    from pydantic.v1 import Field, validator, BaseSettings
-except ImportError:  # pragma: no cover
-    from pydantic import Field, validator, BaseSettings
+from pydantic import Field, field_validator
+from pydantic_settings import BaseSettings, SettingsConfigDict
 from PIL import Image
 import iscc_lib
 
@@ -33,11 +31,12 @@ __all__ = [
 class SdkOptions(BaseSettings):
     """SDK Configuration Options"""
 
-    class Config:
-        validate_assignment = True
-        env_prefix = "ISCC_SDK_"
-        env_file = "iscc-sdk.env"
-        env_file_encoding = "utf-8"
+    model_config = SettingsConfigDict(
+        validate_assignment=True,
+        env_prefix="ISCC_SDK_",
+        env_file="iscc-sdk.env",
+        env_file_encoding="utf-8",
+    )
 
     granular: bool = Field(
         default=False,
@@ -158,7 +157,8 @@ class SdkOptions(BaseSettings):
         description="ISCC_SDK_FALLBACK - Create 2-UNIT ISCC-SUM for unsupported media types",
     )
 
-    @validator("image_max_pixels")
+    @field_validator("image_max_pixels")
+    @classmethod
     def set_pillow(cls, v):
         Image.MAX_IMAGE_PIXELS = v
         return v

@@ -39,7 +39,7 @@ dependencies = [
     "loguru",
     "bitarray",
     "xxhash",
-    "iscc-schema",
+    "iscc-schema>=0.5.0",
     "python-magic-pure",
     "platformdirs",
     "jmespath",
@@ -58,6 +58,7 @@ dependencies = [
     "click",
     "pillow-avif-plugin",
     "iscc-lib",
+    "pydantic-settings",
     "pdf-oxide",
 ]
 
