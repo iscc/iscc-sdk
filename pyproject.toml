@@ -55,7 +55,6 @@ dependencies = [
     "exiv2",
     "extractous",
     "bleach",
-    "click",
     "pillow-avif-plugin",
     "iscc-lib",
     "pydantic-settings",

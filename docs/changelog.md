@@ -1,5 +1,9 @@
 ## Changelog
 
+## 0.8.8 - 2026-03-18
+
+- Removed unused explicit `click` dependency (already a transitive dependency of `typer`)
+
 ## 0.8.7 - 2026-03-18
 
 - Migrated from Pydantic v1 compatibility layer to native Pydantic v2 API
