@@ -111,6 +111,13 @@ build-backend = "uv_build"
 [tool.uv.build-backend]
 module-root = ""
 
+[tool.mypy]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "iscc_sdk.monkeys"
+ignore_errors = true
+
 [tool.ruff]
 line-length = 100
 

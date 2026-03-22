@@ -179,5 +179,5 @@ class SdkOptions(BaseSettings):
         return opts
 
 
-sdk_opts = SdkOptions()
+sdk_opts = SdkOptions()  # type: ignore[call-arg]
 core_opts = iscc_lib.core_opts

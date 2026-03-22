@@ -74,7 +74,7 @@ def embed_metadata(fp, meta, outpath=None):
         return new_file_path
 
 
-class IsccMeta(iss.IsccMeta):
+class IsccMeta(iss.IsccMeta):  # type: ignore[misc]
     """Custom IsccMeta with text trimming and recursive `parts` support"""
 
     parts: Optional[List[Dict[str, Any]]] = None

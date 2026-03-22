@@ -37,7 +37,7 @@ def _log_formatter(record: dict) -> str:  # pragma: no cover
     )
 
 
-log.add(console.print, level="DEBUG", format=_log_formatter, colorize=True)
+log.add(console.print, level="DEBUG", format=_log_formatter, colorize=True)  # type: ignore[call-overload]
 
 
 def iter_unprocessed(path, root_path=None):
@@ -106,7 +106,7 @@ def create(file: Path):
 
 
 @app.command()
-def batch(folder: Path, workers: int = os.cpu_count()):  # pragma: no cover
+def batch(folder: Path, workers: int = os.cpu_count() or 1):  # pragma: no cover
     """Create ISCC-CODEs for files in FOLDER (parallel & recursive)."""
     if not folder.is_dir() or not folder.exists():
         typer.echo(f"Invalid folder {folder}")

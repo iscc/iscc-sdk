@@ -7,7 +7,7 @@ import tarfile
 import zipfile
 from pathlib import Path
 from platform import system, architecture
-from typing import List
+from typing import List, Union
 from urllib.parse import urlparse
 from urllib.request import urlretrieve
 from blake3 import blake3
@@ -187,9 +187,9 @@ def fpcalc_version_info():  # pragma: no cover
         return "FPCALC not installed"
 
 
-def run_fpcalc(args: List[str]):
+def run_fpcalc(args: List[Union[str, Path]]):
     """Run fpcalc command with `args`. Installs fpcalc if not found."""
-    cmd = [fpcalc_bin()] + args
+    cmd = [fpcalc_bin()] + [str(a) for a in args]
     try:
         result = subprocess.run(cmd, capture_output=True, check=True)
     except FileNotFoundError:  # pragma: no cover
@@ -262,9 +262,9 @@ def ffprobe_version_info():  # pragma: no cover
         return "ffprobe not installed"
 
 
-def run_ffprobe(args: List[str]):  # pragma: no cover
+def run_ffprobe(args: List[Union[str, Path]]):  # pragma: no cover
     """Run ffprobe command with `args`. Install ffprobe if not found."""
-    cmd = [ffprobe_bin()] + args
+    cmd = [ffprobe_bin()] + [str(a) for a in args]
     try:
         result = subprocess.run(cmd, capture_output=True, check=True)
     except FileNotFoundError:  # pragma: no cover
@@ -336,9 +336,9 @@ def ffmpeg_version_info():  # pragma: no cover
         return "ffmpeg not installed"
 
 
-def run_ffmpeg(args: List[str]):
+def run_ffmpeg(args: List[Union[str, Path]]):
     """Run ffmpeg command with `args`. Install ffmpeg if not found."""
-    cmd = [ffmpeg_bin()] + args
+    cmd = [ffmpeg_bin()] + [str(a) for a in args]
     try:
         result = subprocess.run(cmd, capture_output=True, check=True)
     except FileNotFoundError:  # pragma: no cover
