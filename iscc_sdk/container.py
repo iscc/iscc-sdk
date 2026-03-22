@@ -1,7 +1,7 @@
 """*Container format processing module*."""
 
 from pathlib import Path
-from typing import List, Dict, Callable, Optional
+from typing import Dict, Callable
 import iscc_sdk as idk
 
 __all__ = [

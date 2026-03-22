@@ -2,7 +2,6 @@
 
 import shutil
 
-from loguru import logger as log
 from pathlib import Path
 from typing import Optional, List, Dict, Any
 

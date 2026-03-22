@@ -6,8 +6,6 @@ import base64
 import io
 import shutil
 import tempfile
-from typing import Sequence
-from iscc_schema import IsccMeta
 from loguru import logger as log
 from PIL import Image, ImageEnhance, ImageChops, ImageOps
 import iscc_sdk as idk
@@ -78,7 +76,7 @@ def image_exif_transpose(img):
     :return: EXIF transposed image
     """
     img = ImageOps.exif_transpose(img)
-    log.debug(f"Image exif transpose applied")
+    log.debug("Image exif transpose applied")
     return img
 
 
@@ -142,7 +140,7 @@ def image_trim_border(img):
     diff = ImageChops.add(diff, diff)
     bbox = diff.getbbox()
     if bbox != (0, 0) + img.size:
-        log.debug(f"Image has been trimmed")
+        log.debug("Image has been trimmed")
         return img.crop(bbox)
     return img
 

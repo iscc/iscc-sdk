@@ -4,7 +4,6 @@ import io
 import shutil
 import tempfile
 from pathlib import Path
-from typing import Any, List
 
 import ebookmeta
 from PIL import Image, ImageEnhance

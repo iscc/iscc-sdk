@@ -1,0 +1,75 @@
+---
+# Run with prek (drop-in pre-commit replacement): prek run --all-files
+# Install: uv tool install prek && prek install && prek install --hook-type pre-push
+repos:
+  # File hygiene
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: mixed-line-ending
+        args: [--fix=lf]
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+      - id: check-yaml
+      - id: check-json
+      - id: check-toml
+      - id: check-added-large-files
+        args: [--maxkb=256]
+      - id: fix-byte-order-marker
+
+  # Markdown formatting
+  - repo: https://github.com/executablebooks/mdformat
+    rev: 1.0.0
+    hooks:
+      - id: mdformat
+        args: [--wrap, '100', --number]
+        additional_dependencies:
+          - mdformat-mkdocs[recommended]
+
+  # Local hooks
+  - repo: local
+    hooks:
+      # Pre-commit hooks (fast, auto-fix)
+      - id: ruff-check
+        name: Ruff linting
+        entry: uv run ruff check --fix
+        language: system
+        types: [python]
+        stages: [pre-commit]
+      - id: ruff-format
+        name: Ruff formatting
+        entry: uv run ruff format
+        language: system
+        types: [python]
+        stages: [pre-commit]
+
+      # Pre-push hooks (thorough quality gates)
+      - id: zuban
+        name: Type checking (advisory)
+        entry: bash -c "uv run zuban check iscc_sdk/ || true"
+        language: system
+        types: [python]
+        stages: [pre-push]
+        pass_filenames: false
+        verbose: true
+      - id: security
+        name: Security scan (Ruff S rules)
+        entry: uv run ruff check --select S --force-exclude iscc_sdk/
+        language: system
+        types: [python]
+        stages: [pre-push]
+        pass_filenames: false
+      - id: complexity
+        name: Complexity check (Ruff C901)
+        entry: uv run ruff check --select C901 --force-exclude iscc_sdk/
+        language: system
+        types: [python]
+        stages: [pre-push]
+        pass_filenames: false
+      - id: pytest
+        name: Tests with coverage
+        entry: uv run pytest --cov=iscc_sdk --cov-fail-under=100 --timeout=120
+        language: system
+        types: [python]
+        stages: [pre-push]
+        pass_filenames: false

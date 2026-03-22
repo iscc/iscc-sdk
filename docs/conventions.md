@@ -4,8 +4,8 @@
 
 **Motto:**
 
-Complexity is not the problem, ambiguity is. Simplicity does not solve ambiguity, clarity does. You will respond
-with clarity but will not simplify your response or be ambiguous.
+Complexity is not the problem, ambiguity is. Simplicity does not solve ambiguity, clarity does. You
+will respond with clarity but will not simplify your response or be ambiguous.
 
 - Write pragmatic, easily testable, and performant code.
 - Stick with YAGNI + SOLID + KISS + DRY principles.
@@ -44,4 +44,3 @@ def tokenize_chunks(chunks, max_len=None):
     """
     pass
 ```
-

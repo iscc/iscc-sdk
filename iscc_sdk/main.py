@@ -1,7 +1,5 @@
 """*SDK main top-level functions*."""
 
-from typing import Any
-
 from loguru import logger as log
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path

@@ -2,7 +2,6 @@
 from dataclasses import dataclass
 from fractions import Fraction
 from functools import lru_cache
-from typing import Tuple, List
 from bitarray import bitarray
 from bitarray.util import ba2int
 import numpy as np

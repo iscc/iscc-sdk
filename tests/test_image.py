@@ -121,8 +121,6 @@ def test_image_fill_transparency_p_with_transparency():
     # If transparency info is still not present, we'll manually add it
     # This is a workaround for testing purposes
     if "transparency" not in img.info:
-        # Create a transparency mask from the alpha channel of the original RGBA image
-        alpha = img.convert("RGBA").getchannel("A")
         # Find the palette index that corresponds to fully transparent pixels
         transparent_index = 0  # Usually 0 for transparent pixels
         img.info["transparency"] = transparent_index

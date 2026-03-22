@@ -86,10 +86,11 @@ iscc-sdk = "iscc_sdk.cli:app"
 [dependency-groups]
 dev = [
     "pytest",
-    "mypy",
+    "zuban",
     "ruff",
     "coverage",
     "pytest-cov",
+    "pytest-timeout",
     "poethepoet",
     "mkdocs-material",
     "mkdocstrings[python]",
@@ -113,13 +114,17 @@ module-root = ""
 [tool.ruff]
 line-length = 100
 
+[tool.ruff.lint.per-file-ignores]
+"iscc_sdk/__init__.py" = ["E402", "F401", "F403"]
+"iscc_sdk/tools.py" = ["S101", "S202", "S310", "S603"]
+"iscc_sdk/epub.py" = ["C901"]
+"iscc_sdk/main.py" = ["C901"]
+
 [tool.coverage.run]
 omit = ["iscc_sdk/install.py"]
 
 [tool.poe.tasks]
+lint = { cmd = "prek run --all-files", help = "Run all pre-commit hooks (formatting, linting)" }
 build-docs = { cmd = "uv run python -m devtools.build_docs", help = "Copy README.md to /docs" }
-format-code = { cmd = "uv run ruff format", help = "Code style formating with ruff" }
-format-md = { cmd = "uv run mdformat --wrap 100 README.md", help = "Markdown formating with mdformat" }
-lf = { cmd = "uv run python -m devtools.lf", help = "Convert line endings to lf"}
 test = { cmd = "uv run pytest --cov=iscc_sdk --cov-fail-under=100 -p no:warnings", help = "Run tests with coverage" }
-all = ["format-md", "build-docs", "lf", "format-code", "test"]
+all = ["lint", "build-docs", "test"]

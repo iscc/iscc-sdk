@@ -1,7 +1,6 @@
 """*Manage SDK binary media file handling tools*."""
 
 import os
-import platform
 import shutil
 import subprocess
 import tarfile

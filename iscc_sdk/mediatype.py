@@ -2,7 +2,7 @@
 
 from pathlib import Path
 from loguru import logger as log
-from typing import List, Optional, Union
+from typing import List
 import mimetypes
 import magic
 import iscc_sdk as idk

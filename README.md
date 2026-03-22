@@ -128,7 +128,7 @@ custom_meta = IsccMeta(
     name="My Asset Title",
     description="Description of the asset",
     creator="Creator Name",
-    license="https://creativecommons.org/licenses/by/4.0/"
+    license="https://creativecommons.org/licenses/by/4.0/",
 )
 
 # Embed metadata into a copy of the file
@@ -177,15 +177,61 @@ within [ISO/TC 46/SC 9/WG 18](https://www.iso.org/committee/48836.html).
 > API changes and other backward incompatible changes are to be expected until a v1.0 stable
 > release.
 
+## Development
+
+### Setup
+
+```bash
+# Install dependencies
+uv sync
+
+# Install pre-commit hooks (using prek, a fast Rust-based drop-in replacement)
+uv tool install prek
+prek install
+prek install --hook-type pre-push
+```
+
+### Quality Gates
+
+Pre-commit hooks run automatically via [prek](https://github.com/j178/prek):
+
+**On commit** (fast, auto-fix):
+
+- File hygiene (line endings, trailing whitespace, EOF)
+- Config validation (YAML, JSON, TOML)
+- Markdown formatting (mdformat)
+- Ruff linting with auto-fix
+- Ruff formatting
+
+**On push** (thorough):
+
+- Type checking (zuban)
+- Security scan (Ruff S rules)
+- Complexity check (Ruff C901)
+- Tests with 100% coverage
+
+Run all hooks manually:
+
+```bash
+prek run --all-files                # pre-commit hooks
+prek run --all-files --hook-stage pre-push  # pre-push hooks
+```
+
+### Testing
+
+```bash
+uv run pytest --cov=iscc_sdk --cov-fail-under=100 -p no:warnings
+```
+
 ## Contributing
 
 Contributions are welcome! Here's how you can help:
 
 1. **Issues:** Report bugs or suggest features via the
-   [issue tracker](https://github.com/iscc/iscc-sdk/issues)
-1. **Pull Requests:** Submit PRs for bug fixes or new features
-1. **Discussion:** For significant changes, please open an issue first to discuss your plans
-1. **Testing:** Please make sure to update tests as appropriate
+    [issue tracker](https://github.com/iscc/iscc-sdk/issues)
+2. **Pull Requests:** Submit PRs for bug fixes or new features
+3. **Discussion:** For significant changes, please open an issue first to discuss your plans
+4. **Testing:** Please make sure to update tests as appropriate
 
 Join our developer chat on Telegram at [https://t.me/iscc_dev](https://t.me/iscc_dev).
 

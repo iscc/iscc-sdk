@@ -1,7 +1,6 @@
 """*Generate thumbnails for media assets*"""
 
 from pathlib import Path
-from PIL import Image
 import iscc_sdk as idk
 
 __all__ = [

@@ -2,7 +2,23 @@ name: CI
 on: [push, pull_request, workflow_call]
 
 jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.13'
+      - uses: astral-sh/setup-uv@v7
+      - name: Install dependencies
+        run: uv sync
+      - name: Install prek
+        run: uv tool install prek
+      - name: Run linting and formatting checks
+        run: prek run --all-files
+
   tests:
+    needs: lint
     strategy:
       fail-fast: false
       matrix:

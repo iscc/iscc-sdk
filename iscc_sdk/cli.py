@@ -1,6 +1,5 @@
 import os
 from concurrent.futures import ProcessPoolExecutor, as_completed
-from typing import Iterator, Optional, Tuple
 from loguru import logger as log
 import typer
 from pathlib import Path

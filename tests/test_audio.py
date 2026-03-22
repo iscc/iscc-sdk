@@ -23,7 +23,7 @@ def test_audio_meta_extract(mp3_file):
 
 def test_audio_meta_extract_concurrent(mp3_file):
     with open(mp3_file, "rb") as infile:
-        data = infile.read(64)
+        infile.read(64)
         assert idk.audio_meta_extract(mp3_file) == {
             "name": "Belly Button",
             "duration": 16,

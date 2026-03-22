@@ -2,7 +2,6 @@ import tempfile
 from pathlib import Path
 
 from docx import Document
-import iscc_sdk as idk
 import shutil
 
 __all__ = [

@@ -31,7 +31,6 @@
 - Updated CI GitHub Actions to latest versions
 - Updated dependencies
 
-
 ## 0.8.5 - 2025-05-12
 
 - Fixed TypeError with Semantic-Code image in granular processing mode.
@@ -44,7 +43,8 @@
 ## 0.8.3 - 2025-05-12
 
 - Added `code_sum` function for efficient combined Data-Code and Instance-Code generation
-- Updated `code_iscc` & `code_meta` to accept custom metadata and optionally skip file metadata extraction
+- Updated `code_iscc` & `code_meta` to accept custom metadata and optionally skip file metadata
+    extraction
 - Updated `code_iscc` to compute Data & Instance Code in one go and process data sequentially
 - Added separate `code_iscc_mt` for multihreaded processing
 - Updated dependencies

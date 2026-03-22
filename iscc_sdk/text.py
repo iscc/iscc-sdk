@@ -4,13 +4,10 @@ import re
 from html import unescape
 from os.path import basename, splitext
 from pathlib import Path
-from typing import Generator, Union
 from urllib.parse import urlparse
 
 import bleach
 from extractous import Extractor
-from iscc_schema import IsccMeta
-from PIL import Image
 import xxhash
 from loguru import logger as log
 import iscc_sdk as idk
