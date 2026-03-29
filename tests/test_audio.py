@@ -5,7 +5,7 @@ import iscc_sdk as idk
 import iscc_samples as iss
 
 
-meta = idk.IsccMeta.model_construct(
+meta = idk.IsccMeta(
     name="Hello",
     description="Wörld",
     meta="somestring",

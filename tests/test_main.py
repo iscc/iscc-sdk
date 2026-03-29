@@ -372,7 +372,9 @@ def test_code_instance(png_file):
 
 
 def test_code_iscc_non_uri_metadata(jpg_file):
-    new_file = idk.image_meta_embed(jpg_file, idk.IsccMeta.model_construct(license="Hello World"))
+    new_file = idk.image_meta_embed(
+        jpg_file, idk.IsccMeta.model_construct(license="Hello World")
+    )  # bypass URI validation
     assert idk.code_iscc(new_file).dict(exclude={"generator"}) == {
         "@type": "ImageObject",
         "creator": "Some Cat Lover",
