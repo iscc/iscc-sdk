@@ -23,6 +23,7 @@ repos:
     hooks:
       - id: mdformat
         args: [--wrap, '100', --number]
+        exclude: ^docs/(options\.md|other/tools\.md)$
         additional_dependencies:
           - mdformat-mkdocs[recommended]
 
