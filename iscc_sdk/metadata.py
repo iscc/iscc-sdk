@@ -75,7 +75,16 @@ def embed_metadata(fp, meta, outpath=None):
 
 
 class IsccMeta(iss.IsccMeta):  # type: ignore[misc]
-    """Custom IsccMeta with text trimming and recursive `parts` support"""
+    """Custom IsccMeta with text trimming and recursive `parts` support.
+
+    Serialization note:
+        Use ``.dict()`` instead of ``.model_dump()`` for serialization. The parent class
+        ``iscc_schema.base.BaseModel`` provides a ``.dict()`` method that wraps ``.model_dump()``
+        with the correct defaults (``exclude_none=True``, ``exclude_unset=True``,
+        ``by_alias=True``). Calling ``.model_dump()`` directly uses different pydantic defaults
+        and will produce unexpected results (all fields including ``None`` values, field names
+        instead of aliases like ``type_`` instead of ``@type``).
+    """
 
     parts: Optional[List[Dict[str, Any]]] = None
 
