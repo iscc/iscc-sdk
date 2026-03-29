@@ -1,5 +1,10 @@
 ## Changelog
 
+## 0.8.9 - 2026-03-29
+
+- Fixed EPUB cover extraction for URL-encoded paths in OPF manifest
+- Added EPUB3 `cover-image` property detection for cover extraction
+
 ## 0.8.8 - 2026-03-29
 
 - Replaced extractous with iscc-tika for text/metadata extraction

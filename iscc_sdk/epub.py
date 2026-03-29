@@ -4,6 +4,7 @@ import io
 import shutil
 import tempfile
 from pathlib import Path
+from urllib.parse import unquote
 
 import ebookmeta
 from PIL import Image, ImageEnhance
@@ -65,11 +66,14 @@ def epub_cover(fp):  # pragma: no cover
     """
     Extract the cover image bytes from an EPUB file.
 
-    This function attempts to locate the cover image by first checking the metadata
-    cover reference, then falling back to scanning for image files with 'cover' in the name and
-    if that fails it returns the first image file from the manifest.
-    The function also logs the relative path to the image within the epub which was identified as
-    cover image. If no image is found, it raises an error.
+    This function attempts to locate the cover image by:
+    1. Checking the EPUB2 metadata cover reference
+    2. Checking the EPUB3 cover-image manifest property
+    3. Scanning for image files with 'cover' in the name
+    4. Falling back to the first image file from the manifest
+
+    URL-encoded paths in the OPF manifest are decoded before zip archive lookup.
+    If no image is found, it raises an error.
 
     :param fp: Filepath to EPUB file
     :return: Raw bytes of the cover image
@@ -108,17 +112,29 @@ def epub_cover(fp):  # pragma: no cover
                     f"//opf:manifest/opf:item[@id='{cover_id}']/@href", namespaces=opf_ns
                 )
                 if cover_href:
-                    cover_path = Path(opf_path).parent / cover_href[0]
+                    cover_path = Path(opf_path).parent / unquote(cover_href[0])
                     log.debug(f"Found cover image via metadata: {cover_path.as_posix()}")
 
-            # 2. Scan manifest for images with 'cover' in the name
+            # 2. Check for EPUB3 cover-image property
+            if not cover_path:
+                cover_href = opf_root.xpath(
+                    "//opf:manifest/opf:item[@properties='cover-image']/@href",
+                    namespaces=opf_ns,
+                )
+                if cover_href:
+                    cover_path = Path(opf_path).parent / unquote(cover_href[0])
+                    log.debug(
+                        f"Found cover image via cover-image property: {cover_path.as_posix()}"
+                    )
+
+            # 3. Scan manifest for images with 'cover' in the name
             if not cover_path:
                 manifest_items = opf_root.xpath("//opf:manifest/opf:item", namespaces=opf_ns)
                 for item in manifest_items:
                     media_type = item.get("media-type", "")
                     href = item.get("href")
                     if media_type.startswith("image/") and href:
-                        item_path = (Path(opf_path).parent / href).as_posix()
+                        item_path = (Path(opf_path).parent / unquote(href)).as_posix()
                         image_paths.append(item_path)
                         if "cover" in href.lower():
                             cover_path = Path(item_path)
@@ -127,7 +143,7 @@ def epub_cover(fp):  # pragma: no cover
                             )
                             break
 
-            # 3. Fallback to the first image in the manifest
+            # 4. Fallback to the first image in the manifest
             if not cover_path and image_paths:
                 cover_path = Path(image_paths[0])
                 log.debug(f"Using first image from manifest as cover: {cover_path.as_posix()}")
