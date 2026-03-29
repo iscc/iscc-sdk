@@ -1,7 +1,10 @@
 ## Changelog
 
-## 0.8.8 - 2026-03-18
+## 0.8.8 - 2026-03-29
 
+- Replaced extractous with iscc-tika for text/metadata extraction
+- Added pre-commit quality gates with prek (formatting, linting, type checking)
+- Resolved all zuban type checking errors
 - Removed unused explicit `click` dependency (already a transitive dependency of `typer`)
 
 ## 0.8.7 - 2026-03-18

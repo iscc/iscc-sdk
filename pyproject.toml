@@ -53,7 +53,7 @@ dependencies = [
     "pillow-heif",
     "langcodes",
     "exiv2",
-    "extractous",
+    "iscc-tika",
     "bleach",
     "pillow-avif-plugin",
     "iscc-lib",

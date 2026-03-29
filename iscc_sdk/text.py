@@ -7,7 +7,7 @@ from pathlib import Path
 from urllib.parse import urlparse
 
 import bleach
-from extractous import Extractor
+from iscc_tika import Extractor
 import xxhash
 from loguru import logger as log
 import iscc_sdk as idk
