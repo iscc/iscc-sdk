@@ -25,7 +25,7 @@
       
       
       <link rel="icon" href="../images/iscc-logo-icon-black.svg">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.5">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
     
     
       
@@ -1268,7 +1268,14 @@
 
 
 
-        <p>Custom IsccMeta with text trimming and recursive <code>parts</code> support</p>
+        <p>Custom IsccMeta with text trimming and recursive <code>parts</code> support.</p>
+<p>Serialization note:
+    Use <code>.dict()</code> instead of <code>.model_dump()</code> for serialization. The parent class
+    <code>iscc_schema.base.BaseModel</code> provides a <code>.dict()</code> method that wraps <code>.model_dump()</code>
+    with the correct defaults (<code>exclude_none=True</code>, <code>exclude_unset=True</code>,
+    <code>by_alias=True</code>). Calling <code>.model_dump()</code> directly uses different pydantic defaults
+    and will produce unexpected results (all fields including <code>None</code> values, field names
+    instead of aliases like <code>type_</code> instead of <code>@type</code>).</p>
 
 
 

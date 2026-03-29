@@ -25,7 +25,7 @@
       
       
       <link rel="icon" href="../../images/iscc-logo-icon-black.svg">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.5">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
     
     
       
@@ -972,6 +972,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#iscc_sdk.tools.run_ffprobe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        run_ffprobe
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#iscc_sdk.tools.run_fpcalc" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1046,6 +1057,7 @@
 
 
 <h1 id="iscc-tools"><strong>ISCC</strong> - Tools<a class="headerlink" href="#iscc-tools" title="Permanent link">#</a></h1>
+<!-- mdformat-off -->
 
 
 <div class="doc doc-object doc-module">
@@ -1101,7 +1113,7 @@
 
 
 <h3 id="iscc_sdk.tools.run_ffmpeg" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">run_ffmpeg</span><span class="p">(</span><span class="n">args</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span></code>
+            <code class="highlight language-python"><span class="n">run_ffmpeg</span><span class="p">(</span><span class="n">args</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">]])</span></code>
 
 <a href="#iscc_sdk.tools.run_ffmpeg" class="headerlink" title="Permanent link">#</a></h3>
 
@@ -1123,8 +1135,31 @@
 <div class="doc doc-object doc-function">
 
 
+<h3 id="iscc_sdk.tools.run_ffprobe" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">run_ffprobe</span><span class="p">(</span><span class="n">args</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">]])</span></code>
+
+<a href="#iscc_sdk.tools.run_ffprobe" class="headerlink" title="Permanent link">#</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Run ffprobe command with <code>args</code>. Install ffprobe if not found.</p>
+
+
+    </div>
+
+</div>
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
 <h3 id="iscc_sdk.tools.run_fpcalc" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">run_fpcalc</span><span class="p">(</span><span class="n">args</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span></code>
+            <code class="highlight language-python"><span class="n">run_fpcalc</span><span class="p">(</span><span class="n">args</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">]])</span></code>
 
 <a href="#iscc_sdk.tools.run_fpcalc" class="headerlink" title="Permanent link">#</a></h3>
 
@@ -1145,7 +1180,7 @@
 
     </div>
 
-</div>
+</div><!-- mdformat-on -->
 
 
 

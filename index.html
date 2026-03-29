@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="images/iscc-logo-icon-black.svg">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.5">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
     
     
       
@@ -795,6 +795,56 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#development" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Development
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Development">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Setup
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#quality-gates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quality Gates
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#testing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Testing
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#contributing" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1372,7 +1422,7 @@ workflows in Python applications.</p>
 <a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;My Asset Title&quot;</span><span class="p">,</span>
 <a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Description of the asset&quot;</span><span class="p">,</span>
 <a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>    <span class="n">creator</span><span class="o">=</span><span class="s2">&quot;Creator Name&quot;</span><span class="p">,</span>
-<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>    <span class="n">license</span><span class="o">=</span><span class="s2">&quot;https://creativecommons.org/licenses/by/4.0/&quot;</span>
+<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>    <span class="n">license</span><span class="o">=</span><span class="s2">&quot;https://creativecommons.org/licenses/by/4.0/&quot;</span><span class="p">,</span>
 <a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="p">)</span>
 <a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>
 <a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a><span class="c1"># Embed metadata into a copy of the file</span>
@@ -1403,11 +1453,45 @@ within <a href="https://www.iso.org/committee/48836.html">ISO/TC 46/SC 9/WG 18</
 API changes and other backward incompatible changes are to be expected until a v1.0 stable
 release.</p>
 </blockquote>
+<h2 id="development">Development<a class="headerlink" href="#development" title="Permanent link">#</a></h2>
+<h3 id="setup">Setup<a class="headerlink" href="#setup" title="Permanent link">#</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="c1"># Install dependencies</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>uv<span class="w"> </span>sync
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="c1"># Install pre-commit hooks (using prek, a fast Rust-based drop-in replacement)</span>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>uv<span class="w"> </span>tool<span class="w"> </span>install<span class="w"> </span>prek
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>prek<span class="w"> </span>install
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>prek<span class="w"> </span>install<span class="w"> </span>--hook-type<span class="w"> </span>pre-push
+</code></pre></div>
+<h3 id="quality-gates">Quality Gates<a class="headerlink" href="#quality-gates" title="Permanent link">#</a></h3>
+<p>Pre-commit hooks run automatically via <a href="https://github.com/j178/prek">prek</a>:</p>
+<p><strong>On commit</strong> (fast, auto-fix):</p>
+<ul>
+<li>File hygiene (line endings, trailing whitespace, EOF)</li>
+<li>Config validation (YAML, JSON, TOML)</li>
+<li>Markdown formatting (mdformat)</li>
+<li>Ruff linting with auto-fix</li>
+<li>Ruff formatting</li>
+</ul>
+<p><strong>On push</strong> (thorough):</p>
+<ul>
+<li>Type checking (zuban)</li>
+<li>Security scan (Ruff S rules)</li>
+<li>Complexity check (Ruff C901)</li>
+<li>Tests with 100% coverage</li>
+</ul>
+<p>Run all hooks manually:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>prek<span class="w"> </span>run<span class="w"> </span>--all-files<span class="w">                </span><span class="c1"># pre-commit hooks</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>prek<span class="w"> </span>run<span class="w"> </span>--all-files<span class="w"> </span>--hook-stage<span class="w"> </span>pre-push<span class="w">  </span><span class="c1"># pre-push hooks</span>
+</code></pre></div>
+<h3 id="testing">Testing<a class="headerlink" href="#testing" title="Permanent link">#</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>uv<span class="w"> </span>run<span class="w"> </span>pytest<span class="w"> </span>--cov<span class="o">=</span>iscc_sdk<span class="w"> </span>--cov-fail-under<span class="o">=</span><span class="m">100</span><span class="w"> </span>-p<span class="w"> </span>no:warnings
+</code></pre></div>
 <h2 id="contributing">Contributing<a class="headerlink" href="#contributing" title="Permanent link">#</a></h2>
 <p>Contributions are welcome! Here's how you can help:</p>
 <ol>
 <li><strong>Issues:</strong> Report bugs or suggest features via the
-   <a href="https://github.com/iscc/iscc-sdk/issues">issue tracker</a></li>
+    <a href="https://github.com/iscc/iscc-sdk/issues">issue tracker</a></li>
 <li><strong>Pull Requests:</strong> Submit PRs for bug fixes or new features</li>
 <li><strong>Discussion:</strong> For significant changes, please open an issue first to discuss your plans</li>
 <li><strong>Testing:</strong> Please make sure to update tests as appropriate</li>
