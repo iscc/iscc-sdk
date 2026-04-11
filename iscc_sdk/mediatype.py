@@ -22,8 +22,8 @@ __all__ = [
 ]
 
 
-def mediatype_and_mode(fp):
-    # type: (str|Path) -> tuple[str, str]
+def mediatype_and_mode(fp, file_name=None):
+    # type: (str|Path, Optional[str]) -> tuple[str, str]
     """
     Detect mediatype and processing mode for a file.
 
@@ -36,13 +36,14 @@ def mediatype_and_mode(fp):
         ```
 
     :param fp: Filepath
+    :param file_name: Custom filename for MIME type guessing (overrides actual filename).
     :return: A tuple of `mediatype` and `mode`
     """
     fp = Path(fp)
     with open(fp, "rb") as infile:
         data = infile.read(4096)
 
-    mediatype = mediatype_guess(data, file_name=fp.name)
+    mediatype = mediatype_guess(data, file_name=file_name or fp.name)
     try:
         mode = mediatype_to_mode(mediatype)
     except idk.IsccUnsupportedMediatype:

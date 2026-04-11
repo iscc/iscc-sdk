@@ -104,3 +104,11 @@ def test_mime_samples():
 def test_media_type_and_mode_raises():
     with pytest.raises(idk.IsccUnsupportedMediatype):
         idk.mediatype_and_mode(iss.texts("mobi")[0].as_posix())
+
+
+def test_mediatype_and_mode_with_file_name(jpg_file, tmp_path):
+    import shutil
+
+    noext = tmp_path / "tempfile"
+    shutil.copy(jpg_file, noext)
+    assert idk.mediatype_and_mode(noext, file_name="photo.jpg") == ("image/jpeg", "image")

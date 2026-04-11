@@ -1,3 +1,5 @@
+import shutil
+
 import pytest
 
 import iscc_sdk as idk
@@ -15,6 +17,18 @@ def test_extract_metadata(jpg_file):
 def test_extract_metadata_unsupported(svg_file):
     with pytest.raises(idk.IsccUnsupportedMediatype):
         idk.extract_metadata(svg_file)
+
+
+def test_extract_metadata_with_file_name(jpg_file, tmp_path):
+    noext = tmp_path / "tempfile"
+    shutil.copy(jpg_file, noext)
+    result = idk.extract_metadata(noext, file_name="img.jpg")
+    assert result.dict() == {
+        "name": "Concentrated Cat",
+        "creator": "Some Cat Lover",
+        "height": 133,
+        "width": 200,
+    }
 
 
 def test_embed_metadata(jpg_file):

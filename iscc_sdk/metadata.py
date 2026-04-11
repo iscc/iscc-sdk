@@ -33,16 +33,17 @@ EMBEDDERS = {
 }
 
 
-def extract_metadata(fp):
-    # type: (str|Path) -> idk.IsccMeta
+def extract_metadata(fp, file_name=None):
+    # type: (str|Path, Optional[str]) -> idk.IsccMeta
     """
     Extract metadata from file.
 
     :param fp: Filepath to media file.
+    :param file_name: Custom filename for MIME type guessing (overrides actual filename).
     :return: Metadata mapped to IsccMeta schema
     """
     fp = Path(fp)
-    mime, mode = idk.mediatype_and_mode(fp)
+    mime, mode = idk.mediatype_and_mode(fp, file_name=file_name)
     extractor = EXTRACTORS.get(str(mode))
     if extractor:
         metadata: dict[str, Any] = extractor(fp)
