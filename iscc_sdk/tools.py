@@ -51,16 +51,16 @@ FFMPEG_CHECKSUMS = {
     "windows-64": "06814a07bff1f281a5282110ebff2ccb088cd9ffda35fce5af63b8e88cc2385a",
 }
 
-FPCALC_VERSION = "1.5.1"
+FPCALC_VERSION = "1.6.0"
 FPCALC_URLS = {
     "windows-64": f"{BASE_URL}/chromaprint-fpcalc-{FPCALC_VERSION}-windows-x86_64.zip",
     "linux-64": f"{BASE_URL}/chromaprint-fpcalc-{FPCALC_VERSION}-linux-x86_64.tar.gz",
     "darwin-64": f"{BASE_URL}/chromaprint-fpcalc-{FPCALC_VERSION}-macos-x86_64.tar.gz",
 }
 FPCALC_CHECKSUMS = {
-    "windows-64": "e29364a879ddf7bea403b0474a556e43f40d525e0d8d5adb81578f1fbf16d9ba",
-    "linux-64": "190977d9419daed8a555240b9c6ddf6a12940c5ff470647095ee6242e217de5c",
-    "darwin-64": "afea164b0bc9b91e5205d126f96a21836a91ea2d24200e1b7612a7304ea3b4f1",
+    "windows-64": "2514e29aa194d25e199d3ba2721964526126ff4ce6b8e8ad21b9186b92d0b363",
+    "linux-64": "4a39891188fd6d739a41fdb84022a03f0f6cd04dd10b7f02cd9ab85ee3fa8145",
+    "darwin-64": "0c4c27715752308ba7b4adc01597cf9f9e76f0023ba281a6cd7827b7bcbae93e",
 }
 
 
