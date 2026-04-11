@@ -152,7 +152,7 @@ def batch(folder: Path, workers: int = os.cpu_count() or 1):  # pragma: no cover
 @app.command()
 def install():
     """Install content processing tools."""
-    idk.install()
+    idk.install()  # type: ignore[operator]
 
 
 @app.command()

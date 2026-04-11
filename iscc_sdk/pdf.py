@@ -46,7 +46,7 @@ def pdf_thumbnail(fp):
         page = doc.load_page(0)
         pix = page.get_pixmap()
         mode = "RGBA" if pix.alpha else "RGB"
-        img = Image.frombytes(mode, [pix.width, pix.height], pix.samples)
+        img = Image.frombytes(mode, (pix.width, pix.height), pix.samples)
         size = idk.sdk_opts.image_thumbnail_size
         img.thumbnail((size, size), resample=idk.LANCZOS)
         return ImageEnhance.Sharpness(img.convert("RGB")).enhance(1.4)

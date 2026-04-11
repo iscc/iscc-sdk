@@ -25,6 +25,6 @@ def thumbnail(fp):
     """
     fp = Path(fp)
     mime, mode = idk.mediatype_and_mode(fp)
-    thumbnailer = THUMBNAILERS.get(mode)
+    thumbnailer = THUMBNAILERS.get(str(mode))
     if thumbnailer:
         return thumbnailer(fp)

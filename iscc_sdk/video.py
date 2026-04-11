@@ -3,6 +3,7 @@
 import json
 import os
 from fractions import Fraction
+from typing import Any
 
 from langcodes import standardize_tag
 from loguru import logger as log
@@ -103,7 +104,7 @@ def video_meta_extract_ffprobe(fp):
 
     vstream = video_streams[0]
 
-    meta = dict()
+    meta: dict[str, Any] = dict()
 
     # Duration
     duration_format = jmespath.search("format.duration", metadata)

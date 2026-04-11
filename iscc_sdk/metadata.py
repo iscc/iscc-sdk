@@ -3,7 +3,7 @@
 import shutil
 
 from pathlib import Path
-from typing import Optional, List, Dict, Any
+from typing import Optional, List, Dict, Any, Union
 
 
 from pydantic import field_validator
@@ -43,9 +43,9 @@ def extract_metadata(fp):
     """
     fp = Path(fp)
     mime, mode = idk.mediatype_and_mode(fp)
-    extractor = EXTRACTORS.get(mode)
+    extractor = EXTRACTORS.get(str(mode))
     if extractor:
-        metadata = extractor(fp)
+        metadata: dict[str, Any] = extractor(fp)
         return idk.IsccMeta.model_construct(**metadata)
 
 
@@ -63,7 +63,7 @@ def embed_metadata(fp, meta, outpath=None):
     if isinstance(meta, dict):
         meta = idk.IsccMeta.model_construct(**meta)
     mime, mode = idk.mediatype_and_mode(fp)
-    embedder = EMBEDDERS.get(mode)
+    embedder = EMBEDDERS.get(str(mode))
     if embedder:
         new_file_path = embedder(fp, meta)
         if new_file_path and outpath:
@@ -86,7 +86,7 @@ class IsccMeta(iss.IsccMeta):  # type: ignore[misc]
         instead of aliases like ``type_`` instead of ``@type``).
     """
 
-    parts: Optional[List[Dict[str, Any]]] = None
+    parts: Optional[List[Union[str, Dict[str, Any]]]] = None
 
     @field_validator("name", mode="before")
     @classmethod
