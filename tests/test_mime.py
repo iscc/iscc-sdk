@@ -31,6 +31,15 @@ def test_mime_guess_ogg_missdetection_fix():
     assert idk.mediatype_guess(OGG_HEADER) == "video/ogg"
 
 
+def test_mime_guess_audio_ogg_not_misdetected_as_video():
+    """Audio OGG/OPUS files must be detected as audio/ogg, not video/ogg."""
+    for fp in iss.audios("ogg") + iss.audios("opus"):
+        with open(fp, "rb") as f:
+            data = f.read(4096)
+        result = idk.mediatype_guess(data, file_name=fp.name)
+        assert result == "audio/ogg", f"{fp.name}: expected audio/ogg, got {result}"
+
+
 def test_mime_normalize():
     assert idk.mediatype_normalize("audio/x-aiff") == "audio/aiff"
 

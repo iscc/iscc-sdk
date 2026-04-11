@@ -83,7 +83,9 @@ def mediatype_guess(data, file_name=None):
     media_type = guess_name or guess_data
 
     # Special cases of missdetection
-    if guess_data and "ogg" in guess_data:
+    # Override with content-sniffed OGG type only when the filename didn't already
+    # identify the file as an OGG variant (e.g. audio/ogg from a .ogg audio file).
+    if guess_data and "ogg" in guess_data and not (guess_name and "ogg" in guess_name):
         media_type = guess_data
 
     if media_type is None:
