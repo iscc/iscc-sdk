@@ -1,16 +1,104 @@
-import time
+import posixpath
+import re
 import shutil
 import tempfile
+import time
 from functools import cache
 from pathlib import Path
+from urllib.parse import urlparse
+from urllib.request import Request, urlopen
+
 from loguru import logger as log
 
 
 __all__ = [
+    "DownloadFile",
     "TempFile",
+    "is_url",
     "timer",
     "is_installed",
 ]
+
+
+def is_url(text):
+    # type: (str) -> bool
+    """Check if text is an HTTP or HTTPS URL."""
+    try:
+        parsed = urlparse(str(text))
+        return parsed.scheme in ("http", "https")
+    except Exception:
+        return False
+
+
+def _filename_from_url(url, headers=None):
+    # type: (str, Any) -> str
+    """Extract a safe filename from URL path or Content-Disposition header.
+
+    The returned filename is always a plain basename with no directory components,
+    preventing path traversal when joined with a temp directory path.
+
+    :param url: The URL to extract the filename from.
+    :param headers: Optional HTTP response headers.
+    :return: Sanitized filename or "download" as fallback.
+    """
+    filename = ""
+
+    # Try Content-Disposition header first
+    if headers:
+        content_disp = headers.get("Content-Disposition", "")
+        # Match quoted filenames (may contain spaces) or unquoted tokens
+        match = re.search(r'filename="([^"]+)"|filename=([^;\s]+)', content_disp)
+        if match:
+            filename = match.group(1) or match.group(2) or ""
+
+    # Fall back to URL path
+    if not filename:
+        parsed = urlparse(url)
+        filename = posixpath.basename(parsed.path)
+
+    # Sanitize: strip directory components and use only the final basename
+    filename = Path(filename).name
+    return filename or "download"
+
+
+class DownloadFile:
+    """Context manager that downloads a URL to a temporary file.
+
+    The original filename from the URL is preserved so that mediatype detection
+    based on file extensions works correctly.
+
+    Usage::
+
+        with DownloadFile("https://example.com/document.pdf") as tmp:
+            result = code_iscc(tmp.as_posix())
+    """
+
+    def __init__(self, url):
+        # type: (str) -> None
+        self.url = url
+        self.temp_dir = None  # type: Path | None
+
+    def __enter__(self):
+        # type: () -> Path
+        self.temp_dir = Path(tempfile.mkdtemp())
+        req = Request(self.url, headers={"User-Agent": "iscc-sdk"})
+        log.info(f"Downloading {self.url}")
+        with urlopen(req, timeout=60) as response:
+            # Use final URL after redirects for better filename/extension detection
+            filename = _filename_from_url(response.geturl(), response.headers)
+            temp_path = self.temp_dir / filename
+            with open(temp_path, "wb") as f:
+                while True:
+                    chunk = response.read(8192)
+                    if not chunk:
+                        break
+                    f.write(chunk)
+        log.info(f"Downloaded to {temp_path}")
+        return temp_path
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        if self.temp_dir:
+            shutil.rmtree(self.temp_dir)
 
 
 class TempFile:

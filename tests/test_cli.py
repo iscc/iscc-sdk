@@ -1,5 +1,6 @@
 import pytest
 import sys
+from contextlib import contextmanager
 from pathlib import Path
 from typing import Tuple
 from typer.testing import CliRunner
@@ -140,3 +141,73 @@ def test_cli_extract_error(monkeypatch):
     result = runner.invoke(app, ["extract", iss.texts()[0].as_posix()])
     assert result.exit_code == 1
     assert "Error extracting text: Test extraction error" in result.stdout
+
+
+def test_cli_create_url(monkeypatch):
+    """Test create command with a URL input."""
+    audio_path = iss.audios(ext="mp3")[0]
+
+    @contextmanager
+    def mock_download(url):
+        yield audio_path
+
+    monkeypatch.setattr("iscc_sdk.cli.idk.DownloadFile", mock_download)
+    result = runner.invoke(app, ["create", "https://example.com/demo.mp3"])
+    assert result.exit_code == 0
+    data = json.loads(result.stdout)
+    assert "ISCC:" in data["iscc"]
+
+
+def test_cli_create_url_download_error(monkeypatch):
+    """Test create command with a URL that fails to download."""
+
+    @contextmanager
+    def mock_download(url):
+        raise ConnectionError("Network unreachable")
+        yield  # pragma: no cover
+
+    monkeypatch.setattr("iscc_sdk.cli.idk.DownloadFile", mock_download)
+    result = runner.invoke(app, ["create", "https://example.com/file.pdf"])
+    assert result.exit_code == 1
+    assert "Error downloading or processing URL" in result.stdout
+
+
+def test_cli_create_url_unsupported(monkeypatch, dat_file):
+    """Test create command with a URL pointing to unsupported media type."""
+
+    @contextmanager
+    def mock_download(url):
+        yield Path(dat_file)
+
+    monkeypatch.setattr("iscc_sdk.cli.idk.DownloadFile", mock_download)
+    result = runner.invoke(app, ["create", "https://example.com/data.dat"])
+    assert result.exit_code == 1
+    assert "No known processing mode for" in result.stdout
+
+
+def test_cli_extract_url(monkeypatch):
+    """Test extract command with a URL input."""
+    text_path = iss.texts()[0]
+
+    @contextmanager
+    def mock_download(url):
+        yield text_path
+
+    monkeypatch.setattr("iscc_sdk.cli.idk.DownloadFile", mock_download)
+    result = runner.invoke(app, ["extract", "https://example.com/text.txt"])
+    assert result.exit_code == 0
+    assert len(result.stdout.strip()) > 0
+
+
+def test_cli_extract_url_error(monkeypatch):
+    """Test extract command with a URL that fails."""
+
+    @contextmanager
+    def mock_download(url):
+        raise ConnectionError("Network unreachable")
+        yield  # pragma: no cover
+
+    monkeypatch.setattr("iscc_sdk.cli.idk.DownloadFile", mock_download)
+    result = runner.invoke(app, ["extract", "https://example.com/file.pdf"])
+    assert result.exit_code == 1
+    assert "Error downloading or extracting text" in result.stdout
