@@ -1,5 +1,6 @@
 """*Detect and map RFC6838 mediatypes to ISCC processing modes*."""
 
+import re
 from pathlib import Path
 from loguru import logger as log
 from typing import List
@@ -22,8 +23,8 @@ __all__ = [
 ]
 
 
-def mediatype_and_mode(fp):
-    # type: (str|Path) -> tuple[str, str]
+def mediatype_and_mode(fp, file_name=None):
+    # type: (str|Path, Optional[str]) -> tuple[str, str]
     """
     Detect mediatype and processing mode for a file.
 
@@ -36,13 +37,14 @@ def mediatype_and_mode(fp):
         ```
 
     :param fp: Filepath
+    :param file_name: Custom filename for MIME type guessing (overrides actual filename).
     :return: A tuple of `mediatype` and `mode`
     """
     fp = Path(fp)
     with open(fp, "rb") as infile:
         data = infile.read(4096)
 
-    mediatype = mediatype_guess(data, file_name=fp.name)
+    mediatype = mediatype_guess(data, file_name=file_name or fp.name)
     try:
         mode = mediatype_to_mode(mediatype)
     except idk.IsccUnsupportedMediatype:
@@ -55,7 +57,8 @@ def mediatype_guess(data, file_name=None):
     """
     Guess mediatype from raw data or filename.
 
-    First try to guess by file extension. If that fails we match by content sniffing.
+    Uses both filename extension and content sniffing. When they disagree, prefers content
+    sniffing unless only the filename maps to a supported type (e.g., container formats).
 
     !!! example
         ```
@@ -80,11 +83,40 @@ def mediatype_guess(data, file_name=None):
     # Normalize
     guess_data = mediatype_normalize(guess_data)
     guess_name = mediatype_normalize(guess_name)
-    media_type = guess_name or guess_data
 
-    # Special cases of missdetection
-    if guess_data and "ogg" in guess_data:
-        media_type = guess_data
+    # Resolve filename vs content detection
+    if guess_name and guess_data and guess_name != guess_data:
+        # Prefer filename when only it maps to a supported type (containers sniffed
+        # as zip, OOXML variants, etc.) or when content returns a generic XML type.
+        if mediatype_supported(guess_name) and not mediatype_supported(guess_data):
+            media_type = guess_name
+        elif mediatype_supported(guess_name) and guess_data in _GENERIC_SNIFF_TYPES:
+            media_type = guess_name
+        elif mediatype_supported(guess_data) and not mediatype_supported(guess_name):
+            media_type = guess_data
+        else:
+            # Both supported or neither: prefer filename (original behavior).
+            # SVG detection for XML-named files is handled by the upgrade logic below.
+            media_type = guess_name or guess_data
+    else:
+        media_type = guess_name or guess_data
+
+    # OGG family: when both suggest OGG variants (e.g., audio/ogg vs video/ogg from
+    # application/ogg normalization), prefer filename to preserve the audio/video
+    # distinction since content sniffing cannot reliably differentiate OGG containers.
+    if (
+        guess_name
+        and guess_data
+        and guess_name != guess_data
+        and "ogg" in guess_name
+        and "ogg" in guess_data
+    ):
+        media_type = guess_name
+
+    # SVG content misidentified as generic XML (common with some libmagic builds and
+    # extensionless/xml-named files) — upgrade when the root element is <svg>.
+    if media_type in _GENERIC_SNIFF_TYPES and data and _has_svg_root(data):
+        media_type = "image/svg+xml"
 
     if media_type is None:
         log.warning("Could not detect mediatype. Fallback to application/octet-stream")
@@ -136,7 +168,11 @@ def mediatype_from_name(name):
     :return: Mediatype string
     :rtype: str
     """
-    return mimetypes.guess_type(name)[0]
+    mime, encoding = mimetypes.guess_type(name)
+    # Compressed variants (e.g., .svgz → gzip) are not directly processable
+    if encoding is not None:
+        return None
+    return mime
 
 
 def mediatype_from_data(data):
@@ -257,6 +293,7 @@ SUPPORTED_MEDIATYPES = {
     "application/postscript": {"mode": "image", "ext": "eps"},
     "image/avif": {"mode": "image", "ext": "avif"},
     "image/heic": {"mode": "image", "ext": "heic"},
+    "image/svg+xml": {"mode": "image", "ext": "svg"},
     # Audio Formats
     "audio/mpeg": {"mode": "audio", "ext": "mp3"},
     "audio/wav": {"mode": "audio", "ext": "wav"},
@@ -287,10 +324,8 @@ SUPPORTED_MEDIATYPES = {
     "video/x-ms-wmv": {"mode": "video", "ext": "wmv"},
 }
 
-# Signals eplixitly unsupported mediatypes that fail processing
-UNSUPPORTED_MEDIATYPES = {
-    "image/svg+xml": {"mode": "image", "ext": "svg"},
-}
+# Signals explicitly unsupported mediatypes that fail processing
+UNSUPPORTED_MEDIATYPES = {}
 
 
 MEDIATYPE_NORM = {
@@ -303,6 +338,33 @@ MEDIATYPE_NORM = {
     "application/vnd.ms-asf": "video/x-ms-asf",
     "application/vnd.adobe.flash.movie": "application/x-shockwave-flash",
 }
+
+# Generic types from content sniffing that should yield to more specific filename-based
+# types (e.g., some libmagic installs report SVG content as text/xml).
+_GENERIC_SNIFF_TYPES = frozenset({"text/xml", "application/xml"})
+
+# Matches the first XML element tag name — the [a-zA-Z] class naturally skips
+# declarations (<?), comments (<!-), and DOCTYPE (<!) since ? and ! are excluded.
+_FIRST_ELEM_RE = re.compile(rb"<([a-zA-Z][\w.-]*)")
+_XML_COMMENT_RE = re.compile(rb"<!--.*?-->", re.DOTALL)
+
+# Full xmlns declaration patterns (prevents substring matches like "svgx")
+_SVG_XMLNS_DQ = b'xmlns="http://www.w3.org/2000/svg"'
+_SVG_XMLNS_SQ = b"xmlns='http://www.w3.org/2000/svg'"
+
+
+def _has_svg_root(data):
+    # type: (bytes) -> bool
+    """Check if data is SVG: first XML element is ``<svg>`` with the SVG namespace."""
+    # Strip comments so <svg> inside <!-- ... --> is not matched
+    cleaned = _XML_COMMENT_RE.sub(b"", data)
+    match = _FIRST_ELEM_RE.search(cleaned)
+    return (
+        match is not None
+        and match.group(1) == b"svg"
+        and (_SVG_XMLNS_DQ in cleaned or _SVG_XMLNS_SQ in cleaned)
+    )
+
 
 SUPPORTED_EXTENSIONS = []
 for v in SUPPORTED_MEDIATYPES.values():

@@ -145,15 +145,19 @@ def image_trim_border(img):
     return img
 
 
-def image_meta_extract(fp):
-    # type: (str|Path) -> dict
+def image_meta_extract(fp, file_name=None):
+    # type: (str|Path, Optional[str]) -> dict
     """
     Extract metadata from image using native exiv2 bindings.
 
     :param fp: Filepath to image file.
+    :param file_name: Custom filename for MIME type guessing (overrides actual filename).
     :return: Metadata mapped to IsccMeta schema
     """
     fp = Path(fp)
+    mt, _ = idk.mediatype_and_mode(fp, file_name=file_name)
+    if mt == "image/svg+xml":
+        return idk.svg_meta_extract(fp)
     with _exiv2_lock:
         img_exiv = exiv2.ImageFactory.open(fp.as_posix())
         img_exiv.readMetadata()
@@ -192,6 +196,9 @@ def image_meta_embed(fp, meta):
     :return: Filepath to the new image file with updated metadata
     """
     fp = Path(fp)
+    mt, _ = idk.mediatype_and_mode(fp)
+    if mt == "image/svg+xml":
+        return idk.svg_meta_embed(fp, meta)
 
     # Create temp directory and copy the image
     tempdir = Path(tempfile.mkdtemp())
@@ -255,6 +262,9 @@ def image_meta_delete(fp):
     :param fp: Filepath to image file.
     """
     fp = Path(fp)
+    mt, _ = idk.mediatype_and_mode(fp)
+    if mt == "image/svg+xml":
+        return idk.svg_meta_delete(fp)
     img_exiv = exiv2.ImageFactory.open(str(fp))
     img_exiv.readMetadata()
 
@@ -278,6 +288,9 @@ def image_thumbnail(fp):
     :return: Thumbnail image as PIL Image object
     """
     fp = Path(fp)
+    mt, _ = idk.mediatype_and_mode(fp)
+    if mt == "image/svg+xml":
+        return idk.svg_thumbnail(fp)
     size = idk.sdk_opts.image_thumbnail_size
     img = Image.open(fp)
 

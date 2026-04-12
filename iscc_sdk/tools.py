@@ -27,40 +27,40 @@ __all__ = [
 BASE_VERSION = "1.0.0"
 BASE_URL = f"https://github.com/iscc/iscc-binaries/releases/download/v{BASE_VERSION}"
 
-FFPROBE_VERSION = "6.1"
+FFPROBE_VERSION = "8.1"
 FFPROBE_URLS = {
     "windows-64": f"{BASE_URL}/ffprobe-{FFPROBE_VERSION}-win-64.zip",
     "linux-64": f"{BASE_URL}/ffprobe-{FFPROBE_VERSION}-linux-64.zip",
     "darwin-64": f"{BASE_URL}/ffprobe-{FFPROBE_VERSION}-macos-64.zip",
 }
 FFPROBE_CHECKSUMS = {
-    "linux-64": "bd01b79f3a0d0a19cd0e086b38f60b4fad4d3274bb5cfebf8abc3f1da5603a16",
-    "darwin-64": "799f36c0cd8797b015186e7aa78d1dd93a634f56e084325de2672d89a840eabb",
-    "windows-64": "75497ab05dad5b8e7edb52ad1e1b626c8756fe33ae67825ab202b213f6d80548",
+    "linux-64": "5d4768df3c5d3f25863bf801d2545867a5b232d7fd94acb22625c08691c1697d",
+    "darwin-64": "c281052b0eace0d64bf85334b91005a52d2a622c5e43eda0e2e72b88de2e2c4b",
+    "windows-64": "e96fd1ab1b26c3f943e0fb4a89cb7fb601bbf1ba12fcf8414ff13cbdad6f4c5d",
 }
 
-FFMPEG_VERSION = "6.1"
+FFMPEG_VERSION = "8.1"
 FFMPEG_URLS = {
     "windows-64": f"{BASE_URL}/ffmpeg-{FFMPEG_VERSION}-win-64.zip",
     "linux-64": f"{BASE_URL}/ffmpeg-{FFMPEG_VERSION}-linux-64.zip",
-    "darwin-64": f"{BASE_URL}/ffmpeg-{FFMPEG_VERSION}-osx-64.zip",
+    "darwin-64": f"{BASE_URL}/ffmpeg-{FFMPEG_VERSION}-macos-64.zip",
 }
 FFMPEG_CHECKSUMS = {
-    "linux-64": "e96b9796ad7404151eabaaaea30151fb9226554ee87d5164161fd20de4482dd1",
-    "darwin-64": "ba9313f7bf8c46ebe60b8f39fa6de1657c94f51fd14d77c6e02ef09fab6ff5bc",
-    "windows-64": "06814a07bff1f281a5282110ebff2ccb088cd9ffda35fce5af63b8e88cc2385a",
+    "linux-64": "9a49dc5c1d7720acee5e269565f2674d8bb6a08fa9b428cfb173c5ff22188b45",
+    "darwin-64": "abc4ddf4f0fa0273ab635cde87cbaa02b71caa0fb77cd93a29e6945a8c17758d",
+    "windows-64": "d84c72395b9f52cf34c516fdfab83edfa631165b32ab1674ed0f4686989e1126",
 }
 
-FPCALC_VERSION = "1.5.1"
+FPCALC_VERSION = "1.6.0"
 FPCALC_URLS = {
     "windows-64": f"{BASE_URL}/chromaprint-fpcalc-{FPCALC_VERSION}-windows-x86_64.zip",
     "linux-64": f"{BASE_URL}/chromaprint-fpcalc-{FPCALC_VERSION}-linux-x86_64.tar.gz",
     "darwin-64": f"{BASE_URL}/chromaprint-fpcalc-{FPCALC_VERSION}-macos-x86_64.tar.gz",
 }
 FPCALC_CHECKSUMS = {
-    "windows-64": "e29364a879ddf7bea403b0474a556e43f40d525e0d8d5adb81578f1fbf16d9ba",
-    "linux-64": "190977d9419daed8a555240b9c6ddf6a12940c5ff470647095ee6242e217de5c",
-    "darwin-64": "afea164b0bc9b91e5205d126f96a21836a91ea2d24200e1b7612a7304ea3b4f1",
+    "windows-64": "2514e29aa194d25e199d3ba2721964526126ff4ce6b8e8ad21b9186b92d0b363",
+    "linux-64": "4a39891188fd6d739a41fdb84022a03f0f6cd04dd10b7f02cd9ab85ee3fa8145",
+    "darwin-64": "0c4c27715752308ba7b4adc01597cf9f9e76f0023ba281a6cd7827b7bcbae93e",
 }
 
 

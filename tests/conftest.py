@@ -121,10 +121,19 @@ def svg_file(tmp_path_factory) -> str:
     dst = tmp_path_factory.mktemp("data") / "image.svg"
     svg_content = dedent("""
     <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100">
+        <title>Red Circle</title>
+        <desc>A simple red circle</desc>
         <circle cx="50" cy="50" r="40" stroke="black" stroke-width="3" fill="red" />
     </svg>
     """)
     dst.write_bytes(svg_content.encode("utf-8"))
+    return dst.as_posix()
+
+
+@pytest.fixture(scope="function")
+def dat_file(tmp_path_factory) -> str:
+    dst = tmp_path_factory.mktemp("data") / "data.dat"
+    dst.write_bytes(b"UNSUPPORTED_BINARY_DATA_FOR_TESTING_12345678901234567890")
     return dst.as_posix()
 
 

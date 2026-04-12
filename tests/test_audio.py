@@ -66,7 +66,7 @@ def test_audio_meta_embed_wav(wav_file):
 
 def test_audio_extract_features(mp3_file):
     assert idk.audio_features_extract(mp3_file) == {
-        "duration": 15.54,
+        "duration": 15.5,
         "fingerprint": [
             684003877,
             683946551,

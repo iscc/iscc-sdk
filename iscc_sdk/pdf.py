@@ -7,7 +7,12 @@ from pathlib import Path
 from PIL import Image, ImageEnhance
 import fitz
 import iscc_sdk as idk
+import pdf_oxide
 from pdf_oxide import PdfDocument
+
+# Suppress noisy warnings about unsupported TrueType cmap format 0
+# (text extraction still works correctly via fallback mappings)
+pdf_oxide.set_log_level("error")
 
 
 __all__ = [
@@ -41,7 +46,7 @@ def pdf_thumbnail(fp):
         page = doc.load_page(0)
         pix = page.get_pixmap()
         mode = "RGBA" if pix.alpha else "RGB"
-        img = Image.frombytes(mode, [pix.width, pix.height], pix.samples)
+        img = Image.frombytes(mode, (pix.width, pix.height), pix.samples)
         size = idk.sdk_opts.image_thumbnail_size
         img.thumbnail((size, size), resample=idk.LANCZOS)
         return ImageEnhance.Sharpness(img.convert("RGB")).enhance(1.4)

@@ -1,5 +1,7 @@
 """*SDK main top-level functions*."""
 
+from typing import Any
+
 from loguru import logger as log
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
@@ -77,7 +79,7 @@ def code_iscc(fp, name=None, description=None, meta=None, **options):
     opts = idk.sdk_opts.override(options)
 
     # Initialize collectors
-    iscc_meta = dict(filename=fp.name)
+    iscc_meta: dict[str, Any] = dict(filename=fp.name)
 
     with open(fp, "rb") as infile:
         data = infile.read(4096)
@@ -102,7 +104,7 @@ def code_iscc(fp, name=None, description=None, meta=None, **options):
             "audio": "AudioObject",
             "video": "VideoObject",
         }
-        type_ = schema_org_map.get(mode)
+        type_ = schema_org_map.get(str(mode))
         if type_:
             iscc_meta["@type"] = type_
         iscc_meta["mode"] = mode
@@ -220,7 +222,7 @@ def code_iscc_mt(fp, name=None, description=None, meta=None, **options):  # prag
     """
     fp = Path(fp)
     opts = idk.sdk_opts.override(options)
-    iscc_meta = dict(filename=fp.name)
+    iscc_meta: dict[str, Any] = dict(filename=fp.name)
 
     # Track list properties for custom merging
     iscc_units = []
@@ -395,8 +397,8 @@ def code_content(fp, **options):
         raise idk.IsccUnsupportedMediatype(mediatype)
 
     cc.mediatype = mediatype
-    cc.mode = mode
-    cc.type_ = schema_org_map.get(mode)
+    cc.mode = mode  # type: ignore[assignment]
+    cc.type_ = schema_org_map.get(mode)  # type: ignore[assignment]
 
     return cc
 
@@ -420,7 +422,7 @@ def code_text(fp, text=None, **options):
     """
     fp = Path(fp)
     opts = idk.sdk_opts.override(options)
-    meta = dict()
+    meta: dict[str, Any] = dict()
 
     if opts.extract_meta:
         meta = idk.text_meta_extract(fp)
@@ -486,17 +488,23 @@ def code_image(fp, **options):
     """
     fp = Path(fp)
     opts = idk.sdk_opts.override(options)
-    meta = dict()
+    meta: dict[str, Any] = dict()
+    mt, _ = idk.mediatype_and_mode(fp)
+    is_svg = mt == "image/svg+xml"
 
     if opts.extract_meta:
         meta = idk.image_meta_extract(fp)
+
+    # Rasterize SVG once, reuse for both thumbnail and content code
+    img = idk.svg_rasterize(fp) if is_svg else Image.open(fp)
+
     if opts.create_thumb:
-        thumbnail_img = idk.image_thumbnail(fp)
+        thumbnail_img = idk.svg_thumbnail(fp, img=img) if is_svg else idk.image_thumbnail(fp)
         thumbnail_durl = idk.image_to_data_url(thumbnail_img)
         meta["thumbnail"] = thumbnail_durl
 
-    pixels = idk.image_normalize(Image.open(fp))
-    code_obj = il.gen_image_code_v0(pixels, bits=opts.bits)
+    pixels = idk.image_normalize(img)
+    code_obj = il.gen_image_code_v0(pixels, bits=opts.bits)  # type: ignore[arg-type]
     meta.update(code_obj)
 
     return idk.IsccMeta.model_construct(**meta)
@@ -574,7 +582,7 @@ def code_video(fp, **options):
     """
     fp = Path(fp)
     opts = idk.sdk_opts.override(options)
-    meta = dict()
+    meta: dict[str, Any] = dict()
 
     if opts.extract_meta:
         meta = idk.video_meta_extract(fp)

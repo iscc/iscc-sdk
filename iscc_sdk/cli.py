@@ -90,19 +90,32 @@ def process_file(fp: Path):
 
 
 @app.command()
-def create(file: Path):
-    """Create ISCC-CODE for single FILE."""
+def create(file: str):
+    """Create ISCC-CODE for a local FILE or URL."""
     log.remove()
-    if file.is_file() and file.exists():
+    if idk.is_url(file):
         try:
-            result = idk.code_iscc(file.as_posix())
-            typer.echo(result.json(indent=2))
+            with idk.DownloadFile(file) as tmp:
+                result = idk.code_iscc(tmp.as_posix())
+                typer.echo(result.json(indent=2))
         except idk.IsccUnsupportedMediatype as e:
             typer.echo(e)
             raise typer.Exit(code=1)
+        except Exception as e:
+            typer.echo(f"Error downloading or processing URL: {e}")
+            raise typer.Exit(code=1)
     else:
-        typer.echo(f"Invalid file path {file}")
-        raise typer.Exit(code=1)
+        file_path = Path(file)
+        if file_path.is_file() and file_path.exists():
+            try:
+                result = idk.code_iscc(file_path.as_posix())
+                typer.echo(result.json(indent=2))
+            except idk.IsccUnsupportedMediatype as e:
+                typer.echo(e)
+                raise typer.Exit(code=1)
+        else:
+            typer.echo(f"Invalid file path {file}")
+            raise typer.Exit(code=1)
 
 
 @app.command()
@@ -152,7 +165,7 @@ def batch(folder: Path, workers: int = os.cpu_count() or 1):  # pragma: no cover
 @app.command()
 def install():
     """Install content processing tools."""
-    idk.install()
+    idk.install()  # type: ignore[operator]
 
 
 @app.command()
@@ -162,19 +175,29 @@ def selftest():
 
 
 @app.command()
-def extract(file: Path):
-    """Extract text from FILE and print to console."""
+def extract(file: str):
+    """Extract text from a local FILE or URL and print to console."""
     log.remove()
-    if file.is_file() and file.exists():
+    if idk.is_url(file):
         try:
-            text = idk.text_extract(file.as_posix())
-            typer.echo(il.text_clean(text))
+            with idk.DownloadFile(file) as tmp:
+                text = idk.text_extract(tmp.as_posix())
+                typer.echo(il.text_clean(text))
         except Exception as e:
-            typer.echo(f"Error extracting text: {e}")
+            typer.echo(f"Error downloading or extracting text: {e}")
             raise typer.Exit(code=1)
     else:
-        typer.echo(f"Invalid file path {file}")
-        raise typer.Exit(code=1)
+        file_path = Path(file)
+        if file_path.is_file() and file_path.exists():
+            try:
+                text = idk.text_extract(file_path.as_posix())
+                typer.echo(il.text_clean(text))
+            except Exception as e:
+                typer.echo(f"Error extracting text: {e}")
+                raise typer.Exit(code=1)
+        else:
+            typer.echo(f"Invalid file path {file}")
+            raise typer.Exit(code=1)
 
 
 if __name__ == "__main__":  # pragma: no cover

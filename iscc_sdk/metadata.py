@@ -3,7 +3,7 @@
 import shutil
 
 from pathlib import Path
-from typing import Optional, List, Dict, Any
+from typing import Optional, List, Dict, Any, Union
 
 
 from pydantic import field_validator
@@ -33,19 +33,23 @@ EMBEDDERS = {
 }
 
 
-def extract_metadata(fp):
-    # type: (str|Path) -> idk.IsccMeta
+def extract_metadata(fp, file_name=None):
+    # type: (str|Path, Optional[str]) -> idk.IsccMeta
     """
     Extract metadata from file.
 
     :param fp: Filepath to media file.
+    :param file_name: Custom filename for MIME type guessing (overrides actual filename).
     :return: Metadata mapped to IsccMeta schema
     """
     fp = Path(fp)
-    mime, mode = idk.mediatype_and_mode(fp)
-    extractor = EXTRACTORS.get(mode)
+    mime, mode = idk.mediatype_and_mode(fp, file_name=file_name)
+    extractor = EXTRACTORS.get(str(mode))
     if extractor:
-        metadata = extractor(fp)
+        if mode == "image":
+            metadata: dict[str, Any] = idk.image_meta_extract(fp, file_name=file_name)
+        else:
+            metadata: dict[str, Any] = extractor(fp)
         return idk.IsccMeta.model_construct(**metadata)
 
 
@@ -63,7 +67,7 @@ def embed_metadata(fp, meta, outpath=None):
     if isinstance(meta, dict):
         meta = idk.IsccMeta.model_construct(**meta)
     mime, mode = idk.mediatype_and_mode(fp)
-    embedder = EMBEDDERS.get(mode)
+    embedder = EMBEDDERS.get(str(mode))
     if embedder:
         new_file_path = embedder(fp, meta)
         if new_file_path and outpath:
@@ -86,7 +90,7 @@ class IsccMeta(iss.IsccMeta):  # type: ignore[misc]
         instead of aliases like ``type_`` instead of ``@type``).
     """
 
-    parts: Optional[List[Dict[str, Any]]] = None
+    parts: Optional[List[Union[str, Dict[str, Any]]]] = None
 
     @field_validator("name", mode="before")
     @classmethod
