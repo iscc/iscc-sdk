@@ -70,7 +70,7 @@ workflows in Python applications.
 
 ## Requirements
 
-- Python 3.9 to 3.13 on 64-bit systems
+- Python 3.11 to 3.14 on 64-bit systems
 - Supported platforms: Windows, macOS, Linux
 
 ## Installation

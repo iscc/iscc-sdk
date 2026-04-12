@@ -1,5 +1,22 @@
 ## Changelog
 
+## 0.9.0 - 2026-04-12
+
+- Added SVG as supported media type with rasterization, metadata, and thumbnail support
+- Added RDF/Dublin Core metadata extraction and embedding for SVG files
+- Added URL support to CLI `create` and `extract` commands
+- Added optional `file_name` parameter to `extract_metadata` and `mediatype_and_mode`
+- Added descriptive User-Agent header for URL downloads
+- Added file extension from content sniffing for extensionless downloads
+- Fixed URL scheme validation in `download_file` for security (S310)
+- Fixed type checking errors in `extract_metadata`
+- Fixed audio/ogg detection for OGG/OPUS audio files
+- Suppressed noisy pdf-oxide TrueType cmap warnings
+- Replaced defusedxml with lxml safe parser for SVG XML parsing
+- Upgraded ffmpeg/ffprobe from 6.1 to 8.1
+- Upgraded fpcalc (chromaprint) from 1.5.1 to 1.6.0
+- Automated documentation deployment on release
+
 ## 0.8.9 - 2026-03-29
 
 - Fixed EPUB cover extraction for URL-encoded paths in OPF manifest
