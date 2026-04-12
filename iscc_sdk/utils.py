@@ -5,6 +5,7 @@ import shutil
 import tempfile
 import time
 from functools import cache
+from importlib import metadata
 from pathlib import Path
 from urllib.parse import urlparse
 from urllib.request import Request, urlopen
@@ -117,9 +118,7 @@ class DownloadFile:
     def __enter__(self):
         # type: () -> Path
         self.temp_dir = Path(tempfile.mkdtemp())
-        import iscc_sdk
-
-        ua = f"iscc-sdk/{iscc_sdk.__version__} (+https://github.com/iscc/iscc-sdk)"
+        ua = f"iscc-sdk/{metadata.version('iscc-sdk')} (+https://github.com/iscc/iscc-sdk)"
         req = Request(self.url, headers={"User-Agent": ua})
         log.info(f"Downloading {self.url}")
         with urlopen(req, timeout=60) as response:
