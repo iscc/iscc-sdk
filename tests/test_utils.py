@@ -120,6 +120,47 @@ def test_filename_from_url_content_disposition_with_spaces():
     assert _filename_from_url("https://example.com/download", headers=headers) == "my deck.pptx"
 
 
+def test_filename_from_url_no_content_type_influence():
+    """Content-Type should not influence _filename_from_url (handled by _add_ext_from_content)."""
+    headers = Message()
+    headers["Content-Type"] = "text/html; charset=utf-8"
+    assert _filename_from_url("https://example.com/", headers=headers) == "download"
+
+
+def test_add_ext_from_content_sniffing(tmp_path):
+    """Content sniffing should add the correct extension for known types."""
+    from iscc_sdk.utils import _add_ext_from_content
+
+    p = tmp_path / "download"
+    p.write_bytes(b"%PDF-1.4 fake pdf content here for magic detection")
+    result = _add_ext_from_content(p)
+    assert result.suffix == ".pdf"
+    assert result.exists()
+
+
+def test_add_ext_from_content_type_fallback(tmp_path):
+    """Content-Type header is used when content sniffing returns octet-stream."""
+    from iscc_sdk.utils import _add_ext_from_content
+
+    p = tmp_path / "download"
+    # Write content that magic can't identify (returns application/octet-stream)
+    p.write_bytes(b"\x00\x01\x02\x03unknown binary data")
+    result = _add_ext_from_content(p, content_type="text/html; charset=utf-8")
+    assert result.suffix == ".html"
+    assert result.exists()
+
+
+def test_add_ext_from_content_no_match(tmp_path):
+    """Returns original path when neither sniffing nor Content-Type provide an extension."""
+    from iscc_sdk.utils import _add_ext_from_content
+
+    p = tmp_path / "download"
+    p.write_bytes(b"\x00\x01\x02\x03unknown binary data")
+    result = _add_ext_from_content(p)
+    assert result == p
+    assert result.suffix == ""
+
+
 def test_filename_from_url_path_traversal():
     headers = Message()
     headers["Content-Disposition"] = 'attachment; filename="../../etc/passwd"'
@@ -153,6 +194,24 @@ def test_download_file(jpg_file):
                 assert f.read() == content
         # Temp file cleaned up
         assert not tmp.exists()
+
+
+def test_download_file_extensionless_url(jpg_file):
+    """Test that DownloadFile adds extension via content sniffing for extensionless URLs."""
+    with open(jpg_file, "rb") as f:
+        content = f.read()
+
+    mock_response = MagicMock()
+    mock_response.read = MagicMock(side_effect=[content, b""])
+    mock_response.headers = Message()
+    mock_response.geturl = MagicMock(return_value="https://example.com/download")
+    mock_response.__enter__ = MagicMock(return_value=mock_response)
+    mock_response.__exit__ = MagicMock(return_value=False)
+
+    with patch("iscc_sdk.utils.urlopen", return_value=mock_response):
+        with idk.DownloadFile("https://example.com/download") as tmp:
+            assert tmp.exists()
+            assert tmp.suffix == ".jpg"
 
 
 def test_download_file_cleanup_on_error(jpg_file):
