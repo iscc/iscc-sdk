@@ -415,3 +415,17 @@ def test_thumbnail_data_url_avif(jpg_file, monkeypatch):
     img = idk.image_strip_metadata(img)
     durl = idk.image_to_data_url(img)
     assert durl.startswith("data:image/avif;base64,AAAAIGZ0eXBhdmlmAAAAAGF2aWZtaWYxbWlhZk1BMUIAAAD")
+
+
+def test_image_meta_embed_svg(svg_file):
+    meta = IsccMeta(name="Embedded Title", description="Embedded Desc")
+    new_file = idk.image_meta_embed(svg_file, meta)
+    extracted = idk.image_meta_extract(new_file)
+    assert extracted["name"] == "Embedded Title"
+    assert extracted["description"] == "Embedded Desc"
+
+
+def test_image_thumbnail_svg(svg_file):
+    thumb = idk.image_thumbnail(svg_file)
+    assert isinstance(thumb, Image.Image)
+    assert thumb.mode == "RGB"

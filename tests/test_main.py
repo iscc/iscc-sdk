@@ -393,40 +393,62 @@ def test_code_iscc_non_uri_metadata(jpg_file):
     }
 
 
-def test_code_iscc_sum_fallback(svg_file, monkeypatch):
-    monkeypatch.setattr(idk.sdk_opts, "fallback", True)
+def test_code_iscc_svg(svg_file):
     result = idk.code_iscc(svg_file)
+    d = result.dict(exclude={"generator"})
+    assert d["@type"] == "ImageObject"
+    assert d["mediatype"] == "image/svg+xml"
+    assert d["name"] == "Red Circle"
+    assert d["description"] == "A simple red circle"
+    assert d["iscc"].startswith("ISCC:K")
+    assert d["filename"] == "image.svg"
+
+
+def test_code_image_svg(svg_file):
+    result = idk.code_image(svg_file)
+    d = result.dict()
+    assert d["iscc"].startswith("ISCC:EE")
+    assert d["name"] == "Red Circle"
+    assert d["description"] == "A simple red circle"
+    assert d["width"] == 100
+    assert d["height"] == 100
+    assert "thumbnail" in d
+
+
+def test_code_iscc_sum_fallback(dat_file, monkeypatch):
+    monkeypatch.setattr(idk.sdk_opts, "fallback", True)
+    result = idk.code_iscc(dat_file)
     assert result.dict(exclude={"generator"}) == {
-        "datahash": "1e20344474d5a2ba3451baeba1565b3932f369980f32d705617020a11f7817bd56c9",
-        "filename": "image.svg",
-        "filesize": 155,
-        "iscc": "ISCC:KUAPHHVHTGLKQFQ3GRCHJVNCXI2FC",
-        "mediatype": "image/svg+xml",
+        "datahash": "1e207f8cf03f0bef7ab3a9e6c2e08af3d4ecdcef00fd640133b2156195ec7114d593",
+        "filename": "data.dat",
+        "filesize": 56,
+        "iscc": "ISCC:KUANVM73ENHWYORXP6GPAPYL555LG",
+        "mediatype": "application/octet-stream",
     }
 
 
-def test_code_iscc_sum_fallback_wide_global(svg_file, monkeypatch):
+def test_code_iscc_sum_fallback_wide_global(dat_file, monkeypatch):
     monkeypatch.setattr(idk.sdk_opts, "fallback", True)
     monkeypatch.setattr(idk.sdk_opts, "bits", 256)
     monkeypatch.setattr(idk.sdk_opts, "wide", True)
-    result = idk.code_iscc(svg_file)
+    result = idk.code_iscc(dat_file)
     assert result.dict(exclude={"generator"}) == {
-        "datahash": "1e20344474d5a2ba3451baeba1565b3932f369980f32d705617020a11f7817bd56c9",
-        "filename": "image.svg",
-        "filesize": 155,
-        "iscc": "ISCC:K4APHHVHTGLKQFQ3KFZE6YGUYHVMONCEOTK2FORUKG5OXIKWLM4TF4Y",
-        "mediatype": "image/svg+xml",
+        "datahash": "1e207f8cf03f0bef7ab3a9e6c2e08af3d4ecdcef00fd640133b2156195ec7114d593",
+        "filename": "data.dat",
+        "filesize": 56,
+        "iscc": "ISCC:K4ANVM73ENHWYORXQK5AKM2IV47JI74M6A7QX332WOU6NQXARLZ5J3A",
+        "mediatype": "application/octet-stream",
     }
 
 
-def test_code_iscc_sum_fallback_wide_explicit(svg_file, monkeypatch):
-    result = idk.code_iscc(svg_file, bits=256, wide=True, fallback=True)
+def test_code_iscc_sum_fallback_wide_explicit(dat_file):
+    result = idk.code_iscc(dat_file, bits=256, wide=True, fallback=True)
     assert result.dict(exclude={"generator"}) == {
-        "datahash": "1e20344474d5a2ba3451baeba1565b3932f369980f32d705617020a11f7817bd56c9",
-        "filename": "image.svg",
-        "filesize": 155,
-        "iscc": "ISCC:K4APHHVHTGLKQFQ3KFZE6YGUYHVMONCEOTK2FORUKG5OXIKWLM4TF4Y",
-        "mediatype": "image/svg+xml",
+        "datahash": "1e207f8cf03f0bef7ab3a9e6c2e08af3d4ecdcef00fd640133b2156195ec7114d593",
+        "filename": "data.dat",
+        "filesize": 56,
+        "iscc": "ISCC:K4ANVM73ENHWYORXQK5AKM2IV47JI74M6A7QX332WOU6NQXARLZ5J3A",
+        "mediatype": "application/octet-stream",
     }
 
 

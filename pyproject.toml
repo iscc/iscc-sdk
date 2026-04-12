@@ -59,6 +59,8 @@ dependencies = [
     "iscc-lib",
     "pydantic-settings",
     "pdf-oxide",
+    "resvg_py",
+    "defusedxml",
 ]
 
 [project.optional-dependencies]

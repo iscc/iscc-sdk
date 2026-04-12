@@ -71,10 +71,16 @@ def test_cli_create():
     }
 
 
-def test_cli_create_unsupported(svg_file):
+def test_cli_create_svg(svg_file):
     result = runner.invoke(app, ["create", svg_file])
+    assert result.exit_code == 0
+    assert "ISCC:" in result.stdout
+
+
+def test_cli_create_unsupported(dat_file):
+    result = runner.invoke(app, ["create", dat_file])
     assert result.exit_code == 1
-    assert "No known processing mode for image/svg+xml" in result.stdout
+    assert "No known processing mode for" in result.stdout
 
 
 def test_cli_batch_no_arg():

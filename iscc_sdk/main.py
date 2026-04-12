@@ -489,15 +489,21 @@ def code_image(fp, **options):
     fp = Path(fp)
     opts = idk.sdk_opts.override(options)
     meta: dict[str, Any] = dict()
+    mt, _ = idk.mediatype_and_mode(fp)
+    is_svg = mt == "image/svg+xml"
 
     if opts.extract_meta:
         meta = idk.image_meta_extract(fp)
+
+    # Rasterize SVG once, reuse for both thumbnail and content code
+    img = idk.svg_rasterize(fp) if is_svg else Image.open(fp)
+
     if opts.create_thumb:
-        thumbnail_img = idk.image_thumbnail(fp)
+        thumbnail_img = idk.svg_thumbnail(fp, img=img) if is_svg else idk.image_thumbnail(fp)
         thumbnail_durl = idk.image_to_data_url(thumbnail_img)
         meta["thumbnail"] = thumbnail_durl
 
-    pixels = idk.image_normalize(Image.open(fp))
+    pixels = idk.image_normalize(img)
     code_obj = il.gen_image_code_v0(pixels, bits=opts.bits)  # type: ignore[arg-type]
     meta.update(code_obj)
 

@@ -46,7 +46,10 @@ def extract_metadata(fp, file_name=None):
     mime, mode = idk.mediatype_and_mode(fp, file_name=file_name)
     extractor = EXTRACTORS.get(str(mode))
     if extractor:
-        metadata: dict[str, Any] = extractor(fp)
+        if mode == "image":
+            metadata: dict[str, Any] = extractor(fp, file_name=file_name)
+        else:
+            metadata: dict[str, Any] = extractor(fp)
         return idk.IsccMeta.model_construct(**metadata)
 
 
