@@ -122,6 +122,9 @@ ignore_errors = true
 [tool.ruff]
 line-length = 100
 
+[tool.ruff.lint.mccabe]
+max-complexity = 13
+
 [tool.ruff.lint.per-file-ignores]
 "iscc_sdk/__init__.py" = ["E402", "F401", "F403"]
 "iscc_sdk/tools.py" = ["S101", "S202", "S310", "S603"]

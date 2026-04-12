@@ -47,7 +47,7 @@ def extract_metadata(fp, file_name=None):
     extractor = EXTRACTORS.get(str(mode))
     if extractor:
         if mode == "image":
-            metadata: dict[str, Any] = extractor(fp, file_name=file_name)
+            metadata: dict[str, Any] = idk.image_meta_extract(fp, file_name=file_name)
         else:
             metadata: dict[str, Any] = extractor(fp)
         return idk.IsccMeta.model_construct(**metadata)
