@@ -117,7 +117,10 @@ class DownloadFile:
     def __enter__(self):
         # type: () -> Path
         self.temp_dir = Path(tempfile.mkdtemp())
-        req = Request(self.url, headers={"User-Agent": "iscc-sdk"})
+        import iscc_sdk
+
+        ua = f"iscc-sdk/{iscc_sdk.__version__} (+https://github.com/iscc/iscc-sdk)"
+        req = Request(self.url, headers={"User-Agent": ua})
         log.info(f"Downloading {self.url}")
         with urlopen(req, timeout=60) as response:
             # Use final URL after redirects for better filename/extension detection
