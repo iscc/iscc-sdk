@@ -2,6 +2,7 @@
 import time
 from email.message import Message
 from unittest.mock import patch, MagicMock
+import pytest
 import iscc_sdk as idk
 from iscc_sdk.utils import _filename_from_url
 
@@ -194,6 +195,11 @@ def test_download_file(jpg_file):
                 assert f.read() == content
         # Temp file cleaned up
         assert not tmp.exists()
+
+
+def test_download_file_rejects_ftp():
+    with pytest.raises(ValueError, match="Only HTTP and HTTPS"):
+        idk.DownloadFile("ftp://example.com/file.pdf")
 
 
 def test_download_file_extensionless_url(jpg_file):

@@ -112,6 +112,9 @@ class DownloadFile:
 
     def __init__(self, url):
         # type: (str) -> None
+        parsed = urlparse(url)
+        if parsed.scheme not in ("http", "https"):
+            raise ValueError(f"Only HTTP and HTTPS URLs are supported, got: {parsed.scheme!r}")
         self.url = url
         self.temp_dir = None  # type: Path | None
 
@@ -119,9 +122,9 @@ class DownloadFile:
         # type: () -> Path
         self.temp_dir = Path(tempfile.mkdtemp())
         ua = f"iscc-sdk/{metadata.version('iscc-sdk')} (+https://github.com/iscc/iscc-sdk)"
-        req = Request(self.url, headers={"User-Agent": ua})
+        req = Request(self.url, headers={"User-Agent": ua})  # noqa: S310
         log.info(f"Downloading {self.url}")
-        with urlopen(req, timeout=60) as response:
+        with urlopen(req, timeout=60) as response:  # noqa: S310
             # Use final URL after redirects for better filename/extension detection
             filename = _filename_from_url(response.geturl(), response.headers)
             content_type = response.headers.get("Content-Type", "")
