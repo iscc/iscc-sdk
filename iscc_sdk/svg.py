@@ -5,10 +5,8 @@ import re
 import tempfile
 from pathlib import Path
 
-import xml.etree.ElementTree as StdET
-
 import resvg_py
-from defusedxml import ElementTree as ET
+from lxml import etree
 from loguru import logger as log
 from PIL import Image, ImageEnhance
 
@@ -24,7 +22,6 @@ __all__ = [
 ]
 
 SVG_NS = "http://www.w3.org/2000/svg"
-StdET.register_namespace("", SVG_NS)
 
 _DIMENSION_RE = re.compile(r"^\s*([\d.]+(?:[eE][+-]?\d+)?)\s*(px|cm|mm|in|pt|pc)?\s*$")
 _XML_COMMENT_RE = re.compile(rb"<!--.*?-->", re.DOTALL)
@@ -40,6 +37,21 @@ _UNIT_TO_PX = {
     "pt": 96.0 / 72.0,
     "pc": 96.0 / 6.0,
 }
+
+
+def _safe_parse(source):
+    # type: (str|Path) -> etree._ElementTree
+    """Parse XML with entity resolution and network access disabled.
+
+    Rejects documents containing entity declarations to prevent entity
+    expansion attacks and preserve safety when the prolog is copied to output.
+    """
+    content = Path(source).read_bytes()
+    cleaned = _XML_COMMENT_RE.sub(b"", content)
+    if b"<!ENTITY" in cleaned:
+        raise etree.XMLSyntaxError("Entity declarations are forbidden in SVG files", None, 0, 0)
+    parser = etree.XMLParser(resolve_entities=False, no_network=True)
+    return etree.parse(source, parser)
 
 
 def svg_rasterize(fp, max_size=_SVG_MAX_RENDER_SIZE):
@@ -85,7 +97,7 @@ def svg_meta_extract(fp):
     :return: Metadata mapped to IsccMeta schema
     """
     fp = Path(fp)
-    tree = ET.parse(fp)
+    tree = _safe_parse(fp)
     root = tree.getroot()
 
     mapped = {}
@@ -119,13 +131,13 @@ def svg_meta_embed(fp, meta):
     :return: Filepath to the new SVG file with updated metadata
     """
     fp = Path(fp)
-    tree = ET.parse(fp)
+    tree = _safe_parse(fp)
     root = tree.getroot()
 
     if meta.name:
         title_el = root.find(f"{{{SVG_NS}}}title")
         if title_el is None:
-            title_el = StdET.SubElement(root, f"{{{SVG_NS}}}title")
+            title_el = etree.SubElement(root, f"{{{SVG_NS}}}title")
             # Insert title as first child
             root.remove(title_el)
             root.insert(0, title_el)
@@ -134,7 +146,7 @@ def svg_meta_embed(fp, meta):
     if meta.description:
         desc_el = root.find(f"{{{SVG_NS}}}desc")
         if desc_el is None:
-            desc_el = StdET.SubElement(root, f"{{{SVG_NS}}}desc")
+            desc_el = etree.SubElement(root, f"{{{SVG_NS}}}desc")
             # Insert desc after title (or as first child)
             title_el = root.find(f"{{{SVG_NS}}}title")
             idx = list(root).index(title_el) + 1 if title_el is not None else 0
@@ -161,7 +173,7 @@ def svg_meta_delete(fp):
     """
     fp = Path(fp)
 
-    tree = ET.parse(fp)
+    tree = _safe_parse(fp)
     root = tree.getroot()
 
     for tag in ("title", "desc", "metadata"):
@@ -194,7 +206,7 @@ def svg_thumbnail(fp, img=None):
 
 
 def _svg_write_preserving_prolog(root, source_fp, target_fp):
-    # type: (StdET.Element, Path, Path) -> None
+    # type: (etree._Element, Path, Path) -> None
     """
     Serialize modified SVG root while preserving the original file's XML prolog.
 
@@ -210,12 +222,12 @@ def _svg_write_preserving_prolog(root, source_fp, target_fp):
     cleaned = _XML_COMMENT_RE.sub(lambda m: b" " * len(m.group()), original)
     svg_start = re.search(rb"<svg\b", cleaned)
     if svg_start is None:
-        StdET.ElementTree(root).write(target_fp, xml_declaration=True, encoding="utf-8")
+        etree.ElementTree(root).write(target_fp, xml_declaration=True, encoding="utf-8")
         return
     prolog = original[: svg_start.start()]
     # Ensure encoding declaration matches UTF-8 output
     prolog = re.sub(rb"encoding=[\"'][^\"']*[\"']", b'encoding="utf-8"', prolog)
-    new_root = StdET.tostring(root, encoding="unicode").encode("utf-8")
+    new_root = etree.tostring(root, encoding="unicode").encode("utf-8")
     target_fp.write_bytes(prolog + new_root)
 
 
@@ -223,7 +235,7 @@ _CSS_UNIT_RE = re.compile(r"^\s*[\d.]+(?:[eE][+-]?\d+)?\s*(cm|mm|in|pt|pc)\s*$")
 
 
 def _svg_normalize_units(fp):
-    # type: (Path) -> tuple[Path, StdET.Element]
+    # type: (Path) -> tuple[Path, etree._Element]
     """
     Return a render-ready SVG path with CSS-unit dimensions converted to pixels.
 
@@ -235,7 +247,7 @@ def _svg_normalize_units(fp):
     :param fp: Filepath to SVG file.
     :return: Tuple of (path to SVG file, parsed root element)
     """
-    tree = ET.parse(fp)
+    tree = _safe_parse(fp)
     root = tree.getroot()
 
     w_attr = root.get("width", "")
@@ -273,7 +285,7 @@ def _svg_normalize_units(fp):
 
 
 def _svg_native_size(root):
-    # type: (StdET.Element) -> tuple[int|None, int|None]
+    # type: (etree._Element) -> tuple[int|None, int|None]
     """
     Determine native pixel dimensions of an SVG from its XML attributes.
 

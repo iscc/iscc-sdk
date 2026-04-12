@@ -2,10 +2,12 @@
 
 import shutil
 
+import pytest
+from lxml import etree
 from PIL import Image
 
 import iscc_sdk as idk
-from iscc_sdk.svg import _parse_svg_dimension, _svg_write_preserving_prolog
+from iscc_sdk.svg import _parse_svg_dimension, _safe_parse, _svg_write_preserving_prolog
 
 
 def test_svg_rasterize(svg_file):
@@ -78,9 +80,7 @@ def test_svg_meta_extract_width_only(tmp_path):
 
 def test_svg_native_size_invalid_viewbox(tmp_path):
     """Invalid viewBox values return None dimensions."""
-    from defusedxml import ElementTree as ET
-
-    from iscc_sdk.svg import _svg_native_size
+    from iscc_sdk.svg import _safe_parse, _svg_native_size
 
     fp = tmp_path / "bad_viewbox.svg"
     fp.write_text(
@@ -88,7 +88,7 @@ def test_svg_native_size_invalid_viewbox(tmp_path):
         "<rect width='50' height='50' fill='blue'/>"
         "</svg>"
     )
-    root = ET.parse(fp).getroot()
+    root = _safe_parse(fp).getroot()
     w, h = _svg_native_size(root)
     assert w is None
     assert h is None
@@ -96,9 +96,7 @@ def test_svg_native_size_invalid_viewbox(tmp_path):
 
 def test_svg_native_size_width_only_with_viewbox(tmp_path):
     """One explicit dimension + viewBox computes the missing side from aspect ratio."""
-    from defusedxml import ElementTree as ET
-
-    from iscc_sdk.svg import _svg_native_size
+    from iscc_sdk.svg import _safe_parse, _svg_native_size
 
     fp = tmp_path / "widthonly.svg"
     fp.write_text(
@@ -106,7 +104,7 @@ def test_svg_native_size_width_only_with_viewbox(tmp_path):
         "<rect width='200' height='100' fill='green'/>"
         "</svg>"
     )
-    root = ET.parse(fp).getroot()
+    root = _safe_parse(fp).getroot()
     w, h = _svg_native_size(root)
     assert w == 600
     assert h == 300
@@ -114,9 +112,7 @@ def test_svg_native_size_width_only_with_viewbox(tmp_path):
 
 def test_svg_native_size_height_only_with_viewbox(tmp_path):
     """Height-only + viewBox computes width from aspect ratio."""
-    from defusedxml import ElementTree as ET
-
-    from iscc_sdk.svg import _svg_native_size
+    from iscc_sdk.svg import _safe_parse, _svg_native_size
 
     fp = tmp_path / "heightonly.svg"
     fp.write_text(
@@ -124,7 +120,7 @@ def test_svg_native_size_height_only_with_viewbox(tmp_path):
         "<rect width='200' height='100' fill='blue'/>"
         "</svg>"
     )
-    root = ET.parse(fp).getroot()
+    root = _safe_parse(fp).getroot()
     w, h = _svg_native_size(root)
     assert w == 600
     assert h == 300
@@ -347,15 +343,40 @@ def test_svg_meta_delete_preserves_prolog(tmp_path):
 
 def test_svg_write_preserving_prolog_fallback(tmp_path):
     """Fallback to full ElementTree write when source has no <svg> tag."""
-    import xml.etree.ElementTree as StdET
+    from lxml import etree
 
     fp = tmp_path / "nosvg.xml"
     fp.write_text("<root><child/></root>")
-    root = StdET.fromstring("<root><child/></root>")
+    root = etree.fromstring(b"<root><child/></root>")
     outfile = tmp_path / "out.xml"
     _svg_write_preserving_prolog(root, fp, outfile)
     assert outfile.exists()
     assert b"<root>" in outfile.read_bytes()
+
+
+def test_safe_parse_rejects_entities(tmp_path):
+    """SVGs with entity declarations are rejected to prevent XXE attacks."""
+    fp = tmp_path / "xxe.svg"
+    fp.write_text(
+        '<?xml version="1.0"?>'
+        '<!DOCTYPE svg [<!ENTITY xxe "malicious">]>'
+        '<svg xmlns="http://www.w3.org/2000/svg"><title>&xxe;</title></svg>'
+    )
+    with pytest.raises(etree.XMLSyntaxError, match="Entity declarations are forbidden"):
+        _safe_parse(fp)
+
+
+def test_safe_parse_allows_entity_in_comment(tmp_path):
+    """<!ENTITY inside an XML comment does not trigger rejection."""
+    fp = tmp_path / "commented.svg"
+    fp.write_text(
+        '<!-- <!ENTITY test "safe"> -->'
+        '<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50">'
+        "<rect width='50' height='50' fill='blue'/>"
+        "</svg>"
+    )
+    tree = _safe_parse(fp)
+    assert tree.getroot().tag == f"{{{idk.svg.SVG_NS}}}svg"
 
 
 def test_parse_svg_dimension():
