@@ -22,6 +22,12 @@ __all__ = [
 ]
 
 SVG_NS = "http://www.w3.org/2000/svg"
+RDF_NS = "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+DC_NS = "http://purl.org/dc/elements/1.1/"
+CC_NS = "http://creativecommons.org/ns#"
+ISCC_NS = "http://purl.org/iscc/schema/"
+
+_RDF_NSMAP = {"rdf": RDF_NS, "dc": DC_NS, "cc": CC_NS, "iscc": ISCC_NS}
 
 _DIMENSION_RE = re.compile(r"^\s*([\d.]+(?:[eE][+-]?\d+)?)\s*(px|cm|mm|in|pt|pc)?\s*$")
 _XML_COMMENT_RE = re.compile(rb"<!--.*?-->", re.DOTALL)
@@ -91,7 +97,8 @@ def svg_meta_extract(fp):
     """
     Extract metadata from SVG file.
 
-    Parses title, description, and dimensions from SVG XML.
+    Extracts from ISCC namespace in RDF, SVG native elements, and Dublin Core/CC
+    in RDF, with ISCC namespace taking highest priority.
 
     :param fp: Filepath to SVG file.
     :return: Metadata mapped to IsccMeta schema
@@ -101,14 +108,25 @@ def svg_meta_extract(fp):
     root = tree.getroot()
 
     mapped = {}
+    containers = _rdf_find_containers(root)
 
-    title_el = root.find(f"{{{SVG_NS}}}title")
-    if title_el is not None and title_el.text:
-        mapped["name"] = idk.text_sanitize(title_el.text.strip())
+    # Priority: ISCC namespace > SVG native elements > DC/CC namespace
+    for c in containers:
+        _try_set(mapped, "name", _rdf_text(c, ISCC_NS, "name"))
+        _try_set(mapped, "description", _rdf_text(c, ISCC_NS, "description"))
+        _try_set(mapped, "meta", _rdf_text(c, ISCC_NS, "meta"))
 
-    desc_el = root.find(f"{{{SVG_NS}}}desc")
-    if desc_el is not None and desc_el.text:
-        mapped["description"] = idk.text_sanitize(desc_el.text.strip())
+    _try_set(mapped, "name", _svg_el_text(root, "title"))
+    _try_set(mapped, "description", _svg_el_text(root, "desc"))
+
+    for c in containers:
+        _try_set(mapped, "name", _rdf_text(c, DC_NS, "title"))
+        _try_set(mapped, "description", _rdf_text(c, DC_NS, "description"))
+        _try_set(mapped, "creator", _rdf_text_or_bag(c, DC_NS, "creator"))
+        _try_set(mapped, "rights", _rdf_text(c, DC_NS, "rights"))
+        _try_set(mapped, "identifier", _rdf_text(c, DC_NS, "identifier"))
+        _try_set(mapped, "language", _rdf_text(c, DC_NS, "language"))
+        _try_set(mapped, "license", _rdf_resource(c, CC_NS, "license"))
 
     width, height = _svg_native_size(root)
     if width:
@@ -124,7 +142,8 @@ def svg_meta_embed(fp, meta):
     """
     Embed metadata into a copy of the SVG file.
 
-    Sets or updates title and desc elements in the SVG XML.
+    Writes to SVG native elements (title, desc) and RDF/Dublin Core in the
+    metadata element, mirroring the image module's dual ISCC+DC strategy.
 
     :param fp: Filepath to source SVG file.
     :param meta: Metadata to embed into SVG.
@@ -134,6 +153,7 @@ def svg_meta_embed(fp, meta):
     tree = _safe_parse(fp)
     root = tree.getroot()
 
+    # SVG native elements
     if meta.name:
         title_el = root.find(f"{{{SVG_NS}}}title")
         if title_el is None:
@@ -153,6 +173,25 @@ def svg_meta_embed(fp, meta):
             root.remove(desc_el)
             root.insert(idx, desc_el)
         desc_el.text = meta.description
+
+    # RDF metadata in <metadata> element
+    desc_el = _rdf_ensure_description(root)
+    if meta.name:
+        _rdf_set_text(desc_el, ISCC_NS, "name", meta.name)
+        _rdf_set_text(desc_el, DC_NS, "title", meta.name)
+    if meta.description:
+        _rdf_set_text(desc_el, ISCC_NS, "description", meta.description)
+        _rdf_set_text(desc_el, DC_NS, "description", meta.description)
+    if meta.meta:
+        _rdf_set_text(desc_el, ISCC_NS, "meta", meta.meta)
+    if meta.creator:
+        _rdf_set_text(desc_el, DC_NS, "creator", meta.creator)
+    if meta.rights:
+        _rdf_set_text(desc_el, DC_NS, "rights", meta.rights)
+    if meta.identifier:
+        _rdf_set_text(desc_el, DC_NS, "identifier", meta.identifier)
+    if meta.license:
+        _rdf_set_resource(desc_el, CC_NS, "license", meta.license)
 
     tempdir = Path(tempfile.mkdtemp())
     outfile = tempdir / fp.name
@@ -203,6 +242,108 @@ def svg_thumbnail(fp, img=None):
     img = img.convert("RGB")
     img.thumbnail((size, size), resample=idk.LANCZOS)
     return ImageEnhance.Sharpness(img).enhance(1.4)
+
+
+def _try_set(d, key, value):
+    # type: (dict, str, str|None) -> None
+    """Set key in dict only if not already present and value is truthy."""
+    if key not in d and value:
+        d[key] = idk.text_sanitize(value)
+
+
+def _svg_el_text(root, local_name):
+    # type: (etree._Element, str) -> str|None
+    """Get text content from a direct SVG child element."""
+    el = root.find(f"{{{SVG_NS}}}{local_name}")
+    if el is not None and el.text:
+        return el.text.strip()
+    return None
+
+
+def _rdf_find_containers(root):
+    # type: (etree._Element) -> list[etree._Element]
+    """Find all RDF container elements (rdf:Description, cc:Work) inside ``<metadata>``."""
+    metadata = root.find(f"{{{SVG_NS}}}metadata")
+    if metadata is None:
+        return []
+    containers = []
+    for tag in (f"{{{RDF_NS}}}Description", f"{{{CC_NS}}}Work"):
+        containers.extend(metadata.findall(f".//{tag}"))
+    return containers
+
+
+def _rdf_text(desc, ns, local_name):
+    # type: (etree._Element, str, str) -> str|None
+    """Get text content of an RDF child element."""
+    el = desc.find(f"{{{ns}}}{local_name}")
+    if el is not None and el.text:
+        return el.text.strip()
+    return None
+
+
+def _rdf_text_or_bag(desc, ns, local_name):
+    # type: (etree._Element, str, str) -> str|None
+    """Get text from element directly or from first rdf:li in rdf:Bag/rdf:Seq."""
+    el = desc.find(f"{{{ns}}}{local_name}")
+    if el is None:
+        return None
+    li = el.find(f".//{{{RDF_NS}}}li")
+    if li is not None and li.text:
+        return li.text.strip()
+    if el.text:
+        return el.text.strip()
+    return None
+
+
+def _rdf_resource(desc, ns, local_name):
+    # type: (etree._Element, str, str) -> str|None
+    """Get rdf:resource attribute of an RDF child element."""
+    el = desc.find(f"{{{ns}}}{local_name}")
+    if el is not None:
+        return el.get(f"{{{RDF_NS}}}resource")
+    return None
+
+
+def _rdf_ensure_description(root):
+    # type: (etree._Element) -> etree._Element
+    """Ensure ``<metadata>/<rdf:RDF>/<rdf:Description>`` structure exists."""
+    metadata = root.find(f"{{{SVG_NS}}}metadata")
+    if metadata is None:
+        metadata = etree.SubElement(root, f"{{{SVG_NS}}}metadata")
+    rdf = metadata.find(f"{{{RDF_NS}}}RDF")
+    if rdf is None:
+        rdf = etree.SubElement(metadata, f"{{{RDF_NS}}}RDF", nsmap=_RDF_NSMAP)
+    desc = rdf.find(f"{{{RDF_NS}}}Description")
+    if desc is None:
+        desc = etree.SubElement(rdf, f"{{{RDF_NS}}}Description")
+        desc.set(f"{{{RDF_NS}}}about", "")
+    return desc
+
+
+def _rdf_set_text(desc, ns, local_name, value):
+    # type: (etree._Element, str, str, str) -> None
+    """Set text content of an RDF child element, creating it if needed.
+
+    Clears existing children (e.g. rdf:Bag from Inkscape) to prevent stale
+    structured values from shadowing the new text on re-extraction.
+    """
+    tag = f"{{{ns}}}{local_name}"
+    el = desc.find(tag)
+    if el is None:
+        el = etree.SubElement(desc, tag)
+    for child in list(el):
+        el.remove(child)
+    el.text = value
+
+
+def _rdf_set_resource(desc, ns, local_name, url):
+    # type: (etree._Element, str, str, str) -> None
+    """Set rdf:resource attribute on an RDF child element, creating it if needed."""
+    tag = f"{{{ns}}}{local_name}"
+    el = desc.find(tag)
+    if el is None:
+        el = etree.SubElement(desc, tag)
+    el.set(f"{{{RDF_NS}}}resource", url)
 
 
 def _svg_write_preserving_prolog(root, source_fp, target_fp):

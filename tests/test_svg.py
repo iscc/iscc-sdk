@@ -379,6 +379,242 @@ def test_safe_parse_allows_entity_in_comment(tmp_path):
     assert tree.getroot().tag == f"{{{idk.svg.SVG_NS}}}svg"
 
 
+def test_svg_meta_extract_dc_metadata(tmp_path):
+    """Extract metadata from Dublin Core in <metadata> RDF."""
+    fp = tmp_path / "dc.svg"
+    fp.write_text(
+        '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100">'
+        "<metadata>"
+        '<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"'
+        '         xmlns:dc="http://purl.org/dc/elements/1.1/"'
+        '         xmlns:cc="http://creativecommons.org/ns#">'
+        '<rdf:Description rdf:about="">'
+        "<dc:title>DC Title</dc:title>"
+        "<dc:description>DC Description</dc:description>"
+        "<dc:creator>John Doe</dc:creator>"
+        "<dc:rights>Copyright 2024</dc:rights>"
+        "<dc:identifier>svg-001</dc:identifier>"
+        "<dc:language>en</dc:language>"
+        '<cc:license rdf:resource="https://creativecommons.org/licenses/by/4.0/"/>'
+        "</rdf:Description>"
+        "</rdf:RDF>"
+        "</metadata>"
+        '<rect width="100" height="100" fill="blue"/>'
+        "</svg>"
+    )
+    meta = idk.svg_meta_extract(fp)
+    assert meta["name"] == "DC Title"
+    assert meta["description"] == "DC Description"
+    assert meta["creator"] == "John Doe"
+    assert meta["rights"] == "Copyright 2024"
+    assert meta["identifier"] == "svg-001"
+    assert meta["language"] == "en"
+    assert meta["license"] == "https://creativecommons.org/licenses/by/4.0/"
+
+
+def test_svg_meta_extract_dc_creator_bag(tmp_path):
+    """Extract creator from rdf:Bag structure (Inkscape format)."""
+    fp = tmp_path / "inkscape.svg"
+    fp.write_text(
+        '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100">'
+        "<metadata>"
+        '<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"'
+        '         xmlns:dc="http://purl.org/dc/elements/1.1/">'
+        '<rdf:Description rdf:about="">'
+        "<dc:creator><rdf:Bag><rdf:li>Jane Artist</rdf:li></rdf:Bag></dc:creator>"
+        "</rdf:Description>"
+        "</rdf:RDF>"
+        "</metadata>"
+        '<rect width="100" height="100" fill="red"/>'
+        "</svg>"
+    )
+    meta = idk.svg_meta_extract(fp)
+    assert meta["creator"] == "Jane Artist"
+
+
+def test_svg_meta_extract_dc_creator_empty(tmp_path):
+    """Empty dc:creator element (no text, no rdf:li) is skipped."""
+    fp = tmp_path / "empty_creator.svg"
+    fp.write_text(
+        '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100">'
+        "<metadata>"
+        '<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"'
+        '         xmlns:dc="http://purl.org/dc/elements/1.1/">'
+        '<rdf:Description rdf:about="">'
+        "<dc:creator/>"
+        "</rdf:Description>"
+        "</rdf:RDF>"
+        "</metadata>"
+        '<rect width="100" height="100" fill="red"/>'
+        "</svg>"
+    )
+    meta = idk.svg_meta_extract(fp)
+    assert "creator" not in meta
+
+
+def test_svg_meta_extract_iscc_priority(tmp_path):
+    """ISCC namespace takes priority over SVG native and DC elements."""
+    fp = tmp_path / "priority.svg"
+    fp.write_text(
+        '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100">'
+        "<title>SVG Title</title>"
+        "<desc>SVG Desc</desc>"
+        "<metadata>"
+        '<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"'
+        '         xmlns:dc="http://purl.org/dc/elements/1.1/"'
+        '         xmlns:iscc="http://purl.org/iscc/schema/">'
+        '<rdf:Description rdf:about="">'
+        "<iscc:name>ISCC Name</iscc:name>"
+        "<iscc:description>ISCC Desc</iscc:description>"
+        "<dc:title>DC Title</dc:title>"
+        "<dc:description>DC Desc</dc:description>"
+        "</rdf:Description>"
+        "</rdf:RDF>"
+        "</metadata>"
+        '<rect width="100" height="100" fill="blue"/>'
+        "</svg>"
+    )
+    meta = idk.svg_meta_extract(fp)
+    assert meta["name"] == "ISCC Name"
+    assert meta["description"] == "ISCC Desc"
+
+
+def test_svg_meta_extract_native_over_dc(tmp_path):
+    """SVG native <title>/<desc> take priority over DC elements."""
+    fp = tmp_path / "native.svg"
+    fp.write_text(
+        '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100">'
+        "<title>Native Title</title>"
+        "<metadata>"
+        '<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"'
+        '         xmlns:dc="http://purl.org/dc/elements/1.1/">'
+        '<rdf:Description rdf:about="">'
+        "<dc:title>DC Title</dc:title>"
+        "</rdf:Description>"
+        "</rdf:RDF>"
+        "</metadata>"
+        '<rect width="100" height="100" fill="blue"/>'
+        "</svg>"
+    )
+    meta = idk.svg_meta_extract(fp)
+    assert meta["name"] == "Native Title"
+
+
+def test_svg_meta_embed_all_fields(tmp_path):
+    """Embedding writes all supported metadata fields into RDF."""
+    fp = tmp_path / "embed_all.svg"
+    fp.write_text(
+        '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100">'
+        '<rect width="100" height="100" fill="blue"/>'
+        "</svg>"
+    )
+    meta = idk.IsccMeta(
+        name="Test Name",
+        description="Test Desc",
+        meta="data:application/json;base64,e30=",
+        creator="Test Author",
+        rights="Copyright 2024",
+        identifier="test-id",
+        license="https://example.com/license",
+    )
+    new_file = idk.svg_meta_embed(fp, meta)
+    extracted = idk.svg_meta_extract(new_file)
+    assert extracted["name"] == "Test Name"
+    assert extracted["description"] == "Test Desc"
+    assert extracted["meta"] == "data:application/json;base64,e30="
+    assert extracted["creator"] == "Test Author"
+    assert extracted["rights"] == "Copyright 2024"
+    assert extracted["identifier"] == "test-id"
+    assert extracted["license"] == "https://example.com/license"
+
+
+def test_svg_meta_embed_updates_existing_rdf(tmp_path):
+    """Embedding updates existing RDF metadata without duplicating elements."""
+    fp = tmp_path / "existing.svg"
+    fp.write_text(
+        '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100">'
+        "<title>Old Title</title>"
+        "<metadata>"
+        '<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"'
+        '         xmlns:dc="http://purl.org/dc/elements/1.1/">'
+        '<rdf:Description rdf:about="">'
+        "<dc:title>Old DC Title</dc:title>"
+        "<dc:creator>Old Author</dc:creator>"
+        "</rdf:Description>"
+        "</rdf:RDF>"
+        "</metadata>"
+        '<rect width="100" height="100" fill="blue"/>'
+        "</svg>"
+    )
+    meta = idk.IsccMeta(name="New Title", creator="New Author")
+    new_file = idk.svg_meta_embed(fp, meta)
+    extracted = idk.svg_meta_extract(new_file)
+    assert extracted["name"] == "New Title"
+    assert extracted["creator"] == "New Author"
+
+
+def test_svg_meta_extract_cc_work(tmp_path):
+    """Extract metadata from cc:Work container (Inkscape/CC format)."""
+    fp = tmp_path / "ccwork.svg"
+    fp.write_text(
+        '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100">'
+        "<metadata>"
+        '<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"'
+        '         xmlns:dc="http://purl.org/dc/elements/1.1/"'
+        '         xmlns:cc="http://creativecommons.org/ns#">'
+        '<cc:Work rdf:about="">'
+        "<dc:title>CC Work Title</dc:title>"
+        "<dc:creator>CC Author</dc:creator>"
+        '<cc:license rdf:resource="https://creativecommons.org/licenses/by-sa/4.0/"/>'
+        "</cc:Work>"
+        "</rdf:RDF>"
+        "</metadata>"
+        '<rect width="100" height="100" fill="green"/>'
+        "</svg>"
+    )
+    meta = idk.svg_meta_extract(fp)
+    assert meta["name"] == "CC Work Title"
+    assert meta["creator"] == "CC Author"
+    assert meta["license"] == "https://creativecommons.org/licenses/by-sa/4.0/"
+
+
+def test_svg_meta_embed_overwrites_bag_creator(tmp_path):
+    """Embedding creator replaces existing rdf:Bag structure."""
+    fp = tmp_path / "bag.svg"
+    fp.write_text(
+        '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100">'
+        "<metadata>"
+        '<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"'
+        '         xmlns:dc="http://purl.org/dc/elements/1.1/">'
+        '<rdf:Description rdf:about="">'
+        "<dc:creator><rdf:Bag><rdf:li>Old Author</rdf:li></rdf:Bag></dc:creator>"
+        "</rdf:Description>"
+        "</rdf:RDF>"
+        "</metadata>"
+        '<rect width="100" height="100" fill="red"/>'
+        "</svg>"
+    )
+    meta = idk.IsccMeta(creator="New Author")
+    new_file = idk.svg_meta_embed(fp, meta)
+    extracted = idk.svg_meta_extract(new_file)
+    assert extracted["creator"] == "New Author"
+
+
+def test_svg_meta_embed_meta_field_roundtrip(tmp_path):
+    """The ISCC meta field (Data-URL) round-trips correctly."""
+    fp = tmp_path / "meta_rt.svg"
+    fp.write_text(
+        '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100">'
+        '<rect width="100" height="100" fill="red"/>'
+        "</svg>"
+    )
+    meta_url = "data:application/json;base64,eyJrZXkiOiJ2YWx1ZSJ9"
+    meta = idk.IsccMeta(meta=meta_url)
+    new_file = idk.svg_meta_embed(fp, meta)
+    extracted = idk.svg_meta_extract(new_file)
+    assert extracted["meta"] == meta_url
+
+
 def test_parse_svg_dimension():
     assert _parse_svg_dimension("100") == 100
     assert _parse_svg_dimension("100px") == 100
