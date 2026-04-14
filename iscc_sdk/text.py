@@ -49,6 +49,13 @@ TEXT_META_MAP = {
     "meta:keyword": "keywords",
 }
 
+# IsccMeta fields with single-valued semantics. When iscc-tika returns multiple values
+# (e.g. an EPUB3 with main title + subtitle as two <dc:title>), the first element wins —
+# Apache Tika preserves source order, so for EPUB3 that is the title with display-seq=1.
+SINGLE_VALUE_FIELDS = frozenset(
+    {"name", "description", "meta", "rights", "license", "acquire", "credit"}
+)
+
 
 def text_meta_extract(fp):
     # type: (str|Path) -> dict
@@ -70,7 +77,7 @@ def text_meta_extract(fp):
         value = meta.get(tag)
         if value:
             if isinstance(value, list):
-                value = ", ".join(value)
+                value = value[0] if mapped_field in SINGLE_VALUE_FIELDS else ", ".join(value)
             value = idk.text_sanitize(value).strip()
             if value:
                 log.debug(f"Mapping text metadata: {tag} -> {mapped_field} -> {value}")

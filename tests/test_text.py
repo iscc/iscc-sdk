@@ -14,7 +14,7 @@ def test_text_meta_extract_docx(docx_file):
 
 def test_text_meta_extract_epub(epub_file):
     assert idk.text_meta_extract(epub_file) == {
-        "name": "Children's Literature",
+        "name": "title from metadata",
         "creator": "Charles Madison Curry, Erle Elsworth Clippinger",
         "rights": "Public domain in the USA.",
     }
