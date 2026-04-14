@@ -1,5 +1,11 @@
 ## Changelog
 
+## 0.9.1 - 2026-04-14
+
+- Upgraded iscc-tika to >=0.5.0 (Apache Tika 2.x -> 3.x series)
+- Pinned pdf-oxide to \<=0.3.19 to avoid duplicate text extraction from tables
+- Fixed single-valued `IsccMeta` fields to pick first value when Tika returns lists
+
 ## 0.9.0 - 2026-04-12
 
 - Added SVG as supported media type with rasterization, metadata, and thumbnail support
