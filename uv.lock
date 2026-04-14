@@ -623,7 +623,7 @@ wheels = [
 
 [[package]]
 name = "huggingface-hub"
-version = "1.10.1"
+version = "1.10.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "filelock" },
@@ -636,9 +636,9 @@ dependencies = [
     { name = "typer" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/e4/28/baf5d745559503ce8d28cf5bc9551f5ac59158eafd7b6a6afff0bcdb0f50/huggingface_hub-1.10.1.tar.gz", hash = "sha256:696c53cf9c2ac9befbfb5dd41d05392a031c69fc6930d1ed9671debd405b6fff", size = 758094, upload-time = "2026-04-09T15:01:18.928Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/0c/4d/00734890c7fcfe2c7ff04f1c1a167186c42b19e370a2dd8cfd8c34fc92c4/huggingface_hub-1.10.2.tar.gz", hash = "sha256:4b276f820483b709dc86a53bcb8183ea496b8d8447c9f7f88a115a12b498a95f", size = 758428, upload-time = "2026-04-14T10:42:28.498Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/83/8c/c7a33f3efaa8d6a5bc40e012e5ecc2d72c2e6124550ca9085fe0ceed9993/huggingface_hub-1.10.1-py3-none-any.whl", hash = "sha256:6b981107a62fbe68c74374418983399c632e35786dcd14642a9f2972633c8b5a", size = 642630, upload-time = "2026-04-09T15:01:17.35Z" },
+    { url = "https://files.pythonhosted.org/packages/5e/c9/4c1e1216b24bcab140c83acdf8bc89a846ea17cd8a06cd18e3fd308a297f/huggingface_hub-1.10.2-py3-none-any.whl", hash = "sha256:c26c908767cc711493978dc0b4f5747ba7841602997cc98bfd628450a28cf9bc", size = 642581, upload-time = "2026-04-14T10:42:26.563Z" },
 ]
 
 [[package]]
@@ -808,7 +808,7 @@ requires-dist = [
     { name = "numpy" },
     { name = "onnxruntime", marker = "extra == 'sci'" },
     { name = "onnxruntime", marker = "extra == 'sct'" },
-    { name = "pdf-oxide" },
+    { name = "pdf-oxide", specifier = "<=0.3.19" },
     { name = "pillow" },
     { name = "pillow-avif-plugin" },
     { name = "pillow-heif" },
@@ -1453,18 +1453,13 @@ wheels = [
 
 [[package]]
 name = "pdf-oxide"
-version = "0.3.30"
+version = "0.3.19"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/f4/21/da3a00579bd044255f68d912cee5a050553cc7605d797b0400c996ceaa96/pdf_oxide-0.3.30.tar.gz", hash = "sha256:7f795ee6a1f1821040f4afbab4ce5be8c86160fb5814b55fcc9bfff76eb6c936", size = 1890606, upload-time = "2026-04-12T07:49:21.73Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/b9/36/3b208773c5f45d2c1e278c13a26cd3283e7fcc5c50aa2f3c0398eb7b1840/pdf_oxide-0.3.30-cp38-abi3-macosx_10_12_x86_64.whl", hash = "sha256:1fe78664c4e14a30975a2e1057763a4285a570f8df3e9d1c7dc7103ef8532c59", size = 4557876, upload-time = "2026-04-12T07:49:06.133Z" },
-    { url = "https://files.pythonhosted.org/packages/1d/4a/8afe7dd9f8e0808a52a1a8cfa541d66f49e13567e597a05b67f2ba7b9c2b/pdf_oxide-0.3.30-cp38-abi3-macosx_11_0_arm64.whl", hash = "sha256:635c832016cb88b3289e9dd301b1096f26a16b5832f9b6c83b53a282bb121a62", size = 4299801, upload-time = "2026-04-12T07:49:08.271Z" },
-    { url = "https://files.pythonhosted.org/packages/0c/9e/b29b060a7fb38ad2a50a4b153ec139c32f4edb0b2c7f6660b071451dd2ae/pdf_oxide-0.3.30-cp38-abi3-manylinux_2_34_aarch64.whl", hash = "sha256:a837190a71d01ae42152c24a889f84287c4a3cb6c53390c0d36f15d786ff4ce1", size = 4493175, upload-time = "2026-04-12T07:49:10.132Z" },
-    { url = "https://files.pythonhosted.org/packages/55/c7/1ecdc7c0bf4e8aa0fc0410adcc28bd32f939fe0b55a087ad765c106831ab/pdf_oxide-0.3.30-cp38-abi3-manylinux_2_34_x86_64.whl", hash = "sha256:8412d9ec3fd4c503f0ee52d43109b1530b200ef6f7467af08ef404d013049a40", size = 4756907, upload-time = "2026-04-12T07:49:12.196Z" },
-    { url = "https://files.pythonhosted.org/packages/ec/06/b2719cc8a9ef21ba3f798726d240182deacd62d8d7dcf24afe7e87250889/pdf_oxide-0.3.30-cp38-abi3-musllinux_1_2_aarch64.whl", hash = "sha256:da1cef6291aa1027273e9ff6471a42efa2b4e1d32feb9f1ff0e9fd12c6ddbd47", size = 4679266, upload-time = "2026-04-12T07:49:13.786Z" },
-    { url = "https://files.pythonhosted.org/packages/a7/a7/52d1c0f61c93c8d70a6fa02809b3fa2f833c09c56053d723285d2dba77f7/pdf_oxide-0.3.30-cp38-abi3-musllinux_1_2_x86_64.whl", hash = "sha256:1ce152bc3df9ae6f6e9485d3230dbaadc6e1dc190a977c98923abe48473d22c9", size = 4985562, upload-time = "2026-04-12T07:49:15.429Z" },
-    { url = "https://files.pythonhosted.org/packages/49/c9/7156df01d727db402692d5485d93bd4c3f74603f887fc6a4387772d660ab/pdf_oxide-0.3.30-cp38-abi3-win_amd64.whl", hash = "sha256:c54b49e028e6f69e7da776fb64ce5177b42664110f4f62b27a6e02e71bcbb228", size = 4699592, upload-time = "2026-04-12T07:49:18.508Z" },
-    { url = "https://files.pythonhosted.org/packages/b1/ad/cfd983ed7639ca1db6c810aacbe2446fa570f6ef872e1110875d48f874ab/pdf_oxide-0.3.30-cp38-abi3-win_arm64.whl", hash = "sha256:867631bb5685b9f44597b7e3ed1838b73eb282e388cda6ef1a13f71ba0bf7af3", size = 4392921, upload-time = "2026-04-12T07:49:20.23Z" },
+    { url = "https://files.pythonhosted.org/packages/6c/65/ba62994377a26f3ac9005601135d0f1490ef36d2c7b8a4073d7270cf4804/pdf_oxide-0.3.19-cp38-abi3-macosx_10_12_x86_64.whl", hash = "sha256:62f0281d82afb9f08cc359c0de66d2ddf7f01dc28e8d567cc09ed4e6b71dd144", size = 4218300, upload-time = "2026-04-03T07:24:19.348Z" },
+    { url = "https://files.pythonhosted.org/packages/1c/56/eb062a0ff1f275f2d8134755d83aedce3001e94f476b1406a797a1c27aba/pdf_oxide-0.3.19-cp38-abi3-macosx_11_0_arm64.whl", hash = "sha256:748410a0de8609c8514e2596c16eb63a9126fff1a0410832b1a92db7f4b9893d", size = 3987793, upload-time = "2026-04-03T07:24:20.919Z" },
+    { url = "https://files.pythonhosted.org/packages/c2/e6/60fa84008c5969b4b1f3d22edac19ef36b3a91bf00b02257070cdbe757b4/pdf_oxide-0.3.19-cp38-abi3-manylinux_2_34_x86_64.whl", hash = "sha256:7b2ebaaef6b11a6477af7438574a22b15661699e3381039cf34a38ea651aa7fa", size = 4404347, upload-time = "2026-04-03T07:24:22.202Z" },
+    { url = "https://files.pythonhosted.org/packages/ee/18/079e4d76a9d41c5fd2f9020113fbf95a20d6ce43f54762f996131eda6c9a/pdf_oxide-0.3.19-cp38-abi3-win_amd64.whl", hash = "sha256:324f08131cec877cff830b723430b23f0ad9dc6a78b7533e15db7644a386422a", size = 4360865, upload-time = "2026-04-03T07:24:23.915Z" },
 ]
 
 [[package]]

@@ -58,7 +58,7 @@ dependencies = [
     "pillow-avif-plugin",
     "iscc-lib",
     "pydantic-settings",
-    "pdf-oxide",
+    "pdf-oxide<=0.3.19",
     "resvg_py",
 ]
 

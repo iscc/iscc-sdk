@@ -4,15 +4,16 @@ import shutil
 import tempfile
 from pathlib import Path
 
-from PIL import Image, ImageEnhance
 import fitz
-import iscc_sdk as idk
-import pdf_oxide
 from pdf_oxide import PdfDocument
+from PIL import Image, ImageEnhance
+
+import iscc_sdk as idk
 
 # Suppress noisy warnings about unsupported TrueType cmap format 0
 # (text extraction still works correctly via fallback mappings)
-pdf_oxide.set_log_level("error")
+# (only required/working with pdf_oxide>=0.3.19)
+# pdf_oxide.set_log_level("error")
 
 
 __all__ = [
