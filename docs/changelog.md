@@ -1,5 +1,11 @@
 ## Changelog
 
+## 0.9.1 - 2026-04-14
+
+- Pinned `pdf-oxide<0.3.20` and `iscc-tika<0.5.0` for stability
+- Updated `uv_build` requirement to `>=0.11.2,<0.12.0`
+- Removed deprecated PEP 639 license classifier
+
 ## 0.9.0 - 2026-04-12
 
 - Added SVG as supported media type with rasterization, metadata, and thumbnail support
