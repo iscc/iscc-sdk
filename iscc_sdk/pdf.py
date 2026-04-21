@@ -4,15 +4,11 @@ import shutil
 import tempfile
 from pathlib import Path
 
-from PIL import Image, ImageEnhance
-import fitz
-import iscc_sdk as idk
-from pdf_oxide import PdfDocument
+from PIL import ImageEnhance
+import pypdfium2 as pdfium
+from pypdf import PdfReader, PdfWriter
 
-# Suppress noisy warnings about unsupported TrueType cmap format 0
-# (text extraction still works correctly via fallback mappings)
-# Only available in pdf-oxide>=0.3.20
-# pdf_oxide.set_log_level("error")
+import iscc_sdk as idk
 
 
 __all__ = [
@@ -22,15 +18,26 @@ __all__ = [
 ]
 
 
+_ISCC_META_KEYS = (
+    ("name", "/iscc_name"),
+    ("description", "/iscc_description"),
+    ("meta", "/iscc_meta"),
+    ("license", "/iscc_license"),
+    ("acquire", "/iscc_acquire"),
+    ("credit", "/iscc_credit"),
+    ("rights", "/iscc_rights"),
+)
+
+
 def pdf_text_extract(fp):
     # type: (str|Path) -> str
-    """Extract PDF text with reading order reconstruction via XY-Cut algorithm."""
+    """Extract PDF text using pypdfium2's bounded text page API."""
     fp = Path(fp)
-    return PdfDocument(str(fp)).to_plain_text_all(
-        preserve_layout=True,
-        detect_headings=True,
-        include_images=False,
-    )
+    doc = pdfium.PdfDocument(str(fp))
+    try:
+        return "\n".join(page.get_textpage().get_text_bounded() for page in doc)
+    finally:
+        doc.close()
 
 
 def pdf_thumbnail(fp):
@@ -42,14 +49,14 @@ def pdf_thumbnail(fp):
     :return: Thumbnail image as PIL Image object
     """
     fp = Path(fp)
-    with fitz.Document(fp) as doc:
-        page = doc.load_page(0)
-        pix = page.get_pixmap()
-        mode = "RGBA" if pix.alpha else "RGB"
-        img = Image.frombytes(mode, (pix.width, pix.height), pix.samples)
-        size = idk.sdk_opts.image_thumbnail_size
-        img.thumbnail((size, size), resample=idk.LANCZOS)
-        return ImageEnhance.Sharpness(img.convert("RGB")).enhance(1.4)
+    doc = pdfium.PdfDocument(str(fp))
+    try:
+        img = doc[0].render().to_pil()
+    finally:
+        doc.close()
+    size = idk.sdk_opts.image_thumbnail_size
+    img.thumbnail((size, size), resample=idk.LANCZOS)
+    return ImageEnhance.Sharpness(img.convert("RGB")).enhance(1.4)
 
 
 def pdf_meta_embed(fp, meta):
@@ -63,33 +70,29 @@ def pdf_meta_embed(fp, meta):
     """
     fp = Path(fp)
     tempdir = tempfile.mkdtemp()
-    temppdf = shutil.copy(fp, tempdir)
-    with fitz.Document(temppdf) as doc:
-        doc.del_xml_metadata()
-        new_meta = doc.metadata or {}
-        what, value = doc.xref_get_key(-1, "Info")  # /Info key in the trailer
-        xref = int(value.replace("0 R", ""))
+    temppdf = Path(shutil.copy(fp, tempdir))
 
-        if meta.name:
-            new_meta["title"] = meta.name
-            doc.xref_set_key(xref, "iscc_name", fitz.get_pdf_str(meta.name))
-        if meta.description:
-            new_meta["subject"] = meta.description
-            doc.xref_set_key(xref, "iscc_description", fitz.get_pdf_str(meta.description))
-        if meta.creator:
-            new_meta["author"] = meta.creator
-        if meta.keywords:
-            new_meta["keywords"] = meta.keywords
-        if meta.meta:
-            doc.xref_set_key(xref, "iscc_meta", fitz.get_pdf_str(meta.meta))
-        if meta.license:
-            doc.xref_set_key(xref, "iscc_license", fitz.get_pdf_str(meta.license))
-        if meta.acquire:
-            doc.xref_set_key(xref, "iscc_acquire", fitz.get_pdf_str(meta.acquire))
-        if meta.credit:
-            doc.xref_set_key(xref, "iscc_credit", fitz.get_pdf_str(meta.credit))
-        if meta.rights:
-            doc.xref_set_key(xref, "iscc_rights", fitz.get_pdf_str(meta.rights))
-        doc.set_metadata(new_meta)
-        doc.saveIncr()
-    return Path(temppdf)
+    reader = PdfReader(str(temppdf))
+    writer = PdfWriter(clone_from=reader)
+
+    updates = {}
+    if meta.name:
+        updates["/Title"] = meta.name
+    if meta.description:
+        updates["/Subject"] = meta.description
+    if meta.creator:
+        updates["/Author"] = meta.creator
+    if meta.keywords:
+        updates["/Keywords"] = meta.keywords
+    for attr, key in _ISCC_META_KEYS:
+        value = getattr(meta, attr, None)
+        if value:
+            updates[key] = value
+
+    if updates:
+        writer.add_metadata(updates)
+
+    with open(temppdf, "wb") as f:
+        writer.write(f)
+
+    return temppdf
