@@ -1,5 +1,11 @@
 ## Changelog
 
+## 0.9.2 - 2026-04-21
+
+- Replaced `pdf-oxide` with `pypdfium2` for PDF text extraction
+- Replaced `pymupdf` with `pypdfium2` for PDF thumbnail rendering
+- Replaced `pymupdf` with `pypdf` for PDF metadata embedding
+
 ## 0.9.1 - 2026-04-14
 
 - Pinned `pdf-oxide<0.3.20` and `iscc-tika<0.5.0` for stability
