@@ -1,5 +1,11 @@
 ## Changelog
 
+## 0.9.3 - Unreleased
+
+- Fixed EPUB cover extraction when archive entries store UTF-8 filename bytes without the ZIP UTF-8
+    flag (CP437→UTF-8 recovery)
+- Fixed EPUB cover extraction for OPF hrefs containing `..`/`.` path segments
+
 ## 0.9.2 - 2026-04-21
 
 - Replaced `pdf-oxide` with `pypdfium2` for PDF text extraction

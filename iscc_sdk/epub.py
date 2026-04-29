@@ -1,6 +1,7 @@
 """*EPUB handling module*."""
 
 import io
+import posixpath
 import shutil
 import tempfile
 from pathlib import Path
@@ -61,7 +62,31 @@ def epub_meta_embed(fp, meta):
     return tempepub
 
 
-def epub_cover(fp):  # pragma: no cover
+def _resolve_archive_path(archive, target):
+    # type: (zipfile.ZipFile, str) -> str | None
+    """
+    Resolve a UTF-8 path to an actual zip entry name.
+
+    Some EPUBs store UTF-8 filename bytes without setting the ZIP UTF-8 flag
+    (bit 11). Python's zipfile then decodes those names as CP437, producing
+    mojibake. Re-encoding CP437→UTF-8 recovers the original UTF-8 name.
+
+    :param archive: Open zipfile.ZipFile instance
+    :param target: Target path (POSIX, UTF-8 string)
+    :return: Actual archive entry name, or None if no match
+    """
+    for info in archive.infolist():
+        if info.filename == target:
+            return info.filename
+        try:
+            if info.filename.encode("cp437").decode("utf-8") == target:
+                return info.filename
+        except UnicodeError:
+            continue
+    return None
+
+
+def epub_cover(fp):
     # type: (str|Path) -> bytes
     """
     Extract the cover image bytes from an EPUB file.
@@ -73,7 +98,8 @@ def epub_cover(fp):  # pragma: no cover
     4. Falling back to the first image file from the manifest
 
     URL-encoded paths in the OPF manifest are decoded before zip archive lookup.
-    If no image is found, it raises an error.
+    Entry names are also recovered when the EPUB stores UTF-8 filenames without
+    the ZIP UTF-8 flag set. If no image is found, it raises an error.
 
     :param fp: Filepath to EPUB file
     :return: Raw bytes of the cover image
@@ -151,29 +177,15 @@ def epub_cover(fp):  # pragma: no cover
             if not cover_path:
                 raise idk.IsccExtractionError(f"No cover image found in {fp}")
 
-            # Ensure the path is relative to the archive root
-            cover_path_str = cover_path.as_posix()
-            if cover_path_str not in archive.namelist():
-                # Try resolving relative paths if needed (though Path should handle this)
-                # This part might need adjustment based on EPUB structure variations
-                log.warning(
-                    f"Cover path {cover_path_str} not directly in archive, attempting resolution."
+            # Collapse '.' and '..' segments — OPF hrefs are relative to the
+            # OPF directory and may legitimately reference parent dirs.
+            cover_path_str = posixpath.normpath(cover_path.as_posix())
+            resolved = _resolve_archive_path(archive, cover_path_str)
+            if resolved is None:
+                raise idk.IsccExtractionError(
+                    f"Cover image path {cover_path_str} not found in archive {fp}"
                 )
-                # Basic check if it exists at all
-                found = False
-                for name in archive.namelist():
-                    if name.endswith(cover_path.name):
-                        cover_path_str = name
-                        found = True
-                        log.debug(f"Resolved cover path to {cover_path_str}")
-                        break
-                if not found:
-                    raise idk.IsccExtractionError(
-                        f"Cover image path {cover_path_str} not found in archive {fp}"
-                    )
-
-            # Extract image bytes
-            return archive.read(cover_path_str)
+            return archive.read(resolved)
 
     except zipfile.BadZipFile:
         raise idk.IsccExtractionError(f"Invalid EPUB (Zip) file: {fp}")
