@@ -1,5 +1,7 @@
 import io
+import struct
 import zipfile
+import zlib
 
 import pytest
 from PIL import Image as PILImage
@@ -129,6 +131,21 @@ def _jpeg_bytes():
     buf = io.BytesIO()
     PILImage.new("RGB", (32, 32), (200, 0, 0)).save(buf, format="JPEG")
     return buf.getvalue()
+
+
+def _png_with_large_ztxt(decompressed_size):
+    """Return PNG bytes with a zTXt chunk that decompresses to ~decompressed_size."""
+    buf = io.BytesIO()
+    PILImage.new("RGB", (4, 4), (200, 0, 0)).save(buf, format="PNG")
+    png = buf.getvalue()
+    iend_start = png.rfind(b"IEND") - 4
+    head, tail = png[:iend_start], png[iend_start:]
+    keyword = b"Raw profile type tiff:37724"
+    payload = b"X" * decompressed_size
+    chunk_data = keyword + b"\x00\x00" + zlib.compress(payload, level=9)
+    crc = zlib.crc32(b"zTXt" + chunk_data)
+    chunk = struct.pack(">I", len(chunk_data)) + b"zTXt" + chunk_data + struct.pack(">I", crc)
+    return head + chunk + tail
 
 
 def _build_epub(
@@ -290,3 +307,18 @@ def test_epub_cover_missing_opf_raises(tmp_path):
     _build_epub(epub_path, opf_xml=None)
     with pytest.raises(idk.IsccExtractionError, match="not found within EPUB archive"):
         idk.epub_cover(epub_path.as_posix())
+
+
+def test_epub_thumbnail_png_cover_with_large_ztxt(tmp_path):
+    """Regression: PNG covers exported from Photoshop carry zTXt chunks
+    (e.g. 'Raw profile type tiff:37724') that decompress past PIL's 1 MB
+    default. Real-world example: png_decompressed_too_large__9788896736463.epub.
+    """
+    opf = _opf(
+        '<item id="cv" href="cover.png" media-type="image/png" properties="cover-image"/>',
+    )
+    epub_path = tmp_path / "ztxt_cover.epub"
+    _build_epub(
+        epub_path, opf_xml=opf, entries=[("OEBPS/cover.png", _png_with_large_ztxt(1_500_000))]
+    )
+    assert isinstance(idk.epub_thumbnail(epub_path.as_posix()), Image)

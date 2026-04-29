@@ -5,6 +5,8 @@
 - Fixed EPUB cover extraction when archive entries store UTF-8 filename bytes without the ZIP UTF-8
     flag (CP437→UTF-8 recovery)
 - Fixed EPUB cover extraction for OPF hrefs containing `..`/`.` path segments
+- Fixed PNG cover thumbnail extraction failing on Photoshop-exported covers with large zTXt metadata
+    chunks (raised `PngImagePlugin.MAX_TEXT_CHUNK` to 4 MB)
 
 ## 0.9.2 - 2026-04-21
 

@@ -7,7 +7,7 @@ import io
 import shutil
 import tempfile
 from loguru import logger as log
-from PIL import Image, ImageEnhance, ImageChops, ImageOps
+from PIL import Image, ImageEnhance, ImageChops, ImageOps, PngImagePlugin
 import iscc_sdk as idk
 from pillow_heif import register_heif_opener
 import threading
@@ -32,6 +32,11 @@ _exiv2_lock = threading.Lock()
 
 
 Image.MAX_IMAGE_PIXELS = idk.sdk_opts.image_max_pixels
+
+# Photoshop-exported PNGs often embed large zTXt chunks (e.g. tiff:37724
+# layer data) that decompress past PIL's 1 MB default. Allow up to 4 MB so
+# such covers don't fail thumbnail extraction.
+PngImagePlugin.MAX_TEXT_CHUNK = 4 * 1024 * 1024
 
 
 def image_normalize(img):
