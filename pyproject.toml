@@ -113,6 +113,10 @@ module-root = ""
 
 [tool.mypy]
 ignore_missing_imports = true
+# typeshed declares io.BytesIO as inheriting abstract methods from BinaryIO/IOBase
+# via Generic[AnyStr], which zuban's default "typed" mode reports as a false positive
+# on every io.BytesIO(...) call. mypy mode does not flag these.
+disable_error_code = ["abstract"]
 
 [[tool.mypy.overrides]]
 module = "iscc_sdk.monkeys"
