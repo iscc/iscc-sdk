@@ -7,6 +7,8 @@
 - Fixed EPUB cover extraction for OPF hrefs containing `..`/`.` path segments
 - Fixed PNG cover thumbnail extraction failing on Photoshop-exported covers with large zTXt metadata
     chunks (raised `PngImagePlugin.MAX_TEXT_CHUNK` to 4 MB)
+- Wrapped `iscc-tika` parse failures (`TypeError` from native bridge, e.g. TIKA-237 on EPUBs with
+    deeply nested XHTML) as `IsccExtractionError` in `text_extract` and `text_meta_extract`
 
 ## 0.9.2 - 2026-04-21
 

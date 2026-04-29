@@ -57,11 +57,15 @@ def text_meta_extract(fp):
 
     :param fp: Filepath to text document file.
     :return: Metadata mapped to IsccMeta schema
+    :raises IsccExtractionError: If Tika fails to parse the document.
     """
     fp = Path(fp)
     extractor = Extractor()
     # extractor = extractor.set_extract_string_max_length()
-    result, meta = extractor.extract_file_to_string(fp.as_posix())
+    try:
+        result, meta = extractor.extract_file_to_string(fp.as_posix())
+    except TypeError as e:
+        raise idk.IsccExtractionError(f"Tika failed to parse {fp.name}: {e}") from e
     mapped = dict()
     done = set()
     for tag, mapped_field in TEXT_META_MAP.items():
@@ -106,12 +110,16 @@ def text_extract(fp):
 
     :param fp: Filepath to text document file.
     :return: Extracted plaintext
+    :raises IsccExtractionError: If Tika fails to parse the document or no text could be extracted.
     """
     fp = Path(fp)
     if fp.suffix.lower() == ".pdf":
         return idk.pdf_text_extract(fp)
     extractor = Extractor()
-    result, metadata = extractor.extract_file_to_string(fp.as_posix())
+    try:
+        result, metadata = extractor.extract_file_to_string(fp.as_posix())
+    except TypeError as e:
+        raise idk.IsccExtractionError(f"Tika failed to parse {fp.name}: {e}") from e
     text = result.strip()
     if not text:
         raise idk.IsccExtractionError(f"No text extracted from {fp.name}")

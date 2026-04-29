@@ -38,6 +38,30 @@ def test_text_extract_empty(tmp_path):
         idk.text_extract(fp)
 
 
+def test_text_extract_tika_failure_wrapped(epub_file, monkeypatch):
+    """Tika TypeError (e.g. TIKA-237 SAXException) is re-raised as IsccExtractionError."""
+    from iscc_tika import Extractor
+
+    def fake_extract(self, filename):
+        raise TypeError('ParseError("TIKA-237: Illegal SAXException")')
+
+    monkeypatch.setattr(Extractor, "extract_file_to_string", fake_extract)
+    with pytest.raises(idk.IsccExtractionError, match="Tika failed to parse"):
+        idk.text_extract(epub_file)
+
+
+def test_text_meta_extract_tika_failure_wrapped(epub_file, monkeypatch):
+    """Tika TypeError during metadata extraction is re-raised as IsccExtractionError."""
+    from iscc_tika import Extractor
+
+    def fake_extract(self, filename):
+        raise TypeError('ParseError("TIKA-237: Illegal SAXException")')
+
+    monkeypatch.setattr(Extractor, "extract_file_to_string", fake_extract)
+    with pytest.raises(idk.IsccExtractionError, match="Tika failed to parse"):
+        idk.text_meta_extract(epub_file)
+
+
 def test_text_extract_docx(docx_file):
     text = idk.text_extract(docx_file)
     assert text.strip().startswith("ISCC Test Document")
