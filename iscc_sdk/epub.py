@@ -79,7 +79,10 @@ def _resolve_archive_path(archive, target):
         if info.filename == target:
             return info.filename
         try:
-            if info.filename.encode("cp437").decode("utf-8") == target:
+            if (
+                not info.flag_bits & 0x800
+                and info.filename.encode("cp437").decode("utf-8") == target
+            ):
                 return info.filename
         except UnicodeError:
             continue
