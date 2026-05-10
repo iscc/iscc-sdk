@@ -64,11 +64,9 @@ dependencies = [
 [project.optional-dependencies]
 sci = [
     "iscc-sci",
-    "onnxruntime",
 ]
 sct = [
     "iscc-sct",
-    "onnxruntime",
 ]
 
 [project.urls]

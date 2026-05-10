@@ -18,6 +18,13 @@
     deeply nested XHTML) as `IsccExtractionError` in `text_extract` and `text_meta_extract`
 - Improved API documentation for `code_iscc()`, `code_iscc_mt()`, `code_content()`, and
     `code_text()` options
+- Refactored `code_iscc_mt()` for improved parallelism: text extraction runs before submitting
+    content/semantic futures, thumbnail generation overlaps with sum/meta computation, and result
+    merging follows the same order as `code_iscc()`
+- Removed redundant `onnxruntime` from `sci` and `sct` optional dependency groups (already a
+    transitive dependency of `iscc-sci` and `iscc-sct`)
+- Fixed CI: skip semantic code tests on macOS Python 3.12 (`onnxruntime` 1.26.0 has no macOS wheels
+    for that version)
 
 ## 0.9.2 - 2026-04-21
 

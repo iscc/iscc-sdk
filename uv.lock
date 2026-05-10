@@ -764,11 +764,9 @@ dependencies = [
 [package.optional-dependencies]
 sci = [
     { name = "iscc-sci" },
-    { name = "onnxruntime" },
 ]
 sct = [
     { name = "iscc-sct" },
-    { name = "onnxruntime" },
 ]
 
 [package.dev-dependencies]
@@ -805,8 +803,6 @@ requires-dist = [
     { name = "langcodes" },
     { name = "loguru" },
     { name = "numpy" },
-    { name = "onnxruntime", marker = "extra == 'sci'" },
-    { name = "onnxruntime", marker = "extra == 'sct'" },
     { name = "pillow" },
     { name = "pillow-avif-plugin" },
     { name = "pillow-heif" },
