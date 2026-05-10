@@ -115,9 +115,7 @@ def code_iscc(fp, name=None, description=None, meta=None, **options):
     # Generate thumbnail early (before heavy processing)
     if opts.create_thumb and mode:
         try:
-            from iscc_sdk.thumbnail import thumbnail as _thumbnail
-
-            thumbnail_img = _thumbnail(fp)
+            thumbnail_img = idk.thumbnail(fp)  # type: ignore[operator]
             if thumbnail_img:
                 iscc_meta["thumbnail"] = idk.image_to_data_url(thumbnail_img)
         except Exception:
