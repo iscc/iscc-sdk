@@ -233,6 +233,16 @@ def test_epub_cover_via_metadata_cover(tmp_path):
     assert isinstance(idk.epub_thumbnail(epub_path.as_posix()), Image)
 
 
+def test_epub_cover_via_multi_token_properties(tmp_path):
+    """Cover located when properties has multiple space-separated tokens."""
+    opf = _opf(
+        '<item id="cv" href="img.jpg" media-type="image/jpeg" properties="cover-image svg"/>',
+    )
+    epub_path = tmp_path / "multi_prop.epub"
+    _build_epub(epub_path, opf_xml=opf, entries=[("OEBPS/img.jpg", _jpeg_bytes())])
+    assert isinstance(idk.epub_thumbnail(epub_path.as_posix()), Image)
+
+
 def test_epub_cover_via_name_scan(tmp_path):
     """Cover located by 'cover' substring in href when no metadata indicators."""
     opf = _opf('<item id="i" href="art/the_cover.jpg" media-type="image/jpeg"/>')
@@ -241,19 +251,20 @@ def test_epub_cover_via_name_scan(tmp_path):
     assert isinstance(idk.epub_thumbnail(epub_path.as_posix()), Image)
 
 
-def test_epub_cover_fallback_first_image(tmp_path):
-    """Falls back to first image in manifest when no cover indicators."""
+def test_epub_cover_no_cover_indicators(tmp_path):
+    """Raises when images exist but none are identifiable as cover."""
     opf = _opf('<item id="i" href="art/foo.jpg" media-type="image/jpeg"/>')
-    epub_path = tmp_path / "fallback.epub"
+    epub_path = tmp_path / "no_cover.epub"
     _build_epub(epub_path, opf_xml=opf, entries=[("OEBPS/art/foo.jpg", _jpeg_bytes())])
-    assert isinstance(idk.epub_thumbnail(epub_path.as_posix()), Image)
+    with pytest.raises(idk.IsccThumbExtractionError, match="No cover image found"):
+        idk.epub_cover(epub_path.as_posix())
 
 
 def test_epub_cover_no_image_raises(tmp_path):
     """Raises when manifest has no images at all."""
     epub_path = tmp_path / "no_image.epub"
     _build_epub(epub_path, opf_xml=_opf())
-    with pytest.raises(idk.IsccExtractionError, match="No cover image found"):
+    with pytest.raises(idk.IsccThumbExtractionError, match="No cover image found"):
         idk.epub_cover(epub_path.as_posix())
 
 
@@ -270,6 +281,28 @@ def test_epub_cover_path_missing_skips_unicode_errors(tmp_path):
     _build_epub(epub_path, opf_xml=opf, entries=[("OEBPS/Θ.txt", b"x")])
     with pytest.raises(idk.IsccExtractionError, match="not found in archive"):
         idk.epub_cover(epub_path.as_posix())
+
+
+def test_resolve_archive_path_skips_utf8_decode_error(tmp_path):
+    """Entries without the UTF-8 flag whose CP437->UTF-8 re-encoding
+    raises UnicodeDecodeError are silently skipped by the resolver.
+    CP437 byte 0x80 ('Ç') is invalid as a lone UTF-8 start byte.
+    """
+    opf = _opf(
+        '<item id="cv" href="cover.jpg" media-type="image/jpeg" properties="cover-image"/>',
+    )
+    raw_name = b"OEBPS/\x80.txt"
+    epub_path = tmp_path / "decode_err.epub"
+    _build_epub(
+        epub_path,
+        opf_xml=opf,
+        entries=[
+            (_RawNameZipInfo(raw_name), b"x"),
+            ("OEBPS/cover.jpg", _jpeg_bytes()),
+        ],
+    )
+    thumb = idk.epub_thumbnail(epub_path.as_posix())
+    assert isinstance(thumb, Image)
 
 
 def test_epub_cover_missing_container_raises(tmp_path):
@@ -322,3 +355,18 @@ def test_epub_thumbnail_png_cover_with_large_ztxt(tmp_path):
         epub_path, opf_xml=opf, entries=[("OEBPS/cover.png", _png_with_large_ztxt(1_500_000))]
     )
     assert isinstance(idk.epub_thumbnail(epub_path.as_posix()), Image)
+
+
+def test_epub_thumbnail_svg_cover(tmp_path):
+    """SVG cover images are rasterized via resvg before thumbnailing."""
+    svg_data = (
+        b'<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100">'
+        b'<rect width="100" height="100" fill="red"/></svg>'
+    )
+    opf = _opf(
+        '<item id="cv" href="cover.svg" media-type="image/svg+xml" properties="cover-image"/>',
+    )
+    epub_path = tmp_path / "svg_cover.epub"
+    _build_epub(epub_path, opf_xml=opf, entries=[("OEBPS/cover.svg", svg_data)])
+    thumb = idk.epub_thumbnail(epub_path.as_posix())
+    assert isinstance(thumb, Image)

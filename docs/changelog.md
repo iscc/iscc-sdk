@@ -2,6 +2,13 @@
 
 ## 0.9.3 - Unreleased
 
+- Added SVG cover image support for EPUB thumbnails (rasterized via `resvg`)
+- Added `IsccThumbExtractionError` for recoverable thumbnail extraction failures
+- Changed `code_iscc()` to handle thumbnail extraction failures gracefully (logs warning, continues
+    without thumbnail instead of raising)
+- Changed `code_iscc()` to generate thumbnails early, before heavy content processing
+- Removed EPUB cover fallback to first manifest image (only explicit cover references are used)
+- Fixed EPUB3 cover-image detection for manifests with multiple space-separated property tokens
 - Fixed EPUB cover extraction when archive entries store UTF-8 filename bytes without the ZIP UTF-8
     flag (CP437→UTF-8 recovery)
 - Fixed EPUB cover extraction for OPF hrefs containing `..`/`.` path segments
@@ -9,6 +16,8 @@
     chunks (raised `PngImagePlugin.MAX_TEXT_CHUNK` to 4 MB)
 - Wrapped `iscc-tika` parse failures (`TypeError` from native bridge, e.g. TIKA-237 on EPUBs with
     deeply nested XHTML) as `IsccExtractionError` in `text_extract` and `text_meta_extract`
+- Improved API documentation for `code_iscc()`, `code_iscc_mt()`, `code_content()`, and
+    `code_text()` options
 
 ## 0.9.2 - 2026-04-21
 

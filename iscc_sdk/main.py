@@ -63,13 +63,17 @@ def code_iscc(fp, name=None, description=None, meta=None, **options):
     :param meta: Optional metadata (dict or Data-URL as string) to override extracted metadata.
     :param options: Keyword arguments forwarded to ``sdk_opts``:
         **extract_meta** - Whether to extract metadata. Default: True;
+        **create_meta** - Create Meta-Code. Default: True;
+        **create_thumb** - Whether to create a thumbnail. Default: True;
         **fallback** - Process unsupported media types. Default: False;
         **add_units** - Include ISCC-UNITS in metadata. Default: False;
-        **create_meta** - Create Meta-Code. Default: True;
         **wide** - Enable wide mode for ISCC-SUM with Data & Instance codes only. Default: False;
         **experimental** - Enable experimental semantic codes. Default: False;
         **process_container** - Process container files and extract contained files. Default: False;
-        **granular** - Generate additional granular fingerprints. Default: False
+        **granular** - Generate additional granular fingerprints. Default: False;
+        **bits** - Bit-length of generated ISCC-UNITs. Default: 64;
+        **text_keep** - Keep extracted plaintext on ``IsccMeta.text`` (text mode). Default: False;
+        **video_store_mp7sig** - Store MP7 signature file (video mode). Default: False
     :return: IsccMeta object with complete ISCC-CODE and merged metadata from all ISCC-UNITs.
     :raises idk.IsccUnsupportedMediatype:
         If the media type is not supported. By default, the function will raise this exception for
@@ -96,7 +100,6 @@ def code_iscc(fp, name=None, description=None, meta=None, **options):
         mode = None
         log.warning(f"Processing {fp.name} - media type: {mediatype} - processing mode: {mode}")
 
-    iscc_meta["mediatype"] = mediatype
     if mode:
         schema_org_map = {
             "text": "TextDigitalDocument",
@@ -109,24 +112,34 @@ def code_iscc(fp, name=None, description=None, meta=None, **options):
             iscc_meta["@type"] = type_
         iscc_meta["mode"] = mode
 
+    # Generate thumbnail early (before heavy processing)
+    if opts.create_thumb and mode:
+        try:
+            thumbnail_img = idk.thumbnail(fp)
+            if thumbnail_img:
+                iscc_meta["thumbnail"] = idk.image_to_data_url(thumbnail_img)
+        except Exception:
+            log.warning(f"Thumbnail extraction failed for {fp.name}")
+
     # Generate Data & Instance Codes
     iscc_sum = code_sum(fp, **options)
 
     # Generate Content & optional Semantic Codes
     cc = None
     cs = None
+    content_options = {**options, "create_thumb": False}
     if mode == "image":
-        cc = code_image(fp, **options)
+        cc = code_image(fp, **content_options)
         if idk.is_installed("iscc_sci") and opts.experimental:  # pragma: nocover
             cs = code_image_semantic(fp)
     elif mode == "audio":
-        cc = code_audio(fp, **options)
+        cc = code_audio(fp, **content_options)
     elif mode == "video":
-        cc = code_video(fp, **options)
+        cc = code_video(fp, **content_options)
     elif mode == "text":
         text = idk.text_extract(fp)
         text = il.text_clean(text)
-        cc = code_text(fp, text, **options)
+        cc = code_text(fp, text, **content_options)
         if idk.is_installed("iscc_sct") and opts.experimental:  # pragma: nocover
             cs = code_text_semantic(fp, text)  # Don´t pass incopatible options here!
 
@@ -210,11 +223,18 @@ def code_iscc_mt(fp, name=None, description=None, meta=None, **options):  # prag
     :param description: Optional description to override extracted metadata.
     :param meta: Optional metadata (dict or Data-URL as string) to override extracted metadata.
     :param options: Keyword arguments forwarded to ``sdk_opts``:
+        **extract_meta** - Whether to extract metadata. Default: True;
+        **create_meta** - Create Meta-Code unit from embedded metadata. Default: True;
+        **create_thumb** - Whether to create a thumbnail. Default: True;
         **fallback** - Process unsupported media types. Default: False;
         **add_units** - Include ISCC-UNITS in metadata. Default: False;
-        **create_meta** - Create Meta-Code unit from embedded metadata. Default: True;
         **wide** - Enable wide mode for ISCC-SUM with Data & Instance codes only. Default: False;
-        **experimental** - Enable experimental semantic codes. Default: False
+        **experimental** - Enable experimental semantic codes. Default: False;
+        **process_container** - Process container files and extract contained files. Default: False;
+        **granular** - Generate additional granular fingerprints. Default: False;
+        **bits** - Bit-length of generated ISCC-UNITs. Default: 64;
+        **text_keep** - Keep extracted plaintext on ``IsccMeta.text`` (text mode). Default: False;
+        **video_store_mp7sig** - Store MP7 signature file (video mode). Default: False
     :return: IsccMeta object with complete ISCC-CODE and merged metadata from all ISCC-UNITs.
     :raises idk.IsccUnsupportedMediatype:
         If the media type is not supported. By default, the function will raise this exception for
@@ -371,7 +391,11 @@ def code_content(fp, **options):
     :param fp: Filepath
     :param options: Keyword arguments forwarded to ``sdk_opts``:
         **extract_meta** - Whether to extract metadata. Default: True;
-        **create_thumb** - Whether to create a thumbnail. Default: True
+        **create_thumb** - Whether to create a thumbnail. Default: True;
+        **bits** - Bit-length of the generated Content-Code UNIT. Default: 64;
+        **granular** - Generate additional granular fingerprints (text/video mode). Default: False;
+        **text_keep** - Keep extracted plaintext on ``IsccMeta.text`` (text mode). Default: False;
+        **video_store_mp7sig** - Store MP7 signature file (video mode). Default: False
     :return: Content-Code wrapped in ISCC metadata.
     :raises idk.IsccUnsupportedMediatype: If the media type is not supported.
     """
@@ -417,7 +441,8 @@ def code_text(fp, text=None, **options):
         **extract_meta** - Whether to extract metadata. Default: True;
         **create_thumb** - Whether to create a thumbnail. Default: True;
         **bits** - Bit-length of the generated Text-Code UNIT. Default: 64;
-        **granular** - Whether to generate additional granular fingerprints. Default: False
+        **granular** - Whether to generate additional granular fingerprints. Default: False;
+        **text_keep** - Keep extracted plaintext on ``IsccMeta.text``. Default: False
     :return: ISCC metadata including Text-Code.
     """
     fp = Path(fp)

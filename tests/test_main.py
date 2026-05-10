@@ -515,3 +515,20 @@ def test_code_sum_wide_units(pdf_file):
             "ISCC:IADXVVOH3P3KMU4PCX6QIOPA3RN2AOQEH2RD6BZKUTRLVAYICG63L4A",
         ],
     }
+
+
+def test_code_iscc_thumb_extraction_error(jpg_file, monkeypatch):
+    """code_iscc logs a warning and continues when thumbnail extraction fails."""
+
+    def _raise(fp):
+        raise idk.IsccThumbExtractionError("simulated failure")
+
+    monkeypatch.setattr(idk, "thumbnail", _raise)
+    result = idk.code_iscc(jpg_file)
+    assert "thumbnail" not in result.dict()
+
+
+def test_code_iscc_explicit_create_thumb_false(jpg_file):
+    """Passing create_thumb=False explicitly must not raise TypeError."""
+    result = idk.code_iscc(jpg_file, create_thumb=False)
+    assert "thumbnail" not in result.dict()
