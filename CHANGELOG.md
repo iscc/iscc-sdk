@@ -25,6 +25,8 @@
     transitive dependency of `iscc-sci` and `iscc-sct`)
 - Fixed CI: skip semantic code tests on macOS Python 3.12 (`onnxruntime` 1.26.0 has no macOS wheels
     for that version)
+- Updated `iscc-schema` floor to `>=0.7.0` (version-pinned `@context`/`$schema` URLs now resolve to
+    `0.7.0`)
 
 ## 0.9.2 - 2026-04-21
 

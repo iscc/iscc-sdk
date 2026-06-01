@@ -38,7 +38,7 @@ dependencies = [
     "loguru",
     "bitarray",
     "xxhash",
-    "iscc-schema>=0.5.0",
+    "iscc-schema>=0.7.0",
     "python-magic-pure",
     "platformdirs",
     "jmespath",

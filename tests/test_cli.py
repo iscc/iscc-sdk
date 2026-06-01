@@ -57,8 +57,8 @@ def test_cli_create():
     assert "iscc-sdk" in data["generator"]
     del data["generator"]
     assert data == {
-        "@context": "http://purl.org/iscc/context/0.5.0.jsonld",
-        "$schema": "http://purl.org/iscc/schema/0.5.0.json",
+        "@context": "http://purl.org/iscc/context/0.7.0.jsonld",
+        "$schema": "http://purl.org/iscc/schema/0.7.0.json",
         "@type": "AudioObject",
         "iscc": "ISCC:KIC2JKSX7OH5PBIENISKEJTS4TRKHYJBCZDNLQXYILWJHQAP3N3KPTQ",
         "name": "Belly Button",
