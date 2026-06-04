@@ -1,11 +1,12 @@
 ## Changelog
 
-## 0.9.3 - Unreleased
+## 0.9.3 - 2026-06-04
 
 - Added SVG cover image support for EPUB thumbnails (rasterized via `resvg`)
 - Added `IsccThumbExtractionError` for recoverable thumbnail extraction failures
 - Changed `code_iscc()` to handle thumbnail extraction failures gracefully (logs warning, continues
-    without thumbnail instead of raising)
+    without thumbnail instead of raising); genuinely corrupt or invalid source files still raise
+    `IsccExtractionError`
 - Changed `code_iscc()` to generate thumbnails early, before heavy content processing
 - Removed EPUB cover fallback to first manifest image (only explicit cover references are used)
 - Fixed EPUB3 cover-image detection for manifests with multiple space-separated property tokens
@@ -25,8 +26,8 @@
     transitive dependency of `iscc-sci` and `iscc-sct`)
 - Fixed CI: skip semantic code tests on macOS Python 3.12 (`onnxruntime` 1.26.0 has no macOS wheels
     for that version)
-- Updated `iscc-schema` floor to `>=0.7.0` (version-pinned `@context`/`$schema` URLs now resolve to
-    `0.7.0`)
+- Updated `iscc-schema` floor to `>=0.8.0` (version-pinned `@context`/`$schema` URLs now resolve to
+    `0.8.0`)
 
 ## 0.9.2 - 2026-04-21
 

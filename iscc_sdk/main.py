@@ -118,7 +118,13 @@ def code_iscc(fp, name=None, description=None, meta=None, **options):
             thumbnail_img = idk.thumbnail(fp)  # type: ignore[operator]
             if thumbnail_img:
                 iscc_meta["thumbnail"] = idk.image_to_data_url(thumbnail_img)
-        except Exception:
+        except Exception as e:
+            # Thumbnail is optional: recover from missing-cover and thumbnailer errors, but let
+            # fatal extraction errors (corrupt/invalid source files) propagate.
+            if isinstance(e, idk.IsccExtractionError) and not isinstance(
+                e, idk.IsccThumbExtractionError
+            ):
+                raise
             log.warning(f"Thumbnail extraction failed for {fp.name}")
 
     # Generate Data & Instance Codes
@@ -290,7 +296,13 @@ def code_iscc_mt(fp, name=None, description=None, meta=None, **options):  # prag
                 thumbnail_img = _thumbnail(fp)
                 if thumbnail_img:
                     iscc_meta["thumbnail"] = idk.image_to_data_url(thumbnail_img)
-            except Exception:
+            except Exception as e:
+                # Thumbnail is optional: recover from missing-cover and thumbnailer errors, but
+                # let fatal extraction errors (corrupt/invalid source files) propagate.
+                if isinstance(e, idk.IsccExtractionError) and not isinstance(
+                    e, idk.IsccThumbExtractionError
+                ):
+                    raise
                 log.warning(f"Thumbnail extraction failed for {fp.name}")
 
         # For text mode, extract text once (shared between code_text and code_text_semantic)

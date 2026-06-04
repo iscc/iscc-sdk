@@ -269,17 +269,17 @@ def test_epub_cover_no_image_raises(tmp_path):
 
 
 def test_epub_cover_path_missing_skips_unicode_errors(tmp_path):
-    """Cover path not in archive raises; resolver loop skips entries
-    whose filenames can't be re-encoded to CP437 (proper UTF-8 entries
-    with non-CP437 chars). Covers both the UnicodeError branch in the
-    resolver and the not-found raise in epub_cover.
+    """Declared cover absent from archive raises the recoverable IsccThumbExtractionError;
+    resolver loop skips entries whose filenames can't be re-encoded to CP437 (proper UTF-8
+    entries with non-CP437 chars). Covers both the UnicodeError branch in the resolver and the
+    not-found raise in epub_cover.
     """
     opf = _opf(
         '<item id="cv" href="missing.jpg" media-type="image/jpeg" properties="cover-image"/>',
     )
     epub_path = tmp_path / "missing_cover.epub"
     _build_epub(epub_path, opf_xml=opf, entries=[("OEBPS/Θ.txt", b"x")])
-    with pytest.raises(idk.IsccExtractionError, match="not found in archive"):
+    with pytest.raises(idk.IsccThumbExtractionError, match="not found in archive"):
         idk.epub_cover(epub_path.as_posix())
 
 

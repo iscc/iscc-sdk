@@ -88,7 +88,8 @@ def epub_cover(fp):
 
     :param fp: Filepath to EPUB file
     :return: Raw bytes of the cover image
-    :raises IsccThumbExtractionError: If no cover image can be found.
+    :raises IsccThumbExtractionError: If no cover image can be found or the declared cover is
+        absent from the archive.
     :raises IsccExtractionError: If the EPUB structure is invalid or corrupt.
     """
     fp = Path(fp)
@@ -159,7 +160,7 @@ def epub_cover(fp):
             cover_path_str = posixpath.normpath(cover_path.as_posix())
             resolved = resolve_archive_path(archive, cover_path_str)
             if resolved is None:
-                raise idk.IsccExtractionError(
+                raise idk.IsccThumbExtractionError(
                     f"Cover image path {cover_path_str} not found in archive {fp}"
                 )
             return archive.read(resolved)

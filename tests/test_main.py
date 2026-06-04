@@ -549,6 +549,17 @@ def test_code_iscc_thumb_extraction_error(jpg_file, monkeypatch):
     assert "thumbnail" not in result.dict()
 
 
+def test_code_iscc_thumb_fatal_extraction_error(jpg_file, monkeypatch):
+    """code_iscc re-raises fatal IsccExtractionError (corrupt source) from the thumbnail step."""
+
+    def _raise(fp):
+        raise idk.IsccExtractionError("corrupt source file")
+
+    monkeypatch.setattr(idk, "thumbnail", _raise)
+    with pytest.raises(idk.IsccExtractionError, match="corrupt source file"):
+        idk.code_iscc(jpg_file)
+
+
 def test_code_iscc_explicit_create_thumb_false(jpg_file):
     """Passing create_thumb=False explicitly must not raise TypeError."""
     result = idk.code_iscc(jpg_file, create_thumb=False)
