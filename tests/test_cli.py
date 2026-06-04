@@ -5,11 +5,15 @@ from pathlib import Path
 from typing import Tuple
 from typer.testing import CliRunner
 from iscc_sdk.cli import app, iter_unprocessed, process_file
+import iscc_schema
 import iscc_samples as iss
 import json
 
 
 runner = CliRunner()
+
+# iscc-schema stamps its own version into the @context and $schema URLs.
+SCHEMA_VERSION = iscc_schema.__version__
 
 
 def test_iter_unprocessed():
@@ -57,8 +61,8 @@ def test_cli_create():
     assert "iscc-sdk" in data["generator"]
     del data["generator"]
     assert data == {
-        "@context": "http://purl.org/iscc/context/0.7.0.jsonld",
-        "$schema": "http://purl.org/iscc/schema/0.7.0.json",
+        "@context": f"http://purl.org/iscc/context/{SCHEMA_VERSION}.jsonld",
+        "$schema": f"http://purl.org/iscc/schema/{SCHEMA_VERSION}.json",
         "@type": "AudioObject",
         "iscc": "ISCC:KIC2JKSX7OH5PBIENISKEJTS4TRKHYJBCZDNLQXYILWJHQAP3N3KPTQ",
         "name": "Belly Button",
