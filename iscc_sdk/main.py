@@ -63,13 +63,17 @@ def code_iscc(fp, name=None, description=None, meta=None, **options):
     :param meta: Optional metadata (dict or Data-URL as string) to override extracted metadata.
     :param options: Keyword arguments forwarded to ``sdk_opts``:
         **extract_meta** - Whether to extract metadata. Default: True;
+        **create_meta** - Create Meta-Code. Default: True;
+        **create_thumb** - Whether to create a thumbnail. Default: True;
         **fallback** - Process unsupported media types. Default: False;
         **add_units** - Include ISCC-UNITS in metadata. Default: False;
-        **create_meta** - Create Meta-Code. Default: True;
         **wide** - Enable wide mode for ISCC-SUM with Data & Instance codes only. Default: False;
         **experimental** - Enable experimental semantic codes. Default: False;
         **process_container** - Process container files and extract contained files. Default: False;
-        **granular** - Generate additional granular fingerprints. Default: False
+        **granular** - Generate additional granular fingerprints. Default: False;
+        **bits** - Bit-length of generated ISCC-UNITs. Default: 64;
+        **text_keep** - Keep extracted plaintext on ``IsccMeta.text`` (text mode). Default: False;
+        **video_store_mp7sig** - Store MP7 signature file (video mode). Default: False
     :return: IsccMeta object with complete ISCC-CODE and merged metadata from all ISCC-UNITs.
     :raises idk.IsccUnsupportedMediatype:
         If the media type is not supported. By default, the function will raise this exception for
@@ -96,7 +100,6 @@ def code_iscc(fp, name=None, description=None, meta=None, **options):
         mode = None
         log.warning(f"Processing {fp.name} - media type: {mediatype} - processing mode: {mode}")
 
-    iscc_meta["mediatype"] = mediatype
     if mode:
         schema_org_map = {
             "text": "TextDigitalDocument",
@@ -109,24 +112,40 @@ def code_iscc(fp, name=None, description=None, meta=None, **options):
             iscc_meta["@type"] = type_
         iscc_meta["mode"] = mode
 
+    # Generate thumbnail early (before heavy processing)
+    if opts.create_thumb and mode:
+        try:
+            thumbnail_img = idk.thumbnail(fp)  # type: ignore[operator]
+            if thumbnail_img:
+                iscc_meta["thumbnail"] = idk.image_to_data_url(thumbnail_img)
+        except Exception as e:
+            # Thumbnail is optional: recover from missing-cover and thumbnailer errors, but let
+            # fatal extraction errors (corrupt/invalid source files) propagate.
+            if isinstance(e, idk.IsccExtractionError) and not isinstance(
+                e, idk.IsccThumbExtractionError
+            ):
+                raise
+            log.warning(f"Thumbnail extraction failed for {fp.name}")
+
     # Generate Data & Instance Codes
     iscc_sum = code_sum(fp, **options)
 
     # Generate Content & optional Semantic Codes
     cc = None
     cs = None
+    content_options = {**options, "create_thumb": False}
     if mode == "image":
-        cc = code_image(fp, **options)
+        cc = code_image(fp, **content_options)
         if idk.is_installed("iscc_sci") and opts.experimental:  # pragma: nocover
             cs = code_image_semantic(fp)
     elif mode == "audio":
-        cc = code_audio(fp, **options)
+        cc = code_audio(fp, **content_options)
     elif mode == "video":
-        cc = code_video(fp, **options)
+        cc = code_video(fp, **content_options)
     elif mode == "text":
         text = idk.text_extract(fp)
         text = il.text_clean(text)
-        cc = code_text(fp, text, **options)
+        cc = code_text(fp, text, **content_options)
         if idk.is_installed("iscc_sct") and opts.experimental:  # pragma: nocover
             cs = code_text_semantic(fp, text)  # Don´t pass incopatible options here!
 
@@ -210,11 +229,18 @@ def code_iscc_mt(fp, name=None, description=None, meta=None, **options):  # prag
     :param description: Optional description to override extracted metadata.
     :param meta: Optional metadata (dict or Data-URL as string) to override extracted metadata.
     :param options: Keyword arguments forwarded to ``sdk_opts``:
+        **extract_meta** - Whether to extract metadata. Default: True;
+        **create_meta** - Create Meta-Code unit from embedded metadata. Default: True;
+        **create_thumb** - Whether to create a thumbnail. Default: True;
         **fallback** - Process unsupported media types. Default: False;
         **add_units** - Include ISCC-UNITS in metadata. Default: False;
-        **create_meta** - Create Meta-Code unit from embedded metadata. Default: True;
         **wide** - Enable wide mode for ISCC-SUM with Data & Instance codes only. Default: False;
-        **experimental** - Enable experimental semantic codes. Default: False
+        **experimental** - Enable experimental semantic codes. Default: False;
+        **process_container** - Process container files and extract contained files. Default: False;
+        **granular** - Generate additional granular fingerprints. Default: False;
+        **bits** - Bit-length of generated ISCC-UNITs. Default: 64;
+        **text_keep** - Keep extracted plaintext on ``IsccMeta.text`` (text mode). Default: False;
+        **video_store_mp7sig** - Store MP7 signature file (video mode). Default: False
     :return: IsccMeta object with complete ISCC-CODE and merged metadata from all ISCC-UNITs.
     :raises idk.IsccUnsupportedMediatype:
         If the media type is not supported. By default, the function will raise this exception for
@@ -222,74 +248,125 @@ def code_iscc_mt(fp, name=None, description=None, meta=None, **options):  # prag
     """
     fp = Path(fp)
     opts = idk.sdk_opts.override(options)
-    iscc_meta: dict[str, Any] = dict(filename=fp.name)
 
-    # Track list properties for custom merging
-    iscc_units = []
-    iscc_features = []
+    # Initialize collectors
+    iscc_meta: dict[str, Any] = dict(filename=fp.name)
 
     with open(fp, "rb") as infile:
         data = infile.read(4096)
 
-    mime = idk.mediatype_guess(data, file_name=fp.name)
-    iscc_meta["mediatype"] = mime
+    mediatype = idk.mediatype_guess(data, file_name=fp.name)
+    iscc_meta["mediatype"] = mediatype
 
     try:
-        mode = idk.mediatype_to_mode(mime)
-        log.debug(f"Processing {fp.name} - media type: {mime} - processing mode: {mode}")
+        mode = idk.mediatype_to_mode(mediatype)
+        log.debug(f"Processing {fp.name} - media type: {mediatype} - processing mode: {mode}")
     except idk.IsccUnsupportedMediatype:
         if not opts.fallback:
             raise
         mode = None
-        log.warning(f"Processing {fp.name} - media type: {mime} - processing mode: {mode}")
+        log.warning(f"Processing {fp.name} - media type: {mediatype} - processing mode: {mode}")
+
+    if mode:
+        schema_org_map = {
+            "text": "TextDigitalDocument",
+            "image": "ImageObject",
+            "audio": "AudioObject",
+            "video": "VideoObject",
+        }
+        type_ = schema_org_map.get(str(mode))
+        if type_:
+            iscc_meta["@type"] = type_
+        iscc_meta["mode"] = mode
+
+    content_options = {**options, "create_thumb": False}
 
     with ThreadPoolExecutor() as executor:
-        # Always process instance and data-codes first
+        # Submit independent futures first (run while we do sequential prep)
         sum_future = executor.submit(code_sum, fp, **options)
+        meta_future = None
+        if opts.create_meta and mode:
+            meta_future = executor.submit(code_meta, fp, name, description, meta, **options)
 
-        if mode is not None:
-            # Process content and meta for supported media types
-            content_future = executor.submit(code_content, fp, **options)
-            if opts.create_meta:
-                meta_future = executor.submit(code_meta, fp, name, description, meta, **options)
-                meta = meta_future.result()
-                iscc_units.append(meta.iscc)
+        # Generate thumbnail early (overlaps with sum/meta futures)
+        if opts.create_thumb and mode:
+            try:
+                from iscc_sdk.thumbnail import thumbnail as _thumbnail
 
-            # Optional semantic codes
-            if mode == "image" and idk.is_installed("iscc_sci") and opts.experimental:
-                content_semantic_future = executor.submit(code_image_semantic, fp)
-            elif mode == "text" and idk.is_installed("iscc_sct") and opts.experimental:
-                content_semantic_future = executor.submit(code_text_semantic, fp)
-            else:
-                content_semantic_future = None
+                thumbnail_img = _thumbnail(fp)
+                if thumbnail_img:
+                    iscc_meta["thumbnail"] = idk.image_to_data_url(thumbnail_img)
+            except Exception as e:
+                # Thumbnail is optional: recover from missing-cover and thumbnailer errors, but
+                # let fatal extraction errors (corrupt/invalid source files) propagate.
+                if isinstance(e, idk.IsccExtractionError) and not isinstance(
+                    e, idk.IsccThumbExtractionError
+                ):
+                    raise
+                log.warning(f"Thumbnail extraction failed for {fp.name}")
 
-            if content_semantic_future:
-                content_semantic = content_semantic_future.result()
-                iscc_units.append(content_semantic.iscc)
-                if content_semantic.features:
-                    iscc_features.append(content_semantic.features[0])
-                iscc_meta.update(content_semantic.dict(exclude={"features"}))
+        # For text mode, extract text once (shared between code_text and code_text_semantic)
+        text = None
+        if mode == "text":
+            text = idk.text_extract(fp)
+            text = il.text_clean(text)
 
-            content = content_future.result()
-            iscc_units.append(content.iscc)
-            if content.features:
-                iscc_features.append(content.features[0])
-            iscc_meta.update(content.dict(exclude={"features"}))
-            if opts.create_meta:
-                iscc_meta.update(meta.dict())
+        # Submit content & optional semantic futures (after sequential prep)
+        cc_future = None
+        cs_future = None
+        if mode == "image":
+            cc_future = executor.submit(code_image, fp, **content_options)
+            if idk.is_installed("iscc_sci") and opts.experimental:
+                cs_future = executor.submit(code_image_semantic, fp)
+        elif mode == "audio":
+            cc_future = executor.submit(code_audio, fp, **content_options)
+        elif mode == "video":
+            cc_future = executor.submit(code_video, fp, **content_options)
+        elif mode == "text":
+            cc_future = executor.submit(code_text, fp, text, **content_options)
+            if idk.is_installed("iscc_sct") and opts.experimental:
+                cs_future = executor.submit(code_text_semantic, fp, text)
 
-        # Wait for instance and data to complete
-        sum_result = sum_future.result()
-        if hasattr(sum_result, "units") and sum_result.units:
-            iscc_units.extend(sum_result.units)
-        else:
-            iscc_units.extend(f"ISCC:{u}" for u in il.iscc_decompose(sum_result.iscc))
-        iscc_meta.update(sum_result.dict())
+        # Collect results
+        iscc_sum = sum_future.result()
+        cc = cc_future.result() if cc_future else None
+        cs = cs_future.result() if cs_future else None
+        meta_result = meta_future.result() if meta_future else None
+
+    # Collect Metadata (same merge order as code_iscc)
+    iscc_meta.update(iscc_sum.dict())
+    if cs:
+        iscc_meta.update(cs.dict())
+    if cc:
+        iscc_meta.update(cc.dict())
+    if meta_result:
+        iscc_meta.update(meta_result.dict())
+
+    # Add ISCC-UNITS
+    iscc_units = []
+    if meta_result:
+        iscc_units.append(meta_result.iscc)
+    if cs:
+        iscc_units.append(cs.iscc)
+    if cc:
+        iscc_units.append(cc.iscc)
+
+    if hasattr(iscc_sum, "units") and iscc_sum.units:
+        iscc_units.extend(iscc_sum.units)
+    else:
+        iscc_units.extend(f"ISCC:{u}" for u in il.iscc_decompose(iscc_sum.iscc))
 
     if opts.add_units:
         iscc_meta["units"] = iscc_units
-    if iscc_features:
-        iscc_meta["features"] = iscc_features
+
+    # Add granular features
+    if opts.granular:
+        features = []
+        if hasattr(cs, "features") and cs.features:
+            features.append(cs.features[0])
+        if hasattr(cc, "features") and cc.features:
+            features.append(cc.features[0])
+        iscc_meta["features"] = features
 
     # Compose ISCC-CODE
     iscc_code = il.gen_iscc_code_v0(iscc_units, wide=opts.wide)
@@ -371,7 +448,11 @@ def code_content(fp, **options):
     :param fp: Filepath
     :param options: Keyword arguments forwarded to ``sdk_opts``:
         **extract_meta** - Whether to extract metadata. Default: True;
-        **create_thumb** - Whether to create a thumbnail. Default: True
+        **create_thumb** - Whether to create a thumbnail. Default: True;
+        **bits** - Bit-length of the generated Content-Code UNIT. Default: 64;
+        **granular** - Generate additional granular fingerprints (text/video mode). Default: False;
+        **text_keep** - Keep extracted plaintext on ``IsccMeta.text`` (text mode). Default: False;
+        **video_store_mp7sig** - Store MP7 signature file (video mode). Default: False
     :return: Content-Code wrapped in ISCC metadata.
     :raises idk.IsccUnsupportedMediatype: If the media type is not supported.
     """
@@ -417,7 +498,8 @@ def code_text(fp, text=None, **options):
         **extract_meta** - Whether to extract metadata. Default: True;
         **create_thumb** - Whether to create a thumbnail. Default: True;
         **bits** - Bit-length of the generated Text-Code UNIT. Default: 64;
-        **granular** - Whether to generate additional granular fingerprints. Default: False
+        **granular** - Whether to generate additional granular fingerprints. Default: False;
+        **text_keep** - Keep extracted plaintext on ``IsccMeta.text``. Default: False
     :return: ISCC metadata including Text-Code.
     """
     fp = Path(fp)

@@ -1,6 +1,6 @@
 [project]
 name = "iscc-sdk"
-version = "0.9.2"
+version = "0.9.3"
 description = "SDK for creating ISCCs (International Standard Content Codes)"
 authors = [{ name = "Titusz", email = "tp@py7.de" }]
 requires-python = ">=3.11"
@@ -38,7 +38,7 @@ dependencies = [
     "loguru",
     "bitarray",
     "xxhash",
-    "iscc-schema>=0.5.0",
+    "iscc-schema>=0.8.0",
     "python-magic-pure",
     "platformdirs",
     "jmespath",
@@ -64,11 +64,9 @@ dependencies = [
 [project.optional-dependencies]
 sci = [
     "iscc-sci",
-    "onnxruntime",
 ]
 sct = [
     "iscc-sct",
-    "onnxruntime",
 ]
 
 [project.urls]
@@ -113,6 +111,10 @@ module-root = ""
 
 [tool.mypy]
 ignore_missing_imports = true
+# typeshed declares io.BytesIO as inheriting abstract methods from BinaryIO/IOBase
+# via Generic[AnyStr], which zuban's default "typed" mode reports as a false positive
+# on every io.BytesIO(...) call. mypy mode does not flag these.
+disable_error_code = ["abstract"]
 
 [[tool.mypy.overrides]]
 module = "iscc_sdk.monkeys"

@@ -1,6 +1,7 @@
 """*EPUB handling module*."""
 
 import io
+import posixpath
 import shutil
 import tempfile
 from pathlib import Path
@@ -12,6 +13,7 @@ import iscc_sdk as idk
 import zipfile
 import lxml
 from loguru import logger as log
+from iscc_sdk.mediatype import _has_svg_root
 
 
 __all__ = [
@@ -24,14 +26,23 @@ __all__ = [
 def epub_thumbnail(fp):
     # type: (str|Path) -> Image.Image
     """
-    Creat thumbnail from EPUB document cover image.
+    Create thumbnail from EPUB document cover image.
 
     :param fp: Filepath to EPUB document.
     :return: Thumbnail image as PIL Image object
     """
     fp = Path(fp)
     data = epub_cover(fp)
-    img = Image.open(io.BytesIO(data))
+    if _has_svg_root(data):
+        with tempfile.NamedTemporaryFile(suffix=".svg", delete=False) as tmp:
+            tmp.write(data)
+            tmp_path = Path(tmp.name)
+        try:
+            img = idk.svg_rasterize(tmp_path)
+        finally:
+            tmp_path.unlink(missing_ok=True)
+    else:
+        img = Image.open(io.BytesIO(data))
     size = idk.sdk_opts.image_thumbnail_size
     img.thumbnail((size, size), resample=idk.LANCZOS)
     return ImageEnhance.Sharpness(img.convert("RGB")).enhance(1.4)
@@ -61,7 +72,7 @@ def epub_meta_embed(fp, meta):
     return tempepub
 
 
-def epub_cover(fp):  # pragma: no cover
+def epub_cover(fp):
     # type: (str|Path) -> bytes
     """
     Extract the cover image bytes from an EPUB file.
@@ -70,18 +81,19 @@ def epub_cover(fp):  # pragma: no cover
     1. Checking the EPUB2 metadata cover reference
     2. Checking the EPUB3 cover-image manifest property
     3. Scanning for image files with 'cover' in the name
-    4. Falling back to the first image file from the manifest
 
     URL-encoded paths in the OPF manifest are decoded before zip archive lookup.
-    If no image is found, it raises an error.
+    Entry names are also recovered when the EPUB stores UTF-8 filenames without
+    the ZIP UTF-8 flag set. If no cover is found, it raises an error.
 
     :param fp: Filepath to EPUB file
     :return: Raw bytes of the cover image
-    :raises IsccExtractionError: If no cover image can be found.
+    :raises IsccThumbExtractionError: If no cover image can be found or the declared cover is
+        absent from the archive.
+    :raises IsccExtractionError: If the EPUB structure is invalid or corrupt.
     """
     fp = Path(fp)
     cover_path = None
-    image_paths = []
 
     try:
         with zipfile.ZipFile(fp, "r") as archive:
@@ -118,7 +130,9 @@ def epub_cover(fp):  # pragma: no cover
             # 2. Check for EPUB3 cover-image property
             if not cover_path:
                 cover_href = opf_root.xpath(
-                    "//opf:manifest/opf:item[@properties='cover-image']/@href",
+                    "//opf:manifest/opf:item["
+                    "contains(concat(' ', normalize-space(@properties), ' '), ' cover-image ')"
+                    "]/@href",
                     namespaces=opf_ns,
                 )
                 if cover_href:
@@ -133,47 +147,23 @@ def epub_cover(fp):  # pragma: no cover
                 for item in manifest_items:
                     media_type = item.get("media-type", "")
                     href = item.get("href")
-                    if media_type.startswith("image/") and href:
-                        item_path = (Path(opf_path).parent / unquote(href)).as_posix()
-                        image_paths.append(item_path)
-                        if "cover" in href.lower():
-                            cover_path = Path(item_path)
-                            log.debug(
-                                f"Found cover image via manifest scan: {cover_path.as_posix()}"
-                            )
-                            break
-
-            # 4. Fallback to the first image in the manifest
-            if not cover_path and image_paths:
-                cover_path = Path(image_paths[0])
-                log.debug(f"Using first image from manifest as cover: {cover_path.as_posix()}")
+                    if media_type.startswith("image/") and href and "cover" in href.lower():
+                        cover_path = Path(opf_path).parent / unquote(href)
+                        log.debug(f"Found cover image via manifest scan: {cover_path.as_posix()}")
+                        break
 
             if not cover_path:
-                raise idk.IsccExtractionError(f"No cover image found in {fp}")
+                raise idk.IsccThumbExtractionError(f"No cover image found in {fp}")
 
-            # Ensure the path is relative to the archive root
-            cover_path_str = cover_path.as_posix()
-            if cover_path_str not in archive.namelist():
-                # Try resolving relative paths if needed (though Path should handle this)
-                # This part might need adjustment based on EPUB structure variations
-                log.warning(
-                    f"Cover path {cover_path_str} not directly in archive, attempting resolution."
+            # Collapse '.' and '..' segments — OPF hrefs are relative to the
+            # OPF directory and may legitimately reference parent dirs.
+            cover_path_str = posixpath.normpath(cover_path.as_posix())
+            resolved = resolve_archive_path(archive, cover_path_str)
+            if resolved is None:
+                raise idk.IsccThumbExtractionError(
+                    f"Cover image path {cover_path_str} not found in archive {fp}"
                 )
-                # Basic check if it exists at all
-                found = False
-                for name in archive.namelist():
-                    if name.endswith(cover_path.name):
-                        cover_path_str = name
-                        found = True
-                        log.debug(f"Resolved cover path to {cover_path_str}")
-                        break
-                if not found:
-                    raise idk.IsccExtractionError(
-                        f"Cover image path {cover_path_str} not found in archive {fp}"
-                    )
-
-            # Extract image bytes
-            return archive.read(cover_path_str)
+            return archive.read(resolved)
 
     except zipfile.BadZipFile:
         raise idk.IsccExtractionError(f"Invalid EPUB (Zip) file: {fp}")
@@ -330,6 +320,33 @@ def is_fixed_layout_epub(fp):  # pragma: no cover
     except Exception as e:
         log.warning(f"Error checking if EPUB is fixed layout: {e}")
         return False
+
+
+def resolve_archive_path(archive, target):
+    # type: (zipfile.ZipFile, str) -> str | None
+    """
+    Resolve a UTF-8 path to an actual zip entry name.
+
+    Some EPUBs store UTF-8 filename bytes without setting the ZIP UTF-8 flag
+    (bit 11). Python's zipfile then decodes those names as CP437, producing
+    mojibake. Re-encoding CP437→UTF-8 recovers the original UTF-8 name.
+
+    :param archive: Open zipfile.ZipFile instance
+    :param target: Target path (POSIX, UTF-8 string)
+    :return: Actual archive entry name, or None if no match
+    """
+    for info in archive.infolist():
+        if info.filename == target:
+            return info.filename
+        try:
+            if (
+                not info.flag_bits & 0x800
+                and info.filename.encode("cp437").decode("utf-8") == target
+            ):
+                return info.filename
+        except UnicodeError:
+            continue
+    return None
 
 
 # Register EPUB container processor

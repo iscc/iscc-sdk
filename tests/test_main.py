@@ -1,3 +1,5 @@
+import pytest
+
 import iscc_sdk as idk
 
 
@@ -166,6 +168,25 @@ def test_code_iscc_video(mp4_file):
         "thumbnail": "data:image/webp;base64,UklGRtoDAABXRUJQVlA4IM4DAADwEgCdASqAAGkAPxGCtVUsKL+jJds7o/AiCUAZxC/zSVryP9F5Wd4MpYyh31Oop3Y1gW+FUMLF+LH50r/j5ektgrr1PhBZy2lHUxe8+j3fLIkk3vEgo4XeUcOHki+nHkQKHGj5abzYzMffF3kH7eD7WVSlP9sdBVmH36ki52xuj8Tk7TEMq1cJgUI72s4iUWvXE39Rx9IcYSWg4avx6FxgAP7zJTKAANvYY6Iw1uv7ee7/vvndS/7h+OCS0L1oJhmJLVuUfE0V9cJlj4uTf3yAlsbKN2mzv7sCNYAVC8Ttl/gV6o1g6EcCV1l7gSkInYzwpJ4ABnOFk6RcmbZF3DUwOtdwsDkuBgt3QIWsiGX0ZTNwmI7TUHrdLCUzJrLwt0FNQKEwY1KRt4C3BwSIFBVQvjLGpPyVk9pjvlkqOq7PqLbsffEJgg56cKlVkm8Zql5Gg+0kH99bXXXR35537NfxxOeWnf+82PPohNE4LngSygQEgXRyQ4E4GI94UZpn1N56npj/kI+XE5NOyP5gOHpxrYu/KoVT7tMJHvP4rOUku85WEhNrm7iyxPsk5dOMVKEd0QntCmXLob62Qxq635euCrZC9g5wrD0y/W9xCF4rqkNvPgdZn85cXFuolbCqIidgX2GS6HBzTRNQ9yhQ88o/IwEfc34bpx+c/onylwkEsEvqqLmUVO0sN7+nMHlZWhxwaV4rWervpFRDvbsXJz/o1XFFqkraQ5MPrD12P8mDsjDPiKlXExY7aa1NDNLfsZi/XbaBf9Ju0W2n0JVJGwJuoFzAhReTE4jHzbpeCo3/ZvC7/ISLeiPoN8F0KAXTLIy31YaAvPlB8+AYsSEvcMZJQL/7mxoCBetvf/eEcMPPpfWzabWJfCwXEtjVQBmahu2qlJZD5MdXAlA0NgNbeJwZYBtHM29vKBHHoVBE/liCWVaDmgFUdEk+jF6pPFPH5eVd22zxDEIqzRpN0Xzl/5HI656sCzWOb9T1uQN5kw21KOci1ulRYNBplfqlQFoUEiuSE26ub7ezJUM4R7dEzIW9RbM4Yweacq54M+nLnfhaD/R9yjqtIzvpZz8PFjVwPKbZzHX3PmraHLrKET/2IzadluRfJRSUnMInZpWTAUgyAoV7h1ULtK1PcivZKBoCz54G9XrroBgsNKn6N/QLdJWvwzC/RrSSTmXTw5gCJT7wD+ZxcwUAFrA7U+j1icfQj2w+pUIPHv+bmki4y7GxH6Y2HzeRVTnSQQS5JP2uwM8blPWX3WH5lqhngyLP46HTbAQH7o7KUzF6v8cyp+gAAA==",
         "width": 176,
     }
+
+
+@pytest.mark.parametrize(
+    "media_fixture",
+    ["jpg_file", "mp3_file", "mp4_file", "pdf_file", "docx_file"],
+)
+def test_code_iscc_mt_matches_code_iscc(media_fixture, request):
+    """The multithreaded code_iscc_mt must produce output identical to code_iscc.
+
+    Guards the parallelism refactor across all processing modes (image, audio,
+    video, text). ``add_units`` checks ISCC-UNIT ordering and ``granular`` checks
+    feature ordering - the two things the concurrent rewrite could have changed.
+    """
+    from iscc_sdk.main import code_iscc_mt
+
+    fp = request.getfixturevalue(media_fixture)
+    expected = idk.code_iscc(fp, add_units=True, granular=True).dict()
+    actual = code_iscc_mt(fp, add_units=True, granular=True).dict()
+    assert actual == expected
 
 
 def test_code_meta_image(jpg_file):
@@ -515,3 +536,31 @@ def test_code_sum_wide_units(pdf_file):
             "ISCC:IADXVVOH3P3KMU4PCX6QIOPA3RN2AOQEH2RD6BZKUTRLVAYICG63L4A",
         ],
     }
+
+
+def test_code_iscc_thumb_extraction_error(jpg_file, monkeypatch):
+    """code_iscc logs a warning and continues when thumbnail extraction fails."""
+
+    def _raise(fp):
+        raise idk.IsccThumbExtractionError("simulated failure")
+
+    monkeypatch.setattr(idk, "thumbnail", _raise)
+    result = idk.code_iscc(jpg_file)
+    assert "thumbnail" not in result.dict()
+
+
+def test_code_iscc_thumb_fatal_extraction_error(jpg_file, monkeypatch):
+    """code_iscc re-raises fatal IsccExtractionError (corrupt source) from the thumbnail step."""
+
+    def _raise(fp):
+        raise idk.IsccExtractionError("corrupt source file")
+
+    monkeypatch.setattr(idk, "thumbnail", _raise)
+    with pytest.raises(idk.IsccExtractionError, match="corrupt source file"):
+        idk.code_iscc(jpg_file)
+
+
+def test_code_iscc_explicit_create_thumb_false(jpg_file):
+    """Passing create_thumb=False explicitly must not raise TypeError."""
+    result = idk.code_iscc(jpg_file, create_thumb=False)
+    assert "thumbnail" not in result.dict()
