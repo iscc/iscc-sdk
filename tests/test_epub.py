@@ -83,9 +83,9 @@ def test_embed_metadata_with_epub(epub_file):
 
 
 class _RawNameZipInfo(zipfile.ZipInfo):
-    """ZipInfo that writes pre-encoded raw filename bytes without forcing
-    the ZIP UTF-8 flag (bit 11). Used to reproduce real-world EPUBs whose
-    packagers stored UTF-8 filename bytes in CP437-flagged entries.
+    """ZipInfo that writes pre-encoded raw filename bytes without the ZIP
+    UTF-8 flag (bit 11). Used to reproduce real-world EPUBs whose packagers
+    stored UTF-8 filename bytes in CP437-flagged entries.
     """
 
     def __init__(self, raw_bytes):
@@ -93,7 +93,10 @@ class _RawNameZipInfo(zipfile.ZipInfo):
         self._raw_bytes = raw_bytes
 
     def _encodeFilenameFlags(self):
-        return self._raw_bytes, self.flag_bits
+        # Newer CPython (zip-spoofing hardening in 3.13.x/3.14) stamps the
+        # UTF-8 flag into flag_bits in ZipFile.open(mode="w") before this
+        # hook runs, so the bit must be cleared here rather than assumed 0.
+        return self._raw_bytes, self.flag_bits & ~0x800
 
 
 _DEFAULT_CONTAINER = (
