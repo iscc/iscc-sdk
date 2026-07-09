@@ -1,5 +1,12 @@
 ## Changelog
 
+## 0.9.4 - 2026-07-09
+
+- Fixed process abort (uncatchable `std::terminate` → SIGABRT) in `image_meta_extract()` when an
+    image carries a metadata value that exiv2 cannot convert to UTF-8, e.g. an EXIF `UserComment`
+    declared UNICODE with an invalid UTF-16 payload as written by some early-2000s digital cameras;
+    undecodable fields are now skipped with a warning instead of crashing the process
+
 ## 0.9.3 - 2026-06-04
 
 - Added SVG cover image support for EPUB thumbnails (rasterized via `resvg`)
