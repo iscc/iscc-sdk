@@ -366,14 +366,14 @@ def _process_metadata(metadata, is_xmp=False):
     result = {}
     for datum in metadata:
         key = datum.key()
-        raw_value = datum.value
-        value = raw_value() if callable(raw_value) else raw_value
-
-        if not isinstance(value, str):
-            if hasattr(value, "to_string"):
-                value = value.to_string()
-            else:
-                value = str(value)
+        try:
+            # Metadatum.toString() raises a catchable exiv2.Exiv2Error on values that
+            # cannot be converted to UTF-8, while str(datum.value()) escalates the same
+            # C++ exception to std::terminate and aborts the process.
+            value = datum.toString()
+        except Exception as e:
+            log.warning(f"Skipping unreadable metadata field {key}: {e}")
+            continue
 
         value = value.strip()
 
