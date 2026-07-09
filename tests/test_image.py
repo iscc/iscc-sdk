@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import os.path
+import exiv2
 from PIL import Image, ImageDraw
 
 import iscc_sdk as idk
@@ -348,36 +349,52 @@ def test_clean_xmp_value():
     assert idk.image._clean_xmp_value(value) == 'lang="x-default'
 
 
-def test_process_metadata_to_string():
-    """Test that non-string values with to_string method are properly converted."""
+def test_process_metadata_skips_unreadable():
+    """Test that datums whose toString() raises are skipped without failing extraction."""
 
-    # Create a simple class that simulates an exiv2 metadata value with to_string method
-    class MockToString:
-        def to_string(self):
-            return "converted string value"
-
-    # Create a mock datum that simulates the exiv2 metadata datum structure
+    # Create mock datums that simulate the exiv2 metadata datum structure
     class MockDatum:
-        def __init__(self, key, value):
+        def __init__(self, key, value=None, error=None):
             self._key = key
             self._value = value
+            self._error = error
 
         def key(self):
             return self._key
 
-        @property
-        def value(self):
+        def toString(self):
+            if self._error:
+                raise self._error
             return self._value
 
-    # Create test data
-    mock_value = MockToString()
-    mock_datum = MockDatum("Test.Key", mock_value)
+    good = MockDatum("Test.Good", " some value ")
+    bad = MockDatum("Test.Bad", error=RuntimeError("cannot convert"))
 
-    # Call the function with our mock data
-    result = idk.image._process_metadata([mock_datum])
+    result = idk.image._process_metadata([good, bad])
 
-    # Verify the result
-    assert result["Test.Key"] == "converted string value"
+    assert result == {"Test.Good": "some value"}
+
+
+def test_image_meta_extract_undecodable_exif(tmp_path):
+    """A field exiv2 cannot convert to UTF-8 must not abort extraction (issue: SIGABRT).
+
+    Regression test for a process abort (std::terminate, uncatchable from Python) on
+    images with an EXIF UserComment declared as UNICODE but holding an odd-length
+    payload (invalid UTF-16), as written by some early-2000s digital cameras.
+    """
+    fp = tmp_path / "undecodable.jpg"
+    Image.new("RGB", (4, 4)).save(fp, "JPEG")
+
+    img = exiv2.ImageFactory.open(fp.as_posix())
+    img.readMetadata()
+    # 8-byte "UNICODE\0" charset header + odd 1-byte payload -> iconv failure on read
+    payload = b"UNICODE\x00A"
+    value = exiv2.DataValue(exiv2.TypeId.undefined)
+    value.read(" ".join(str(byte) for byte in payload))
+    img.exifData()["Exif.Photo.UserComment"] = value
+    img.writeMetadata()
+
+    assert idk.image_meta_extract(fp) == {"width": 4, "height": 4}
 
 
 def test_code_image_nometa_nothumb(jpg_file, monkeypatch):
