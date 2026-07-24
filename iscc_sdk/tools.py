@@ -3,7 +3,7 @@
 import os
 import shutil
 import stat
-import subprocess
+import subprocess  # nosec B404 - running external tools (ffmpeg, fpcalc, ipfs) is core SDK scope
 import tarfile
 import zipfile
 from concurrent.futures import ThreadPoolExecutor
@@ -366,7 +366,7 @@ def download_file(url, checksum):  # pragma: no cover
             log.debug(f"{file_name} integrity ok - skipping redownload")
             return out_path
     log.debug(f"downloading {url} to {out_path}")
-    urlretrieve(url, filename=out_path)
+    urlretrieve(url, filename=out_path)  # nosec B310 - pinned https URLs, blake3 verified below
     log.debug(f"verifying {out_path}")
     b3_calc = blake3(open(out_path, "rb").read()).hexdigest()
     if not checksum == b3_calc:

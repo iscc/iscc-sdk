@@ -123,7 +123,7 @@ class DownloadFile:
         ua = f"iscc-sdk/{metadata.version('iscc-sdk')} (+https://github.com/iscc/iscc-sdk)"
         req = Request(self.url, headers={"User-Agent": ua})
         log.info(f"Downloading {self.url}")
-        with urlopen(req, timeout=60) as response:
+        with urlopen(req, timeout=60) as response:  # nosec B310 - scheme validated in __init__
             # Use final URL after redirects for better filename/extension detection
             filename = _filename_from_url(response.geturl(), response.headers)
             content_type = response.headers.get("Content-Type", "")

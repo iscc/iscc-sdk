@@ -1,0 +1,14 @@
+{
+  "comment": "Aligns markdownlint (used by Codacy) with the project style: mdformat --wrap 100",
+  "default": true,
+  "MD013": {
+    "line_length": 100,
+    "code_blocks": false,
+    "tables": false
+  },
+  "MD026": {
+    "punctuation": ".,;!。，；！"
+  },
+  "MD041": false,
+  "MD043": false
+}

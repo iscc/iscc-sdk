@@ -1,0 +1,22 @@
+# Prospector profile (used by Codacy) aligned with the project's primary linting via ruff.
+strictness: medium
+doc-warnings: false
+test-warnings: true
+autodetect: false
+
+pyflakes:
+  run: true
+  disable:
+    - F401 # unused re-export imports are governed by ruff per-file-ignores (iscc_sdk/__init__.py)
+
+mccabe:
+  run: false # complexity is governed by ruff C901 (max-complexity 13, per-file ignores)
+
+pylint:
+  run: false # Codacy runs Pylint as a separate tool
+
+pycodestyle:
+  run: false # formatting is governed by ruff format (line-length 100)
+
+pydocstyle:
+  run: false # docstring style is not enforced via pydocstyle
