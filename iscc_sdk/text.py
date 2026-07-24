@@ -7,21 +7,22 @@ from pathlib import Path
 from urllib.parse import urlparse
 
 import bleach
-from iscc_tika import Extractor
-import xxhash
-from loguru import logger as log
-import iscc_sdk as idk
 import iscc_lib as il
+import xxhash
+from iscc_tika import Extractor
+from loguru import logger as log
+
+import iscc_sdk as idk
 
 __all__ = [
-    "text_meta_extract",
-    "text_meta_embed",
+    "text_chunks",
     "text_extract",
     "text_features",
-    "text_chunks",
+    "text_meta_embed",
+    "text_meta_extract",
     "text_name_from_uri",
-    "text_thumbnail",
     "text_sanitize",
+    "text_thumbnail",
 ]
 SCRIPT_RE = re.compile(r"<script[^>]*>.*?</script>", flags=re.DOTALL | re.IGNORECASE)
 STYLE_RE = re.compile(r"<style[^>]*>.*?</style>", flags=re.DOTALL | re.IGNORECASE)
@@ -49,6 +50,13 @@ TEXT_META_MAP = {
     "meta:keyword": "keywords",
 }
 
+# IsccMeta fields with single-valued semantics. When Tika returns multiple values (e.g. an
+# EPUB3 with main title + subtitle as two <dc:title> elements), the first element wins —
+# Tika preserves source order, and the primary title conventionally comes first.
+SINGLE_VALUE_FIELDS = frozenset(
+    {"name", "description", "meta", "rights", "license", "acquire", "credit"}
+)
+
 
 def text_meta_extract(fp):
     # type: (str|Path) -> dict
@@ -74,7 +82,7 @@ def text_meta_extract(fp):
         value = meta.get(tag)
         if value:
             if isinstance(value, list):
-                value = ", ".join(value)
+                value = value[0] if mapped_field in SINGLE_VALUE_FIELDS else ", ".join(value)
             value = idk.text_sanitize(value).strip()
             if value:
                 log.debug(f"Mapping text metadata: {tag} -> {mapped_field} -> {value}")

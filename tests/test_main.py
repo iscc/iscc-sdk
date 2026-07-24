@@ -349,8 +349,8 @@ def test_code_text_granular(docx_file, monkeypatch):
                     "AARYEMzu5WEOfTZq5ixNLcoThJ5AgJYNRICysqEs3v0",
                     "JfC6tnH1BuHFMviS2deReiUuelIIMvWWOozU6afjErU",
                 ],
-                "offsets": [0, 997, 1454, 2123, 4942, 5399, 6068],
-                "sizes": [997, 457, 669, 2819, 457, 669, 1],
+                "offsets": [0, 996, 1453, 2122, 4941, 5398, 6067],
+                "sizes": [996, 457, 669, 2819, 457, 669, 1],
             }
         ],
     }
@@ -478,16 +478,16 @@ def test_code_iscc_process_container(epub_file, monkeypatch):
     result = idk.code_iscc(epub_file, process_container=True)
     assert result.dict(exclude={"generator"}) == {
         "@type": "TextDigitalDocument",
-        "characters": 227605,
+        "characters": 227623,
         "creator": "Charles Madison Curry, Erle Elsworth Clippinger",
         "datahash": "1e20a13465925de4ce7ede252ff8eca139b05dfecaa258f732037193dca805062ac8",
         "filename": "text.epub",
         "filesize": 161277,
-        "iscc": "ISCC:KAC7DLYOVLDK2ZPVHOLOZGPWRBQ7M5QA6IGEVCSHWSQTIZMSLXSM47Q",
+        "iscc": "ISCC:KACV5NAQXBCHCWFWHOLOZGPWRBQ7M5QA6IGEVCSHWSQTIZMSLXSM47Q",
         "mediatype": "application/epub+zip",
-        "metahash": "1e20328a79032199fed141046a72d03a1b0e68302fb535a652bc5dea5e2c7f5b0030",
+        "metahash": "1e201da548c5285ed35f293c3e22c2f050e037643aae8cf9244b532a162ff5031f52",
         "mode": "text",
-        "name": "Children's Literature",
+        "name": "title from metadata",
         "parts": [
             {
                 "@type": "ImageObject",
