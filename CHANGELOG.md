@@ -1,5 +1,23 @@
 ## Changelog
 
+## 0.9.5 - Unreleased
+
+- Updated `iscc-tika` to 0.6.0 (Apache Tika 3.3.x), removing the `<0.5.0` stability pin — the macOS
+    native-image crash on embedded images is fixed upstream and linux/aarch64 wheels are now
+    available
+- **BREAKING**: Text metadata extraction now picks the first value when Tika returns multiple values
+    for single-valued `IsccMeta` fields (e.g. an EPUB3 with multiple `<dc:title>` elements);
+    Meta-Code and `metahash` differ from earlier releases for such assets
+- Fixed EPUB metadata embed→extract round-trip: the embedded title is now returned instead of the
+    document's pre-existing title
+- Added regression tests for upstream Tika EPUB parser fixes (TIKA-198 spine path traversal,
+    TIKA-237 deeply nested XML)
+- Updated test expectations for Tika 3 whitespace normalization in extracted text
+- Updated lint configuration for the expanded default rule set of ruff 0.16 (protects the
+    load-order-sensitive imports in `iscc_sdk/__init__.py` from autofix re-sorting)
+- Updated CLI tests for typer 0.27 error message formatting
+- Updated CI actions to latest major versions
+
 ## 0.9.4 - 2026-07-09
 
 - Fixed process abort (uncatchable `std::terminate` → SIGABRT) in `image_meta_extract()` when an
