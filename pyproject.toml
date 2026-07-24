@@ -63,10 +63,10 @@ dependencies = [
 
 [project.optional-dependencies]
 sci = [
-    "iscc-sci",
+    "iscc-sci[cpu]",
 ]
 sct = [
-    "iscc-sct",
+    "iscc-sct[cpu]",
 ]
 
 [project.urls]

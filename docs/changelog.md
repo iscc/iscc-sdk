@@ -16,6 +16,8 @@
 - Updated lint configuration for the expanded default rule set of ruff 0.16 (protects the
     load-order-sensitive imports in `iscc_sdk/__init__.py` from autofix re-sorting)
 - Updated CLI tests for typer 0.27 error message formatting
+- Updated `sct`/`sci` extras to request the CPU ONNX runtime (`iscc-sct[cpu]`, `iscc-sci[cpu]`) —
+    iscc-sct 0.2.x and iscc-sci 0.3.x moved the onnxruntime dependency behind `cpu`/`gpu` extras
 - Updated CI actions to latest major versions
 
 ## 0.9.4 - 2026-07-09
