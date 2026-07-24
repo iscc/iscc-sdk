@@ -42,7 +42,7 @@ The content is organized as follows:
 
 # Directory Structure
 
-```
+```text
 examples/
   README.rst
 src/
@@ -65,7 +65,7 @@ USAGE.rst
 
 ## File: examples/README.rst
 
-```
+```rst
 Examples
 ========
 
@@ -78,7 +78,7 @@ It might be instructive to compare the C++ and Python ways of doing the same thi
 
 ## File: src/doc/\_templates/module.rst
 
-```
+```jinja
 {% if fullname == "exiv2._version" %}
     {% set attributes = ['__version__', '__version_tuple__'] %}
 {% endif %}
@@ -116,7 +116,7 @@ It might be instructive to compare the C++ and Python ways of doing the same thi
 
 ## File: src/doc/misc/api.rst
 
-```
+```rst
 .. This is part of the python-exiv2 documentation.
    Copyright (C)  2024  Jim Easterbrook.
 
@@ -159,7 +159,7 @@ See :ref:`genindex` for a full index to all classes, attributes, functions and m
 
 ## File: src/doc/misc/changelog.rst
 
-```
+```rst
 .. This is part of the python-exiv2 documentation.
    Copyright (C)  2024  Jim Easterbrook.
 
@@ -174,7 +174,7 @@ Release history
 
 ## File: src/doc/misc/install.rst
 
-```
+```rst
 .. This is part of the python-exiv2 documentation.
    Copyright (C)  2024  Jim Easterbrook.
 
@@ -186,7 +186,7 @@ Release history
 
 ## File: src/doc/misc/readme.rst
 
-```
+```rst
 .. This is part of the python-exiv2 documentation.
    Copyright (C)  2024  Jim Easterbrook.
 
@@ -203,7 +203,7 @@ Project overview
 
 ## File: src/doc/misc/usage.rst
 
-```
+```rst
 .. This is part of the python-exiv2 documentation.
    Copyright (C)  2024  Jim Easterbrook.
 
@@ -212,7 +212,7 @@ Project overview
 
 ## File: src/doc/index.rst
 
-```
+```rst
 .. This is part of the python-exiv2 documentation.
    Copyright (C)  2024  Jim Easterbrook.
 
@@ -232,7 +232,7 @@ Python-exiv2 documentation
 
 ## File: INSTALL.rst
 
-```
+```rst
 Installation
 ============
 
@@ -494,7 +494,7 @@ After running ``build_swig.py`` you can build and install a wheel as before::
 
 ## File: README.rst
 
-```
+```rst
 python-exiv2 v\ 0.17.3
 ======================
 
@@ -634,7 +634,7 @@ Please email jim@jim-easterbrook.me.uk if you find any problems (or solutions!).
 
 ## File: USAGE.rst
 
-```
+```rst
 Hints and tips
 ==============
 
