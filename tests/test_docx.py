@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import iscc_sdk as idk
 
 

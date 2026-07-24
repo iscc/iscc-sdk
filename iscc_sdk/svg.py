@@ -6,18 +6,17 @@ import tempfile
 from pathlib import Path
 
 import resvg_py
-from lxml import etree
 from loguru import logger as log
+from lxml import etree
 from PIL import Image, ImageEnhance
 
 import iscc_sdk as idk
 
-
 __all__ = [
-    "svg_rasterize",
-    "svg_meta_extract",
-    "svg_meta_embed",
     "svg_meta_delete",
+    "svg_meta_embed",
+    "svg_meta_extract",
+    "svg_rasterize",
     "svg_thumbnail",
 ]
 

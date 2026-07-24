@@ -1,7 +1,8 @@
 """*Container format processing module*."""
 
+from collections.abc import Callable
 from pathlib import Path
-from typing import Dict, Callable
+
 import iscc_sdk as idk
 
 __all__ = [
@@ -10,7 +11,7 @@ __all__ = [
 ]
 
 # Registry for container processors
-_CONTAINER_PROCESSORS: Dict[str, Callable] = {}
+_CONTAINER_PROCESSORS: dict[str, Callable] = {}
 
 
 def register_container_processor(mediatype: str, processor: Callable):

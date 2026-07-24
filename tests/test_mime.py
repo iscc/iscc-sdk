@@ -1,8 +1,7 @@
+import iscc_samples as iss
 import pytest
 
 import iscc_sdk as idk
-import iscc_samples as iss
-
 
 GIF_HEADER = bytes.fromhex("474946383961")
 OGG_HEADER = bytes.fromhex(

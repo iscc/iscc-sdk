@@ -1,8 +1,6 @@
-# -*- coding: utf-8 -*-
 from PIL.Image import Image
 
 import iscc_sdk as idk
-
 
 meta = {
     "name": "Iñtërnâtiônàlizætiøn☃",

@@ -1,19 +1,20 @@
 """*Audio handling module*."""
 
+import json
 import shutil
 import tempfile
 from pathlib import Path
-from PIL import Image, ImageEnhance
-from loguru import logger as log
-import json
+
 import taglib
+from loguru import logger as log
+from PIL import Image, ImageEnhance
+
 import iscc_sdk as idk
 
-
 __all__ = [
+    "audio_features_extract",
     "audio_meta_embed",
     "audio_meta_extract",
-    "audio_features_extract",
     "audio_thumbnail",
 ]
 

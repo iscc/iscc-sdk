@@ -7,9 +7,11 @@ Usage:
 
 import sys
 from pathlib import Path
-import iscc_sdk as idk
+
 from rich.console import Console
 from rich.panel import Panel
+
+import iscc_sdk as idk
 
 
 def check_metadata(directory):

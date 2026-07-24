@@ -2,25 +2,25 @@
 
 import os
 import shutil
+import stat
 import subprocess
 import tarfile
 import zipfile
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
-from platform import system, architecture
-from typing import List, Union
+from platform import architecture, system
 from urllib.parse import urlparse
 from urllib.request import urlretrieve
+
 from blake3 import blake3
 from loguru import logger as log
-import stat
-import iscc_sdk as idk
-from concurrent.futures import ThreadPoolExecutor
 
+import iscc_sdk as idk
 
 __all__ = [
     "install",
-    "run_ffprobe",
     "run_ffmpeg",
+    "run_ffprobe",
     "run_fpcalc",
 ]
 
@@ -122,8 +122,8 @@ def extract(archive):  # pragma: no cover
 def fpcalc_bin():  # pragma: no cover
     """Returns local path to fpcalc executable."""
     if system() == "Windows":
-        return os.path.join(idk.dirs.user_data_dir, "fpcalc-{}.exe".format(FPCALC_VERSION))
-    return os.path.join(idk.dirs.user_data_dir, "fpcalc-{}".format(FPCALC_VERSION))
+        return os.path.join(idk.dirs.user_data_dir, f"fpcalc-{FPCALC_VERSION}.exe")
+    return os.path.join(idk.dirs.user_data_dir, f"fpcalc-{FPCALC_VERSION}")
 
 
 def fpcalc_is_installed():  # pragma: no cover
@@ -187,7 +187,7 @@ def fpcalc_version_info():  # pragma: no cover
         return "FPCALC not installed"
 
 
-def run_fpcalc(args: List[Union[str, Path]]):
+def run_fpcalc(args: list[str | Path]):
     """Run fpcalc command with `args`. Installs fpcalc if not found."""
     cmd = [fpcalc_bin()] + [str(a) for a in args]
     try:
@@ -211,7 +211,7 @@ def ffprobe_download_url():
 
 def ffprobe_bin() -> str:
     """Returns local path to ffprobe executable."""
-    path = os.path.join(idk.dirs.user_data_dir, "ffprobe-{}".format(FFPROBE_VERSION))
+    path = os.path.join(idk.dirs.user_data_dir, f"ffprobe-{FFPROBE_VERSION}")
     if system() == "Windows":
         path += ".exe"
     return path
@@ -262,7 +262,7 @@ def ffprobe_version_info():  # pragma: no cover
         return "ffprobe not installed"
 
 
-def run_ffprobe(args: List[Union[str, Path]]):  # pragma: no cover
+def run_ffprobe(args: list[str | Path]):  # pragma: no cover
     """Run ffprobe command with `args`. Install ffprobe if not found."""
     cmd = [ffprobe_bin()] + [str(a) for a in args]
     try:
@@ -286,7 +286,7 @@ def ffmpeg_download_url():
 
 def ffmpeg_bin() -> str:
     """Returns local path to ffmpeg executable."""
-    path = os.path.join(idk.dirs.user_data_dir, "ffmpeg-{}".format(FFMPEG_VERSION))
+    path = os.path.join(idk.dirs.user_data_dir, f"ffmpeg-{FFMPEG_VERSION}")
     if system() == "Windows":
         path += ".exe"
     return path
@@ -336,7 +336,7 @@ def ffmpeg_version_info():  # pragma: no cover
         return "ffmpeg not installed"
 
 
-def run_ffmpeg(args: List[Union[str, Path]]):
+def run_ffmpeg(args: list[str | Path]):
     """Run ffmpeg command with `args`. Install ffmpeg if not found."""
     cmd = [ffmpeg_bin()] + [str(a) for a in args]
     try:

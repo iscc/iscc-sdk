@@ -12,13 +12,12 @@ from urllib.request import Request, urlopen
 
 from loguru import logger as log
 
-
 __all__ = [
     "DownloadFile",
     "TempFile",
+    "is_installed",
     "is_url",
     "timer",
-    "is_installed",
 ]
 
 
@@ -122,9 +121,9 @@ class DownloadFile:
         # type: () -> Path
         self.temp_dir = Path(tempfile.mkdtemp())
         ua = f"iscc-sdk/{metadata.version('iscc-sdk')} (+https://github.com/iscc/iscc-sdk)"
-        req = Request(self.url, headers={"User-Agent": ua})  # noqa: S310
+        req = Request(self.url, headers={"User-Agent": ua})
         log.info(f"Downloading {self.url}")
-        with urlopen(req, timeout=60) as response:  # noqa: S310
+        with urlopen(req, timeout=60) as response:
             # Use final URL after redirects for better filename/extension detection
             filename = _filename_from_url(response.geturl(), response.headers)
             content_type = response.headers.get("Content-Type", "")

@@ -4,17 +4,16 @@ import shutil
 import tempfile
 from pathlib import Path
 
-from PIL import ImageEnhance
 import pypdfium2 as pdfium
+from PIL import ImageEnhance
 from pypdf import PdfReader, PdfWriter
 
 import iscc_sdk as idk
 
-
 __all__ = [
-    "pdf_thumbnail",
     "pdf_meta_embed",
     "pdf_text_extract",
+    "pdf_thumbnail",
 ]
 
 

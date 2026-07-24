@@ -12,19 +12,18 @@ class-atributes on the `SdkOptions` instance.
 
 """
 
-from typing import Optional, Literal
 import copy
+from typing import Literal
 
+import iscc_lib
+from PIL import Image
 from pydantic import Field, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
-from PIL import Image
-import iscc_lib
-
 
 __all__ = [
     "SdkOptions",
-    "sdk_opts",
     "core_opts",
+    "sdk_opts",
 ]
 
 
@@ -122,7 +121,7 @@ class SdkOptions(BaseSettings):
         description="ISCC_SDK_IMAGE_THUMBNAIL_FORMAT - Format for thumbnail images (JPEG, WEBP, or AVIF)",
     )
 
-    image_max_pixels: Optional[int] = Field(
+    image_max_pixels: int | None = Field(
         default=128000000,
         description="ISCC_SDK_IMAGE_MAX_PIXELS - Maximum number of pixels allowed for processing (default 128Mpx / 0.5GB RGB)",
     )

@@ -4,7 +4,6 @@ import hashlib
 from base64 import b32encode
 from pathlib import Path
 
-
 __all__ = [
     "ipfs_cidv1",
     "ipfs_cidv1_base16",

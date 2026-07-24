@@ -1,7 +1,9 @@
 """Installer script for binary dependencies"""
 
 import sys
+
 from loguru import logger as log
+
 import iscc_sdk as idk
 
 

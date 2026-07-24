@@ -1,9 +1,8 @@
-# -*- coding: utf-8 -*-
 import pytest
-from PIL import Image
-import iscc_sdk as idk
 from iscc_samples import images
+from PIL import Image
 
+import iscc_sdk as idk
 
 fp = images("jpg")[0].as_posix()
 
