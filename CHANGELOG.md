@@ -1,10 +1,11 @@
 ## Changelog
 
-## 0.9.5 - Unreleased
+## 0.9.5 - 2026-07-30
 
 - Updated `iscc-tika` to 0.6.0 (Apache Tika 3.3.x), removing the `<0.5.0` stability pin — the macOS
     native-image crash on embedded images is fixed upstream and linux/aarch64 wheels are now
     available
+- Updated `iscc-lib` to 0.6.0 — restores linux/aarch64 wheels (absent since 0.2.0)
 - **BREAKING**: Text metadata extraction now picks the first value when Tika returns multiple values
     for single-valued `IsccMeta` fields (e.g. an EPUB3 with multiple `<dc:title>` elements);
     Meta-Code and `metahash` differ from earlier releases for such assets
