@@ -1,19 +1,21 @@
 import os
 from concurrent.futures import ProcessPoolExecutor, as_completed
-from loguru import logger as log
-import typer
 from pathlib import Path
+
 import iscc_lib as il
-import iscc_sdk as idk
+import typer
+from loguru import logger as log
 from rich.console import Console
 from rich.progress import (
-    Progress,
     BarColumn,
-    TextColumn,
-    TransferSpeedColumn,
-    TimeRemainingColumn,
     DownloadColumn,
+    Progress,
+    TextColumn,
+    TimeRemainingColumn,
+    TransferSpeedColumn,
 )
+
+import iscc_sdk as idk
 
 console = Console()
 app = typer.Typer(add_completion=False, no_args_is_help=True)

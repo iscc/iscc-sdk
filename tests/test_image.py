@@ -1,12 +1,11 @@
-# -*- coding: utf-8 -*-
 import os.path
+
 import exiv2
+from iscc_samples import images
+from iscc_schema import IsccMeta
 from PIL import Image, ImageDraw
 
 import iscc_sdk as idk
-from iscc_schema import IsccMeta
-from iscc_samples import images
-
 
 fp = images("jpg")[0].as_posix()
 meta = IsccMeta(

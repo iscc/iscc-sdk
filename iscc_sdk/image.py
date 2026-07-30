@@ -1,29 +1,30 @@
 """*Image handling module*."""
 
-from pathlib import Path
-import exiv2
 import base64
 import io
 import shutil
 import tempfile
-from loguru import logger as log
-from PIL import Image, ImageEnhance, ImageChops, ImageOps, PngImagePlugin
-import iscc_sdk as idk
-from pillow_heif import register_heif_opener
 import threading
+from pathlib import Path
 
+import exiv2
+from loguru import logger as log
+from PIL import Image, ImageChops, ImageEnhance, ImageOps, PngImagePlugin
+from pillow_heif import register_heif_opener
+
+import iscc_sdk as idk
 
 __all__ = [
-    "image_normalize",
     "image_exif_transpose",
     "image_fill_transparency",
-    "image_trim_border",
+    "image_meta_delete",
     "image_meta_embed",
     "image_meta_extract",
-    "image_meta_delete",
+    "image_normalize",
     "image_strip_metadata",
     "image_thumbnail",
     "image_to_data_url",
+    "image_trim_border",
 ]
 
 
@@ -178,7 +179,7 @@ def image_meta_extract(fp, file_name=None):
         for tag, mapped_field in IMAGE_META_MAP.items():
             if mapped_field in mapped:
                 continue
-            if tag in meta_dict and meta_dict[tag]:
+            if meta_dict.get(tag):
                 try:
                     mapped[mapped_field] = idk.text_sanitize(meta_dict[tag])
                 except Exception as e:  # pragma: no cover

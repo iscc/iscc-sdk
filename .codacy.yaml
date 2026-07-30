@@ -1,0 +1,4 @@
+---
+exclude_paths:
+  - "docs/index.md" # generated copy of README.md (devtools/build_docs.py)
+  - "docs/changelog.md" # generated copy of CHANGELOG.md (devtools/build_docs.py)

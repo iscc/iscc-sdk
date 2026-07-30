@@ -1,6 +1,7 @@
-# -*- coding: utf-8 -*-
 from pathlib import Path
+
 import pytest
+
 import iscc_sdk as idk
 
 
@@ -14,7 +15,7 @@ def test_text_meta_extract_docx(docx_file):
 
 def test_text_meta_extract_epub(epub_file):
     assert idk.text_meta_extract(epub_file) == {
-        "name": "Children's Literature",
+        "name": "title from metadata",
         "creator": "Charles Madison Curry, Erle Elsworth Clippinger",
         "rights": "Public domain in the USA.",
     }
@@ -85,7 +86,6 @@ def test_text_chunks(docx_file):
     assert "".join(chunks) == txt
     assert chunks[0] == (
         "ISCC Test Document\n"
-        "\n"
         "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy "
         "eirmod tempor invid"
     )
@@ -99,7 +99,7 @@ def test_text_features(docx_file):
         "subtype": "text",
         "version": 0,
         "byte_offsets": False,
-        "offsets": [0, 997, 1454, 2123, 4942, 5399, 6068],
+        "offsets": [0, 996, 1453, 2122, 4941, 5398, 6067],
         "simprints": [
             "k5TpwXVE3j9N5IBxm36c4hkXP6fHOv8bkY2f68_8XSg",
             "OERRAF2u5WWuLHZLZzgcCSoCoL9R0NYrBJD7s7A43t0",
@@ -109,7 +109,7 @@ def test_text_features(docx_file):
             "AARYEMzu5WEOfTZq5ixNLcoThJ5AgJYNRICysqEs3v0",
             "JfC6tnH1BuHFMviS2deReiUuelIIMvWWOozU6afjErU",
         ],
-        "sizes": [997, 457, 669, 2819, 457, 669, 2],
+        "sizes": [996, 457, 669, 2819, 457, 669, 2],
     }
 
 

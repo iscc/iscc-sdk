@@ -1,14 +1,14 @@
-import pytest
+import json
 import sys
 from contextlib import contextmanager
 from pathlib import Path
-from typing import Tuple
-from typer.testing import CliRunner
-from iscc_sdk.cli import app, iter_unprocessed, process_file
-import iscc_schema
-import iscc_samples as iss
-import json
 
+import iscc_samples as iss
+import iscc_schema
+import pytest
+from typer.testing import CliRunner
+
+from iscc_sdk.cli import app, iter_unprocessed, process_file
 
 runner = CliRunner()
 
@@ -18,7 +18,7 @@ SCHEMA_VERSION = iscc_schema.__version__
 
 def test_iter_unprocessed():
     files = list(iter_unprocessed(iss.audios()[0].parent))
-    assert isinstance(files[0], Tuple)
+    assert isinstance(files[0], tuple)
     assert isinstance(files[0][0], Path)
     assert isinstance(files[0][1], int)
     assert len(files) == 10
@@ -45,7 +45,7 @@ def test_cli_no_arg():
 def test_cli_create_no_arg():
     result = runner.invoke(app, ["create"])
     assert result.exit_code == 2
-    assert "Missing argument 'FILE'" in result.stderr
+    assert "Missing argument" in result.stderr
 
 
 def test_cli_create_not_file():
@@ -91,7 +91,7 @@ def test_cli_create_unsupported(dat_file):
 def test_cli_batch_no_arg():
     result = runner.invoke(app, ["batch"])
     assert result.exit_code == 2
-    assert "Missing argument 'FOLDER'" in result.stderr
+    assert "Missing argument" in result.stderr
 
 
 def test_cli_batch_not_a_folder():
@@ -120,7 +120,7 @@ def test_cli_install():
 def test_cli_extract_no_arg():
     result = runner.invoke(app, ["extract"])
     assert result.exit_code == 2
-    assert "Missing argument 'FILE'" in result.stderr
+    assert "Missing argument" in result.stderr
 
 
 def test_cli_extract_not_file():

@@ -1,3 +1,5 @@
+<!-- markdownlint-disable MD050 -- mkdocstrings filter syntax below is not emphasis -->
+
 # **ISCC** - Configuration Options
 
 ::: iscc_sdk.options

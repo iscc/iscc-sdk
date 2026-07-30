@@ -1,9 +1,9 @@
-# -*- coding: utf-8 -*-
 import os.path
-from PIL.Image import Image
-import iscc_sdk as idk
-import iscc_samples as iss
 
+import iscc_samples as iss
+from PIL.Image import Image
+
+import iscc_sdk as idk
 
 meta = idk.IsccMeta(
     name="Hello",

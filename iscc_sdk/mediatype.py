@@ -1,25 +1,25 @@
 """*Detect and map RFC6838 mediatypes to ISCC processing modes*."""
 
+import mimetypes
 import re
 from pathlib import Path
-from loguru import logger as log
-from typing import List
-import mimetypes
+
 import magic
+from loguru import logger as log
+
 import iscc_sdk as idk
 
-
 __all__ = [
+    "SUPPORTED_EXTENSIONS",
+    "SUPPORTED_MEDIATYPES",
     "mediatype_and_mode",
+    "mediatype_clean",
+    "mediatype_from_data",
+    "mediatype_from_name",
     "mediatype_guess",
     "mediatype_normalize",
     "mediatype_supported",
-    "mediatype_clean",
     "mediatype_to_mode",
-    "mediatype_from_name",
-    "mediatype_from_data",
-    "SUPPORTED_MEDIATYPES",
-    "SUPPORTED_EXTENSIONS",
 ]
 
 
@@ -88,9 +88,12 @@ def mediatype_guess(data, file_name=None):
     if guess_name and guess_data and guess_name != guess_data:
         # Prefer filename when only it maps to a supported type (containers sniffed
         # as zip, OOXML variants, etc.) or when content returns a generic XML type.
-        if mediatype_supported(guess_name) and not mediatype_supported(guess_data):
-            media_type = guess_name
-        elif mediatype_supported(guess_name) and guess_data in _GENERIC_SNIFF_TYPES:
+        if (
+            mediatype_supported(guess_name)
+            and not mediatype_supported(guess_data)
+            or mediatype_supported(guess_name)
+            and guess_data in _GENERIC_SNIFF_TYPES
+        ):
             media_type = guess_name
         elif mediatype_supported(guess_data) and not mediatype_supported(guess_name):
             media_type = guess_data
@@ -187,7 +190,7 @@ def mediatype_from_data(data):
     try:
         return magic.from_buffer(data, mime=True)
     except Exception as e:
-        log.warning((f"Failed mediatype sniffing: {e}"))
+        log.warning(f"Failed mediatype sniffing: {e}")
         return None
 
 
@@ -202,7 +205,7 @@ def mediatype_clean(mime):
     :return: Mediatype string
     :rtype: str
     """
-    if mime and isinstance(mime, List):
+    if mime and isinstance(mime, list):
         mime = mime[0]
     if mime:
         mime = mime.split(";")[0]

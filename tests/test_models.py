@@ -1,8 +1,7 @@
-# -*- coding: utf-8 -*-
-import pytest
-
-from pydantic import ValidationError
 import iscc_schema
+import pytest
+from pydantic import ValidationError
+
 import iscc_sdk as idk
 
 # iscc-schema stamps its own version into the @context and $schema URLs.

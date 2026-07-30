@@ -1,8 +1,9 @@
 from fractions import Fraction
 
 from bitarray import bitarray
-from iscc_sdk import mp7
+
 import iscc_sdk as idk
+from iscc_sdk import mp7
 
 
 def test_calc_byte_to_bit3():

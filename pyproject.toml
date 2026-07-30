@@ -1,6 +1,6 @@
 [project]
 name = "iscc-sdk"
-version = "0.9.4"
+version = "0.9.5"
 description = "SDK for creating ISCCs (International Standard Content Codes)"
 authors = [{ name = "Titusz", email = "tp@py7.de" }]
 requires-python = ">=3.11"
@@ -52,7 +52,7 @@ dependencies = [
     "pillow-heif",
     "langcodes",
     "exiv2",
-    "iscc-tika<0.5.0",
+    "iscc-tika",
     "bleach",
     "pillow-avif-plugin",
     "iscc-lib",
@@ -63,10 +63,10 @@ dependencies = [
 
 [project.optional-dependencies]
 sci = [
-    "iscc-sci",
+    "iscc-sci[cpu]",
 ]
 sct = [
-    "iscc-sct",
+    "iscc-sct[cpu]",
 ]
 
 [project.urls]
@@ -123,11 +123,32 @@ ignore_errors = true
 [tool.ruff]
 line-length = 100
 
+[tool.ruff.lint]
+# Rules from the ruff >= 0.16 expanded default set that conflict with established code
+# patterns in this codebase. Kept ignored to avoid unrelated churn; revisit separately.
+ignore = [
+    "B005",    # strip-with-multi-characters (loose test assertions)
+    "B018",    # useless-expression (attribute access in tests)
+    "BLE001",  # blind-except (deliberate graceful degradation)
+    "C408",    # unnecessary-collection-call (established dict() call style)
+    "PERF402", # manual-list-copy
+    "PLC0206", # dict-index-missing-items
+    "PLW1510", # subprocess-run-without-check (return codes handled explicitly)
+    "RUF059",  # unused-unpacked-variable
+    "SIM102",  # collapsible-if
+    "SIM103",  # needless-bool
+    "SIM115",  # open-file-with-context-handler
+    "SIM117",  # multiple-with-statements
+    "SIM118",  # in-dict-keys
+    "SIM201",  # negate-equal-op
+    "TRY002",  # raise-vanilla-class
+]
+
 [tool.ruff.lint.mccabe]
 max-complexity = 13
 
 [tool.ruff.lint.per-file-ignores]
-"iscc_sdk/__init__.py" = ["E402", "F401", "F403"]
+"iscc_sdk/__init__.py" = ["E402", "F401", "F403", "I001"]
 "iscc_sdk/tools.py" = ["S101", "S202", "S310", "S603"]
 "iscc_sdk/epub.py" = ["C901"]
 "iscc_sdk/main.py" = ["C901"]

@@ -1,15 +1,14 @@
-# -*- coding: utf-8 -*-
 from dataclasses import dataclass
 from fractions import Fraction
 from functools import lru_cache
+
+import numpy as np
 from bitarray import bitarray
 from bitarray.util import ba2int
-import numpy as np
-
 
 __all__ = [
-    "read_mp7_signature",
     "Frame",
+    "read_mp7_signature",
 ]
 
 
@@ -37,7 +36,7 @@ def calc_byte_to_bit3():
     table_3_bit = np.zeros((256, 5), dtype=np.uint8)
     for i in range(256):
         div3 = 3 * 3 * 3 * 3
-        for iii in range(0, 5):
+        for iii in range(5):
             table_3_bit[i, iii] = (i // div3) % 3
             div3 //= 3
     return table_3_bit

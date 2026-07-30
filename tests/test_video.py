@@ -1,10 +1,9 @@
-# -*- coding: utf-8 -*-
 import os
 from pathlib import Path
 
 from PIL import Image
-import iscc_sdk as idk
 
+import iscc_sdk as idk
 
 meta = idk.IsccMeta(
     name="Hello",

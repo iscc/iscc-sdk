@@ -1,7 +1,8 @@
-import pytest
-import iscc_sdk as idk
 from unittest.mock import patch
 
+import pytest
+
+import iscc_sdk as idk
 
 # Skip tests if packages are not installed
 sci_installed = idk.is_installed("iscc_sci")

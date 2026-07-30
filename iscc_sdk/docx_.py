@@ -1,8 +1,8 @@
+import shutil
 import tempfile
 from pathlib import Path
 
 from docx import Document
-import shutil
 
 __all__ = [
     "docx_meta_embed",

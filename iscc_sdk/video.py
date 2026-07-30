@@ -1,32 +1,32 @@
 """*Video handling module*"""
 
+import io
 import json
 import os
-from fractions import Fraction
-from typing import Any
-
-from langcodes import standardize_tag
-from loguru import logger as log
-import io
 import sys
 import tempfile
+from fractions import Fraction
 from pathlib import Path
 from secrets import token_hex
-from PIL import Image, ImageEnhance
-import jmespath
-import iscc_sdk as idk
-import iscc_lib as il
+from typing import Any
 
+import iscc_lib as il
+import jmespath
+from langcodes import standardize_tag
+from loguru import logger as log
+from PIL import Image, ImageEnhance
+
+import iscc_sdk as idk
 
 __all__ = [
-    "video_meta_extract",
+    "video_compute_granular",
+    "video_features_extract",
     "video_meta_embed",
-    "video_thumbnail",
+    "video_meta_extract",
     "video_mp7sig_extract",
     "video_mp7sig_extract_scenes",
-    "video_features_extract",
     "video_parse_scenes",
-    "video_compute_granular",
+    "video_thumbnail",
 ]
 
 VIDEO_META_MAP = {
@@ -221,7 +221,7 @@ def video_meta_embed(fp, meta):
 
     # Prepare metadata file
     cmdf = ";FFMETADATA1\n"
-    for field in write_map.keys():
+    for field in write_map:
         value = getattr(meta, field)
         if value:
             value = value.translate(escape)

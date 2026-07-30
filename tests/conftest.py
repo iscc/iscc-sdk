@@ -1,9 +1,9 @@
+import shutil
 from pathlib import Path
 from textwrap import dedent
 
 import pytest
-from iscc_samples import images, texts, audios, videos
-import shutil
+from iscc_samples import audios, images, texts, videos
 from PIL import Image, ImageDraw
 
 

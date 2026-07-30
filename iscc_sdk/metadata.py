@@ -1,21 +1,19 @@
 """*Metadata handling functions*"""
 
 import shutil
-
 from pathlib import Path
-from typing import Optional, List, Dict, Any, Union
+from typing import Any
 
-
+import iscc_lib as il
+import iscc_schema as iss
 from pydantic import field_validator
 
 import iscc_sdk as idk
-import iscc_lib as il
-import iscc_schema as iss
 
 __all__ = [
-    "extract_metadata",
-    "embed_metadata",
     "IsccMeta",
+    "embed_metadata",
+    "extract_metadata",
 ]
 
 EXTRACTORS = {
@@ -90,7 +88,7 @@ class IsccMeta(iss.IsccMeta):  # type: ignore[misc]
         instead of aliases like ``type_`` instead of ``@type``).
     """
 
-    parts: Optional[List[Union[str, Dict[str, Any]]]] = None
+    parts: list[str | dict[str, Any]] | None = None
 
     @field_validator("name", mode="before")
     @classmethod

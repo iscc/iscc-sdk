@@ -1,8 +1,9 @@
-# -*- coding: utf-8 -*-
 import time
 from email.message import Message
-from unittest.mock import patch, MagicMock
+from unittest.mock import MagicMock, patch
+
 import pytest
+
 import iscc_sdk as idk
 from iscc_sdk.utils import _filename_from_url
 

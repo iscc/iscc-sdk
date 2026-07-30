@@ -1,4 +1,5 @@
 from PIL.Image import Image
+
 import iscc_sdk as idk
 
 
