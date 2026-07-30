@@ -1,0 +1,1920 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="International Standard Content Code - Software Development Kit.">
+      
+      
+        <meta name="author" content="Titusz Pan">
+      
+      
+        <link rel="canonical" href="https://sdk.iscc.codes/changelog/">
+      
+      
+        <link rel="prev" href="../other/tools/">
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../images/iscc-logo-icon-black.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Changelog - ISCC - Software Development Kit</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Readex+Pro:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Readex Pro";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  <script defer data-domain="sdk.iscc.codes" src="https://stats.iscc.codes/js/plausible.js"></script>
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#changelog" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="ISCC - Software Development Kit" class="md-header__button md-logo" aria-label="ISCC - Software Development Kit" data-md-component="logo">
+      
+  <img src="../images/iscc-logo-icon-white.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            ISCC - Software Development Kit
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Changelog
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/iscc/iscc-sdk" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    iscc/iscc-sdk
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Overview
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../main/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Main
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../mediatype/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Mediatype
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../metadata/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Metadata
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../text/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Text
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../image/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Image
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../audio/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Audio
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../video/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Video
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../options/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Options
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../other/epub/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Other
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="./" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Changelog
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="ISCC - Software Development Kit" class="md-nav__button md-logo" aria-label="ISCC - Software Development Kit" data-md-component="logo">
+      
+  <img src="../images/iscc-logo-icon-white.svg" alt="logo">
+
+    </a>
+    ISCC - Software Development Kit
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/iscc/iscc-sdk" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    iscc/iscc-sdk
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../main/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Main
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mediatype/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mediatype
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../metadata/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Metadata
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../text/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Text
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../image/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Image
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../audio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Audio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../video/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Video
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../options/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Options
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Other
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Other
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../other/epub/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    EPUB
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../other/pdf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PDF
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../other/ipfs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    IPFS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../other/tools/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tools
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Changelog
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Changelog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#changelog" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Changelog
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#095-2026-07-30" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        0.9.5 - 2026-07-30
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#094-2026-07-09" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        0.9.4 - 2026-07-09
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#093-2026-06-04" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        0.9.3 - 2026-06-04
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#092-2026-04-21" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        0.9.2 - 2026-04-21
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#091-2026-04-14" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        0.9.1 - 2026-04-14
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#090-2026-04-12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        0.9.0 - 2026-04-12
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#089-2026-03-29" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        0.8.9 - 2026-03-29
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#088-2026-03-29" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        0.8.8 - 2026-03-29
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#087-2026-03-18" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        0.8.7 - 2026-03-18
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#086-2026-03-03" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        0.8.6 - 2026-03-03
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#085-2025-05-12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        0.8.5 - 2025-05-12
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#084-2025-05-12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        0.8.4 - 2025-05-12
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#083-2025-05-12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        0.8.3 - 2025-05-12
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#082-2025-05-02" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        0.8.2 - 2025-05-02
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#081-2025-04-09" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        0.8.1 - 2025-04-09
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#080-2025-04-02" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        0.8.0 - 2025-04-02
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#070-2025-03-23" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        0.7.0 - 2025-03-23
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#062-2024-06-13" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        0.6.2 - 2024-06-13
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#061-2024-02-05" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        0.6.1 - 2024-02-05
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#060-2024-01-22" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        0.6.0 - 2024-01-22
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#059-2023-06-21" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        0.5.9 - 2023-06-21
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#058-2023-06-21" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        0.5.8 - 2023-06-21
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#057-2023-06-21" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        0.5.7 - 2023-06-21
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#056-2023-04-28" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        0.5.6 - 2023-04-28
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#055-2023-03-26" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        0.5.5 - 2023-03-26
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#054-2023-03-15" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        0.5.4 - 2023-03-15
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#053-2023-03-12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        0.5.3 - 2023-03-12
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#052-2023-03-11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        0.5.2 - 2023-03-11
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#051-2022-12-09" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        0.5.1 - 2022-12-09
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#050-2022-12-09" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        0.5.0 - 2022-12-09
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#049-2022-12-09" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        0.4.9 - 2022-12-09
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#048-2022-12-09" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        0.4.8 - 2022-12-09
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#047-2022-12-08" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        0.4.7 - 2022-12-08
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#046-2022-11-24" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        0.4.6 - 2022-11-24
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#045-2022-07-04" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        0.4.5 - 2022-07-04
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#044-2022-06-08" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        0.4.4 - 2022-06-08
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#043-2022-05-08" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        0.4.3 - 2022-05-08
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#042-2022-04-27" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        0.4.2 - 2022-04-27
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#041-2022-03-26" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        0.4.1 - 2022-03-26
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#040-2022-03-21" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        0.4.0 - 2022-03-21
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#030-2022-03-12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        0.3.0 - 2022-03-12
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#020-2022-03-10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        0.2.0 - 2022-03-10
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#010-2022-03-09" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        0.1.0 - 2022-03-09
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+  <h1>Changelog</h1>
+
+<h2 id="changelog">Changelog<a class="headerlink" href="#changelog" title="Permanent link">#</a></h2>
+<h2 id="095-2026-07-30">0.9.5 - 2026-07-30<a class="headerlink" href="#095-2026-07-30" title="Permanent link">#</a></h2>
+<ul>
+<li>Updated <code>iscc-tika</code> to 0.6.0 (Apache Tika 3.3.x), removing the <code>&lt;0.5.0</code> stability pin — the macOS
+    native-image crash on embedded images is fixed upstream and linux/aarch64 wheels are now
+    available</li>
+<li>Updated <code>iscc-lib</code> to 0.6.0 — restores linux/aarch64 wheels (absent since 0.2.0)</li>
+<li><strong>BREAKING</strong>: Text metadata extraction now picks the first value when Tika returns multiple values
+    for single-valued <code>IsccMeta</code> fields (e.g. an EPUB3 with multiple <code>&lt;dc:title&gt;</code> elements);
+    Meta-Code and <code>metahash</code> differ from earlier releases for such assets</li>
+<li>Fixed EPUB metadata embed→extract round-trip: the embedded title is now returned instead of the
+    document's pre-existing title</li>
+<li>Added regression tests for upstream Tika EPUB parser fixes (TIKA-198 spine path traversal,
+    TIKA-237 deeply nested XML)</li>
+<li>Updated test expectations for Tika 3 whitespace normalization in extracted text</li>
+<li>Updated lint configuration for the expanded default rule set of ruff 0.16 (protects the
+    load-order-sensitive imports in <code>iscc_sdk/__init__.py</code> from autofix re-sorting)</li>
+<li>Updated CLI tests for typer 0.27 error message formatting</li>
+<li>Updated <code>sct</code>/<code>sci</code> extras to request the CPU ONNX runtime (<code>iscc-sct[cpu]</code>, <code>iscc-sci[cpu]</code>) —
+    iscc-sct 0.2.x and iscc-sci 0.3.x moved the onnxruntime dependency behind <code>cpu</code>/<code>gpu</code> extras</li>
+<li>Updated CI actions to latest major versions</li>
+</ul>
+<h2 id="094-2026-07-09">0.9.4 - 2026-07-09<a class="headerlink" href="#094-2026-07-09" title="Permanent link">#</a></h2>
+<ul>
+<li>Fixed process abort (uncatchable <code>std::terminate</code> → SIGABRT) in <code>image_meta_extract()</code> when an
+    image carries a metadata value that exiv2 cannot convert to UTF-8, e.g. an EXIF <code>UserComment</code>
+    declared UNICODE with an invalid UTF-16 payload as written by some early-2000s digital cameras;
+    undecodable fields are now skipped with a warning instead of crashing the process</li>
+</ul>
+<h2 id="093-2026-06-04">0.9.3 - 2026-06-04<a class="headerlink" href="#093-2026-06-04" title="Permanent link">#</a></h2>
+<ul>
+<li>Added SVG cover image support for EPUB thumbnails (rasterized via <code>resvg</code>)</li>
+<li>Added <code>IsccThumbExtractionError</code> for recoverable thumbnail extraction failures</li>
+<li>Changed <code>code_iscc()</code> to handle thumbnail extraction failures gracefully (logs warning, continues
+    without thumbnail instead of raising); genuinely corrupt or invalid source files still raise
+    <code>IsccExtractionError</code></li>
+<li>Changed <code>code_iscc()</code> to generate thumbnails early, before heavy content processing</li>
+<li>Removed EPUB cover fallback to first manifest image (only explicit cover references are used)</li>
+<li>Fixed EPUB3 cover-image detection for manifests with multiple space-separated property tokens</li>
+<li>Fixed EPUB cover extraction when archive entries store UTF-8 filename bytes without the ZIP UTF-8
+    flag (CP437→UTF-8 recovery)</li>
+<li>Fixed EPUB cover extraction for OPF hrefs containing <code>..</code>/<code>.</code> path segments</li>
+<li>Fixed PNG cover thumbnail extraction failing on Photoshop-exported covers with large zTXt metadata
+    chunks (raised <code>PngImagePlugin.MAX_TEXT_CHUNK</code> to 4 MB)</li>
+<li>Wrapped <code>iscc-tika</code> parse failures (<code>TypeError</code> from native bridge, e.g. TIKA-237 on EPUBs with
+    deeply nested XHTML) as <code>IsccExtractionError</code> in <code>text_extract</code> and <code>text_meta_extract</code></li>
+<li>Improved API documentation for <code>code_iscc()</code>, <code>code_iscc_mt()</code>, <code>code_content()</code>, and
+    <code>code_text()</code> options</li>
+<li>Refactored <code>code_iscc_mt()</code> for improved parallelism: text extraction runs before submitting
+    content/semantic futures, thumbnail generation overlaps with sum/meta computation, and result
+    merging follows the same order as <code>code_iscc()</code></li>
+<li>Removed redundant <code>onnxruntime</code> from <code>sci</code> and <code>sct</code> optional dependency groups (already a
+    transitive dependency of <code>iscc-sci</code> and <code>iscc-sct</code>)</li>
+<li>Fixed CI: skip semantic code tests on macOS Python 3.12 (<code>onnxruntime</code> 1.26.0 has no macOS wheels
+    for that version)</li>
+<li>Updated <code>iscc-schema</code> floor to <code>&gt;=0.8.0</code> (version-pinned <code>@context</code>/<code>$schema</code> URLs now resolve to
+    <code>0.8.0</code>)</li>
+</ul>
+<h2 id="092-2026-04-21">0.9.2 - 2026-04-21<a class="headerlink" href="#092-2026-04-21" title="Permanent link">#</a></h2>
+<ul>
+<li>Replaced <code>pdf-oxide</code> with <code>pypdfium2</code> for PDF text extraction</li>
+<li>Replaced <code>pymupdf</code> with <code>pypdfium2</code> for PDF thumbnail rendering</li>
+<li>Replaced <code>pymupdf</code> with <code>pypdf</code> for PDF metadata embedding</li>
+</ul>
+<h2 id="091-2026-04-14">0.9.1 - 2026-04-14<a class="headerlink" href="#091-2026-04-14" title="Permanent link">#</a></h2>
+<ul>
+<li>Pinned <code>pdf-oxide&lt;0.3.20</code> and <code>iscc-tika&lt;0.5.0</code> for stability</li>
+<li>Updated <code>uv_build</code> requirement to <code>&gt;=0.11.2,&lt;0.12.0</code></li>
+<li>Removed deprecated PEP 639 license classifier</li>
+</ul>
+<h2 id="090-2026-04-12">0.9.0 - 2026-04-12<a class="headerlink" href="#090-2026-04-12" title="Permanent link">#</a></h2>
+<ul>
+<li>Added SVG as supported media type with rasterization, metadata, and thumbnail support</li>
+<li>Added RDF/Dublin Core metadata extraction and embedding for SVG files</li>
+<li>Added URL support to CLI <code>create</code> and <code>extract</code> commands</li>
+<li>Added optional <code>file_name</code> parameter to <code>extract_metadata</code> and <code>mediatype_and_mode</code></li>
+<li>Added descriptive User-Agent header for URL downloads</li>
+<li>Added file extension from content sniffing for extensionless downloads</li>
+<li>Fixed URL scheme validation in <code>download_file</code> for security (S310)</li>
+<li>Fixed type checking errors in <code>extract_metadata</code></li>
+<li>Fixed audio/ogg detection for OGG/OPUS audio files</li>
+<li>Suppressed noisy pdf-oxide TrueType cmap warnings</li>
+<li>Replaced defusedxml with lxml safe parser for SVG XML parsing</li>
+<li>Upgraded ffmpeg/ffprobe from 6.1 to 8.1</li>
+<li>Upgraded fpcalc (chromaprint) from 1.5.1 to 1.6.0</li>
+<li>Automated documentation deployment on release</li>
+</ul>
+<h2 id="089-2026-03-29">0.8.9 - 2026-03-29<a class="headerlink" href="#089-2026-03-29" title="Permanent link">#</a></h2>
+<ul>
+<li>Fixed EPUB cover extraction for URL-encoded paths in OPF manifest</li>
+<li>Added EPUB3 <code>cover-image</code> property detection for cover extraction</li>
+</ul>
+<h2 id="088-2026-03-29">0.8.8 - 2026-03-29<a class="headerlink" href="#088-2026-03-29" title="Permanent link">#</a></h2>
+<ul>
+<li>Replaced extractous with iscc-tika for text/metadata extraction</li>
+<li>Added pre-commit quality gates with prek (formatting, linting, type checking)</li>
+<li>Resolved all zuban type checking errors</li>
+<li>Removed unused explicit <code>click</code> dependency (already a transitive dependency of <code>typer</code>)</li>
+</ul>
+<h2 id="087-2026-03-18">0.8.7 - 2026-03-18<a class="headerlink" href="#087-2026-03-18" title="Permanent link">#</a></h2>
+<ul>
+<li>Migrated from Pydantic v1 compatibility layer to native Pydantic v2 API</li>
+<li>Replaced pdftext with pdf-oxide for PDF text extraction (~150x faster)</li>
+<li>Renamed CLI command from <code>idk</code> to <code>iscc-sdk</code></li>
+<li>Rounded audio and video duration to integer seconds</li>
+<li>Fixed CLI tests for Typer 0.24.x (error messages moved to stderr, exit code changes)</li>
+<li>Dropped Python 3.10 support, added Python 3.14</li>
+<li>Updated dependencies</li>
+</ul>
+<h2 id="086-2026-03-03">0.8.6 - 2026-03-03<a class="headerlink" href="#086-2026-03-03" title="Permanent link">#</a></h2>
+<ul>
+<li>Replaced iscc-sum with iscc-lib for Data/Instance/Sum code generation</li>
+<li>Simplified <code>code_data</code>, <code>code_instance</code>, and <code>code_sum</code> using iscc-lib's optimized generators</li>
+<li>Removed iscc-sum dependency</li>
+<li>Migrated from iscc-core to iscc-lib for core ISCC algorithms</li>
+<li>Removed iscc-core from dependencies (blake3, loguru, bitarray, xxhash now explicit)</li>
+<li>Added optional <code>outpath</code> parameter to <code>embed_metadata</code> for custom output file paths (closes #71)</li>
+<li>Added support for passing <code>dict</code> as metadata to <code>embed_metadata</code></li>
+<li>Fixed <code>code_iscc_mt</code> to accept <code>name</code>, <code>description</code>, and <code>meta</code> parameters like <code>code_iscc</code></li>
+<li>Migrated from Poetry to uv for dependency management and build backend</li>
+<li>Replaced IPFS binary tool with pure Python CIDv1 computation (no external dependency)</li>
+<li>Fixed installer script referencing removed IPFS tool functions</li>
+<li>Fixed memory usage in IPFS CID computation for large files (stream-hash per chunk)</li>
+<li>Updated CI GitHub Actions to latest versions</li>
+<li>Updated dependencies</li>
+</ul>
+<h2 id="085-2025-05-12">0.8.5 - 2025-05-12<a class="headerlink" href="#085-2025-05-12" title="Permanent link">#</a></h2>
+<ul>
+<li>Fixed TypeError with Semantic-Code image in granular processing mode.</li>
+</ul>
+<h2 id="084-2025-05-12">0.8.4 - 2025-05-12<a class="headerlink" href="#084-2025-05-12" title="Permanent link">#</a></h2>
+<ul>
+<li>Fixed issue with passing incompatible options to iscc-sct in experimental mode</li>
+<li>Improved test coverage</li>
+</ul>
+<h2 id="083-2025-05-12">0.8.3 - 2025-05-12<a class="headerlink" href="#083-2025-05-12" title="Permanent link">#</a></h2>
+<ul>
+<li>Added <code>code_sum</code> function for efficient combined Data-Code and Instance-Code generation</li>
+<li>Updated <code>code_iscc</code> &amp; <code>code_meta</code> to accept custom metadata and optionally skip file metadata
+    extraction</li>
+<li>Updated <code>code_iscc</code> to compute Data &amp; Instance Code in one go and process data sequentially</li>
+<li>Added separate <code>code_iscc_mt</code> for multihreaded processing</li>
+<li>Updated dependencies</li>
+</ul>
+<h2 id="082-2025-05-02">0.8.2 - 2025-05-02<a class="headerlink" href="#082-2025-05-02" title="Permanent link">#</a></h2>
+<ul>
+<li>Added experimental semantic codes for text and image with optional iscc-sct and iscc-sci packages</li>
+<li>Added <code>byte_offsets</code> option to support UTF-8 byte positions in granular simprints</li>
+<li>Improved image transparency handling with more robust conversion logic</li>
+<li>Improved text sanitization</li>
+<li>Updated lock file dependencies</li>
+</ul>
+<h2 id="081-2025-04-09">0.8.1 - 2025-04-09<a class="headerlink" href="#081-2025-04-09" title="Permanent link">#</a></h2>
+<ul>
+<li>Added <code>text_keep</code> option to store extracted text on <code>IsccMeta.text</code> property</li>
+<li>Changed PDF text extraction to use pypdfium2 with reading order reconstruction</li>
+<li>Re-added pillow-avif-plugin (Pillow dropped bundling libavif)</li>
+</ul>
+<h2 id="080-2025-04-02">0.8.0 - 2025-04-02<a class="headerlink" href="#080-2025-04-02" title="Permanent link">#</a></h2>
+<ul>
+<li>Added support for optional ISCC-UNITS and configurable bit size (256-bit).</li>
+<li>Added <code>extract</code> command to CLI for text extraction with error handling.</li>
+<li>Added AVIF thumbnail format support and metadata stripping for thumbnails.</li>
+<li>Added robust EPUB cover image extraction with multiple fallback strategies.</li>
+<li>Added fixed layout EPUB detection with namespace support.</li>
+<li>Added container processing support for embedded elements in epub files.</li>
+<li>Added min_image_size option to filter images during EPUB processing.</li>
+<li>Added text sanitization and HTML cleaning for metadata extraction.</li>
+<li>Added image_strip_metadata function for thumbnail generation.</li>
+<li>Added AVIF thumbnail format support.</li>
+<li>Modified code_iscc to conditionally generate meta-code based on create_meta option.</li>
+<li>Updated text features generation to use 256-bit MinHash algorithm.</li>
+<li>Updated video feature extraction with improved hash bits and metadata structure.</li>
+<li>Simplified media processing functions by removing redundant optional parameters.</li>
+<li>Updated dependencies.</li>
+</ul>
+<h2 id="070-2025-03-23">0.7.0 - 2025-03-23<a class="headerlink" href="#070-2025-03-23" title="Permanent link">#</a></h2>
+<ul>
+<li>Added Python 3.13 support</li>
+<li>Added support for scene based granular video code processing</li>
+<li>Added ffprobe video metadata extraction (duration, fps, width, height, language)</li>
+<li>Added support str and Path objects for all file inpunts</li>
+<li>Added <code>generator</code> (name and version of software) to ISCC metadata</li>
+<li>Added optional fallback to ISCC-SUM for unsupported media types</li>
+<li>Handle unsupported SVG files gracefully</li>
+<li>Replaced python-magic with puremagic wrapper for cross-platform compatibility</li>
+<li>Replaced exiv2 CLI tool with native python bindings</li>
+<li>Replaced Tika Java dependency with native extractous package</li>
+<li>Fix bug with thumbnail generation for image modes</li>
+</ul>
+<h2 id="062-2024-06-13">0.6.2 - 2024-06-13<a class="headerlink" href="#062-2024-06-13" title="Permanent link">#</a></h2>
+<ul>
+<li>Update and relax dependencies</li>
+<li>Update ISO project status</li>
+</ul>
+<h2 id="061-2024-02-05">0.6.1 - 2024-02-05<a class="headerlink" href="#061-2024-02-05" title="Permanent link">#</a></h2>
+<ul>
+<li>Improved robustness of granular text features</li>
+<li>Added <code>extract_meta</code> &amp; <code>create_thumb</code> parameters</li>
+<li>Fixed redundant metadata extraction</li>
+<li>Updated dependencies</li>
+</ul>
+<h2 id="060-2024-01-22">0.6.0 - 2024-01-22<a class="headerlink" href="#060-2024-01-22" title="Permanent link">#</a></h2>
+<ul>
+<li>Add avif and heic image format support</li>
+<li>Update to Exiv2 0.27.7</li>
+<li>Update to Tika 2.9.1</li>
+<li>Update to FFMPEG 6.1</li>
+<li>Add Python 3.12 Support</li>
+<li>Add Pydantic v2 Support</li>
+<li>Dropped Python 3.8 Support</li>
+</ul>
+<h2 id="059-2023-06-21">0.5.9 - 2023-06-21<a class="headerlink" href="#059-2023-06-21" title="Permanent link">#</a></h2>
+<ul>
+<li>Fix stdout decoding</li>
+</ul>
+<h2 id="058-2023-06-21">0.5.8 - 2023-06-21<a class="headerlink" href="#058-2023-06-21" title="Permanent link">#</a></h2>
+<ul>
+<li>Add <code>install</code> cli command</li>
+<li>Ignore signature files in batch cli command</li>
+<li>Fix encoding of result files</li>
+<li>Updated dependencies</li>
+</ul>
+<h2 id="057-2023-06-21">0.5.7 - 2023-06-21<a class="headerlink" href="#057-2023-06-21" title="Permanent link">#</a></h2>
+<ul>
+<li>Added parallel processing of ISCC-UNITs</li>
+<li>Handle video thumbnail extraction errors gracefully</li>
+<li>Add basic command line interface for batch processing</li>
+<li>Add option to keep MP7 Video Signature</li>
+<li>Support concurrent audio metadata extraction</li>
+<li>Updated dependencies</li>
+<li>Fixed mkdocstrings</li>
+</ul>
+<h2 id="056-2023-04-28">0.5.6 - 2023-04-28<a class="headerlink" href="#056-2023-04-28" title="Permanent link">#</a></h2>
+<ul>
+<li>Don´t install tika more than once per session</li>
+<li>Don´t pin poetry build requirement version</li>
+<li>Publish wheels</li>
+<li>Use latest poetry with default settings in CI</li>
+<li>Update dependencies</li>
+</ul>
+<h2 id="055-2023-03-26">0.5.5 - 2023-03-26<a class="headerlink" href="#055-2023-03-26" title="Permanent link">#</a></h2>
+<ul>
+<li>Switch to official pytaglib distribution</li>
+<li>Update dependencies</li>
+</ul>
+<h2 id="054-2023-03-15">0.5.4 - 2023-03-15<a class="headerlink" href="#054-2023-03-15" title="Permanent link">#</a></h2>
+<ul>
+<li>Added global <code>extract_metadata</code> option</li>
+<li>Removed taglib installation from CI</li>
+</ul>
+<h2 id="053-2023-03-12">0.5.3 - 2023-03-12<a class="headerlink" href="#053-2023-03-12" title="Permanent link">#</a></h2>
+<ul>
+<li>Update to iscc-core 1.0.3 using binary wheels</li>
+</ul>
+<h2 id="052-2023-03-11">0.5.2 - 2023-03-11<a class="headerlink" href="#052-2023-03-11" title="Permanent link">#</a></h2>
+<ul>
+<li>Added Python 3.11 support</li>
+<li>Added WavPack support</li>
+<li>Added docx metadata embedding support</li>
+<li>Improved error messages for unsupported mediatypes</li>
+<li>Improved robustness of audio metadata extraction</li>
+<li>Normalize mediatype application/xml to text/xml</li>
+<li>Nomralize mediatype application/vnd.ms-asf video/x-ms-asf</li>
+<li>Normalize mediatype application/vnd.adobe.flash.movie to application/x-shockwave-flash</li>
+<li>Add docx and xlsx extensions to mediatypes</li>
+<li>Updated to iscc-core 1.0.1</li>
+<li>Updated various dependencies</li>
+</ul>
+<h2 id="051-2022-12-09">0.5.1 - 2022-12-09<a class="headerlink" href="#051-2022-12-09" title="Permanent link">#</a></h2>
+<ul>
+<li>Fix audio title embedding</li>
+</ul>
+<h2 id="050-2022-12-09">0.5.0 - 2022-12-09<a class="headerlink" href="#050-2022-12-09" title="Permanent link">#</a></h2>
+<ul>
+<li>Add audio cover art thumbnailing</li>
+<li>Integrate EPUB metadata embedding</li>
+</ul>
+<h2 id="049-2022-12-09">0.4.9 - 2022-12-09<a class="headerlink" href="#049-2022-12-09" title="Permanent link">#</a></h2>
+<ul>
+<li>Add EPUB cover image thumbnail extraction</li>
+<li>Add EPUB metadata embedding</li>
+<li>Retain existing PDF DocInfo metadata when embedding</li>
+</ul>
+<h2 id="048-2022-12-09">0.4.8 - 2022-12-09<a class="headerlink" href="#048-2022-12-09" title="Permanent link">#</a></h2>
+<ul>
+<li>Separeta ISCC_CORE and ISCC_SDK options</li>
+<li>Document ISCC_SDK option</li>
+<li>Integrate PDF thumbnail extraction</li>
+</ul>
+<h2 id="047-2022-12-08">0.4.7 - 2022-12-08<a class="headerlink" href="#047-2022-12-08" title="Permanent link">#</a></h2>
+<ul>
+<li>Add metadata embedding support for PDFs</li>
+<li>Add thumbnail support for PDFs</li>
+<li>Improve text metadata extraction mapping</li>
+<li>Improve documentation</li>
+<li>Update dependencies</li>
+</ul>
+<h2 id="046-2022-11-24">0.4.6 - 2022-11-24<a class="headerlink" href="#046-2022-11-24" title="Permanent link">#</a></h2>
+<ul>
+<li>Add support for earlier Pillow versions</li>
+<li>Add option to configure <code>image_max_pixels</code></li>
+<li>Don´t embed empty titles in images</li>
+<li>Handle extracted metadata gracefully</li>
+<li>Fixed CVE-2007-4559</li>
+<li>Update to iscc-schema v0.4.0</li>
+<li>Update to iscc-core v0.2.12</li>
+<li>Update to tika 2.6.0</li>
+<li>Update dependencies</li>
+</ul>
+<h2 id="045-2022-07-04">0.4.5 - 2022-07-04<a class="headerlink" href="#045-2022-07-04" title="Permanent link">#</a></h2>
+<ul>
+<li>Update to iscc-schema v0.3.9</li>
+<li>Update to iscc-core v0.2.11</li>
+<li>Fix issue with embedded identifiers</li>
+<li>Add support for granular text features</li>
+</ul>
+<h2 id="044-2022-06-08">0.4.4 - 2022-06-08<a class="headerlink" href="#044-2022-06-08" title="Permanent link">#</a></h2>
+<ul>
+<li>Update to iscc-schema v0.3.8</li>
+<li>Updated dependencies</li>
+</ul>
+<h2 id="043-2022-05-08">0.4.3 - 2022-05-08<a class="headerlink" href="#043-2022-05-08" title="Permanent link">#</a></h2>
+<ul>
+<li>Moved changelog to seperate file</li>
+<li>Fixed pillow resampling deprecation warning</li>
+<li>Fixed exiv2 error on older linux versions</li>
+<li>Added support for lazy installation of cli-tools</li>
+<li>Added cleanup of cli-tool archives after installation</li>
+<li>Removed obsolete ffprobe tool</li>
+<li>Updated dependencies</li>
+</ul>
+<h2 id="042-2022-04-27">0.4.2 - 2022-04-27<a class="headerlink" href="#042-2022-04-27" title="Permanent link">#</a></h2>
+<ul>
+<li>Fix metadata extraction failure with long texts</li>
+<li>Embed Dublin Core metadata in images</li>
+<li>Support path object inputs for text_name_from_uri</li>
+</ul>
+<h2 id="041-2022-03-26">0.4.1 - 2022-03-26<a class="headerlink" href="#041-2022-03-26" title="Permanent link">#</a></h2>
+<ul>
+<li>Added video thumbnail support</li>
+<li>Added support for IPFS wrap-with-directory</li>
+</ul>
+<h2 id="040-2022-03-21">0.4.0 - 2022-03-21<a class="headerlink" href="#040-2022-03-21" title="Permanent link">#</a></h2>
+<ul>
+<li>Added Text-Code generation</li>
+<li>Added Video-Code generation</li>
+<li>Added text document metadata extraction</li>
+<li>Added video metadata embedding and extraction</li>
+<li>Added custom exeptions</li>
+<li>Changed embedding to create a new mediafile</li>
+<li>Set filename on IsccMeta</li>
+<li>Set @type on IsccMeta</li>
+</ul>
+<h2 id="030-2022-03-12">0.3.0 - 2022-03-12<a class="headerlink" href="#030-2022-03-12" title="Permanent link">#</a></h2>
+<ul>
+<li>Added support for Audio-Code with metadata embedding/extraction</li>
+</ul>
+<h2 id="020-2022-03-10">0.2.0 - 2022-03-10<a class="headerlink" href="#020-2022-03-10" title="Permanent link">#</a></h2>
+<ul>
+<li>Added IPFS support</li>
+</ul>
+<h2 id="010-2022-03-09">0.1.0 - 2022-03-09<a class="headerlink" href="#010-2022-03-09" title="Permanent link">#</a></h2>
+<ul>
+<li>Initial release with support for ISCC Content-Code Image</li>
+</ul>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright © 2016-2022 The Authors | <a href="https://iscc.foundation/privacy">Privacy Policy</a> | <a href="https://iscc.foundation/cookies">Cookie Policy</a> | <a href="https://iscc.foundation/imprint">Imprint</a> | <a href="https://iscc.foundation/disclaimer">Disclaimer</a>
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["toc.integrate", "navigation.indexes", "navigation.tracking", "navigation.tabs", "navigation.tabs.sticky", "navigation.expand"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>
