@@ -39,6 +39,23 @@ def test_text_extract_empty(tmp_path):
         idk.text_extract(fp)
 
 
+def test_text_extract_long_text_not_truncated(tmp_path):
+    """Text beyond Tika's 500K default string limit is extracted in full."""
+    fp = tmp_path / "long.txt"
+    fp.write_text("word " * 120_000)  # 600,000 chars
+    text = idk.text_extract(fp)
+    assert len(text) > 500_000
+
+
+def test_text_extract_max_length_truncates(tmp_path, monkeypatch):
+    """Text longer than TEXT_EXTRACT_MAX_LENGTH is capped at the limit."""
+    monkeypatch.setattr("iscc_sdk.text.TEXT_EXTRACT_MAX_LENGTH", 1000)
+    fp = tmp_path / "long.txt"
+    fp.write_text("word " * 300)  # 1,500 chars
+    text = idk.text_extract(fp)
+    assert len(text) == 1000
+
+
 def test_text_extract_tika_failure_wrapped(epub_file, monkeypatch):
     """Tika TypeError (e.g. TIKA-237 SAXException) is re-raised as IsccExtractionError."""
     from iscc_tika import Extractor

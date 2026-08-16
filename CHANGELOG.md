@@ -1,5 +1,13 @@
 ## Changelog
 
+## 0.9.6 - Unreleased
+
+- Fixed silent truncation of extracted text at Tika's 500,000-character default limit —
+    `text_extract` now allows up to 10,000,000 characters (a fixed constant, deliberately not
+    configurable so independent parties derive identical ISCCs) and logs a warning when the cap is
+    reached; Text-Code and granular text features change for documents longer than 500,000
+    characters
+
 ## 0.9.5 - 2026-07-30
 
 - Updated `iscc-tika` to 0.6.0 (Apache Tika 3.3.x), removing the `<0.5.0` stability pin — the macOS

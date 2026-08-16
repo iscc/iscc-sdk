@@ -27,6 +27,11 @@ __all__ = [
 SCRIPT_RE = re.compile(r"<script[^>]*>.*?</script>", flags=re.DOTALL | re.IGNORECASE)
 STYLE_RE = re.compile(r"<style[^>]*>.*?</style>", flags=re.DOTALL | re.IGNORECASE)
 
+# Cap on extracted characters (Tika defaults to 500,000 which truncates longer books).
+# A fixed constant rather than a configurable option so that independent parties derive
+# identical ISCCs from the same asset.
+TEXT_EXTRACT_MAX_LENGTH = 10_000_000
+
 TEXT_META_MAP = {
     "iscc_name": "name",
     "iscc_description": "description",
@@ -123,11 +128,13 @@ def text_extract(fp):
     fp = Path(fp)
     if fp.suffix.lower() == ".pdf":
         return idk.pdf_text_extract(fp)
-    extractor = Extractor()
+    extractor = Extractor().set_extract_string_max_length(TEXT_EXTRACT_MAX_LENGTH)
     try:
         result, metadata = extractor.extract_file_to_string(fp.as_posix())
     except TypeError as e:
         raise idk.IsccExtractionError(f"Tika failed to parse {fp.name}: {e}") from e
+    if len(result) >= TEXT_EXTRACT_MAX_LENGTH:
+        log.warning(f"Text extraction hit {TEXT_EXTRACT_MAX_LENGTH} chars - {fp.name} truncated")
     text = result.strip()
     if not text:
         raise idk.IsccExtractionError(f"No text extracted from {fp.name}")
