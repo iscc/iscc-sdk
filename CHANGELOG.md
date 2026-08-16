@@ -7,6 +7,8 @@
     configurable so independent parties derive identical ISCCs) and logs a warning when the cap is
     reached; Text-Code and granular text features change for documents longer than 500,000
     characters
+- Updated locked dependency versions (notably `xxhash` 4.0.0, `pypdf` 6.16.1, `pypdfium2` 5.13.0,
+    `resvg-py` 0.4.0, `numpy` 2.5.2, `bitarray` 3.10.1)
 
 ## 0.9.5 - 2026-07-30
 
