@@ -396,6 +396,15 @@ def test_image_meta_extract_undecodable_exif(tmp_path):
     assert idk.image_meta_extract(fp) == {"width": 4, "height": 4}
 
 
+def test_image_meta_extract_exif_xptitle(tmp_path):
+    """EXIF XPTitle (UCS-2 bytes) is extracted as decoded text, not a raw byte listing (#163)."""
+    fp = tmp_path / "xptitle.jpg"
+    exif = Image.Exif()
+    exif[0x9C9B] = "My Title".encode("utf-16-le") + b"\x00\x00"
+    Image.new("RGB", (8, 8)).save(fp, exif=exif)
+    assert idk.image_meta_extract(fp)["name"] == "My Title"
+
+
 def test_code_image_nometa_nothumb(jpg_file, monkeypatch):
     monkeypatch.setattr(idk.sdk_opts, "extract_meta", False)
     monkeypatch.setattr(idk.sdk_opts, "create_thumb", False)

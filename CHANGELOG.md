@@ -16,6 +16,8 @@
     by `image_meta_embed` differ at the byte level (embedded metadata is unchanged)
 - Hardened EPUB XML parsing with an explicit parser that disables entity resolution and network
     access (#156)
+- Fixed EXIF `XPTitle` (and other Windows `XP*` tags) being extracted as a raw byte listing instead
+    of text — changes `name` and the Meta-Code for affected images (#163)
 
 ## 0.9.5 - 2026-07-30
 
