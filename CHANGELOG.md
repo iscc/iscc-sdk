@@ -7,8 +7,13 @@
     configurable so independent parties derive identical ISCCs) and logs a warning when the cap is
     reached; Text-Code and granular text features change for documents longer than 500,000
     characters
-- Updated locked dependency versions (notably `xxhash` 4.0.0, `pypdf` 6.16.1, `pypdfium2` 5.13.0,
-    `resvg-py` 0.4.0, `numpy` 2.5.2, `bitarray` 3.10.1)
+- Updated `iscc-lib` to 0.7.0 (now the minimum required version), which fixes Image-Codes longer
+    than 64 bits to follow ISO 24138:2024 — Image-Code units at 96, 128 or 256 bits change beyond
+    the first 64 bits and should be regenerated; 64-bit Image-Codes and ISCC-CODEs are unaffected
+- Updated locked dependency versions (notably `Pillow` 13.0.0, `exiv2` 0.19.2, `xxhash` 4.0.1,
+    `pypdf` 6.21.1, `pypdfium2` 5.14.0, `resvg-py` 0.5.0, `numpy` 2.5.4, `bitarray` 3.12.2) — with
+    Pillow 13 EPUB cover thumbnails come out slightly different, and with exiv2 0.19.2 files written
+    by `image_meta_embed` differ at the byte level (embedded metadata is unchanged)
 
 ## 0.9.5 - 2026-07-30
 
