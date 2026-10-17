@@ -335,6 +335,15 @@ def test_code_text(docx_file):
     }
 
 
+def test_code_text_granular_chunk_size_override(docx_file, monkeypatch):
+    """A per-call text_avg_chunk_size reaches the granular features like the global setting."""
+    per_call = idk.code_text(docx_file, granular=True, text_avg_chunk_size=128)
+    monkeypatch.setattr(idk.sdk_opts, "text_avg_chunk_size", 128)
+    global_setting = idk.code_text(docx_file, granular=True)
+    assert per_call.features == global_setting.features
+    assert len(per_call.features[0]["sizes"]) > 6  # default chunk size yields 6 chunks
+
+
 def test_code_text_granular(docx_file, monkeypatch):
     monkeypatch.setattr(idk.sdk_opts, "granular", True)
     assert idk.code_text(docx_file).dict() == {

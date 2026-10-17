@@ -152,7 +152,8 @@ def text_features(text, **options):
 
     :param text: Normalized and cleaned plaintext.
     :param options: Keyword arguments forwarded to ``sdk_opts``:
-        **byte_offsets** - Calculate offsets and sizes in UTF-8 bytes instead of chars. Default: False
+        **byte_offsets** - Calculate offsets and sizes in UTF-8 bytes instead of chars. Default: False;
+        **text_avg_chunk_size** - Average chunk size in characters. Default: 512
     :returns dict: Dictionary with 'sizes', 'features', 'offsets', and 'contents'.
     """
     opts = idk.sdk_opts.override(options)
@@ -160,7 +161,7 @@ def text_features(text, **options):
     simprints = []
     offsets = []
     current_offset = 0
-    avg_size = idk.sdk_opts.text_avg_chunk_size
+    avg_size = opts.text_avg_chunk_size
     chunks = list(text_chunks(text, avg_size=avg_size))
     if len(chunks) > 1 and len(chunks[-1]) < avg_size // 4:
         chunks.pop()

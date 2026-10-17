@@ -29,6 +29,8 @@
     characters at defaults) unless it is the only chunk — its simprint carried too little evidence
     and matched unrelated documents; retained simprints, offsets and sizes are unchanged, but
     persisted granular text features lose such tail entries (#162)
+- Fixed per-call `text_avg_chunk_size` and `byte_offsets` options being ignored for granular text
+    features — `text_features` read the global setting and `code_text` did not forward its options
 
 ## 0.9.5 - 2026-07-30
 
