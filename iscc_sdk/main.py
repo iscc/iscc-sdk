@@ -608,7 +608,7 @@ def code_image_semantic(fp, **options):
 
         fp = Path(fp)
         meta = iscc_sci.code_image_semantic(fp, **options)
-        return idk.IsccMeta.model_construct(**meta)
+        return idk.IsccMeta.model_construct(_fields_set=None, **meta)
 
 
 def code_audio(fp, **options):
