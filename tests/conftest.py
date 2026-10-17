@@ -6,6 +6,8 @@ import pytest
 from iscc_samples import audios, images, texts, videos
 from PIL import Image, ImageDraw
 
+import iscc_sdk as idk
+
 
 @pytest.fixture(scope="function")
 def jpg_file(tmp_path_factory) -> str:
@@ -46,6 +48,14 @@ def mp3_cover(tmp_path_factory) -> str:
 def wav_file(tmp_path_factory) -> str:
     dst = tmp_path_factory.mktemp("data") / "audio.wav"
     shutil.copy(audios("wav")[0], dst)
+    return dst.as_posix()
+
+
+@pytest.fixture(scope="function")
+def m4a_file(tmp_path_factory) -> str:
+    """AAC sample remuxed into an MP4 container with the .m4a extension."""
+    dst = tmp_path_factory.mktemp("data") / "audio.m4a"
+    idk.run_ffmpeg(["-i", audios("aac")[0], "-c:a", "copy", dst])
     return dst.as_posix()
 
 

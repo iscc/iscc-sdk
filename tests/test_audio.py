@@ -64,6 +64,20 @@ def test_audio_meta_embed_wav(wav_file):
     os.remove(new_file)
 
 
+def test_embed_metadata_m4a(m4a_file):
+    """All fields survive an M4A embed/extract round trip via MP4-safe ISCC_* tags (#166)."""
+    new_file = idk.embed_metadata(m4a_file, meta)
+    assert idk.audio_meta_extract(new_file) == {
+        "acquire": "https://example.com/buy",
+        "description": "Wörld",
+        "duration": 16,
+        "license": "https://example.com/license",
+        "meta": "somestring",
+        "name": "Hello",
+    }
+    os.remove(new_file)
+
+
 def test_audio_extract_features(mp3_file):
     assert idk.audio_features_extract(mp3_file) == {
         "duration": 15.5,

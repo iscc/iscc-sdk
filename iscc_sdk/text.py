@@ -27,6 +27,11 @@ __all__ = [
 SCRIPT_RE = re.compile(r"<script[^>]*>.*?</script>", flags=re.DOTALL | re.IGNORECASE)
 STYLE_RE = re.compile(r"<style[^>]*>.*?</style>", flags=re.DOTALL | re.IGNORECASE)
 
+# Cap on extracted characters (Tika defaults to 500,000 which truncates longer books).
+# A fixed constant rather than a configurable option so that independent parties derive
+# identical ISCCs from the same asset.
+TEXT_EXTRACT_MAX_LENGTH = 10_000_000
+
 TEXT_META_MAP = {
     "iscc_name": "name",
     "iscc_description": "description",
@@ -123,11 +128,13 @@ def text_extract(fp):
     fp = Path(fp)
     if fp.suffix.lower() == ".pdf":
         return idk.pdf_text_extract(fp)
-    extractor = Extractor()
+    extractor = Extractor().set_extract_string_max_length(TEXT_EXTRACT_MAX_LENGTH)
     try:
         result, metadata = extractor.extract_file_to_string(fp.as_posix())
     except TypeError as e:
         raise idk.IsccExtractionError(f"Tika failed to parse {fp.name}: {e}") from e
+    if len(result) >= TEXT_EXTRACT_MAX_LENGTH:
+        log.warning(f"Text extraction hit {TEXT_EXTRACT_MAX_LENGTH} chars - {fp.name} truncated")
     text = result.strip()
     if not text:
         raise idk.IsccExtractionError(f"No text extracted from {fp.name}")
@@ -140,9 +147,13 @@ def text_features(text, **options):
     Create granular simprints for text (minhashes over ngrams from cdc-chunks).
     Text should be normalized and cleaned before extracting text features.
 
+    A final chunk shorter than the CDC minimum chunk size (a quarter of the average) is dropped,
+    as its simprint carries too little evidence. A text that yields only one chunk keeps it.
+
     :param text: Normalized and cleaned plaintext.
     :param options: Keyword arguments forwarded to ``sdk_opts``:
-        **byte_offsets** - Calculate offsets and sizes in UTF-8 bytes instead of chars. Default: False
+        **byte_offsets** - Calculate offsets and sizes in UTF-8 bytes instead of chars. Default: False;
+        **text_avg_chunk_size** - Average chunk size in characters. Default: 512
     :returns dict: Dictionary with 'sizes', 'features', 'offsets', and 'contents'.
     """
     opts = idk.sdk_opts.override(options)
@@ -150,7 +161,11 @@ def text_features(text, **options):
     simprints = []
     offsets = []
     current_offset = 0
-    for chunk in text_chunks(text, avg_size=idk.sdk_opts.text_avg_chunk_size):
+    avg_size = opts.text_avg_chunk_size
+    chunks = list(text_chunks(text, avg_size=avg_size))
+    if len(chunks) > 1 and len(chunks[-1]) < avg_size // 4:
+        chunks.pop()
+    for chunk in chunks:
         offsets.append(current_offset)
         ngrams = (
             "".join(chars)

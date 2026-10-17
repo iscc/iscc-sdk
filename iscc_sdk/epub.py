@@ -103,7 +103,7 @@ def epub_cover(fp):
                 raise idk.IsccExtractionError(f"Missing {container_path} in {fp}")
 
             container_xml = archive.read(container_path)
-            container_root = lxml.etree.fromstring(container_xml)
+            container_root = parse_xml_safe(container_xml)
             opf_path = container_root.xpath(
                 "//o:rootfile/@full-path",
                 namespaces={"o": "urn:oasis:names:tc:opendocument:xmlns:container"},
@@ -111,7 +111,7 @@ def epub_cover(fp):
 
             # Parse OPF file
             opf_xml = archive.read(opf_path)
-            opf_root = lxml.etree.fromstring(opf_xml)
+            opf_root = parse_xml_safe(opf_xml)
             opf_ns = {"opf": "http://www.idpf.org/2007/opf"}
 
             # 1. Check metadata for cover reference
@@ -269,7 +269,7 @@ def is_fixed_layout_epub(fp):  # pragma: no cover
                 return False
 
             container_xml = archive.read(container_path)
-            container_root = lxml.etree.fromstring(container_xml)
+            container_root = parse_xml_safe(container_xml)
             opf_path = container_root.xpath(
                 "//o:rootfile/@full-path",
                 namespaces={"o": "urn:oasis:names:tc:opendocument:xmlns:container"},
@@ -277,7 +277,7 @@ def is_fixed_layout_epub(fp):  # pragma: no cover
 
             # Parse OPF file
             opf_xml = archive.read(opf_path)
-            opf_root = lxml.etree.fromstring(opf_xml)
+            opf_root = parse_xml_safe(opf_xml)
 
             # Define necessary namespaces for XPath queries
             namespaces = {
@@ -320,6 +320,18 @@ def is_fixed_layout_epub(fp):  # pragma: no cover
     except Exception as e:
         log.warning(f"Error checking if EPUB is fixed layout: {e}")
         return False
+
+
+def parse_xml_safe(data):
+    # type: (bytes) -> lxml.etree._Element
+    """
+    Parse untrusted XML from an EPUB archive with entity resolution and network access disabled.
+
+    :param data: Raw XML bytes
+    :return: Root element of the parsed document
+    """
+    parser = lxml.etree.XMLParser(resolve_entities=False, no_network=True)
+    return lxml.etree.fromstring(data, parser=parser)
 
 
 def resolve_archive_path(archive, target):

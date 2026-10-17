@@ -44,6 +44,15 @@ def test_mime_normalize():
     assert idk.mediatype_normalize("audio/x-aiff") == "audio/aiff"
 
 
+def test_mime_normalize_m4a():
+    assert idk.mediatype_normalize("audio/x-m4a") == "audio/mp4"
+
+
+def test_mediatype_and_mode_m4a(m4a_file):
+    """libmagic sniffs M4A as video/mp4; the .m4a name must route it to audio mode (#166)."""
+    assert idk.mediatype_and_mode(m4a_file) == ("audio/mp4", "audio")
+
+
 def test_mime_normalize_unmapped():
     assert idk.mediatype_normalize("dont/touch/me") == "dont/touch/me"
 

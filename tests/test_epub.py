@@ -3,6 +3,7 @@ import struct
 import zipfile
 import zlib
 
+import lxml.etree
 import pytest
 from PIL import Image as PILImage
 from PIL.Image import Image
@@ -306,6 +307,15 @@ def test_resolve_archive_path_skips_utf8_decode_error(tmp_path):
     )
     thumb = idk.epub_thumbnail(epub_path.as_posix())
     assert isinstance(thumb, Image)
+
+
+def test_parse_xml_safe_leaves_entities_unresolved():
+    """Entity references in untrusted EPUB XML are kept as references, not expanded."""
+    from iscc_sdk.epub import parse_xml_safe
+
+    root = parse_xml_safe(b'<!DOCTYPE r [<!ENTITY e "expanded">]><r>&e;</r>')
+    assert root.text is None
+    assert root[0].tag is lxml.etree.Entity
 
 
 def test_epub_cover_missing_container_raises(tmp_path):

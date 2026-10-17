@@ -499,6 +499,7 @@ def code_text(fp, text=None, **options):
         **create_thumb** - Whether to create a thumbnail. Default: True;
         **bits** - Bit-length of the generated Text-Code UNIT. Default: 64;
         **granular** - Whether to generate additional granular fingerprints. Default: False;
+        **text_avg_chunk_size** - Average chunk size in characters for granular features. Default: 512;
         **text_keep** - Keep extracted plaintext on ``IsccMeta.text``. Default: False
     :return: ISCC metadata including Text-Code.
     """
@@ -522,7 +523,7 @@ def code_text(fp, text=None, **options):
     code = il.gen_text_code_v0(text, bits=opts.bits)
     meta.update(code)
     if opts.granular:
-        features = idk.text_features(text)
+        features = idk.text_features(text, **options)
         meta["features"] = [features]
     if opts.text_keep:
         meta["text"] = text
@@ -608,7 +609,7 @@ def code_image_semantic(fp, **options):
 
         fp = Path(fp)
         meta = iscc_sci.code_image_semantic(fp, **options)
-        return idk.IsccMeta.model_construct(**meta)
+        return idk.IsccMeta.model_construct(_fields_set=None, **meta)
 
 
 def code_audio(fp, **options):

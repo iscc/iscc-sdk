@@ -242,6 +242,7 @@ mimetypes.add_type("application/x-sqlite3", ".sqlite")
 mimetypes.add_type("video/mp4", ".f4v")
 mimetypes.add_type("video/h264", ".h264")
 mimetypes.add_type("audio/x-wavpack", ".wv")
+mimetypes.add_type("audio/mp4", ".m4a")
 mimetypes.add_type(
     "application/vnd.openxmlformats-officedocument.wordprocessingml.document", ".docx"
 )
@@ -307,6 +308,7 @@ SUPPORTED_MEDIATYPES = {
     "audio/x-flac": {"mode": "audio", "ext": "flac"},
     "audio/opus": {"mode": "audio", "ext": "opus"},
     "audio/x-wavpack": {"mode": "audio", "ext": "wv"},
+    "audio/mp4": {"mode": "audio", "ext": "m4a"},
     # Video Formats
     "application/vnd.rn-realmedia": {"mode": "video", "ext": "rm"},
     "video/x-dirac": {"mode": "video", "ext": "drc"},
@@ -334,6 +336,7 @@ UNSUPPORTED_MEDIATYPES = {}
 MEDIATYPE_NORM = {
     "audio/x-aiff": "audio/aiff",
     "audio/x-wav": "audio/wav",
+    "audio/x-m4a": "audio/mp4",
     "image/x-ms-bmp": "image/bmp",
     "video/x-msvideo": "video/avi",
     "application/ogg": "video/ogg",
