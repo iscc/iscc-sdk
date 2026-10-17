@@ -25,6 +25,10 @@
 - Added support for M4A audio (`audio/mp4`, with `audio/x-m4a` normalized to it) — `.m4a` files were
     sniffed as `video/mp4` and failed with "No video stream detected"; ISCC metadata is embedded in
     M4A files as `ISCC_*` tags because TagLib drops MP4 tag names that contain a colon (#166)
+- Changed `text_features` to drop a final chunk shorter than the CDC minimum chunk size (128
+    characters at defaults) unless it is the only chunk — its simprint carried too little evidence
+    and matched unrelated documents; retained simprints, offsets and sizes are unchanged, but
+    persisted granular text features lose such tail entries (#162)
 
 ## 0.9.5 - 2026-07-30
 

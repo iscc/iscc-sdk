@@ -147,6 +147,9 @@ def text_features(text, **options):
     Create granular simprints for text (minhashes over ngrams from cdc-chunks).
     Text should be normalized and cleaned before extracting text features.
 
+    A final chunk shorter than the CDC minimum chunk size (a quarter of the average) is dropped,
+    as its simprint carries too little evidence. A text that yields only one chunk keeps it.
+
     :param text: Normalized and cleaned plaintext.
     :param options: Keyword arguments forwarded to ``sdk_opts``:
         **byte_offsets** - Calculate offsets and sizes in UTF-8 bytes instead of chars. Default: False
@@ -157,7 +160,11 @@ def text_features(text, **options):
     simprints = []
     offsets = []
     current_offset = 0
-    for chunk in text_chunks(text, avg_size=idk.sdk_opts.text_avg_chunk_size):
+    avg_size = idk.sdk_opts.text_avg_chunk_size
+    chunks = list(text_chunks(text, avg_size=avg_size))
+    if len(chunks) > 1 and len(chunks[-1]) < avg_size // 4:
+        chunks.pop()
+    for chunk in chunks:
         offsets.append(current_offset)
         ngrams = (
             "".join(chars)

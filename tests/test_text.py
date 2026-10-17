@@ -116,7 +116,7 @@ def test_text_features(docx_file):
         "subtype": "text",
         "version": 0,
         "byte_offsets": False,
-        "offsets": [0, 996, 1453, 2122, 4941, 5398, 6067],
+        "offsets": [0, 996, 1453, 2122, 4941, 5398],
         "simprints": [
             "k5TpwXVE3j9N5IBxm36c4hkXP6fHOv8bkY2f68_8XSg",
             "OERRAF2u5WWuLHZLZzgcCSoCoL9R0NYrBJD7s7A43t0",
@@ -124,10 +124,36 @@ def test_text_features(docx_file):
             "lp6NgXnE_C1c6ij12-w04RwZN4XJyP0KgIrbKYX81yo",
             "OERRAF2u5WWuLHZLZzgcCSoCoL9R0NYrBJD7s7A43t0",
             "AARYEMzu5WEOfTZq5ixNLcoThJ5AgJYNRICysqEs3v0",
-            "JfC6tnH1BuHFMviS2deReiUuelIIMvWWOozU6afjErU",
         ],
-        "sizes": [996, 457, 669, 2819, 457, 669, 2],
+        "sizes": [996, 457, 669, 2819, 457, 669],
     }
+
+
+def test_text_features_drops_undersized_tail(docx_file):
+    """A final chunk below the CDC minimum size is dropped; retained features are unchanged (#162)."""
+    avg_size = idk.sdk_opts.text_avg_chunk_size
+    chunks = list(idk.text_chunks(idk.text_extract(docx_file), avg_size=avg_size))
+    prefix = "".join(chunks[:3])
+    tail = chunks[3][: avg_size // 4 - 1]
+    assert idk.text_features(prefix + tail) == idk.text_features(prefix)
+
+
+def test_text_features_keeps_min_size_tail(docx_file):
+    """A final chunk of exactly the CDC minimum size is kept (#162)."""
+    avg_size = idk.sdk_opts.text_avg_chunk_size
+    chunks = list(idk.text_chunks(idk.text_extract(docx_file), avg_size=avg_size))
+    tail = chunks[3][: avg_size // 4]
+    features = idk.text_features("".join(chunks[:3]) + tail)
+    assert features["sizes"] == [len(c) for c in chunks[:3]] + [len(tail)]
+
+
+def test_text_features_keeps_single_short_chunk():
+    """A text shorter than the CDC minimum size still yields one whole-text simprint (#162)."""
+    text = "Short text below the minimum chunk size."
+    features = idk.text_features(text)
+    assert features["offsets"] == [0]
+    assert features["sizes"] == [len(text)]
+    assert len(features["simprints"]) == 1
 
 
 def test_text_features_stable(doc_file):
@@ -156,7 +182,8 @@ def test_text_features_byte_offsets(docx_file):
     # Store the original text encoded as UTF-32BE (without BOM)
     utf32be_data = sample_text.encode("utf-32-be")
 
-    assert len(offsets) == len(sizes) == len(chunks)
+    # The 2-char tail chunk of this document is dropped as undersized (#162)
+    assert len(offsets) == len(sizes) == len(chunks) - 1
 
     for char_offset, char_size, original_chunk in zip(offsets, sizes, chunks):
         # Calculate expected byte offset and size

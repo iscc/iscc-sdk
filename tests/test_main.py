@@ -355,10 +355,9 @@ def test_code_text_granular(docx_file, monkeypatch):
                     "lp6NgXnE_C1c6ij12-w04RwZN4XJyP0KgIrbKYX81yo",
                     "OERRAF2u5WWuLHZLZzgcCSoCoL9R0NYrBJD7s7A43t0",
                     "AARYEMzu5WEOfTZq5ixNLcoThJ5AgJYNRICysqEs3v0",
-                    "JfC6tnH1BuHFMviS2deReiUuelIIMvWWOozU6afjErU",
                 ],
-                "offsets": [0, 996, 1453, 2122, 4941, 5398, 6067],
-                "sizes": [996, 457, 669, 2819, 457, 669, 1],
+                "offsets": [0, 996, 1453, 2122, 4941, 5398],
+                "sizes": [996, 457, 669, 2819, 457, 669],
             }
         ],
     }
