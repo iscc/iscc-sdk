@@ -14,6 +14,8 @@
     `pypdf` 6.21.1, `pypdfium2` 5.14.0, `resvg-py` 0.5.0, `numpy` 2.5.4, `bitarray` 3.12.2) — with
     Pillow 13 EPUB cover thumbnails come out slightly different, and with exiv2 0.19.2 files written
     by `image_meta_embed` differ at the byte level (embedded metadata is unchanged)
+- Hardened EPUB XML parsing with an explicit parser that disables entity resolution and network
+    access (#156)
 
 ## 0.9.5 - 2026-07-30
 
