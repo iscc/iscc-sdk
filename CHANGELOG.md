@@ -20,6 +20,8 @@
     of text — changes `name` and the Meta-Code for affected images (#163)
 - Fixed XMP struct containers being extracted as the placeholder `type="Struct"` (for example as
     `name`) — they are now skipped so the next mapped field or the file name applies (#165)
+- Fixed `code_meta` crashing with `UnicodeEncodeError` on image metadata that is not valid UTF-8,
+    such as legacy IPTC text — such values are now decoded as Latin-1, the IPTC default (#164)
 
 ## 0.9.5 - 2026-07-30
 

@@ -376,6 +376,7 @@ def _process_metadata(metadata, is_xmp=False):
             # C++ exception to std::terminate and aborts the process.
             # Windows XP* tags are UCS-2 bytes that only print() decodes to text.
             value = datum.print() if key.startswith("Exif.Image.XP") else datum.toString()
+            value = decode_latin1_fallback(value)
         except Exception as e:
             log.warning(f"Skipping unreadable metadata field {key}: {e}")
             continue
@@ -389,6 +390,25 @@ def _process_metadata(metadata, is_xmp=False):
         result[key] = value
 
     return result
+
+
+def decode_latin1_fallback(value):
+    # type: (str) -> str
+    """
+    Re-decode a metadata value that holds bytes which are not valid UTF-8 as Latin-1.
+
+    exiv2 returns such bytes as lone surrogates. Legacy IPTC text is the common case, as IPTC
+    defaults to Latin-1 when no UTF-8 CodedCharacterSet is declared.
+
+    :param value: Metadata value as returned by exiv2
+    :return: The value unchanged if it is valid text, otherwise its bytes decoded as Latin-1
+    :raises UnicodeEncodeError: If the value holds surrogates that do not stand for raw bytes
+    """
+    try:
+        value.encode("utf-8")
+    except UnicodeEncodeError:
+        return value.encode("utf-8", "surrogateescape").decode("latin-1")
+    return value
 
 
 IMAGE_META_MAP = {

@@ -1,6 +1,9 @@
+import io
 import os.path
+import struct
 
 import exiv2
+import pytest
 from iscc_samples import images
 from iscc_schema import IsccMeta
 from PIL import Image, ImageDraw
@@ -414,6 +417,31 @@ def test_image_meta_extract_skips_xmp_struct(tmp_path):
     fp = tmp_path / "struct.jpg"
     Image.new("RGB", (8, 8)).save(fp, xmp=xmp)
     assert "name" not in idk.image_meta_extract(fp)
+
+
+def test_code_meta_iptc_latin1(tmp_path):
+    """Legacy Latin-1 IPTC text is decoded as Latin-1 instead of crashing code_meta (#164)."""
+    # IPTC Headline (2:105) = "Zürich" in Latin-1, no UTF-8 CodedCharacterSet declared
+    record = b"\x1c\x02\x69" + struct.pack(">H", 6) + "Zürich".encode("latin-1")
+    irb = b"8BIM" + struct.pack(">H", 0x0404) + b"\x00\x00" + struct.pack(">I", len(record))
+    app13 = b"Photoshop 3.0\x00" + irb + record
+    buf = io.BytesIO()
+    Image.new("RGB", (8, 8)).save(buf, "JPEG")
+    jpeg = buf.getvalue()
+    segment = b"\xff\xed" + struct.pack(">H", len(app13) + 2) + app13
+    fp = tmp_path / "iptc.jpg"
+    fp.write_bytes(jpeg[:2] + segment + jpeg[2:])
+    assert idk.image_meta_extract(fp)["name"] == "Zürich"
+    assert idk.code_meta(fp).name == "Zürich"
+
+
+def test_decode_latin1_fallback():
+    """Valid text passes through; escaped undecodable bytes are re-decoded as Latin-1."""
+    assert idk.image.decode_latin1_fallback("Zürich") == "Zürich"
+    assert idk.image.decode_latin1_fallback("Z\udcfcrich") == "Zürich"
+    # Surrogates that do not stand for raw bytes raise, so _process_metadata skips the field
+    with pytest.raises(UnicodeEncodeError):
+        idk.image.decode_latin1_fallback("A\ud800B")
 
 
 def test_code_image_nometa_nothumb(jpg_file, monkeypatch):
