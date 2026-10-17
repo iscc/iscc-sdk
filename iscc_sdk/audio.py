@@ -25,6 +25,11 @@ AUDIO_META_MAP = {
     "ISCC:META": "meta",
     "ISCC:LICENSE": "license",
     "ISCC:ACQUIRE": "acquire",
+    "ISCC_NAME": "name",
+    "ISCC_DESCRIPTION": "description",
+    "ISCC_META": "meta",
+    "ISCC_LICENSE": "license",
+    "ISCC_ACQUIRE": "acquire",
     "TITLE": "name",
     # "ALBUM": "album",
     # "GENRE": "genre",
@@ -121,20 +126,22 @@ def audio_meta_embed(fp, meta):
     :return: Filepath to new audio file with updated metadata
     """
     fp = Path(fp)
+    # TagLib silently drops MP4 tag names that contain a colon
+    sep = "_" if idk.mediatype_and_mode(fp)[0] == "audio/mp4" else ":"
     tdir = tempfile.mkdtemp()
     tfile = shutil.copy(fp, tdir)
     obj = taglib.File(tfile)
     if meta.name:
         obj.tags["TITLE"] = [meta.name]
-        obj.tags["ISCC:NAME"] = [meta.name]
+        obj.tags[f"ISCC{sep}NAME"] = [meta.name]
     if meta.description:
-        obj.tags["ISCC:DESCRIPTION"] = [meta.description]
+        obj.tags[f"ISCC{sep}DESCRIPTION"] = [meta.description]
     if meta.meta:
-        obj.tags["ISCC:META"] = [meta.meta]
+        obj.tags[f"ISCC{sep}META"] = [meta.meta]
     if meta.license:
-        obj.tags["ISCC:LICENSE"] = [meta.license]
+        obj.tags[f"ISCC{sep}LICENSE"] = [meta.license]
     if meta.acquire:
-        obj.tags["ISCC:ACQUIRE"] = [meta.acquire]
+        obj.tags[f"ISCC{sep}ACQUIRE"] = [meta.acquire]
     obj.save()
     obj.close()
     return tfile

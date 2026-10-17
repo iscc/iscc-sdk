@@ -135,6 +135,14 @@ def test_code_iscc_with_units_128_bits(jpg_file):
     assert all(unit.startswith("ISCC:") for unit in units)
 
 
+def test_code_iscc_m4a(m4a_file):
+    """M4A files are processed as audio with the same Audio-Code as code_audio (#166)."""
+    result = idk.code_iscc(m4a_file, add_units=True)
+    assert result.mode == "audio"
+    assert result.mediatype == "audio/mp4"
+    assert result.units[1] == idk.code_audio(m4a_file).iscc
+
+
 def test_code_iscc_audio(mp3_file):
     assert idk.code_iscc(mp3_file).dict(exclude={"generator"}) == {
         "@type": "AudioObject",

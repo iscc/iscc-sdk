@@ -22,6 +22,9 @@
     `name`) — they are now skipped so the next mapped field or the file name applies (#165)
 - Fixed `code_meta` crashing with `UnicodeEncodeError` on image metadata that is not valid UTF-8,
     such as legacy IPTC text — such values are now decoded as Latin-1, the IPTC default (#164)
+- Added support for M4A audio (`audio/mp4`, with `audio/x-m4a` normalized to it) — `.m4a` files were
+    sniffed as `video/mp4` and failed with "No video stream detected"; ISCC metadata is embedded in
+    M4A files as `ISCC_*` tags because TagLib drops MP4 tag names that contain a colon (#166)
 
 ## 0.9.5 - 2026-07-30
 
