@@ -2,42 +2,42 @@
 
 ## 0.9.6 - Unreleased
 
-- Fixed silent truncation of extracted text at Tika's 500,000-character default limit —
+- Fixed silent truncation of extracted text at Tika's 500,000-character default limit -
     `text_extract` now allows up to 10,000,000 characters (a fixed constant, deliberately not
     configurable so independent parties derive identical ISCCs) and logs a warning when the cap is
     reached; Text-Code and granular text features change for documents longer than 500,000
     characters
 - Updated `iscc-lib` to 0.7.0 (now the minimum required version), which fixes Image-Codes longer
-    than 64 bits to follow ISO 24138:2024 — Image-Code units at 96, 128 or 256 bits change beyond
+    than 64 bits to follow ISO 24138:2024 - Image-Code units at 96, 128 or 256 bits change beyond
     the first 64 bits and should be regenerated; 64-bit Image-Codes and ISCC-CODEs are unaffected
 - Updated locked dependency versions (notably `Pillow` 13.0.0, `exiv2` 0.19.2, `xxhash` 4.0.1,
-    `pypdf` 6.21.1, `pypdfium2` 5.14.0, `resvg-py` 0.5.0, `numpy` 2.5.4, `bitarray` 3.12.2) — with
+    `pypdf` 6.21.1, `pypdfium2` 5.14.0, `resvg-py` 0.5.0, `numpy` 2.5.4, `bitarray` 3.12.2) - with
     Pillow 13 EPUB cover thumbnails come out slightly different, and with exiv2 0.19.2 files written
     by `image_meta_embed` differ at the byte level (embedded metadata is unchanged)
 - Hardened EPUB XML parsing with an explicit parser that disables entity resolution and network
     access (#156)
 - Fixed EXIF `XPTitle` (and other Windows `XP*` tags) being extracted as a raw byte listing instead
-    of text — changes `name` and the Meta-Code for affected images (#163)
+    of text - changes `name` and the Meta-Code for affected images (#163)
 - Fixed XMP struct containers being extracted as the placeholder `type="Struct"` (for example as
-    `name`) — they are now skipped so the next mapped field or the file name applies (#165)
+    `name`) - they are now skipped so the next mapped field or the file name applies (#165)
 - Fixed `code_meta` crashing with `UnicodeEncodeError` on image metadata that is not valid UTF-8,
-    such as legacy IPTC text — such values are now decoded as Latin-1, the IPTC default (#164)
-- Added support for M4A audio (`audio/mp4`, with `audio/x-m4a` normalized to it) — `.m4a` files were
+    such as legacy IPTC text - such values are now decoded as Latin-1, the IPTC default (#164)
+- Added support for M4A audio (`audio/mp4`, with `audio/x-m4a` normalized to it) - `.m4a` files were
     sniffed as `video/mp4` and failed with "No video stream detected"; ISCC metadata is embedded in
     M4A files as `ISCC_*` tags because TagLib drops MP4 tag names that contain a colon (#166)
 - Changed `text_features` to drop a final chunk shorter than the CDC minimum chunk size (128
-    characters at defaults) unless it is the only chunk — its simprint carried too little evidence
+    characters at defaults) unless it is the only chunk - its simprint carried too little evidence
     and matched unrelated documents; retained simprints, offsets and sizes are unchanged, but
     persisted granular text features lose such tail entries (#162)
 - Fixed per-call `text_avg_chunk_size` and `byte_offsets` options being ignored for granular text
-    features — `text_features` read the global setting and `code_text` did not forward its options
+    features - `text_features` read the global setting and `code_text` did not forward its options
 
 ## 0.9.5 - 2026-07-30
 
-- Updated `iscc-tika` to 0.6.0 (Apache Tika 3.3.x), removing the `<0.5.0` stability pin — the macOS
+- Updated `iscc-tika` to 0.6.0 (Apache Tika 3.3.x), removing the `<0.5.0` stability pin - the macOS
     native-image crash on embedded images is fixed upstream and linux/aarch64 wheels are now
     available
-- Updated `iscc-lib` to 0.6.0 — restores linux/aarch64 wheels (absent since 0.2.0)
+- Updated `iscc-lib` to 0.6.0 - restores linux/aarch64 wheels (absent since 0.2.0)
 - **BREAKING**: Text metadata extraction now picks the first value when Tika returns multiple values
     for single-valued `IsccMeta` fields (e.g. an EPUB3 with multiple `<dc:title>` elements);
     Meta-Code and `metahash` differ from earlier releases for such assets
@@ -49,7 +49,7 @@
 - Updated lint configuration for the expanded default rule set of ruff 0.16 (protects the
     load-order-sensitive imports in `iscc_sdk/__init__.py` from autofix re-sorting)
 - Updated CLI tests for typer 0.27 error message formatting
-- Updated `sct`/`sci` extras to request the CPU ONNX runtime (`iscc-sct[cpu]`, `iscc-sci[cpu]`) —
+- Updated `sct`/`sci` extras to request the CPU ONNX runtime (`iscc-sct[cpu]`, `iscc-sci[cpu]`) -
     iscc-sct 0.2.x and iscc-sci 0.3.x moved the onnxruntime dependency behind `cpu`/`gpu` extras
 - Updated CI actions to latest major versions
 
