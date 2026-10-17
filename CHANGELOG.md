@@ -1,6 +1,6 @@
 ## Changelog
 
-## 0.9.6 - Unreleased
+## 0.9.6 - 2026-10-17
 
 - Fixed silent truncation of extracted text at Tika's 500,000-character default limit -
     `text_extract` now allows up to 10,000,000 characters (a fixed constant, deliberately not
