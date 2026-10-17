@@ -405,6 +405,17 @@ def test_image_meta_extract_exif_xptitle(tmp_path):
     assert idk.image_meta_extract(fp)["name"] == "My Title"
 
 
+def test_image_meta_extract_skips_xmp_struct(tmp_path):
+    """An XMP struct container is skipped instead of extracted as 'type="Struct"' (#165)."""
+    xmp = b"""<x:xmpmeta xmlns:x="adobe:ns:meta/"><rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+<rdf:Description rdf:about="" xmlns:xmp="http://ns.adobe.com/xap/1.0/" xmlns:ex="http://example.com/ns/">
+<xmp:Nickname rdf:parseType="Resource"><ex:field>value</ex:field></xmp:Nickname>
+</rdf:Description></rdf:RDF></x:xmpmeta>"""
+    fp = tmp_path / "struct.jpg"
+    Image.new("RGB", (8, 8)).save(fp, xmp=xmp)
+    assert "name" not in idk.image_meta_extract(fp)
+
+
 def test_code_image_nometa_nothumb(jpg_file, monkeypatch):
     monkeypatch.setattr(idk.sdk_opts, "extract_meta", False)
     monkeypatch.setattr(idk.sdk_opts, "create_thumb", False)

@@ -18,6 +18,8 @@
     access (#156)
 - Fixed EXIF `XPTitle` (and other Windows `XP*` tags) being extracted as a raw byte listing instead
     of text — changes `name` and the Meta-Code for affected images (#163)
+- Fixed XMP struct containers being extracted as the placeholder `type="Struct"` (for example as
+    `name`) — they are now skipped so the next mapped field or the file name applies (#165)
 
 ## 0.9.5 - 2026-07-30
 

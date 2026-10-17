@@ -368,6 +368,9 @@ def _process_metadata(metadata, is_xmp=False):
     for datum in metadata:
         key = datum.key()
         try:
+            # XMP struct containers stringify as the placeholder 'type="Struct"'
+            if is_xmp and datum.value().xmpStruct():
+                continue
             # Metadatum.toString() raises a catchable exiv2.Exiv2Error on values that
             # cannot be converted to UTF-8, while str(datum.value()) escalates the same
             # C++ exception to std::terminate and aborts the process.
