@@ -561,12 +561,18 @@ def code_image(fp, **options):
 
     Creates an Image-Code by normalizing and processing the visual content of image files.
     The image is normalized according to SDK options (transparency handling, border trimming, ...).
+    Image normalization options passed per call take precedence over the global ``sdk_opts``.
 
     :param fp: Filepath used for Image-Code creation.
     :param options: Keyword arguments forwarded to ``sdk_opts``:
         **extract_meta** - Whether to extract metadata. Default: True;
         **create_thumb** - Whether to create a thumbnail. Default: True;
-        **bits** - Bit-length of the generated Image-Code UNIT. Default: 64
+        **bits** - Bit-length of the generated Image-Code UNIT. Default: 64;
+        **image_exif_transpose** - Transpose image according to EXIF Orientation tag. Default: True;
+        **image_fill_transparency** - Add white background to transparent images. Default: True;
+        **image_trim_border** - Crop uniform colored borders. Default: True;
+        **image_trim_tolerant** - Repeated tolerant crop of near-uniform borders (instead of the
+        exact crop). Default: True
     :return: ISCC metadata including Image-Code.
     """
     fp = Path(fp)
@@ -586,7 +592,7 @@ def code_image(fp, **options):
         thumbnail_durl = idk.image_to_data_url(thumbnail_img)
         meta["thumbnail"] = thumbnail_durl
 
-    pixels = idk.image_normalize(img)
+    pixels = idk.image_normalize(img, **options)
     code_obj = il.gen_image_code_v0(pixels, bits=opts.bits)  # type: ignore[arg-type]
     meta.update(code_obj)
 

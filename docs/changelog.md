@@ -1,5 +1,16 @@
 ## Changelog
 
+## 0.9.7 - Unreleased
+
+- Added tolerant border trim for the Image-Code, on by default (`image_trim_tolerant`) - repeatedly
+    crops near-uniform borders (tolerance 16 per channel) so faint watermarks or JPEG noise no
+    longer shift the crop. **Image-Codes change** for images with near-uniform borders (e.g. product
+    photos on white); set `image_trim_tolerant=False` to keep the earlier codes
+- Sped up `image_trim_border` about 8x with identical results
+- Fixed per-call image options (e.g. `code_image(fp, image_trim_border=False)`) being ignored
+- Fixed per-call `image_max_pixels` changing Pillow's process-wide limit - it is now global-only and
+    a differing per-call value raises `ValueError`
+
 ## 0.9.6 - 2026-10-17
 
 - Fixed silent truncation of extracted text at Tika's 500,000-character default limit -

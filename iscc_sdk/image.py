@@ -25,6 +25,7 @@ __all__ = [
     "image_thumbnail",
     "image_to_data_url",
     "image_trim_border",
+    "image_trim_tolerant",
 ]
 
 
@@ -34,32 +35,42 @@ _exiv2_lock = threading.Lock()
 
 Image.MAX_IMAGE_PIXELS = idk.sdk_opts.image_max_pixels
 
+# Upper bound for repeated tolerant trim passes (guards against crafted nested borders)
+TRIM_MAX_PASSES = 16
+
 # Photoshop-exported PNGs often embed large zTXt chunks (e.g. tiff:37724
 # layer data) that decompress past PIL's 1 MB default. Allow up to 4 MB so
 # such covers don't fail thumbnail extraction.
 PngImagePlugin.MAX_TEXT_CHUNK = 4 * 1024 * 1024
 
 
-def image_normalize(img):
-    # type: (Image.Image) -> Sequence[int]
+def image_normalize(img, **options):
+    # type: (Image.Image, Any) -> Sequence[int]
     """
     Normalize image for hash calculation.
 
     :param img: Pillow Image Object
+    :param options: Keyword arguments forwarded to ``sdk_opts``:
+        **image_exif_transpose** - Transpose image according to EXIF Orientation tag. Default: True;
+        **image_fill_transparency** - Add white background to transparent images. Default: True;
+        **image_trim_border** - Crop uniform colored borders. Default: True;
+        **image_trim_tolerant** - Repeated tolerant crop of near-uniform borders (instead of the
+        exact crop). Default: True
     :return: Normalized and flattened image as 1024-pixel array (from 32x32 gray pixels)
     """
+    opts = idk.sdk_opts.override(options)
 
     # Transpose image according to EXIF Orientation tag
-    if idk.sdk_opts.image_exif_transpose:
+    if opts.image_exif_transpose:
         img = image_exif_transpose(img)
 
     # Add white background to image if it has alpha transparency
-    if idk.sdk_opts.image_fill_transparency:
+    if opts.image_fill_transparency:
         img = image_fill_transparency(img)
 
-    # Trim uniform colored (empty) border if there is one
-    if idk.sdk_opts.image_trim_border:
-        img = image_trim_border(img)
+    # Trim near-uniform (tolerant) or uniform (exact) colored border if there is one
+    if opts.image_trim_border:
+        img = image_trim_tolerant(img) if opts.image_trim_tolerant else image_trim_border(img)
 
     # Convert to grayscale
     img = img.convert("L")
@@ -140,15 +151,62 @@ def image_trim_border(img):
     :param img: Pillow Image Object
     :return: Image with uniform colored (empty) border removed.
     """
+    if img.mode in ("RGB", "L"):
+        bbox = image_border_bbox(img, 0)
+    else:
+        # Other modes keep Pillow difference semantics (alpha-only bbox for RGBA/LA, palette indices)
+        bg = Image.new(img.mode, img.size, img.getpixel((0, 0)))
+        diff = ImageChops.difference(img, bg)
+        diff = ImageChops.add(diff, diff)
+        bbox = diff.getbbox()
+    if bbox is None or bbox == (0, 0) + img.size:
+        return img
+    log.debug("Image has been trimmed")
+    return img.crop(bbox)
 
-    bg = Image.new(img.mode, img.size, img.getpixel((0, 0)))
-    diff = ImageChops.difference(img, bg)
-    diff = ImageChops.add(diff, diff)
-    bbox = diff.getbbox()
-    if bbox != (0, 0) + img.size:
-        log.debug("Image has been trimmed")
-        return img.crop(bbox)
+
+def image_trim_tolerant(img, tolerance=16):
+    # type: (Image.Image, int) -> Image.Image
+    """Trim near-uniform colored borders repeatedly until stable.
+
+    Each pass takes the upper left pixel as reference for border color and crops to the bounding
+    box of all pixels where any RGB channel differs from the reference by more than `tolerance`.
+    Passes repeat until a pass crops nothing (no pixel differs or the bounding box covers the
+    whole image), or at most `TRIM_MAX_PASSES` times.
+
+    :param img: Pillow Image Object
+    :param tolerance: Maximum per-channel difference (0-255) of a border pixel to the reference
+    :return: Image with near-uniform colored borders removed.
+    """
+    # "RGB" and "L" give the same mask directly, other modes are compared in RGB
+    mask_img = img if img.mode in ("RGB", "L") else img.convert("RGB")
+    for passes in range(TRIM_MAX_PASSES):
+        bbox = image_border_bbox(mask_img, tolerance)
+        if bbox is None or bbox == (0, 0) + mask_img.size:
+            break
+        img, mask_img = img.crop(bbox), mask_img.crop(bbox)
+    else:
+        passes = TRIM_MAX_PASSES
+    if passes:
+        log.debug(f"Image has been trimmed with tolerance ({passes} passes)")
     return img
+
+
+def image_border_bbox(img, tolerance):
+    # type: (Image.Image, int) -> tuple[int, int, int, int] | None
+    """Bounding box of pixels that differ from the upper left pixel by more than `tolerance`.
+
+    A pixel counts as different if any of its channels differs by more than `tolerance`.
+
+    :param img: Pillow Image Object in mode "RGB" or "L"
+    :param tolerance: Maximum per-channel difference (0-255) of a border pixel to the reference
+    :return: Bounding box (left, upper, right, lower) or None if no pixel differs.
+    """
+    ref = img.getpixel((0, 0))
+    ref = ref if isinstance(ref, tuple) else (ref,)
+    # Per-band lookup table maps values within tolerance of the reference to 0
+    lut = [255 if abs(v - c) > tolerance else 0 for c in ref for v in range(256)]
+    return img.point(lut).getbbox()
 
 
 def image_meta_extract(fp, file_name=None):

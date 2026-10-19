@@ -106,6 +106,11 @@ class SdkOptions(BaseSettings):
         default=True, description="ISCC_SDK_IMAGE_TRIM_BORDER - Crop empty borders of images"
     )
 
+    image_trim_tolerant: bool = Field(
+        default=True,
+        description="ISCC_SDK_IMAGE_TRIM_TOLERANT - Crop near-uniform instead of exactly uniform borders",
+    )
+
     image_thumbnail_size: int = Field(
         default=128,
         description="ISCC_SDK_IMAGE_THUMBNAIL_SIZE - Size of larger side of thumbnail in number of pixels",
@@ -123,7 +128,7 @@ class SdkOptions(BaseSettings):
 
     image_max_pixels: int | None = Field(
         default=128000000,
-        description="ISCC_SDK_IMAGE_MAX_PIXELS - Maximum number of pixels allowed for processing (default 128Mpx / 0.5GB RGB)",
+        description="ISCC_SDK_IMAGE_MAX_PIXELS - Maximum number of pixels allowed for processing (default 128Mpx / 0.5GB RGB, global only)",
     )
 
     text_keep: bool = Field(
@@ -171,10 +176,17 @@ class SdkOptions(BaseSettings):
         opts = copy.deepcopy(self)
         # We need update fields individually so validation gets triggered
         for field, value in update.items():
-            if hasattr(self, field):
-                setattr(opts, field, value)
-            else:
+            if not hasattr(self, field):
                 raise ValueError(f"Invalid field: {field}")
+            if field == "image_max_pixels":
+                # Process-wide Pillow setting, assigning it would leak beyond this call
+                if value != self.image_max_pixels:
+                    raise ValueError(
+                        "image_max_pixels is a process-wide Pillow setting and cannot be set per call - "
+                        "set idk.sdk_opts.image_max_pixels or ISCC_SDK_IMAGE_MAX_PIXELS instead"
+                    )
+                continue
+            setattr(opts, field, value)
         return opts
 
 
