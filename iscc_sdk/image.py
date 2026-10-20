@@ -173,8 +173,10 @@ def image_trim_tolerant(img, tolerance=16):
 
     Each pass takes the upper left pixel as reference for border color and crops to the bounding
     box of all pixels where any RGB channel differs from the reference by more than `tolerance`.
-    Passes repeat until a pass crops nothing (no pixel differs or the bounding box covers the
-    whole image), or at most `TRIM_MAX_PASSES` times.
+    A pass that cuts only one side must remove a flat band (no pixel differs from the reference by
+    more than half the tolerance), otherwise trimming stops, so smooth gradients such as skies are
+    kept. Passes repeat until a pass crops nothing (no pixel differs, the bounding box covers
+    the whole image or a one-sided band is not flat), or at most `TRIM_MAX_PASSES` times.
 
     :param img: Pillow Image Object
     :param tolerance: Maximum per-channel difference (0-255) of a border pixel to the reference
@@ -185,6 +187,11 @@ def image_trim_tolerant(img, tolerance=16):
     for passes in range(TRIM_MAX_PASSES):
         bbox = image_border_bbox(mask_img, tolerance)
         if bbox is None or bbox == (0, 0) + mask_img.size:
+            break
+        # A one-sided cut must remove a flat band, so smooth gradients (e.g. skies) are kept
+        w, h = mask_img.size
+        sides = (bbox[0] > 0) + (bbox[1] > 0) + (bbox[2] < w) + (bbox[3] < h)
+        if sides == 1 and image_border_bbox(mask_img, tolerance // 2) != bbox:
             break
         img, mask_img = img.crop(bbox), mask_img.crop(bbox)
     else:

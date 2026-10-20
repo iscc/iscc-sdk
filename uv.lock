@@ -840,7 +840,7 @@ wheels = [
 
 [[package]]
 name = "iscc-sci"
-version = "0.4.0"
+version = "0.4.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "blake3" },
@@ -849,9 +849,9 @@ dependencies = [
     { name = "platformdirs" },
     { name = "pydantic-settings" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/ad/fa/be79a3210eb96f686ed8e2f4941913375b833964bdd7a5487b460ab9c680/iscc_sci-0.4.0.tar.gz", hash = "sha256:77fe368ae447b3486fc13020f76696b9cf12cb25935476b30e9961023e1fd520", size = 18283, upload-time = "2026-10-19T13:47:41.652Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/13/8f/a7a6cbb1d6cd10bad35bb68cd933c8e078a48ba77da2d64d9158038670c2/iscc_sci-0.4.1.tar.gz", hash = "sha256:5dba2d0752b3f890cd7b022efc18bceb813625c3cabe6048c60d9a96a6269f55", size = 18468, upload-time = "2026-10-20T19:05:28Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/1b/85/cba768b21758323038e54d09ac2696cfa2ab2b4571aad3c2f82107f8a542/iscc_sci-0.4.0-py3-none-any.whl", hash = "sha256:6a32253e6b0a0ad26c3c25f558ffcc3cacdbd3b23e2e4fb62f25a9419b6d25a6", size = 17745, upload-time = "2026-10-19T13:47:40.353Z" },
+    { url = "https://files.pythonhosted.org/packages/b3/28/23bfb01bb23f50d59f6d5453d050bb470c706520b9f14085be8552b7d0b5/iscc_sci-0.4.1-py3-none-any.whl", hash = "sha256:d675443dff55b1a96753a0f9f5f05b0fd3ece4943cd8b568d21c4b8fdb768c64", size = 17931, upload-time = "2026-10-20T19:05:27.026Z" },
 ]
 
 [package.optional-dependencies]
@@ -960,7 +960,7 @@ requires-dist = [
     { name = "exiv2" },
     { name = "iscc-lib", specifier = ">=0.7.0" },
     { name = "iscc-schema", specifier = ">=0.8.0" },
-    { name = "iscc-sci", extras = ["cpu"], marker = "extra == 'sci'", specifier = ">=0.4.0,<0.5" },
+    { name = "iscc-sci", extras = ["cpu"], marker = "extra == 'sci'", specifier = ">=0.4.1,<0.5" },
     { name = "iscc-sct", extras = ["cpu"], marker = "extra == 'sct'", specifier = ">=0.2.2,<0.3" },
     { name = "iscc-sdk", extras = ["sci", "sct"], marker = "extra == 'c2pa'" },
     { name = "iscc-tika" },

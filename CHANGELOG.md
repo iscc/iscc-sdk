@@ -8,11 +8,12 @@
     extra for Semantic-Codes and test vectors in `iscc_sdk/c2pa_vectors.json`
 - Added tolerant border trim for the Image-Code, on by default (`image_trim_tolerant`) - repeatedly
     crops near-uniform borders (tolerance 16 per channel) so faint watermarks or JPEG noise no
-    longer shift the crop. **Image-Codes change** for images with near-uniform borders (e.g. product
-    photos on white); set `image_trim_tolerant=False` to keep the earlier codes
-- Updated `iscc-sci` to 0.4.0 (now the minimum for the `sci` extra), which applies the same tolerant
+    longer shift the crop. A border on one side only is cut if it is flat (within 8 levels), so
+    smooth gradients such as skies are kept. **Image-Codes change** for images with near-uniform
+    borders (e.g. product photos on white); set `image_trim_tolerant=False` to keep the earlier codes
+- Updated `iscc-sci` to 0.4.1 (now the minimum for the `sci` extra), which applies the same tolerant
     border trim to the Semantic-Code Image; `code_iscc` passes `image_trim_tolerant` on to it
-- Limited the semantic extras to `iscc-sci>=0.4.0,<0.5` and `iscc-sct>=0.2.2,<0.3`, so an iscc-sdk
+- Limited the semantic extras to `iscc-sci>=0.4.1,<0.5` and `iscc-sct>=0.2.2,<0.3`, so an iscc-sdk
     version implies the generation of the semantic models (soft binding metadata names only iscc-sdk
     and its version)
 - Added `is_featureless_image_code(iscc)` to flag Image-Codes of featureless images (any 64-bit
@@ -21,7 +22,8 @@
 - Fixed `code_image_semantic` failing on SVG files (now rasterized first, as for the Image-Code)
 - Fixed per-call image options (e.g. `code_image(fp, image_trim_border=False)`) being ignored
 - Fixed per-call `image_max_pixels` changing Pillow's process-wide limit - it is now global-only and
-    a differing per-call value raises `ValueError`
+    a differing per-call value raises `ValueError`; creating a separate `SdkOptions` instance no
+    longer changes it either (only `idk.sdk_opts` and `ISCC_SDK_IMAGE_MAX_PIXELS` set it)
 
 ## 0.9.6 - 2026-10-17
 

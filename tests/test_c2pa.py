@@ -125,6 +125,25 @@ def test_soft_binding_no_text(blank_pdf, warnings):
     assert any("No text extracted" in msg for msg in warnings)
 
 
+def test_soft_binding_no_text_whitespace(tmp_path, warnings):
+    """A non-PDF document with only whitespace gets Data-Code and Instance-Code."""
+    fp = tmp_path / "blank.txt"
+    fp.write_text("   \n\t  \n")
+    sb = idk.soft_binding(fp, semantic=False)
+    assert prefixes(sb.units) == ["GAD", "IAD"]
+    assert any("No text extracted" in msg for msg in warnings)
+
+
+def test_soft_binding_unparseable_text(tmp_path, warnings):
+    """A document Tika cannot parse gets Data-Code and Instance-Code (no Meta-Code)."""
+    fp = tmp_path / "empty.txt"
+    fp.write_bytes(b"")
+    sb = idk.soft_binding(fp, semantic=False)
+    assert prefixes(sb.units) == ["GAD", "IAD"]
+    assert any("Text-Codes left out" in msg for msg in warnings)
+    assert any("Meta-Code left out" in msg for msg in warnings)
+
+
 @pytest.mark.parametrize("fp", [images("jpg")[0], texts("txt")[0]], ids=["image", "text"])
 def test_soft_binding_semantic_missing(fp, monkeypatch):
     monkeypatch.setattr(idk, "is_installed", lambda name: False)

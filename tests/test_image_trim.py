@@ -1,5 +1,7 @@
 """Tests for the exact and tolerant image border trims and the `image_trim_tolerant` option."""
 
+import io
+
 import numpy as np
 import pytest
 from iscc_samples import images
@@ -22,13 +24,20 @@ def trim_border_oracle(img):
 
 
 def trim_tolerant_pass_oracle(img, tol=16):
-    """Single tolerant pass from iscc-watermark-drift `codes.py` (slow, numpy based)."""
+    """Single tolerant pass (slow, numpy based), a one-sided cut only removes a flat band."""
     a = np.asarray(img.convert("RGB"), dtype=np.int16)
-    keep = (np.abs(a - a[0, 0]) > tol).any(axis=2)
+    diff = np.abs(a - a[0, 0]).max(axis=2)
+    keep = diff > tol
     rows, cols = np.flatnonzero(keep.any(axis=1)), np.flatnonzero(keep.any(axis=0))
     if rows.size == 0:
         return img
-    return img.crop((int(cols[0]), int(rows[0]), int(cols[-1]) + 1, int(rows[-1]) + 1))
+    box = (int(cols[0]), int(rows[0]), int(cols[-1]) + 1, int(rows[-1]) + 1)
+    removed = np.ones(keep.shape, dtype=bool)
+    removed[box[1] : box[3], box[0] : box[2]] = False
+    sides = sum([box[0] > 0, box[1] > 0, box[2] < img.width, box[3] < img.height])
+    if sides == 1 and diff[removed].max() > tol // 2:
+        return img
+    return img.crop(box)
 
 
 def trim_tolerant_oracle(img, tol=16, max_passes=16):
@@ -287,6 +296,86 @@ def test_image_trim_tolerant_max_passes():
     assert result.size == (img.width - 64, img.height - 64)
     assert same(result, trim_tolerant_oracle(img))
     assert trim_tolerant_oracle(img, max_passes=100).size == (24, 24)
+
+
+def texture(size, seed=0):
+    """Create a photo-like RGB texture (upscaled random colors)."""
+    rng = np.random.default_rng(seed)
+    a = rng.integers(0, 256, (size[1] // 8 + 1, size[0] // 8 + 1, 3), dtype=np.uint8)
+    return Image.fromarray(a, "RGB").resize(size, Image.BICUBIC)
+
+
+def jpeg(img, quality=75):
+    """JPEG round trip of an image."""
+    buf = io.BytesIO()
+    img.save(buf, format="JPEG", quality=quality)
+    return Image.open(io.BytesIO(buf.getvalue())).convert("RGB")
+
+
+def sky(noise=0):
+    """Top half a vertical 230 to 120 gradient (uniform across the width), bottom half texture."""
+    a = np.asarray(texture((400, 300)), dtype=np.int16).copy()
+    a[:150] = np.linspace(230, 120, 150).round().astype(np.int16)[:, None, None]
+    if noise:
+        a[:150] += np.random.default_rng(1).integers(-noise, noise + 1, a[:150].shape)
+    return Image.fromarray(a.clip(0, 255).astype(np.uint8), "RGB")
+
+
+def caption_bar(height=40, color=(255, 255, 255)):
+    """Texture with a flat bar on top (a one-sided border like a meme caption bar)."""
+    img = Image.new("RGB", (400, 300), color)
+    img.paste(texture((400, 300 - height)), (0, height))
+    return img
+
+
+@pytest.mark.parametrize(
+    "img", [sky(), sky(noise=3), jpeg(sky(noise=3))], ids=["clean", "noise", "jpeg"]
+)
+def test_image_trim_tolerant_keeps_sky_gradient(img):
+    """A one-sided smooth gradient is not walked down pass by pass."""
+    assert idk.image_trim_tolerant(img) is img
+    assert same(trim_tolerant_oracle(img), img)
+
+
+def test_image_trim_tolerant_keeps_ramp():
+    img = Image.fromarray(np.tile(np.arange(256, dtype=np.uint8), (100, 1)), "L").convert("RGB")
+    assert idk.image_trim_tolerant(img) is img
+    assert idk.image_trim_tolerant(img, tolerance=8) is img
+    assert same(trim_tolerant_oracle(img, tol=8), img)
+
+
+@pytest.mark.parametrize("img", [caption_bar(), jpeg(caption_bar())], ids=["clean", "jpeg"])
+def test_image_trim_tolerant_cuts_flat_one_sided_bar(img):
+    """A flat one-sided bar is cut, also after JPEG compression."""
+    result = idk.image_trim_tolerant(img)
+    assert same(result, trim_tolerant_oracle(img))
+    assert result.width == 400
+    # JPEG ringing may keep the last rows of the bar (as with any tolerant trim)
+    assert 260 <= result.height < 270
+
+
+def test_image_trim_tolerant_cuts_flat_band_before_gradient():
+    """A flat band is cut, the gradient below it is kept."""
+    a = np.asarray(sky(), dtype=np.uint8).copy()
+    a[:30] = 250
+    a[30:150] = np.linspace(225, 120, 120).round().astype(np.uint8)[:, None, None]
+    img = Image.fromarray(a, "RGB")
+    result = idk.image_trim_tolerant(img)
+    assert same(result, img.crop((0, 30, 400, 300)))
+    assert same(result, trim_tolerant_oracle(img))
+
+
+def test_image_trim_tolerant_walks_two_sided_gradient():
+    """Passes that cut two or more sides need no flat band (a vignette frame is removed)."""
+    inner = texture((200, 150))
+    a = np.zeros((190, 240, 3), dtype=np.uint8)
+    for i, v in enumerate(np.linspace(255, 160, 20).round().astype(np.uint8)):
+        a[i : a.shape[0] - i, i : a.shape[1] - i] = v
+    img = Image.fromarray(a, "RGB")
+    img.paste(inner, (20, 20))
+    result = idk.image_trim_tolerant(img)
+    assert same(result, inner)
+    assert same(result, trim_tolerant_oracle(img))
 
 
 def test_image_trim_tolerant_option_default_on():

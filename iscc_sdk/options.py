@@ -17,7 +17,7 @@ from typing import Literal
 
 import iscc_lib
 from PIL import Image
-from pydantic import Field, field_validator
+from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 __all__ = [
@@ -161,11 +161,12 @@ class SdkOptions(BaseSettings):
         description="ISCC_SDK_FALLBACK - Create 2-UNIT ISCC-SUM for unsupported media types",
     )
 
-    @field_validator("image_max_pixels")
-    @classmethod
-    def set_pillow(cls, v):
-        Image.MAX_IMAGE_PIXELS = v
-        return v
+    def __setattr__(self, name, value):
+        # type: (str, object) -> None
+        """Validate an assignment and apply `image_max_pixels` of the global `sdk_opts` to Pillow."""
+        super().__setattr__(name, value)
+        if name == "image_max_pixels" and self is sdk_opts:
+            Image.MAX_IMAGE_PIXELS = self.image_max_pixels
 
     def override(self, update=None):
         # type: (dict|None) -> SdkOptions

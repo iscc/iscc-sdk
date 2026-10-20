@@ -115,9 +115,8 @@ def soft_binding_media_units(fp, mode, semantic):
             content = None
         sem = soft_binding_image_semantic(fp) if semantic else None
     elif mode == "text":
-        text = il.text_clean(idk.text_extract(fp))
+        text = soft_binding_text(fp)
         if not text:
-            log.warning(f"No text extracted from {fp.name} - Text-Codes left out of soft binding")
             return [soft_binding_meta(fp), None, None]
         content = idk.code_text(fp, text, **opts).iscc
         sem = soft_binding_text_semantic(fp, text) if semantic else None
@@ -125,6 +124,19 @@ def soft_binding_media_units(fp, mode, semantic):
         content = idk.code_content(fp, **opts).iscc
         sem = None
     return [soft_binding_meta(fp), sem, content]
+
+
+def soft_binding_text(fp):
+    # type: (Path) -> str
+    """Extract cleaned text of a document, empty (with a warning) if it has no extractable text."""
+    try:
+        text = il.text_clean(idk.text_extract(fp))
+    except idk.IsccExtractionError as e:
+        log.warning(f"{e} - Text-Codes left out of soft binding")
+        return ""
+    if not text:
+        log.warning(f"No text extracted from {fp.name} - Text-Codes left out of soft binding")
+    return text
 
 
 def soft_binding_image_semantic(fp):  # pragma: nocover
@@ -145,10 +157,15 @@ def soft_binding_meta(fp):
     """
     Create the 256-bit Meta-Code from the embedded title and description of a file.
 
-    Returns None if the title is empty after normalization. Unlike `code_meta` there is no fallback
-    to the file name, so renaming a file does not change its soft binding.
+    Returns None if the metadata cannot be read or the title is empty after normalization. Unlike
+    `code_meta` there is no fallback to the file name, so renaming a file does not change its soft
+    binding.
     """
-    meta = idk.extract_metadata(fp)
+    try:
+        meta = idk.extract_metadata(fp)
+    except idk.IsccExtractionError as e:
+        log.warning(f"{e} - Meta-Code left out of soft binding")
+        return None
     name = il.text_trim(
         il.text_remove_newlines(il.text_clean(meta.name or "")), il.core_opts.meta_trim_name
     )

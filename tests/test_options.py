@@ -41,13 +41,22 @@ def test_sdk_options_override_invalid_field():
 
 
 def test_sdk_options_image_max_pixels():
-    original_max_pixels = Image.MAX_IMAGE_PIXELS
-    new_opts = idk.SdkOptions(image_max_pixels=1000000)
-    assert new_opts.image_max_pixels == 1000000
-    assert Image.MAX_IMAGE_PIXELS == 1000000
+    """A separate SdkOptions instance leaves Pillow's process-wide limit alone."""
+    before = Image.MAX_IMAGE_PIXELS
+    new_opts = idk.SdkOptions(image_max_pixels=10)
+    assert new_opts.image_max_pixels == 10
+    assert Image.MAX_IMAGE_PIXELS == before
+    new_opts.image_max_pixels = 20
+    assert Image.MAX_IMAGE_PIXELS == before
+    assert idk.code_image(fp).iscc == "ISCC:EEA4GQZQTY6J5DTH"
 
-    # Reset to original value
-    Image.MAX_IMAGE_PIXELS = original_max_pixels
+
+def test_sdk_options_image_max_pixels_global(monkeypatch):
+    """Assigning image_max_pixels on the global sdk_opts sets Pillow's limit."""
+    monkeypatch.setattr(idk.sdk_opts, "image_max_pixels", 1000000)
+    assert Image.MAX_IMAGE_PIXELS == 1000000
+    monkeypatch.setattr(idk.sdk_opts, "image_max_pixels", None)
+    assert Image.MAX_IMAGE_PIXELS is None
 
 
 def test_sdk_options_override_empty():
