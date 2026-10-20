@@ -36,3 +36,4 @@ from iscc_sdk.epub import *
 from iscc_sdk.docx_ import *
 from iscc_sdk.thumbnail import *
 from iscc_sdk.utils import *
+from iscc_sdk.c2pa import *

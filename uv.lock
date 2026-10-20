@@ -890,7 +890,7 @@ cpu = [
 
 [[package]]
 name = "iscc-sdk"
-version = "0.9.6"
+version = "0.9.7"
 source = { editable = "." }
 dependencies = [
     { name = "bitarray" },
@@ -922,6 +922,10 @@ dependencies = [
 ]
 
 [package.optional-dependencies]
+c2pa = [
+    { name = "iscc-sci", extra = ["cpu"] },
+    { name = "iscc-sct", extra = ["cpu"] },
+]
 sci = [
     { name = "iscc-sci", extra = ["cpu"] },
 ]
@@ -956,8 +960,9 @@ requires-dist = [
     { name = "exiv2" },
     { name = "iscc-lib", specifier = ">=0.7.0" },
     { name = "iscc-schema", specifier = ">=0.8.0" },
-    { name = "iscc-sci", extras = ["cpu"], marker = "extra == 'sci'", specifier = ">=0.4.0" },
-    { name = "iscc-sct", extras = ["cpu"], marker = "extra == 'sct'" },
+    { name = "iscc-sci", extras = ["cpu"], marker = "extra == 'sci'", specifier = ">=0.4.0,<0.5" },
+    { name = "iscc-sct", extras = ["cpu"], marker = "extra == 'sct'", specifier = ">=0.2.2,<0.3" },
+    { name = "iscc-sdk", extras = ["sci", "sct"], marker = "extra == 'c2pa'" },
     { name = "iscc-tika" },
     { name = "jmespath" },
     { name = "langcodes" },
@@ -977,7 +982,7 @@ requires-dist = [
     { name = "typer" },
     { name = "xxhash" },
 ]
-provides-extras = ["sci", "sct"]
+provides-extras = ["sci", "sct", "c2pa"]
 
 [package.metadata.requires-dev]
 dev = [

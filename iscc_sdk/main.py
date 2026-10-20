@@ -1,5 +1,6 @@
 """*SDK main top-level functions*."""
 
+import io
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from typing import Any
@@ -626,6 +627,11 @@ def code_image_semantic(fp, **options):
         import iscc_sci
 
         fp = Path(fp)
+        if idk.mediatype_and_mode(fp)[0] == "image/svg+xml":
+            # iscc-sci opens files with PIL, which cannot read SVG
+            png = io.BytesIO()
+            idk.svg_rasterize(fp).save(png, format="PNG")
+            fp = png  # type: ignore[assignment]
         meta = iscc_sci.code_image_semantic(fp, **options)
         return idk.IsccMeta.model_construct(_fields_set=None, **meta)
 

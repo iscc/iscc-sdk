@@ -2,15 +2,23 @@
 
 ## 0.9.7 - Unreleased
 
+- Added C2PA soft bindings (`io.iscc.v0`, IEP-0020): `soft_binding(fp)`,
+    `soft_binding_definition(sb)` and the CLI command `iscc-sdk soft-binding FILE [--no-semantic]`,
+    with `bindingMetadata` (`informationalUrl` to IEP-0020, generator name and version), the `c2pa`
+    extra for Semantic-Codes and test vectors in `iscc_sdk/c2pa_vectors.json`
 - Added tolerant border trim for the Image-Code, on by default (`image_trim_tolerant`) - repeatedly
     crops near-uniform borders (tolerance 16 per channel) so faint watermarks or JPEG noise no
     longer shift the crop. **Image-Codes change** for images with near-uniform borders (e.g. product
     photos on white); set `image_trim_tolerant=False` to keep the earlier codes
 - Updated `iscc-sci` to 0.4.0 (now the minimum for the `sci` extra), which applies the same tolerant
     border trim to the Semantic-Code Image; `code_iscc` passes `image_trim_tolerant` on to it
+- Limited the semantic extras to `iscc-sci>=0.4.0,<0.5` and `iscc-sct>=0.2.2,<0.3`, so an iscc-sdk
+    version implies the generation of the semantic models (soft binding metadata names only iscc-sdk
+    and its version)
 - Added `is_featureless_image_code(iscc)` to flag Image-Codes of featureless images (any 64-bit
     segment with fewer than 8 bits set to 1), which match each other regardless of content
 - Sped up `image_trim_border` about 8x with identical results
+- Fixed `code_image_semantic` failing on SVG files (now rasterized first, as for the Image-Code)
 - Fixed per-call image options (e.g. `code_image(fp, image_trim_border=False)`) being ignored
 - Fixed per-call `image_max_pixels` changing Pillow's process-wide limit - it is now global-only and
     a differing per-call value raises `ValueError`
