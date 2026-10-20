@@ -73,6 +73,8 @@ def code_iscc(fp, name=None, description=None, meta=None, **options):
         **granular** - Generate additional granular fingerprints. Default: False;
         **bits** - Bit-length of generated ISCC-UNITs. Default: 64;
         **text_keep** - Keep extracted plaintext on ``IsccMeta.text`` (text mode). Default: False;
+        **image_trim_tolerant** - Tolerant instead of exact border crop, also for the
+        Semantic-Code (image mode). Default: True;
         **video_store_mp7sig** - Store MP7 signature file (video mode). Default: False
     :return: IsccMeta object with complete ISCC-CODE and merged metadata from all ISCC-UNITs.
     :raises idk.IsccUnsupportedMediatype:
@@ -137,7 +139,7 @@ def code_iscc(fp, name=None, description=None, meta=None, **options):
     if mode == "image":
         cc = code_image(fp, **content_options)
         if idk.is_installed("iscc_sci") and opts.experimental:  # pragma: nocover
-            cs = code_image_semantic(fp)
+            cs = code_image_semantic(fp, image_trim_tolerant=opts.image_trim_tolerant)
     elif mode == "audio":
         cc = code_audio(fp, **content_options)
     elif mode == "video":
@@ -240,6 +242,8 @@ def code_iscc_mt(fp, name=None, description=None, meta=None, **options):  # prag
         **granular** - Generate additional granular fingerprints. Default: False;
         **bits** - Bit-length of generated ISCC-UNITs. Default: 64;
         **text_keep** - Keep extracted plaintext on ``IsccMeta.text`` (text mode). Default: False;
+        **image_trim_tolerant** - Tolerant instead of exact border crop, also for the
+        Semantic-Code (image mode). Default: True;
         **video_store_mp7sig** - Store MP7 signature file (video mode). Default: False
     :return: IsccMeta object with complete ISCC-CODE and merged metadata from all ISCC-UNITs.
     :raises idk.IsccUnsupportedMediatype:
@@ -317,7 +321,9 @@ def code_iscc_mt(fp, name=None, description=None, meta=None, **options):  # prag
         if mode == "image":
             cc_future = executor.submit(code_image, fp, **content_options)
             if idk.is_installed("iscc_sci") and opts.experimental:
-                cs_future = executor.submit(code_image_semantic, fp)
+                cs_future = executor.submit(
+                    code_image_semantic, fp, image_trim_tolerant=opts.image_trim_tolerant
+                )
         elif mode == "audio":
             cc_future = executor.submit(code_audio, fp, **content_options)
         elif mode == "video":
@@ -452,6 +458,7 @@ def code_content(fp, **options):
         **bits** - Bit-length of the generated Content-Code UNIT. Default: 64;
         **granular** - Generate additional granular fingerprints (text/video mode). Default: False;
         **text_keep** - Keep extracted plaintext on ``IsccMeta.text`` (text mode). Default: False;
+        **image_trim_tolerant** - Tolerant instead of exact border crop (image mode). Default: True;
         **video_store_mp7sig** - Store MP7 signature file (video mode). Default: False
     :return: Content-Code wrapped in ISCC metadata.
     :raises idk.IsccUnsupportedMediatype: If the media type is not supported.
@@ -603,7 +610,12 @@ def code_image_semantic(fp, **options):
     # type: (str|Path, Any) -> idk.IsccMeta
     """
     Generate Semantic-Code Image. (Requires iscc-sci to be installed)
+
     :param fp: Filepath used for semantic Image-Code creation.
+    :param options: Keyword arguments forwarded to iscc-sci (``ISCC_SCI_*`` settings), such as
+        **bits** - Bit-length of the Semantic-Code. Default: 64;
+        **image_trim_tolerant** - Tolerant instead of exact border crop. Default: True
+    :return: Semantic-Code Image wrapped in ISCC metadata.
     :raises idk.EnvironmentError: If iscc-sci is not installed.
     """
     if not idk.is_installed("iscc_sci"):

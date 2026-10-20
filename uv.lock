@@ -840,7 +840,7 @@ wheels = [
 
 [[package]]
 name = "iscc-sci"
-version = "0.3.0"
+version = "0.4.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "blake3" },
@@ -849,9 +849,9 @@ dependencies = [
     { name = "platformdirs" },
     { name = "pydantic-settings" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/a2/e3/3c899244e6e04789a1d0af3920b07846e398b25aeb5476f65e97de3841d9/iscc_sci-0.3.0.tar.gz", hash = "sha256:68f85086dccb0e4433a5601f73c66daf8e50e19df8cba4522853a0437283ea79", size = 8833, upload-time = "2026-06-14T16:10:17.002Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/ad/fa/be79a3210eb96f686ed8e2f4941913375b833964bdd7a5487b460ab9c680/iscc_sci-0.4.0.tar.gz", hash = "sha256:77fe368ae447b3486fc13020f76696b9cf12cb25935476b30e9961023e1fd520", size = 18283, upload-time = "2026-10-19T13:47:41.652Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/60/cd/32c16d1b87c47195c8943332705ab3bd29e357f355040bbaa2bf732f84fb/iscc_sci-0.3.0-py3-none-any.whl", hash = "sha256:5ddf3d50bb078eec9e26bce905c4786a227dd09726d1b802bd880bd4973a37a2", size = 10205, upload-time = "2026-06-14T16:10:17.776Z" },
+    { url = "https://files.pythonhosted.org/packages/1b/85/cba768b21758323038e54d09ac2696cfa2ab2b4571aad3c2f82107f8a542/iscc_sci-0.4.0-py3-none-any.whl", hash = "sha256:6a32253e6b0a0ad26c3c25f558ffcc3cacdbd3b23e2e4fb62f25a9419b6d25a6", size = 17745, upload-time = "2026-10-19T13:47:40.353Z" },
 ]
 
 [package.optional-dependencies]
@@ -956,7 +956,7 @@ requires-dist = [
     { name = "exiv2" },
     { name = "iscc-lib", specifier = ">=0.7.0" },
     { name = "iscc-schema", specifier = ">=0.8.0" },
-    { name = "iscc-sci", extras = ["cpu"], marker = "extra == 'sci'" },
+    { name = "iscc-sci", extras = ["cpu"], marker = "extra == 'sci'", specifier = ">=0.4.0" },
     { name = "iscc-sct", extras = ["cpu"], marker = "extra == 'sct'" },
     { name = "iscc-tika" },
     { name = "jmespath" },

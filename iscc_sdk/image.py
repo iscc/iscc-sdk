@@ -8,6 +8,7 @@ import threading
 from pathlib import Path
 
 import exiv2
+import iscc_lib as il
 from loguru import logger as log
 from PIL import Image, ImageChops, ImageEnhance, ImageOps, PngImagePlugin
 from pillow_heif import register_heif_opener
@@ -26,6 +27,7 @@ __all__ = [
     "image_to_data_url",
     "image_trim_border",
     "image_trim_tolerant",
+    "is_featureless_image_code",
 ]
 
 
@@ -207,6 +209,39 @@ def image_border_bbox(img, tolerance):
     # Per-band lookup table maps values within tolerance of the reference to 0
     lut = [255 if abs(v - c) > tolerance else 0 for c in ref for v in range(256)]
     return img.point(lut).getbbox()
+
+
+def is_featureless_image_code(iscc):
+    # type: (str) -> bool
+    """Check if an ISCC holds a featureless Image-Code.
+
+    Featureless images (uniform colors, one-axis brightness gradients, plain stripes, some symmetric
+    graphics) get nearly identical Image-Codes that match each other regardless of content. Code
+    generation is unaffected; applications such as matching services use this check to skip them,
+    like the quality score of Meta's PDQ lets applications discard featureless images.
+
+    Rule: An Image-Code is featureless if any complete 64-bit segment of its body has fewer than 8
+    bits set to 1. Segments are consecutive 64-bit big-endian words from the start of the body.
+    Trailing bits of a body whose length is not a multiple of 64 are not checked. A regular segment
+    has 32 one-bits (median split of 64 DCT coefficients), fewer than 8 means at least 26 ties.
+
+    - Image-Code unit (MainType CONTENT, SubType IMAGE): checked by the rule.
+    - ISCC-CODE: its Image-Code unit is checked, False if it has none.
+    - Any other ISCC unit: False.
+
+    :param iscc: ISCC string (with or without "ISCC:" prefix)
+    :return: True if the ISCC holds a featureless Image-Code
+    :raises ValueError: If the Image-Code is shorter than 64 bits and cannot be judged.
+    """
+    mt, st, _, _, body = il.iscc_decode(iscc)
+    if mt == il.MT.ISCC:
+        return any(is_featureless_image_code(unit) for unit in il.iscc_decompose(iscc))
+    if mt != il.MT.CONTENT or st != il.ST.IMAGE:
+        return False
+    if len(body) < 8:
+        raise ValueError(f"Image-Code with {len(body) * 8} bits is too short to judge (min 64)")
+    words = (int.from_bytes(body[i : i + 8], "big") for i in range(0, len(body) - 7, 8))
+    return any(word.bit_count() < 8 for word in words)
 
 
 def image_meta_extract(fp, file_name=None):

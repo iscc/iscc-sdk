@@ -1,4 +1,4 @@
-## Changelog
+# Changelog
 
 ## 0.9.7 - Unreleased
 
@@ -6,6 +6,10 @@
     crops near-uniform borders (tolerance 16 per channel) so faint watermarks or JPEG noise no
     longer shift the crop. **Image-Codes change** for images with near-uniform borders (e.g. product
     photos on white); set `image_trim_tolerant=False` to keep the earlier codes
+- Updated `iscc-sci` to 0.4.0 (now the minimum for the `sci` extra), which applies the same tolerant
+    border trim to the Semantic-Code Image; `code_iscc` passes `image_trim_tolerant` on to it
+- Added `is_featureless_image_code(iscc)` to flag Image-Codes of featureless images (any 64-bit
+    segment with fewer than 8 bits set to 1), which match each other regardless of content
 - Sped up `image_trim_border` about 8x with identical results
 - Fixed per-call image options (e.g. `code_image(fp, image_trim_border=False)`) being ignored
 - Fixed per-call `image_max_pixels` changing Pillow's process-wide limit - it is now global-only and

@@ -63,7 +63,7 @@ dependencies = [
 
 [project.optional-dependencies]
 sci = [
-    "iscc-sci[cpu]",
+    "iscc-sci[cpu]>=0.4.0",
 ]
 sct = [
     "iscc-sct[cpu]",
