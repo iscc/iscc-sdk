@@ -48,6 +48,10 @@ def soft_binding(fp, semantic=True):
     Unsupported media types and documents without extractable text get only a Data-Code and an
     Instance-Code (plus a Meta-Code if there is a title).
 
+    All units are created with the default settings of iscc-sdk, iscc-sci and iscc-sct. Settings
+    from environment variables or settings files (`iscc-sdk.env`, `.env`) do not change a soft
+    binding, so every party derives the same units from the same file.
+
     :param fp: Filepath of the asset, processed as a whole exactly as it will be signed.
     :param semantic: Include Semantic-Codes (requires iscc-sci for images, iscc-sct for text).
     :return: Soft binding with ISCC-UNITs and ISCC-SEQ value.
@@ -107,7 +111,7 @@ def soft_binding_media_units(fp, mode, semantic):
     """Create Meta-, Semantic- and Content-Code of a file (None where a unit is left out)."""
     if mode is None:
         return []
-    opts = dict(bits=SOFT_BINDING_BITS, extract_meta=False, create_thumb=False)
+    opts = soft_binding_sdk_options()
     if mode == "image":
         content = idk.code_image(fp, **opts).iscc
         if idk.is_featureless_image_code(content):
@@ -141,15 +145,41 @@ def soft_binding_text(fp):
 
 def soft_binding_image_semantic(fp):  # pragma: nocover
     # type: (Path) -> str
-    """Create the 256-bit Semantic-Code Image with the SDK image trim setting."""
-    trim = idk.sdk_opts.image_trim_tolerant
-    return idk.code_image_semantic(fp, bits=SOFT_BINDING_BITS, image_trim_tolerant=trim).iscc
+    """Create the 256-bit Semantic-Code Image with iscc-sci default settings."""
+    import iscc_sci
+
+    opts = {**soft_binding_defaults(iscc_sci.SciOptions), "bits": SOFT_BINDING_BITS}
+    return idk.code_image_semantic(fp, **opts).iscc
 
 
 def soft_binding_text_semantic(fp, text):  # pragma: nocover
     # type: (Path, str) -> str
-    """Create the 256-bit Semantic-Code Text from cleaned text."""
-    return idk.code_text_semantic(fp, text, bits=SOFT_BINDING_BITS).iscc
+    """Create the 256-bit Semantic-Code Text from cleaned text with iscc-sct default settings."""
+    import iscc_sct
+
+    opts = {**soft_binding_defaults(iscc_sct.SctOptions), "bits": SOFT_BINDING_BITS}
+    return idk.code_text_semantic(fp, text, **opts).iscc
+
+
+def soft_binding_sdk_options():
+    # type: () -> dict
+    """
+    iscc-sdk default settings for soft binding units (256 bits, no metadata or thumbnail).
+
+    `image_max_pixels` is left out: it is a process-wide safety limit that never changes a value.
+    """
+    opts = soft_binding_defaults(idk.SdkOptions)
+    del opts["image_max_pixels"]
+    return {**opts, "bits": SOFT_BINDING_BITS, "extract_meta": False, "create_thumb": False}
+
+
+def soft_binding_defaults(model):
+    # type: (type) -> dict
+    """Default values of a settings class, regardless of environment variables and env files."""
+    return {
+        name: field.get_default(call_default_factory=True)
+        for name, field in model.model_fields.items()
+    }
 
 
 def soft_binding_meta(fp):

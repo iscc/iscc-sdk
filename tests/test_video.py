@@ -247,3 +247,11 @@ def test_code_iscc_video_granular_no_scenes(mp4_file, monkeypatch):
         "name": "Kali by Anokato - Spiral Sessions 2019",
         "width": 176,
     }
+
+
+def test_code_video_per_call_video_fps(mp4_file):
+    """A per-call video_fps reaches the MPEG-7 signature extraction (plain and granular)."""
+    opts = dict(extract_meta=False, create_thumb=False)
+    default = idk.code_video(mp4_file, **opts).iscc
+    assert idk.code_video(mp4_file, video_fps=1, **opts).iscc != default
+    assert idk.code_video(mp4_file, video_fps=1, granular=True, **opts).iscc != default

@@ -132,6 +132,10 @@ Every ISCC-UNIT is Version 0 with a 256-bit body, always in this order:
 - **Semantic-Codes are never dropped silently.** If they are on and `iscc-sci` (images) or
     `iscc-sct` (text) is missing, the command fails with an install hint, so the same file always
     gives the same soft binding.
+- **Default settings only.** Soft bindings ignore settings from environment variables or settings
+    files (`iscc-sdk.env`, `.env`), such as `ISCC_SDK_IMAGE_TRIM_TOLERANT`, `ISCC_SDK_VIDEO_FPS` or
+    `ISCC_SCT_MAX_TOKENS`. The units are always created with the default settings of iscc-sdk,
+    iscc-sci and iscc-sct, so every party derives the same soft binding from the same file.
 - **Binding metadata.** `bindingMetadata` links to IEP-0020 (`informationalUrl`), so viewers can
     explain the value, and names `iscc-sdk` and its version. Each iscc-sdk version
     pins the minor version of the semantic models, so the version also tells which models created

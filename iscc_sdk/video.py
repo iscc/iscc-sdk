@@ -310,21 +310,24 @@ def video_features_extract(fp):
     return [tuple(frame.vector.tolist()) for frame in frames]
 
 
-def video_mp7sig_extract(fp):
-    # type: (str|Path) -> bytes
+def video_mp7sig_extract(fp, **options):
+    # type: (str|Path, Any) -> bytes
     """Extract MPEG-7 Video Signature.
 
     :param fp: Filepath to video file.
+    :param options: Keyword arguments forwarded to ``sdk_opts``:
+        **video_fps** - Frames per second to process. Default: 5
     :return: raw signature data
     """
     fp = Path(fp)
+    opts = idk.sdk_opts.override(options)
 
     sigfile_path = Path(tempfile.mkdtemp(), token_hex(16) + ".bin")
     sigfile_path_escaped = sigfile_path.as_posix().replace(":", "\\\\:")
 
     # Extract MP7 Signature
     vf = f"signature=format=binary:filename={sigfile_path_escaped}"
-    vf = f"fps=fps={idk.sdk_opts.video_fps}," + vf
+    vf = f"fps=fps={opts.video_fps}," + vf
     args = ["-i", fp, "-vf", vf, "-f", "null", "-"]
     idk.run_ffmpeg(args)
 
@@ -334,17 +337,21 @@ def video_mp7sig_extract(fp):
     return sigdata
 
 
-def video_mp7sig_extract_scenes(fp, scene_limit=None):
-    # type: (str|Path, int|None) -> tuple[bytes, list[float]]
+def video_mp7sig_extract_scenes(fp, scene_limit=None, **options):
+    # type: (str|Path, int|None, Any) -> tuple[bytes, list[float]]
     """Extract MPEG-7 Video Signature and Scenes.
 
     :param fp: Filepath to video file.
     :param scene_limit: Threshold value above which a scene cut is created (0.4)
+    :param options: Keyword arguments forwarded to ``sdk_opts``:
+        **video_fps** - Frames per second to process. Default: 5;
+        **video_scene_limit** - Scene cut threshold if `scene_limit` is not given. Default: 0.4
     :return: tuple of raw signature data and list of scene cutpoints
     """
     fp = Path(fp)
+    opts = idk.sdk_opts.override(options)
 
-    scene_limit = scene_limit or idk.sdk_opts.video_scene_limit
+    scene_limit = scene_limit or opts.video_scene_limit
 
     sigfile_path = Path(tempfile.mkdtemp(), token_hex(16) + ".bin")
     sigfile_path_escaped = sigfile_path.as_posix().replace(":", "\\\\:")
@@ -353,7 +360,7 @@ def video_mp7sig_extract_scenes(fp, scene_limit=None):
     scene_path_escaped = scene_path.as_posix().replace(":", "\\\\:")
 
     sig_cmd = f"signature=format=binary:filename={sigfile_path_escaped}"
-    sig_cmd = f"fps=fps={idk.sdk_opts.video_fps}," + sig_cmd
+    sig_cmd = f"fps=fps={opts.video_fps}," + sig_cmd
     scene_cmd = f"select='gte(scene,0)',metadata=print:file={scene_path_escaped}"
 
     args = [

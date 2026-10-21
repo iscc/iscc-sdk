@@ -684,6 +684,7 @@ def code_video(fp, **options):
         **create_thumb** - Whether to create a thumbnail. Default: True;
         **granular** - Generate additional fingerprints based on scenes. Default: False;
         **video_store_mp7sig** - Whether to store extracted MP7 Video signature file. Default: False;
+        **video_fps** - Frames per second to process. Default: 5;
         **bits** - Bit-length of the generated Video-Code UNIT. Default: 64
     :return: ISCC metadata including Video-Code.
     """
@@ -702,9 +703,9 @@ def code_video(fp, **options):
 
     sig, scenes = None, []
     if opts.granular:
-        sig, scenes = idk.video_mp7sig_extract_scenes(fp)
+        sig, scenes = idk.video_mp7sig_extract_scenes(fp, **options)
     else:
-        sig = idk.video_mp7sig_extract(fp)
+        sig = idk.video_mp7sig_extract(fp, **options)
 
     if opts.video_store_mp7sig:
         outp = fp.with_suffix(".iscc.mp7sig")

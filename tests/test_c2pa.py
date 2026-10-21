@@ -5,6 +5,7 @@ import json
 import shutil
 
 import iscc_lib as il
+import numpy as np
 import pytest
 from iscc_samples import images, texts
 from loguru import logger
@@ -144,6 +145,44 @@ def test_soft_binding_unparseable_text(tmp_path, warnings):
     assert any("Meta-Code left out" in msg for msg in warnings)
 
 
+@pytest.fixture
+def product_png(tmp_path):
+    """Create a textured product on a faintly noisy white background (trim settings matter)."""
+    rng = np.random.default_rng(0)
+    a = rng.normal(250, 2, (300, 400, 3)).round().clip(0, 255).astype(np.uint8)
+    a[80:220, 120:300] = rng.integers(0, 256, (140, 180, 3), dtype=np.uint8)
+    fp = tmp_path / "product.png"
+    Image.fromarray(a, "RGB").save(fp)
+    return fp
+
+
+def test_soft_binding_ignores_sdk_settings(product_png, monkeypatch):
+    """SDK settings from environment variables or iscc-sdk.env do not change a soft binding."""
+    expected = idk.soft_binding(product_png, semantic=False)
+    image_code = idk.code_image(product_png, bits=256).iscc
+    settings = {
+        "image_trim_tolerant": False,
+        "image_trim_border": False,
+        "image_fill_transparency": False,
+        "image_exif_transpose": False,
+        "bits": 64,
+    }
+    for field, value in settings.items():
+        monkeypatch.setattr(idk.sdk_opts, field, value)
+    assert idk.code_image(product_png, bits=256).iscc != image_code
+    assert idk.soft_binding(product_png, semantic=False) == expected
+
+
+def test_soft_binding_video_ignores_sdk_settings(mp4_file, tmp_path, monkeypatch):
+    """Video settings neither change a soft binding nor write a signature file next to the asset."""
+    fp = shutil.copy(mp4_file, tmp_path / "video.mp4")
+    expected = idk.soft_binding(fp, semantic=False)
+    monkeypatch.setattr(idk.sdk_opts, "video_fps", 1)
+    monkeypatch.setattr(idk.sdk_opts, "video_store_mp7sig", True)
+    assert idk.soft_binding(fp, semantic=False) == expected
+    assert list(tmp_path.iterdir()) == [tmp_path / "video.mp4"]
+
+
 @pytest.mark.parametrize("fp", [images("jpg")[0], texts("txt")[0]], ids=["image", "text"])
 def test_soft_binding_semantic_missing(fp, monkeypatch):
     monkeypatch.setattr(idk, "is_installed", lambda name: False)
@@ -190,6 +229,35 @@ def test_soft_binding_semantic_svg(svg_file):
 def test_soft_binding_semantic_text():
     sb = idk.soft_binding(texts("txt")[0])
     assert prefixes(sb.units) == ["CAD", "EAD", "GAD", "IAD"]
+
+
+@pytest.mark.skipif(not sci_installed, reason="iscc-sci not installed")
+def test_soft_binding_semantic_image_ignores_sci_settings(product_png, monkeypatch):
+    """iscc-sci settings (ISCC_SCI_* environment variables, .env) do not change a soft binding."""
+    import iscc_sci
+
+    expected = idk.soft_binding(product_png)
+    semantic = idk.code_image_semantic(product_png, bits=256).iscc
+    monkeypatch.setattr(iscc_sci.sci_opts, "image_trim_tolerant", False)
+    monkeypatch.setattr(iscc_sci.sci_opts, "bits", 64)
+    assert idk.code_image_semantic(product_png, bits=256).iscc != semantic
+    assert idk.soft_binding(product_png) == expected
+
+
+@pytest.mark.skipif(not sct_installed, reason="iscc-sct not installed")
+def test_soft_binding_semantic_text_ignores_sct_settings(monkeypatch):
+    """iscc-sct settings (ISCC_SCT_* environment variables, .env) do not change a soft binding."""
+    import iscc_sct
+
+    fp = texts("txt")[0]
+    text = il.text_clean(idk.text_extract(fp))
+    expected = idk.soft_binding(fp)
+    semantic = idk.code_text_semantic(fp, text, bits=256).iscc
+    monkeypatch.setattr(iscc_sct.sct_opts, "max_tokens", 32)
+    monkeypatch.setattr(iscc_sct.sct_opts, "overlap", 8)
+    monkeypatch.setattr(iscc_sct.sct_opts, "bits", 64)
+    assert idk.code_text_semantic(fp, text, bits=256).iscc != semantic
+    assert idk.soft_binding(fp) == expected
 
 
 @pytest.mark.skipif(not sct_installed, reason="iscc-sct not installed")
