@@ -67,7 +67,7 @@ The command exits with a non-zero code and a message on stderr if anything goes 
 import iscc_sdk as idk
 
 sb = idk.soft_binding("photo.jpg")  # semantic=True by default
-sb.units  # ["ISCC:AAD...", "ISCC:CED...", "ISCC:EED...", "ISCC:GAD...", "ISCC:IAD..."]
+sb.units  # ("ISCC:AAD...", "ISCC:CED...", "ISCC:EED...", "ISCC:GAD...", "ISCC:IAD...")
 sb.value  # bytes, the ISCC-SEQ (content of blocks[].value)
 
 assertion = idk.soft_binding_definition(sb)  # dict, the JSON shown above
@@ -148,6 +148,20 @@ Each vector names an input file from [iscc-samples](https://github.com/iscc/iscc
 the input bytes) with its SHA-256, and gives the expected ISCC-UNITs, the value as hex, and the
 value as base64 (the form used by the Soft Binding Resolution API). They are created without
 Semantic-Codes, because neural network models can differ in single bits across platforms.
+
+The four `image_trim_*` vectors embed small PNGs with borders. They test the tolerant border trim of
+the Image-Code, the step that is easiest to get wrong. Each also gives the expected crop box as
+`image_crop` (left, upper, right, lower), so you can check the trim on its own:
+
+- `image_trim_noisy_background`: a textured product on a faintly noisy white background is cropped
+    to the product. A faint yellow detail next to it differs from the background in the blue channel
+    only and is kept, because the trim compares each RGB channel, not grey values.
+- `image_trim_black_frame`: the same image in an uneven black frame. The first pass removes the
+    frame, the second the background, so the Image-Code is the same as without the frame.
+- `image_trim_gradient_kept`: a sky gradient above texture is a one-sided border that is not flat,
+    so nothing is cut.
+- `image_trim_caption_bar`: a faintly noisy white caption bar above texture is a flat one-sided
+    border and is cut.
 
 ## API Reference
 

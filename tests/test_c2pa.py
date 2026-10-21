@@ -86,6 +86,15 @@ def test_soft_binding_image(jpg_file):
     assert sb.value == encode_seq(sb.units)
 
 
+def test_soft_binding_immutable(jpg_file):
+    """A soft binding is hashable and its units cannot change after the value was derived."""
+    sb = idk.soft_binding(jpg_file, semantic=False)
+    assert isinstance(sb.units, tuple)
+    assert {sb: "asset"}[idk.soft_binding(jpg_file, semantic=False)] == "asset"
+    with pytest.raises(AttributeError):
+        sb.units.append("ISCC:AAAAAAAAAAAAAAAA")
+
+
 def test_soft_binding_no_title_ignores_file_name(tmp_path):
     first = tmp_path / "first.bmp"
     second = tmp_path / "renamed-copy.bmp"
@@ -270,7 +279,7 @@ def test_cli_soft_binding(jpg_file):
     assert result.exit_code == 0
     sb = idk.soft_binding(jpg_file, semantic=False)
     assert json.loads(result.stdout) == idk.soft_binding_definition(sb)
-    assert result.stderr.split() == sb.units
+    assert tuple(result.stderr.split()) == sb.units
     lines = result.stdout.splitlines()
     value_lines = [line for line in lines if '"value"' in line]
     assert value_lines == [f'        "value": {json.dumps(list(sb.value))}']

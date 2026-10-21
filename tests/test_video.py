@@ -255,3 +255,14 @@ def test_code_video_per_call_video_fps(mp4_file):
     default = idk.code_video(mp4_file, **opts).iscc
     assert idk.code_video(mp4_file, video_fps=1, **opts).iscc != default
     assert idk.code_video(mp4_file, video_fps=1, granular=True, **opts).iscc != default
+
+
+def test_video_thumbnail_portrait(mp4_file, tmp_path):
+    """The thumbnail of a portrait video is limited by its height (the larger side)."""
+    portrait = tmp_path / "portrait.mp4"
+    idk.run_ffmpeg(["-i", mp4_file, "-vf", "transpose=1", "-an", portrait])
+    landscape = idk.video_thumbnail(mp4_file)
+    thumb = idk.video_thumbnail(portrait)
+    assert landscape.width == 128 > landscape.height
+    assert thumb.height == 128 > thumb.width
+    assert max(idk.video_thumbnail(portrait, image_thumbnail_size=64).size) == 64

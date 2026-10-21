@@ -1,3 +1,14 @@
+"""*Exceptions raised by iscc-sdk*"""
+
+__all__ = [
+    "EnvironmentError",
+    "IsccError",
+    "IsccExtractionError",
+    "IsccThumbExtractionError",
+    "IsccUnsupportedMediatype",
+]
+
+
 class IsccError(Exception):
     pass
 

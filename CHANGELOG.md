@@ -14,9 +14,13 @@
     semantic extras to `iscc-sci>=0.4.1,<0.5` and `iscc-sct>=0.2.2,<0.3`
 - Sped up `image_trim_border` about 8x
 - Fixed `code_image_semantic` failing on SVG files
-- Fixed per-call image options and `video_fps` being ignored
+- Fixed per-call image options (normalization and thumbnail settings) and `video_fps` being ignored
 - Fixed `image_max_pixels` changing Pillow's process-wide limit per call - it is now global-only (a
     differing per-call value raises `ValueError`)
+- Fixed `from iscc_sdk import *` exporting submodule names such as `c2pa`, which shadowed the
+    c2pa-python package - the package now defines `__all__` with the public API of its modules
+- Fixed video thumbnails of portrait videos being taller than `image_thumbnail_size` - the size now
+    limits the larger side, as for all other media types
 
 ## 0.9.6 - 2026-10-17
 

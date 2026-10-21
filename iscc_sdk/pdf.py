@@ -39,12 +39,14 @@ def pdf_text_extract(fp):
         doc.close()
 
 
-def pdf_thumbnail(fp):
-    # type: (str|Path) -> Image.Image
+def pdf_thumbnail(fp, **options):
+    # type: (str|Path, Any) -> Image.Image
     """
     Create a thumbnail from PDF document.
 
     :param fp: Filepath to PDF document.
+    :param options: Keyword arguments forwarded to ``sdk_opts``:
+        **image_thumbnail_size** - Size of the larger side of the thumbnail in pixels. Default: 128
     :return: Thumbnail image as PIL Image object
     """
     fp = Path(fp)
@@ -53,7 +55,7 @@ def pdf_thumbnail(fp):
         img = doc[0].render().to_pil()
     finally:
         doc.close()
-    size = idk.sdk_opts.image_thumbnail_size
+    size = idk.sdk_opts.override(options).image_thumbnail_size
     img.thumbnail((size, size), resample=idk.LANCZOS)
     return ImageEnhance.Sharpness(img.convert("RGB")).enhance(1.4)
 

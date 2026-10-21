@@ -385,19 +385,21 @@ def image_meta_delete(fp):
     log.debug(f"Deleted all metadata from {fp.name}")
 
 
-def image_thumbnail(fp):
-    # type: (str|Path) -> Image.Image
+def image_thumbnail(fp, **options):
+    # type: (str|Path, Any) -> Image.Image
     """
     Create a thumbnail for an image.
 
     :param fp: Filepath to image file.
+    :param options: Keyword arguments forwarded to ``sdk_opts``:
+        **image_thumbnail_size** - Size of the larger side of the thumbnail in pixels. Default: 128
     :return: Thumbnail image as PIL Image object
     """
     fp = Path(fp)
     mt, _ = idk.mediatype_and_mode(fp)
     if mt == "image/svg+xml":
-        return idk.svg_thumbnail(fp)
-    size = idk.sdk_opts.image_thumbnail_size
+        return idk.svg_thumbnail(fp, **options)
+    size = idk.sdk_opts.override(options).image_thumbnail_size
     img = Image.open(fp)
 
     # Convert to RGB before resizing
@@ -421,16 +423,20 @@ def image_strip_metadata(img):
     return new_img
 
 
-def image_to_data_url(img):
-    # type: (Image.Image) -> str
+def image_to_data_url(img, **options):
+    # type: (Image.Image, Any) -> str
     """
-    Convert PIL Image object to WebP Data-URL.
+    Convert PIL Image object to a Data-URL in the thumbnail image format.
 
-    :param img: PIL Image object to encode as WebP Data-URL.
+    :param img: PIL Image object to encode as Data-URL.
+    :param options: Keyword arguments forwarded to ``sdk_opts``:
+        **image_thumbnail_format** - Image format (JPEG, WEBP or AVIF). Default: WEBP;
+        **image_thumbnail_quality** - Compression setting (0-100). Default: 30
     :return: Data-URL string
     """
-    format_ = idk.sdk_opts.image_thumbnail_format
-    quality = idk.sdk_opts.image_thumbnail_quality
+    opts = idk.sdk_opts.override(options)
+    format_ = opts.image_thumbnail_format
+    quality = opts.image_thumbnail_quality
     img = image_strip_metadata(img)
     raw = io.BytesIO()
     img.save(raw, format=format_, quality=quality)

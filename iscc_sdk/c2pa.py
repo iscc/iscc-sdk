@@ -29,7 +29,7 @@ class SoftBinding(NamedTuple):
     :ivar value: ISCC-SEQ bytes of the units (content of `blocks[].value`)
     """
 
-    units: list[str]
+    units: tuple[str, ...]
     value: bytes
 
 
@@ -68,7 +68,7 @@ def soft_binding(fp, semantic=True):
     units += il.gen_sum_code_v0(fp, bits=SOFT_BINDING_BITS, add_units=True)["units"]
     for unit in units:
         soft_binding_check_unit(unit)
-    return SoftBinding(units=units, value=encode_seq(units))
+    return SoftBinding(units=tuple(units), value=encode_seq(units))
 
 
 def soft_binding_definition(sb):

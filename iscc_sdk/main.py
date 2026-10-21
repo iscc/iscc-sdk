@@ -118,9 +118,9 @@ def code_iscc(fp, name=None, description=None, meta=None, **options):
     # Generate thumbnail early (before heavy processing)
     if opts.create_thumb and mode:
         try:
-            thumbnail_img = idk.thumbnail(fp)  # type: ignore[operator]
+            thumbnail_img = idk.thumbnail(fp, **options)  # type: ignore[operator]
             if thumbnail_img:
-                iscc_meta["thumbnail"] = idk.image_to_data_url(thumbnail_img)
+                iscc_meta["thumbnail"] = idk.image_to_data_url(thumbnail_img, **options)
         except Exception as e:
             # Thumbnail is optional: recover from missing-cover and thumbnailer errors, but let
             # fatal extraction errors (corrupt/invalid source files) propagate.
@@ -298,9 +298,9 @@ def code_iscc_mt(fp, name=None, description=None, meta=None, **options):  # prag
             try:
                 from iscc_sdk.thumbnail import thumbnail as _thumbnail
 
-                thumbnail_img = _thumbnail(fp)
+                thumbnail_img = _thumbnail(fp, **options)
                 if thumbnail_img:
-                    iscc_meta["thumbnail"] = idk.image_to_data_url(thumbnail_img)
+                    iscc_meta["thumbnail"] = idk.image_to_data_url(thumbnail_img, **options)
             except Exception as e:
                 # Thumbnail is optional: recover from missing-cover and thumbnailer errors, but
                 # let fatal extraction errors (corrupt/invalid source files) propagate.
@@ -519,9 +519,9 @@ def code_text(fp, text=None, **options):
         meta = idk.text_meta_extract(fp)
 
     if opts.create_thumb:
-        thumbnail_img = idk.text_thumbnail(fp)
+        thumbnail_img = idk.text_thumbnail(fp, **options)
         if thumbnail_img:
-            thumbnail_durl = idk.image_to_data_url(thumbnail_img)
+            thumbnail_durl = idk.image_to_data_url(thumbnail_img, **options)
             meta["thumbnail"] = thumbnail_durl
 
     if text is None:
@@ -596,8 +596,11 @@ def code_image(fp, **options):
     img = idk.svg_rasterize(fp) if is_svg else Image.open(fp)
 
     if opts.create_thumb:
-        thumbnail_img = idk.svg_thumbnail(fp, img=img) if is_svg else idk.image_thumbnail(fp)
-        thumbnail_durl = idk.image_to_data_url(thumbnail_img)
+        if is_svg:
+            thumbnail_img = idk.svg_thumbnail(fp, img=img, **options)
+        else:
+            thumbnail_img = idk.image_thumbnail(fp, **options)
+        thumbnail_durl = idk.image_to_data_url(thumbnail_img, **options)
         meta["thumbnail"] = thumbnail_durl
 
     pixels = idk.image_normalize(img, **options)
@@ -658,9 +661,9 @@ def code_audio(fp, **options):
     if opts.extract_meta:
         meta = idk.audio_meta_extract(fp)
     if opts.create_thumb:
-        thumbnail_img = idk.audio_thumbnail(fp)
+        thumbnail_img = idk.audio_thumbnail(fp, **options)
         if thumbnail_img:
-            thumbnail_durl = idk.image_to_data_url(thumbnail_img)
+            thumbnail_durl = idk.image_to_data_url(thumbnail_img, **options)
             meta["thumbnail"] = thumbnail_durl
 
     features = idk.audio_features_extract(fp)
@@ -696,9 +699,9 @@ def code_video(fp, **options):
         meta = idk.video_meta_extract(fp)
 
     if opts.create_thumb:
-        thumbnail_image = idk.video_thumbnail(fp)
+        thumbnail_image = idk.video_thumbnail(fp, **options)
         if thumbnail_image is not None:
-            thumbnail_durl = idk.image_to_data_url(thumbnail_image)
+            thumbnail_durl = idk.image_to_data_url(thumbnail_image, **options)
             meta["thumbnail"] = thumbnail_durl
 
     sig, scenes = None, []

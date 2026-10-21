@@ -153,6 +153,7 @@ max-complexity = 13
 [tool.ruff.lint.per-file-ignores]
 "iscc_sdk/__init__.py" = ["E402", "F401", "F403", "I001"]
 "iscc_sdk/tools.py" = ["S101", "S202", "S310", "S603"]
+"iscc_sdk/utils.py" = ["S310"]  # DownloadFile allows http and https URLs only
 "iscc_sdk/epub.py" = ["C901"]
 "iscc_sdk/main.py" = ["C901"]
 

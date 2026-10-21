@@ -16,16 +16,18 @@ THUMBNAILERS = {
 }
 
 
-def thumbnail(fp):
-    # type: (str|Path) -> Image.Image|None
+def thumbnail(fp, **options):
+    # type: (str|Path, Any) -> Image.Image|None
     """
     Create a thumbnail for a media asset.
 
     :param fp: Filepath to media file.
+    :param options: Keyword arguments forwarded to ``sdk_opts``:
+        **image_thumbnail_size** - Size of the larger side of the thumbnail in pixels. Default: 128
     :return: Thumbnail image as PIL Image object
     """
     fp = Path(fp)
     mime, mode = idk.mediatype_and_mode(fp)
     thumbnailer = THUMBNAILERS.get(str(mode))
     if thumbnailer:
-        return thumbnailer(fp)
+        return thumbnailer(fp, **options)
