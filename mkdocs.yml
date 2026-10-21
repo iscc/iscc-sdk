@@ -102,10 +102,12 @@ nav:
   - Image: image.md
   - Audio: audio.md
   - Video: video.md
+  - C2PA: c2pa.md
   - Options: options.md
   - Other:
     - EPUB: other/epub.md
     - PDF: other/pdf.md
+    - SVG: other/svg.md
     - IPFS: other/ipfs.md
     - Tools: other/tools.md
   - Changelog: changelog.md

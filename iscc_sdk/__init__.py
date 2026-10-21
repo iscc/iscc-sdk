@@ -1,6 +1,7 @@
 """ISCC - Software Development Kit."""
 
 import os
+import sys
 from importlib import metadata
 from platformdirs import PlatformDirs
 
@@ -36,3 +37,35 @@ from iscc_sdk.epub import *
 from iscc_sdk.docx_ import *
 from iscc_sdk.thumbnail import *
 from iscc_sdk.utils import *
+from iscc_sdk.c2pa import *
+
+
+# Star imports export the public API of the submodules, but not the submodule names themselves
+# (`from iscc_sdk import *` must not rebind `c2pa` of the c2pa-python SDK, for example).
+__all__ = [
+    name
+    for module in (
+        "compat",
+        "options",
+        "tools",
+        "mediatype",
+        "container",
+        "image",
+        "svg",
+        "main",
+        "text",
+        "ipfs",
+        "audio",
+        "video",
+        "mp7",
+        "exceptions",
+        "metadata",
+        "pdf",
+        "epub",
+        "docx_",
+        "thumbnail",
+        "utils",
+        "c2pa",
+    )
+    for name in sys.modules[f"iscc_sdk.{module}"].__all__
+]

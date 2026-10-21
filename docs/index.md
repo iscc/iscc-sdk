@@ -53,7 +53,7 @@ processing, and distributing digital information (science, journalism, books, mu
 
 ### What is iscc-sdk?
 
-`iscc-sdk` builds on top of `iscc-core` to provide high-level features for generating and handling
+`iscc-sdk` builds on top of `iscc-lib` to provide high-level features for generating and handling
 ISCC codes across different media types. It serves as a complete toolkit for implementing ISCC-based
 workflows in Python applications.
 
@@ -66,7 +66,7 @@ workflows in Python applications.
 - **Rich CLI**: Command-line interface for easy integration into workflows
 - **Cross-Platform**: Works on Windows, macOS, and Linux
 - **Built-in Tools**: Includes necessary binaries for media processing
-- **Standards Compliant**: Build on top of the ISO 24138:2024 reference implementation
+- **Standards Compliant**: Built on `iscc-lib`, a high-performance implementation of ISO 24138:2024
 
 ## Requirements
 
@@ -162,6 +162,17 @@ iscc-sdk install
 ```shell
 iscc-sdk selftest
 ```
+
+#### Create a C2PA soft binding:
+
+```shell
+uvx "iscc-sdk[c2pa]" soft-binding /path/to/mediafile.jpg
+```
+
+Prints the `c2pa.soft-binding` assertion (`io.iscc.v0`, as specified by
+[IEP-0020](https://ieps.iscc.codes/iep-0020/)) for a C2PA manifest definition as JSON, and its
+ISCC-UNITs to stderr. Add `--no-semantic` to leave out the Semantic-Codes, which then needs no
+`c2pa` extra.
 
 ## Documentation
 

@@ -1,4 +1,26 @@
-## Changelog
+# Changelog
+
+## 0.9.7 - 2026-10-21
+
+- Added C2PA soft bindings (`io.iscc.v0`, IEP-0020): `soft_binding`, `soft_binding_definition`, the
+    CLI command `iscc-sdk soft-binding`, the `c2pa` extra and test vectors. Soft bindings always use
+    default settings, so every party derives the same units from the same file
+- Added tolerant border trim for the Image-Code, on by default (`image_trim_tolerant`): crops
+    near-uniform borders so faint watermarks or JPEG noise no longer shift the crop, while smooth
+    gradients such as skies are kept. **Image-Codes change** for images with near-uniform borders;
+    set `image_trim_tolerant=False` to keep the earlier codes
+- Added `is_featureless_image_code(iscc)` to flag Image-Codes of featureless images
+- Updated `iscc-sci` to 0.4.1 (same border trim for the Semantic-Code Image) and bounded the
+    semantic extras to `iscc-sci>=0.4.1,<0.5` and `iscc-sct>=0.2.2,<0.3`
+- Sped up `image_trim_border` about 8x
+- Fixed `code_image_semantic` failing on SVG files
+- Fixed per-call image options (normalization and thumbnail settings) and `video_fps` being ignored
+- Fixed `image_max_pixels` changing Pillow's process-wide limit per call - it is now global-only (a
+    differing per-call value raises `ValueError`)
+- Fixed `from iscc_sdk import *` exporting submodule names such as `c2pa`, which shadowed the
+    c2pa-python package - the package now defines `__all__` with the public API of its modules
+- Fixed video thumbnails of portrait videos being taller than `image_thumbnail_size` - the size now
+    limits the larger side, as for all other media types
 
 ## 0.9.6 - 2026-10-17
 

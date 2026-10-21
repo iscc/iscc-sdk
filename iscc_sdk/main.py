@@ -1,5 +1,6 @@
 """*SDK main top-level functions*."""
 
+import io
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from typing import Any
@@ -73,6 +74,8 @@ def code_iscc(fp, name=None, description=None, meta=None, **options):
         **granular** - Generate additional granular fingerprints. Default: False;
         **bits** - Bit-length of generated ISCC-UNITs. Default: 64;
         **text_keep** - Keep extracted plaintext on ``IsccMeta.text`` (text mode). Default: False;
+        **image_trim_tolerant** - Tolerant instead of exact border crop, also for the
+        Semantic-Code (image mode). Default: True;
         **video_store_mp7sig** - Store MP7 signature file (video mode). Default: False
     :return: IsccMeta object with complete ISCC-CODE and merged metadata from all ISCC-UNITs.
     :raises idk.IsccUnsupportedMediatype:
@@ -115,9 +118,9 @@ def code_iscc(fp, name=None, description=None, meta=None, **options):
     # Generate thumbnail early (before heavy processing)
     if opts.create_thumb and mode:
         try:
-            thumbnail_img = idk.thumbnail(fp)  # type: ignore[operator]
+            thumbnail_img = idk.thumbnail(fp, **options)  # type: ignore[operator]
             if thumbnail_img:
-                iscc_meta["thumbnail"] = idk.image_to_data_url(thumbnail_img)
+                iscc_meta["thumbnail"] = idk.image_to_data_url(thumbnail_img, **options)
         except Exception as e:
             # Thumbnail is optional: recover from missing-cover and thumbnailer errors, but let
             # fatal extraction errors (corrupt/invalid source files) propagate.
@@ -137,7 +140,7 @@ def code_iscc(fp, name=None, description=None, meta=None, **options):
     if mode == "image":
         cc = code_image(fp, **content_options)
         if idk.is_installed("iscc_sci") and opts.experimental:  # pragma: nocover
-            cs = code_image_semantic(fp)
+            cs = code_image_semantic(fp, image_trim_tolerant=opts.image_trim_tolerant)
     elif mode == "audio":
         cc = code_audio(fp, **content_options)
     elif mode == "video":
@@ -240,6 +243,8 @@ def code_iscc_mt(fp, name=None, description=None, meta=None, **options):  # prag
         **granular** - Generate additional granular fingerprints. Default: False;
         **bits** - Bit-length of generated ISCC-UNITs. Default: 64;
         **text_keep** - Keep extracted plaintext on ``IsccMeta.text`` (text mode). Default: False;
+        **image_trim_tolerant** - Tolerant instead of exact border crop, also for the
+        Semantic-Code (image mode). Default: True;
         **video_store_mp7sig** - Store MP7 signature file (video mode). Default: False
     :return: IsccMeta object with complete ISCC-CODE and merged metadata from all ISCC-UNITs.
     :raises idk.IsccUnsupportedMediatype:
@@ -293,9 +298,9 @@ def code_iscc_mt(fp, name=None, description=None, meta=None, **options):  # prag
             try:
                 from iscc_sdk.thumbnail import thumbnail as _thumbnail
 
-                thumbnail_img = _thumbnail(fp)
+                thumbnail_img = _thumbnail(fp, **options)
                 if thumbnail_img:
-                    iscc_meta["thumbnail"] = idk.image_to_data_url(thumbnail_img)
+                    iscc_meta["thumbnail"] = idk.image_to_data_url(thumbnail_img, **options)
             except Exception as e:
                 # Thumbnail is optional: recover from missing-cover and thumbnailer errors, but
                 # let fatal extraction errors (corrupt/invalid source files) propagate.
@@ -317,7 +322,9 @@ def code_iscc_mt(fp, name=None, description=None, meta=None, **options):  # prag
         if mode == "image":
             cc_future = executor.submit(code_image, fp, **content_options)
             if idk.is_installed("iscc_sci") and opts.experimental:
-                cs_future = executor.submit(code_image_semantic, fp)
+                cs_future = executor.submit(
+                    code_image_semantic, fp, image_trim_tolerant=opts.image_trim_tolerant
+                )
         elif mode == "audio":
             cc_future = executor.submit(code_audio, fp, **content_options)
         elif mode == "video":
@@ -452,6 +459,7 @@ def code_content(fp, **options):
         **bits** - Bit-length of the generated Content-Code UNIT. Default: 64;
         **granular** - Generate additional granular fingerprints (text/video mode). Default: False;
         **text_keep** - Keep extracted plaintext on ``IsccMeta.text`` (text mode). Default: False;
+        **image_trim_tolerant** - Tolerant instead of exact border crop (image mode). Default: True;
         **video_store_mp7sig** - Store MP7 signature file (video mode). Default: False
     :return: Content-Code wrapped in ISCC metadata.
     :raises idk.IsccUnsupportedMediatype: If the media type is not supported.
@@ -511,9 +519,9 @@ def code_text(fp, text=None, **options):
         meta = idk.text_meta_extract(fp)
 
     if opts.create_thumb:
-        thumbnail_img = idk.text_thumbnail(fp)
+        thumbnail_img = idk.text_thumbnail(fp, **options)
         if thumbnail_img:
-            thumbnail_durl = idk.image_to_data_url(thumbnail_img)
+            thumbnail_durl = idk.image_to_data_url(thumbnail_img, **options)
             meta["thumbnail"] = thumbnail_durl
 
     if text is None:
@@ -561,12 +569,18 @@ def code_image(fp, **options):
 
     Creates an Image-Code by normalizing and processing the visual content of image files.
     The image is normalized according to SDK options (transparency handling, border trimming, ...).
+    Image normalization options passed per call take precedence over the global ``sdk_opts``.
 
     :param fp: Filepath used for Image-Code creation.
     :param options: Keyword arguments forwarded to ``sdk_opts``:
         **extract_meta** - Whether to extract metadata. Default: True;
         **create_thumb** - Whether to create a thumbnail. Default: True;
-        **bits** - Bit-length of the generated Image-Code UNIT. Default: 64
+        **bits** - Bit-length of the generated Image-Code UNIT. Default: 64;
+        **image_exif_transpose** - Transpose image according to EXIF Orientation tag. Default: True;
+        **image_fill_transparency** - Add white background to transparent images. Default: True;
+        **image_trim_border** - Crop uniform colored borders. Default: True;
+        **image_trim_tolerant** - Repeated tolerant crop of near-uniform borders (instead of the
+        exact crop). Default: True
     :return: ISCC metadata including Image-Code.
     """
     fp = Path(fp)
@@ -582,11 +596,14 @@ def code_image(fp, **options):
     img = idk.svg_rasterize(fp) if is_svg else Image.open(fp)
 
     if opts.create_thumb:
-        thumbnail_img = idk.svg_thumbnail(fp, img=img) if is_svg else idk.image_thumbnail(fp)
-        thumbnail_durl = idk.image_to_data_url(thumbnail_img)
+        if is_svg:
+            thumbnail_img = idk.svg_thumbnail(fp, img=img, **options)
+        else:
+            thumbnail_img = idk.image_thumbnail(fp, **options)
+        thumbnail_durl = idk.image_to_data_url(thumbnail_img, **options)
         meta["thumbnail"] = thumbnail_durl
 
-    pixels = idk.image_normalize(img)
+    pixels = idk.image_normalize(img, **options)
     code_obj = il.gen_image_code_v0(pixels, bits=opts.bits)  # type: ignore[arg-type]
     meta.update(code_obj)
 
@@ -597,7 +614,12 @@ def code_image_semantic(fp, **options):
     # type: (str|Path, Any) -> idk.IsccMeta
     """
     Generate Semantic-Code Image. (Requires iscc-sci to be installed)
+
     :param fp: Filepath used for semantic Image-Code creation.
+    :param options: Keyword arguments forwarded to iscc-sci (``ISCC_SCI_*`` settings), such as
+        **bits** - Bit-length of the Semantic-Code. Default: 64;
+        **image_trim_tolerant** - Tolerant instead of exact border crop. Default: True
+    :return: Semantic-Code Image wrapped in ISCC metadata.
     :raises idk.EnvironmentError: If iscc-sci is not installed.
     """
     if not idk.is_installed("iscc_sci"):
@@ -608,6 +630,11 @@ def code_image_semantic(fp, **options):
         import iscc_sci
 
         fp = Path(fp)
+        if idk.mediatype_and_mode(fp)[0] == "image/svg+xml":
+            # iscc-sci opens files with PIL, which cannot read SVG
+            png = io.BytesIO()
+            idk.svg_rasterize(fp).save(png, format="PNG")
+            fp = png  # type: ignore[assignment]
         meta = iscc_sci.code_image_semantic(fp, **options)
         return idk.IsccMeta.model_construct(_fields_set=None, **meta)
 
@@ -634,9 +661,9 @@ def code_audio(fp, **options):
     if opts.extract_meta:
         meta = idk.audio_meta_extract(fp)
     if opts.create_thumb:
-        thumbnail_img = idk.audio_thumbnail(fp)
+        thumbnail_img = idk.audio_thumbnail(fp, **options)
         if thumbnail_img:
-            thumbnail_durl = idk.image_to_data_url(thumbnail_img)
+            thumbnail_durl = idk.image_to_data_url(thumbnail_img, **options)
             meta["thumbnail"] = thumbnail_durl
 
     features = idk.audio_features_extract(fp)
@@ -660,6 +687,7 @@ def code_video(fp, **options):
         **create_thumb** - Whether to create a thumbnail. Default: True;
         **granular** - Generate additional fingerprints based on scenes. Default: False;
         **video_store_mp7sig** - Whether to store extracted MP7 Video signature file. Default: False;
+        **video_fps** - Frames per second to process. Default: 5;
         **bits** - Bit-length of the generated Video-Code UNIT. Default: 64
     :return: ISCC metadata including Video-Code.
     """
@@ -671,16 +699,16 @@ def code_video(fp, **options):
         meta = idk.video_meta_extract(fp)
 
     if opts.create_thumb:
-        thumbnail_image = idk.video_thumbnail(fp)
+        thumbnail_image = idk.video_thumbnail(fp, **options)
         if thumbnail_image is not None:
-            thumbnail_durl = idk.image_to_data_url(thumbnail_image)
+            thumbnail_durl = idk.image_to_data_url(thumbnail_image, **options)
             meta["thumbnail"] = thumbnail_durl
 
     sig, scenes = None, []
     if opts.granular:
-        sig, scenes = idk.video_mp7sig_extract_scenes(fp)
+        sig, scenes = idk.video_mp7sig_extract_scenes(fp, **options)
     else:
-        sig = idk.video_mp7sig_extract(fp)
+        sig = idk.video_mp7sig_extract(fp, **options)
 
     if opts.video_store_mp7sig:
         outp = fp.with_suffix(".iscc.mp7sig")

@@ -224,19 +224,21 @@ def text_name_from_uri(uri):
     return name
 
 
-def text_thumbnail(fp):
-    # type: (str|Path) -> Image.Image|None
+def text_thumbnail(fp, **options):
+    # type: (str|Path, Any) -> Image.Image|None
     """
     Create a thumbnail for a text document.
 
     :param fp: Filepath to a text document.
+    :param options: Keyword arguments forwarded to ``sdk_opts``:
+        **image_thumbnail_size** - Size of the larger side of the thumbnail in pixels. Default: 128
     :return: Thumbnail image as a PIL Image object
     """
     mt, _ = idk.mediatype_and_mode(fp)
     if mt == "application/pdf":
-        return idk.pdf_thumbnail(fp)
+        return idk.pdf_thumbnail(fp, **options)
     if mt == "application/epub+zip":
-        return idk.epub_thumbnail(fp)
+        return idk.epub_thumbnail(fp, **options)
     return None
 
 

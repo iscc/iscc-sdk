@@ -45,19 +45,21 @@ AUDIO_META_MAP = {
 }
 
 
-def audio_thumbnail(fp):
-    # type: (str|Path) -> Image.Image|None
+def audio_thumbnail(fp, **options):
+    # type: (str|Path, Any) -> Image.Image|None
     """
     Create a thumbnail from embedded cover art.
 
     :param fp: Filepath to audio file.
+    :param options: Keyword arguments forwarded to ``sdk_opts``:
+        **image_thumbnail_size** - Size of the larger side of the thumbnail in pixels. Default: 128
     :return: Thumbnail image as PIL Image object
     """
     fp = Path(fp)
     tempdir = Path(tempfile.mkdtemp())
     tempimg = tempdir / "cover.jpg"
     cmd = ["-i", fp, "-an", "-vcodec", "copy", tempimg]
-    size = idk.sdk_opts.image_thumbnail_size
+    size = idk.sdk_opts.override(options).image_thumbnail_size
     try:
         idk.run_ffmpeg(cmd)
         img = Image.open(tempimg)

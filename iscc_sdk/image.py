@@ -8,6 +8,7 @@ import threading
 from pathlib import Path
 
 import exiv2
+import iscc_lib as il
 from loguru import logger as log
 from PIL import Image, ImageChops, ImageEnhance, ImageOps, PngImagePlugin
 from pillow_heif import register_heif_opener
@@ -25,6 +26,8 @@ __all__ = [
     "image_thumbnail",
     "image_to_data_url",
     "image_trim_border",
+    "image_trim_tolerant",
+    "is_featureless_image_code",
 ]
 
 
@@ -34,32 +37,42 @@ _exiv2_lock = threading.Lock()
 
 Image.MAX_IMAGE_PIXELS = idk.sdk_opts.image_max_pixels
 
+# Upper bound for repeated tolerant trim passes (guards against crafted nested borders)
+TRIM_MAX_PASSES = 16
+
 # Photoshop-exported PNGs often embed large zTXt chunks (e.g. tiff:37724
 # layer data) that decompress past PIL's 1 MB default. Allow up to 4 MB so
 # such covers don't fail thumbnail extraction.
 PngImagePlugin.MAX_TEXT_CHUNK = 4 * 1024 * 1024
 
 
-def image_normalize(img):
-    # type: (Image.Image) -> Sequence[int]
+def image_normalize(img, **options):
+    # type: (Image.Image, Any) -> Sequence[int]
     """
     Normalize image for hash calculation.
 
     :param img: Pillow Image Object
+    :param options: Keyword arguments forwarded to ``sdk_opts``:
+        **image_exif_transpose** - Transpose image according to EXIF Orientation tag. Default: True;
+        **image_fill_transparency** - Add white background to transparent images. Default: True;
+        **image_trim_border** - Crop uniform colored borders. Default: True;
+        **image_trim_tolerant** - Repeated tolerant crop of near-uniform borders (instead of the
+        exact crop). Default: True
     :return: Normalized and flattened image as 1024-pixel array (from 32x32 gray pixels)
     """
+    opts = idk.sdk_opts.override(options)
 
     # Transpose image according to EXIF Orientation tag
-    if idk.sdk_opts.image_exif_transpose:
+    if opts.image_exif_transpose:
         img = image_exif_transpose(img)
 
     # Add white background to image if it has alpha transparency
-    if idk.sdk_opts.image_fill_transparency:
+    if opts.image_fill_transparency:
         img = image_fill_transparency(img)
 
-    # Trim uniform colored (empty) border if there is one
-    if idk.sdk_opts.image_trim_border:
-        img = image_trim_border(img)
+    # Trim near-uniform (tolerant) or uniform (exact) colored border if there is one
+    if opts.image_trim_border:
+        img = image_trim_tolerant(img) if opts.image_trim_tolerant else image_trim_border(img)
 
     # Convert to grayscale
     img = img.convert("L")
@@ -140,15 +153,102 @@ def image_trim_border(img):
     :param img: Pillow Image Object
     :return: Image with uniform colored (empty) border removed.
     """
+    if img.mode in ("RGB", "L"):
+        bbox = image_border_bbox(img, 0)
+    else:
+        # Other modes keep Pillow difference semantics (alpha-only bbox for RGBA/LA, palette indices)
+        bg = Image.new(img.mode, img.size, img.getpixel((0, 0)))
+        diff = ImageChops.difference(img, bg)
+        diff = ImageChops.add(diff, diff)
+        bbox = diff.getbbox()
+    if bbox is None or bbox == (0, 0) + img.size:
+        return img
+    log.debug("Image has been trimmed")
+    return img.crop(bbox)
 
-    bg = Image.new(img.mode, img.size, img.getpixel((0, 0)))
-    diff = ImageChops.difference(img, bg)
-    diff = ImageChops.add(diff, diff)
-    bbox = diff.getbbox()
-    if bbox != (0, 0) + img.size:
-        log.debug("Image has been trimmed")
-        return img.crop(bbox)
+
+def image_trim_tolerant(img, tolerance=16):
+    # type: (Image.Image, int) -> Image.Image
+    """Trim near-uniform colored borders repeatedly until stable.
+
+    Each pass takes the upper left pixel as reference for border color and crops to the bounding
+    box of all pixels where any RGB channel differs from the reference by more than `tolerance`.
+    A pass that cuts only one side must remove a flat band (no pixel differs from the reference by
+    more than half the tolerance), otherwise trimming stops, so smooth gradients such as skies are
+    kept. Passes repeat until a pass crops nothing (no pixel differs, the bounding box covers
+    the whole image or a one-sided band is not flat), or at most `TRIM_MAX_PASSES` times.
+
+    :param img: Pillow Image Object
+    :param tolerance: Maximum per-channel difference (0-255) of a border pixel to the reference
+    :return: Image with near-uniform colored borders removed.
+    """
+    # "RGB" and "L" give the same mask directly, other modes are compared in RGB
+    mask_img = img if img.mode in ("RGB", "L") else img.convert("RGB")
+    for passes in range(TRIM_MAX_PASSES):
+        bbox = image_border_bbox(mask_img, tolerance)
+        if bbox is None or bbox == (0, 0) + mask_img.size:
+            break
+        # A one-sided cut must remove a flat band, so smooth gradients (e.g. skies) are kept
+        w, h = mask_img.size
+        sides = (bbox[0] > 0) + (bbox[1] > 0) + (bbox[2] < w) + (bbox[3] < h)
+        if sides == 1 and image_border_bbox(mask_img, tolerance // 2) != bbox:
+            break
+        img, mask_img = img.crop(bbox), mask_img.crop(bbox)
+    else:
+        passes = TRIM_MAX_PASSES
+    if passes:
+        log.debug(f"Image has been trimmed with tolerance ({passes} passes)")
     return img
+
+
+def image_border_bbox(img, tolerance):
+    # type: (Image.Image, int) -> tuple[int, int, int, int] | None
+    """Bounding box of pixels that differ from the upper left pixel by more than `tolerance`.
+
+    A pixel counts as different if any of its channels differs by more than `tolerance`.
+
+    :param img: Pillow Image Object in mode "RGB" or "L"
+    :param tolerance: Maximum per-channel difference (0-255) of a border pixel to the reference
+    :return: Bounding box (left, upper, right, lower) or None if no pixel differs.
+    """
+    ref = img.getpixel((0, 0))
+    ref = ref if isinstance(ref, tuple) else (ref,)
+    # Per-band lookup table maps values within tolerance of the reference to 0
+    lut = [255 if abs(v - c) > tolerance else 0 for c in ref for v in range(256)]
+    return img.point(lut).getbbox()
+
+
+def is_featureless_image_code(iscc):
+    # type: (str) -> bool
+    """Check if an ISCC holds a featureless Image-Code.
+
+    Featureless images (uniform colors, one-axis brightness gradients, plain stripes, some symmetric
+    graphics) get nearly identical Image-Codes that match each other regardless of content. Code
+    generation is unaffected; applications such as matching services use this check to skip them,
+    like the quality score of Meta's PDQ lets applications discard featureless images.
+
+    Rule: An Image-Code is featureless if any complete 64-bit segment of its body has fewer than 8
+    bits set to 1. Segments are consecutive 64-bit big-endian words from the start of the body.
+    Trailing bits of a body whose length is not a multiple of 64 are not checked. A regular segment
+    has 32 one-bits (median split of 64 DCT coefficients), fewer than 8 means at least 26 ties.
+
+    - Image-Code unit (MainType CONTENT, SubType IMAGE): checked by the rule.
+    - ISCC-CODE: its Image-Code unit is checked, False if it has none.
+    - Any other ISCC unit: False.
+
+    :param iscc: ISCC string (with or without "ISCC:" prefix)
+    :return: True if the ISCC holds a featureless Image-Code
+    :raises ValueError: If the Image-Code is shorter than 64 bits and cannot be judged.
+    """
+    mt, st, _, _, body = il.iscc_decode(iscc)
+    if mt == il.MT.ISCC:
+        return any(is_featureless_image_code(unit) for unit in il.iscc_decompose(iscc))
+    if mt != il.MT.CONTENT or st != il.ST.IMAGE:
+        return False
+    if len(body) < 8:
+        raise ValueError(f"Image-Code with {len(body) * 8} bits is too short to judge (min 64)")
+    words = (int.from_bytes(body[i : i + 8], "big") for i in range(0, len(body) - 7, 8))
+    return any(word.bit_count() < 8 for word in words)
 
 
 def image_meta_extract(fp, file_name=None):
@@ -285,19 +385,21 @@ def image_meta_delete(fp):
     log.debug(f"Deleted all metadata from {fp.name}")
 
 
-def image_thumbnail(fp):
-    # type: (str|Path) -> Image.Image
+def image_thumbnail(fp, **options):
+    # type: (str|Path, Any) -> Image.Image
     """
     Create a thumbnail for an image.
 
     :param fp: Filepath to image file.
+    :param options: Keyword arguments forwarded to ``sdk_opts``:
+        **image_thumbnail_size** - Size of the larger side of the thumbnail in pixels. Default: 128
     :return: Thumbnail image as PIL Image object
     """
     fp = Path(fp)
     mt, _ = idk.mediatype_and_mode(fp)
     if mt == "image/svg+xml":
-        return idk.svg_thumbnail(fp)
-    size = idk.sdk_opts.image_thumbnail_size
+        return idk.svg_thumbnail(fp, **options)
+    size = idk.sdk_opts.override(options).image_thumbnail_size
     img = Image.open(fp)
 
     # Convert to RGB before resizing
@@ -321,16 +423,20 @@ def image_strip_metadata(img):
     return new_img
 
 
-def image_to_data_url(img):
-    # type: (Image.Image) -> str
+def image_to_data_url(img, **options):
+    # type: (Image.Image, Any) -> str
     """
-    Convert PIL Image object to WebP Data-URL.
+    Convert PIL Image object to a Data-URL in the thumbnail image format.
 
-    :param img: PIL Image object to encode as WebP Data-URL.
+    :param img: PIL Image object to encode as Data-URL.
+    :param options: Keyword arguments forwarded to ``sdk_opts``:
+        **image_thumbnail_format** - Image format (JPEG, WEBP or AVIF). Default: WEBP;
+        **image_thumbnail_quality** - Compression setting (0-100). Default: 30
     :return: Data-URL string
     """
-    format_ = idk.sdk_opts.image_thumbnail_format
-    quality = idk.sdk_opts.image_thumbnail_quality
+    opts = idk.sdk_opts.override(options)
+    format_ = opts.image_thumbnail_format
+    quality = opts.image_thumbnail_quality
     img = image_strip_metadata(img)
     raw = io.BytesIO()
     img.save(raw, format=format_, quality=quality)

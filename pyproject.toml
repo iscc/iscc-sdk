@@ -1,6 +1,6 @@
 [project]
 name = "iscc-sdk"
-version = "0.9.6"
+version = "0.9.7"
 description = "SDK for creating ISCCs (International Standard Content Codes)"
 authors = [{ name = "Titusz", email = "tp@py7.de" }]
 requires-python = ">=3.11"
@@ -63,10 +63,13 @@ dependencies = [
 
 [project.optional-dependencies]
 sci = [
-    "iscc-sci[cpu]",
+    "iscc-sci[cpu]>=0.4.1,<0.5",
 ]
 sct = [
-    "iscc-sct[cpu]",
+    "iscc-sct[cpu]>=0.2.2,<0.3",
+]
+c2pa = [
+    "iscc-sdk[sci,sct]",
 ]
 
 [project.urls]
@@ -150,6 +153,7 @@ max-complexity = 13
 [tool.ruff.lint.per-file-ignores]
 "iscc_sdk/__init__.py" = ["E402", "F401", "F403", "I001"]
 "iscc_sdk/tools.py" = ["S101", "S202", "S310", "S603"]
+"iscc_sdk/utils.py" = ["S310"]  # DownloadFile allows http and https URLs only
 "iscc_sdk/epub.py" = ["C901"]
 "iscc_sdk/main.py" = ["C901"]
 

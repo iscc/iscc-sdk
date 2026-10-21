@@ -840,7 +840,7 @@ wheels = [
 
 [[package]]
 name = "iscc-sci"
-version = "0.3.0"
+version = "0.4.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "blake3" },
@@ -849,9 +849,9 @@ dependencies = [
     { name = "platformdirs" },
     { name = "pydantic-settings" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/a2/e3/3c899244e6e04789a1d0af3920b07846e398b25aeb5476f65e97de3841d9/iscc_sci-0.3.0.tar.gz", hash = "sha256:68f85086dccb0e4433a5601f73c66daf8e50e19df8cba4522853a0437283ea79", size = 8833, upload-time = "2026-06-14T16:10:17.002Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/13/8f/a7a6cbb1d6cd10bad35bb68cd933c8e078a48ba77da2d64d9158038670c2/iscc_sci-0.4.1.tar.gz", hash = "sha256:5dba2d0752b3f890cd7b022efc18bceb813625c3cabe6048c60d9a96a6269f55", size = 18468, upload-time = "2026-10-20T19:05:28Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/60/cd/32c16d1b87c47195c8943332705ab3bd29e357f355040bbaa2bf732f84fb/iscc_sci-0.3.0-py3-none-any.whl", hash = "sha256:5ddf3d50bb078eec9e26bce905c4786a227dd09726d1b802bd880bd4973a37a2", size = 10205, upload-time = "2026-06-14T16:10:17.776Z" },
+    { url = "https://files.pythonhosted.org/packages/b3/28/23bfb01bb23f50d59f6d5453d050bb470c706520b9f14085be8552b7d0b5/iscc_sci-0.4.1-py3-none-any.whl", hash = "sha256:d675443dff55b1a96753a0f9f5f05b0fd3ece4943cd8b568d21c4b8fdb768c64", size = 17931, upload-time = "2026-10-20T19:05:27.026Z" },
 ]
 
 [package.optional-dependencies]
@@ -890,7 +890,7 @@ cpu = [
 
 [[package]]
 name = "iscc-sdk"
-version = "0.9.6"
+version = "0.9.7"
 source = { editable = "." }
 dependencies = [
     { name = "bitarray" },
@@ -922,6 +922,10 @@ dependencies = [
 ]
 
 [package.optional-dependencies]
+c2pa = [
+    { name = "iscc-sci", extra = ["cpu"] },
+    { name = "iscc-sct", extra = ["cpu"] },
+]
 sci = [
     { name = "iscc-sci", extra = ["cpu"] },
 ]
@@ -956,8 +960,9 @@ requires-dist = [
     { name = "exiv2" },
     { name = "iscc-lib", specifier = ">=0.7.0" },
     { name = "iscc-schema", specifier = ">=0.8.0" },
-    { name = "iscc-sci", extras = ["cpu"], marker = "extra == 'sci'" },
-    { name = "iscc-sct", extras = ["cpu"], marker = "extra == 'sct'" },
+    { name = "iscc-sci", extras = ["cpu"], marker = "extra == 'sci'", specifier = ">=0.4.1,<0.5" },
+    { name = "iscc-sct", extras = ["cpu"], marker = "extra == 'sct'", specifier = ">=0.2.2,<0.3" },
+    { name = "iscc-sdk", extras = ["sci", "sct"], marker = "extra == 'c2pa'" },
     { name = "iscc-tika" },
     { name = "jmespath" },
     { name = "langcodes" },
@@ -977,7 +982,7 @@ requires-dist = [
     { name = "typer" },
     { name = "xxhash" },
 ]
-provides-extras = ["sci", "sct"]
+provides-extras = ["sci", "sct", "c2pa"]
 
 [package.metadata.requires-dev]
 dev = [

@@ -223,13 +223,15 @@ def svg_meta_delete(fp):
     log.debug(f"Deleted all metadata from {fp.name}")
 
 
-def svg_thumbnail(fp, img=None):
-    # type: (str|Path, Image.Image|None) -> Image.Image
+def svg_thumbnail(fp, img=None, **options):
+    # type: (str|Path, Image.Image|None, Any) -> Image.Image
     """
     Create a thumbnail for an SVG file.
 
     :param fp: Filepath to SVG file.
     :param img: Pre-rasterized PIL Image to reuse (avoids re-rasterization).
+    :param options: Keyword arguments forwarded to ``sdk_opts``:
+        **image_thumbnail_size** - Size of the larger side of the thumbnail in pixels. Default: 128
     :return: Thumbnail image as PIL Image object
     """
     if img is None:
@@ -237,7 +239,7 @@ def svg_thumbnail(fp, img=None):
     else:
         img = img.copy()
 
-    size = idk.sdk_opts.image_thumbnail_size
+    size = idk.sdk_opts.override(options).image_thumbnail_size
     img = img.convert("RGB")
     img.thumbnail((size, size), resample=idk.LANCZOS)
     return ImageEnhance.Sharpness(img).enhance(1.4)

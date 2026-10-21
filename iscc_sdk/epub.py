@@ -23,12 +23,14 @@ __all__ = [
 ]
 
 
-def epub_thumbnail(fp):
-    # type: (str|Path) -> Image.Image
+def epub_thumbnail(fp, **options):
+    # type: (str|Path, Any) -> Image.Image
     """
     Create thumbnail from EPUB document cover image.
 
     :param fp: Filepath to EPUB document.
+    :param options: Keyword arguments forwarded to ``sdk_opts``:
+        **image_thumbnail_size** - Size of the larger side of the thumbnail in pixels. Default: 128
     :return: Thumbnail image as PIL Image object
     """
     fp = Path(fp)
@@ -43,7 +45,7 @@ def epub_thumbnail(fp):
             tmp_path.unlink(missing_ok=True)
     else:
         img = Image.open(io.BytesIO(data))
-    size = idk.sdk_opts.image_thumbnail_size
+    size = idk.sdk_opts.override(options).image_thumbnail_size
     img.thumbnail((size, size), resample=idk.LANCZOS)
     return ImageEnhance.Sharpness(img.convert("RGB")).enhance(1.4)
 

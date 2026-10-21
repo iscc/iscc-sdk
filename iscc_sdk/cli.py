@@ -1,4 +1,6 @@
+import json
 import os
+import sys
 from concurrent.futures import ProcessPoolExecutor, as_completed
 from pathlib import Path
 
@@ -200,6 +202,39 @@ def extract(file: str):
         else:
             typer.echo(f"Invalid file path {file}")
             raise typer.Exit(code=1)
+
+
+def soft_binding_json(definition):
+    # type: (dict) -> str
+    """Format a soft binding assertion definition as indented JSON with the value on one line."""
+    placeholder = "<value>"
+    block = definition["data"]["blocks"][0]
+    value, block["value"] = block["value"], placeholder
+    text = json.dumps(definition, indent=2)
+    block["value"] = value
+    return text.replace(json.dumps(placeholder), json.dumps(value), 1)
+
+
+@app.command("soft-binding")
+def soft_binding(
+    file: Path,
+    no_semantic: bool = typer.Option(
+        False, "--no-semantic", help="Leave out Semantic-Codes (no iscc-sci or iscc-sct needed)."
+    ),
+):
+    """Print the C2PA soft binding assertion (IEP-0020) for FILE as JSON (units on stderr)."""
+    log.remove()
+    handler = log.add(sys.stderr, level="WARNING", format="{level}: {message}")
+    try:
+        sb = idk.soft_binding(file, semantic=not no_semantic)
+    except Exception as e:
+        typer.echo(f"Error: {e}", err=True)
+        raise typer.Exit(code=1)
+    finally:
+        log.remove(handler)
+    typer.echo(soft_binding_json(idk.soft_binding_definition(sb)))
+    for unit in sb.units:
+        typer.echo(unit, err=True)
 
 
 if __name__ == "__main__":  # pragma: no cover
