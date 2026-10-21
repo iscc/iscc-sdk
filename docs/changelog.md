@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.9.7 - Unreleased
+## 0.9.7 - 2026-10-21
 
 - Added C2PA soft bindings (`io.iscc.v0`, IEP-0020): `soft_binding`, `soft_binding_definition`, the
     CLI command `iscc-sdk soft-binding`, the `c2pa` extra and test vectors. Soft bindings always use
