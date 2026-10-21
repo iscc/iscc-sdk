@@ -101,10 +101,9 @@ The same manifest definition works with the c2pa-rs `Builder` and its bindings, 
 the signer, as IEP-0020 requires.
 
 !!! note "Value encoding"
-
-    C2PA SDKs before c2pa-rs PR 2757 store the `value` integer array as a CBOR array of integers, later
-    versions as a CBOR byte string. IEP-0020 requires readers to accept both, so the same JSON works
-    with old and new SDKs.
+    C2PA SDKs before c2pa-rs PR 2757 store the `value` integer array as a CBOR array of integers,
+    later versions as a CBOR byte string. IEP-0020 requires readers to accept both, so the same JSON
+    works with old and new SDKs.
 
 ## What goes into the soft binding
 
